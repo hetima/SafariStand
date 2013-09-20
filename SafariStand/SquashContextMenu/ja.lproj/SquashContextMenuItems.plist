@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>tag</key>
+		<integer>10034</integer>
+		<key>group</key>
+		<string>ページ : </string>
+		<key>title</key>
+		<string>Dashboard で開く...</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10022</integer>
+		<key>title</key>
+		<string>ページのソースを表示</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10024</integer>
+		<key>title</key>
+		<string>ページを別名で保存...</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10028</integer>
+		<key>title</key>
+		<string>ページをプリント...</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>2025</integer>
+		<key>title</key>
+		<string>要素の詳細を表示</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>22</integer>
+		<key>group</key>
+		<string>テキスト : </string>
+		<key>title</key>
+		<string>“選択文字列”を調べる</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10019</integer>
+		<key>title</key>
+		<string>Google で検索</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>2</integer>
+		<key>group</key>
+		<string>リンク : </string>
+		<key>title</key>
+		<string>リンク先のファイルをダウンロード</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10006</integer>
+		<key>title</key>
+		<string>リンク先のファイルを別名でダウンロード...</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10007</integer>
+		<key>title</key>
+		<string>リンクをブックマークに追加...</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10035</integer>
+		<key>title</key>
+		<string>リンクをリーディングリストに追加</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10009</integer>
+		<key>group</key>
+		<string>イメージ : </string>
+		<key>title</key>
+		<string>イメージを“Downloads”に保存</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10010</integer>
+		<key>title</key>
+		<string>イメージを別名で保存...</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10016</integer>
+		<key>title</key>
+		<string>イメージを iPhoto ライブラリに追加</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10017</integer>
+		<key>title</key>
+		<string>イメージをデスクトップピクチャとして使用</string>
+	</dict>
+</array>
+</plist>

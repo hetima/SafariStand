@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>tag</key>
+		<integer>10034</integer>
+		<key>title</key>
+		<string>Open in Dashboard…</string>
+		<key>group</key>
+		<string>Page : </string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10022</integer>
+		<key>title</key>
+		<string>Show Page Source</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10024</integer>
+		<key>title</key>
+		<string>Save Page As…</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10028</integer>
+		<key>title</key>
+		<string>Print Page…</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>2025</integer>
+		<key>title</key>
+		<string>Inspect Element</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>22</integer>
+		<key>title</key>
+		<string>Look Up “selection”</string>
+		<key>group</key>
+		<string>Text : </string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10019</integer>
+		<key>title</key>
+		<string>Search with Google</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>2</integer>
+		<key>group</key>
+		<string>Link : </string>
+		<key>title</key>
+		<string>Download Linked File</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10006</integer>
+		<key>title</key>
+		<string>Download Linked File As…</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10007</integer>
+		<key>title</key>
+		<string>Add Link to Bookmarks…</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10035</integer>
+		<key>title</key>
+		<string>Add Link to Reading List</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10009</integer>
+		<key>group</key>
+		<string>Image : </string>
+		<key>title</key>
+		<string>Save Image to “Downloads”</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10010</integer>
+		<key>title</key>
+		<string>Save Image As…</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10016</integer>
+		<key>title</key>
+		<string>Add Image to iPhoto Library</string>
+	</dict>
+	<dict>
+		<key>tag</key>
+		<integer>10017</integer>
+		<key>title</key>
+		<string>Use Image as Desktop Picture</string>
+	</dict>
+</array>
+</plist>
