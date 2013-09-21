@@ -2,6 +2,9 @@
 //  HTQuerySeedEditViewCtl.m
 //  SafariStand
 
+#if __has_feature(objc_arc)
+#error This file must be compiled with -fno-objc_arc
+#endif
 
 #import "SafariStand.h"
 #import "HTQuerySeedEditViewCtl.h"
@@ -10,7 +13,7 @@
 
 
 @implementation HTQuerySeedEditViewCtl
-@synthesize querySeedsBinder;
+@synthesize querySeedsBinder=_querySeedsBinder;
 @synthesize addPopupBtn=_addPopupBtn;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -32,11 +35,11 @@
 
 -(void)setQuerySeeds:(NSMutableArray *)qss
 {
-    [querySeedsBinder setQuerySeeds:qss];
+    [self.querySeedsBinder setQuerySeeds:qss];
 }
 -(NSMutableArray*)querySeeds
 {
-    return [querySeedsBinder querySeeds];
+    return [self.querySeedsBinder querySeeds];
 }
 
 

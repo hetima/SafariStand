@@ -7,13 +7,10 @@
 
 @class HTArrayController;
 @interface HTQuerySeedEditViewCtl : NSViewController {
-//    NSMutableArray* querySeeds;
-    id querySeedsBinder;
     IBOutlet HTArrayController *querySeedsArrayCtl;
     IBOutlet HTArrayController *postsArrayCtl;
-
-    
 }
+
 @property(nonatomic,assign)id querySeedsBinder;
 @property(nonatomic,assign)IBOutlet NSPopUpButton* addPopupBtn;
 
