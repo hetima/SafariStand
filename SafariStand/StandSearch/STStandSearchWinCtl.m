@@ -43,7 +43,7 @@ STStandSearchWinCtl* sharedStandSearchWinCtl;
 
 - (void)windowDidLoad
 {
-    [[HTWindowControllerRetainer si]addWondowController:self];
+    [[HTWindowControllerRetainer si]addWindowController:self];
     self.viewCtl=[STStandSearchViewCtl viewCtl];
     NSView* swView=[self.viewCtl view];//load
     

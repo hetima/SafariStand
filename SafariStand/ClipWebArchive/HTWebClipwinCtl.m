@@ -237,7 +237,7 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 
 - (void)windowDidLoad
 {
-    [[HTWindowControllerRetainer si]addWondowController:self];
+    [[HTWindowControllerRetainer si]addWindowController:self];
     [super windowDidLoad];
 }
 
