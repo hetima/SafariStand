@@ -64,7 +64,7 @@ void STSafariReloadTab(NSTabViewItem* item);
 BOOL STSafariCanReloadTab(NSTabViewItem* item);
 
 id STBrowserWindowControllerMacForWKView(id wkView);
-id STTabSwitcherForWinCtl(id winCtl);
+//id STTabSwitcherForWinCtl(id winCtl);
 
 NSInteger STWindowSelectedTabIndex(NSWindow* win);
 

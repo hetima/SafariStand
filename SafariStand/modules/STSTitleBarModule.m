@@ -2,8 +2,8 @@
 //  STSTitleBarModule.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -15,15 +15,19 @@
 
 BOOL showingPathPopUpMenu;
 
-IMP orig_showPathPopUpMenu;
-void ST_showPathPopUpMenu(id self, SEL _cmd){
+static void (*orig_showPathPopUpMenu)(id, SEL);
+void ST_showPathPopUpMenu(id self, SEL _cmd)
+{
     showingPathPopUpMenu=YES;
     orig_showPathPopUpMenu(self, _cmd);
     showingPathPopUpMenu=NO;
 }
-IMP orig_popUpContextMenu;
+
+
+static void (*orig_popUpContextMenu)(id, SEL, ...);
 void ST_popUpContextMenu(id self, SEL _cmd, NSMenu* menu, NSPoint pt, double width, NSView* view, long long selection, id font,
-                         unsigned long long arg7, id arg8){
+                         unsigned long long arg7, id arg8)
+{
     
     if(showingPathPopUpMenu && [[NSUserDefaults standardUserDefaults]boolForKey:kpImprovePathPopupMenu]){
         [[STCSafariStandCore mi:@"STSTitleBarModule"]alterPathPopUpMenu:menu];
@@ -38,9 +42,9 @@ void ST_popUpContextMenu(id self, SEL _cmd, NSMenu* menu, NSPoint pt, double wid
     if (self) {
 
         showingPathPopUpMenu=NO;
-        orig_showPathPopUpMenu = RMF(NSClassFromString(@"TitleBarButton"),
-                                                       @selector(showPathPopUpMenu), ST_showPathPopUpMenu);
-        orig_popUpContextMenu = RMF(NSClassFromString(@"NSCarbonMenuImpl"),
+        orig_showPathPopUpMenu = (void (*)(id, SEL))RMF(NSClassFromString(@"TitleBarButton"),
+                                    @selector(showPathPopUpMenu), ST_showPathPopUpMenu);
+        orig_popUpContextMenu = (void (*)(id, SEL,...))RMF(NSClassFromString(@"NSCarbonMenuImpl"),
                                 @selector(popUpMenu:atLocation:width:forView:withSelectedItem:withFont:withFlags:withOptions:), ST_popUpContextMenu);
     }
     return self;
@@ -48,7 +52,7 @@ void ST_popUpContextMenu(id self, SEL _cmd, NSMenu* menu, NSPoint pt, double wid
 
 - (void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (void)prefValue:(NSString*)key changed:(id)value
@@ -85,7 +89,6 @@ void ST_popUpContextMenu(id self, SEL _cmd, NSMenu* menu, NSPoint pt, double wid
             [altItem setRepresentedObject:[itm representedObject]];
             [altItem setAlternate:YES];
             [altItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
-            [altItem release];
         }
     }
     /*for (NSMenuItem* itm in [menu itemArray]) {
@@ -104,7 +107,6 @@ void ST_popUpContextMenu(id self, SEL _cmd, NSMenu* menu, NSPoint pt, double wid
                                     action:@selector(STCopyWindowURLTag:) keyEquivalent:@""];
     }
     [menu insertItem:m atIndex:i++];
-    [m release];
     
     if([[NSUserDefaults standardUserDefaults]boolForKey:kpCopyLinkTagAddTargetBlank]){
         m=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag")
@@ -116,43 +118,36 @@ void ST_popUpContextMenu(id self, SEL _cmd, NSMenu* menu, NSPoint pt, double wid
     [menu insertItem:m atIndex:i++];
     [m setAlternate:YES];
     [m setKeyEquivalentModifierMask:NSAlternateKeyMask];
-    [m release];
 
     
     
     m=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link and Title") action:@selector(STCopyWindowTitleAndURL:) keyEquivalent:@""];
     [menu insertItem:m atIndex:i++];
-    [m release];
+
     m=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link (space) Title") action:@selector(STCopyWindowTitleAndURLSpace:) keyEquivalent:@""];
     [menu insertItem:m atIndex:i++];
     [m setAlternate:YES];
     [m setKeyEquivalentModifierMask:NSAlternateKeyMask];
-    [m release];
     
     
     m=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Page Title") action:@selector(STCopyWindowTitle:) keyEquivalent:@""];
     [menu insertItem:m atIndex:i++];
     //[m setAlternate:YES];
     //[m setKeyEquivalentModifierMask:NSAlternateKeyMask];
-    [m release];
+
     m=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link as Markdown") action:@selector(STCopyWindowTitleAndURLAsMarkdown:) keyEquivalent:@""];
     [menu insertItem:m atIndex:i++];
-    [m release];
+
     m=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link as Hatena") action:@selector(STCopyWindowTitleAndURLAsHatena:) keyEquivalent:@""];
     [menu insertItem:m atIndex:i++];
     [m setAlternate:YES];
     [m setKeyEquivalentModifierMask:NSAlternateKeyMask];
-    [m release];
 
     if(![[menu itemAtIndex:i]isSeparatorItem]){
         [menu insertItem:[NSMenuItem separatorItem] atIndex:i++];
     }
     
-    
 }
-
-
-
 
 
 @end

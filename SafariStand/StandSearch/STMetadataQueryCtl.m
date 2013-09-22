@@ -2,8 +2,8 @@
 //  STMetadataQueryCtl.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -20,33 +20,30 @@
 
 
 @implementation STMetadataQueryCtl
-@synthesize delegate, isExpanded;
-@synthesize title;
 
-+(STMetadataQueryCtl*)bookmarksSearchCtl{
++(STMetadataQueryCtl*)bookmarksSearchCtl
+{
     NSString *path=[[NSHomeDirectory() stringByStandardizingPath]stringByAppendingPathComponent:
                     @"/Library/Caches/Metadata/Safari/Bookmarks"];
     STMetadataQueryCtl*ctl=[[STMetadataQueryCtl alloc]initWithContentType:@"com.apple.safari.bookmark" scope:path];
     ctl.title=@"Bookmark";
-    return [ctl autorelease];
+    return ctl;
 }
 
-+(STMetadataQueryCtl*)historySearchCtl{
++(STMetadataQueryCtl*)historySearchCtl
+{
     NSString *path=[[NSHomeDirectory() stringByStandardizingPath]stringByAppendingPathComponent:
                     @"/Library/Caches/Metadata/Safari/History"];
     STMetadataQueryCtl*ctl=[[STMetadataQueryCtl alloc]initWithContentType:@"com.apple.safari.history" scope:path];
     ctl.title=@"History";
-    return [ctl autorelease];
+    return ctl;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     LOG(@"query dealloc");
 	[[NSNotificationCenter defaultCenter]removeObserver:self];
 	[_query stopQuery];
-	[_query release];
-	[_typeFilter release];
-    
-	[super dealloc];
 }
 
 - (id) initWithContentType:(NSString*)type scope:(NSString*)scope
@@ -55,7 +52,7 @@
 	if (self != nil) {
 
 		NSString*	fmt=[NSString stringWithFormat:@"(kMDItemContentType == '%@')", type];
-		_typeFilter = [[NSPredicate predicateWithFormat:fmt]retain];
+		_typeFilter = [NSPredicate predicateWithFormat:fmt];
 		_query = [[NSMetadataQuery alloc] init];
         if (!scope) {
             scope=NSMetadataQueryUserHomeScope;
@@ -65,7 +62,7 @@
                                                 selector:@selector(queryNote:) name:nil object:_query];
 		[_query setSearchScopes:[NSArray arrayWithObject:scope]];
 		[_query setSortDescriptors:[NSArray arrayWithObject:
-                        [[[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO] autorelease]]];
+                        [[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO] ]];
 		[_query setGroupingAttributes:nil];
 		[_query setValueListAttributes:[NSArray arrayWithObjects:(id)kMDItemDisplayName, (id)kMDItemURL, nil]];
 		//[_query setValueListAttributes:nil];
@@ -87,6 +84,7 @@
 	}
 	return nil;
 }
+
 - (id)valueForAttribute:(NSString *)key
 {
 	if([key isEqualToString:(NSString*)kMDItemDisplayName]){
@@ -104,7 +102,8 @@
 	return @"";
 }
 
-- (NSMetadataQuery *)query {
+- (NSMetadataQuery *)query
+{
     return _query;
 }
 
@@ -120,9 +119,9 @@
     NSArray* words=[inStr componentsSeparatedByString:@" "];
     NSMutableArray* wordPeris=[NSMutableArray arrayWithCapacity:[words count]+2];
     [wordPeris addObject:_typeFilter];
-    for (NSString* word in words) {
-        if ([word length]) {
-            word=[@"*" stringByAppendingString:[word stringByAppendingString:@"*"]];
+    for (NSString* oneWord in words) {
+        if ([oneWord length]) {
+            NSString* word=[@"*" stringByAppendingString:[oneWord stringByAppendingString:@"*"]];
             //NSPredicate* p=[NSPredicate predicateWithFormat:@"((kMDItemDisplayName like[cd] %@) || (kMDItemURL like[cd] %@) || (kMDItemTextContent like[cd] %@))", word, word, word];
             //NSPredicate* p=[NSPredicate predicateWithFormat:@"((kMDItemDisplayName like[cdw] %@) || (kMDItemURL like[cdw] %@) || (kMDItemTextContent like[cdw] %@))", word, word, word];
             NSPredicate* p=[NSPredicate predicateWithFormat:@"((kMDItemDisplayName like[cd] %@) || (kMDItemURL like[cd] %@))", word, word];
@@ -136,7 +135,6 @@
     
 	[_query setPredicate:predicateToRun];           
 	[_query startQuery]; 
-    
     
 }
 
@@ -162,7 +160,6 @@
 		[newQuery setDelegate:self];
         
 		//set
-		[_query release];
 		_query=newQuery;
 	}
 	
@@ -178,8 +175,8 @@
 	[self.delegate standMetaDataTreeUpdate:self];    
 }
 
-- (void)queryNote:(NSNotification *)note {
-    
+- (void)queryNote:(NSNotification *)note
+{
     if ([[note name] isEqualToString:NSMetadataQueryDidStartGatheringNotification]) {
         
 		[self _clearMDTree];
@@ -204,4 +201,5 @@
         
     }
 }
+
 @end

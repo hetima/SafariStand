@@ -2,8 +2,8 @@
 //  STSDownloadModule.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -19,7 +19,7 @@
  2: DownloadsPath/modPath/file.name
  
  */
-IMP orig_pathWithUniqueFilenameForPath;
+static id (*orig_pathWithUniqueFilenameForPath)(id, SEL, ...);
 id ST_pathWithUniqueFilenameForPath(id self, SEL _cmd, NSString *inStr)
 {
 	if(![[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
@@ -57,21 +57,29 @@ id ST_pathWithUniqueFilenameForPath(id self, SEL _cmd, NSString *inStr)
 }
 
 //info is retained
-void copyImageToDownloadFolderCallBack(void* data, void* error, NSDictionary* info)
-{    
-    NSAutoreleasePool* arp=[[NSAutoreleasePool alloc]init];
-    NSString* fileName=[info objectForKey:@"fileName"];
-
-    NSString* outDir=STSafariDownloadDestinationWithFileName(fileName);
+void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef info)
+{
     
-    NSData* outData=htNSDataFromWKData(data);
-    if(outData){
-        if ([outData writeToFile:outDir atomically:YES]) {
-            HTAddXattrMDItemWhereFroms(outDir, [info objectForKey:@"wherefroms"]);
+    
+    
+    //NSAutoreleasePool* arp=[[NSAutoreleasePool alloc]init];
+    @autoreleasepool {
+        NSDictionary* dic=(__bridge NSDictionary*)info;
+
+        NSString* fileName=[dic objectForKey:@"fileName"];
+
+        NSString* outDir=STSafariDownloadDestinationWithFileName(fileName);
+        
+        NSData* outData=htNSDataFromWKData(data);
+        if(outData){
+            if ([outData writeToFile:outDir atomically:YES]) {
+                HTAddXattrMDItemWhereFroms(outDir, [dic objectForKey:@"wherefroms"]);
+            }
         }
     }
-    [arp drain];
-    [info release];
+    //[arp drain];
+    //[info release];
+    CFRelease(info);
 }
 
 
@@ -83,7 +91,7 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, NSDictionary* in
         advSheetCtl=nil;
         [self loadFromStorage];
 
-        orig_pathWithUniqueFilenameForPath = RMF(NSClassFromString(@"NSFileManager"),
+        orig_pathWithUniqueFilenameForPath = (id(*)(id, SEL, ...))RMF(NSClassFromString(@"NSFileManager"),
                                 @selector(_webkit_pathWithUniqueFilenameForPath:), ST_pathWithUniqueFilenameForPath);
     
 
@@ -93,8 +101,7 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, NSDictionary* in
 
 - (void)dealloc
 {
-    [advSheetCtl release];
-    [super dealloc];
+
 }
 
 - (void)prefValue:(NSString*)key changed:(id)value
@@ -132,12 +139,13 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, NSDictionary* in
             NSDictionary* info=[[NSDictionary alloc]initWithObjectsAndKeys:wherefroms, @"wherefroms",
                                fileName, @"fileName", nil];
             
-            WKFrameGetResourceData(frame, imageURL, (WKFrameGetResourceDataFunction)copyImageToDownloadFolderCallBack, info);
+            WKFrameGetResourceData(frame, imageURL, (WKFrameGetResourceDataFunction)copyImageToDownloadFolderCallBack, (void*)CFBridgingRetain(info));
         }
     }
 }
 
--(NSWindow*)advancedSettingSheet{
+-(NSWindow*)advancedSettingSheet
+{
     if (!advSheetCtl) {
         advSheetCtl=[[STClassifyDownloadAdvSheetCtl alloc]initWithWindowNibName:@"STClassifyDownloadAdvSheet"];
         advSheetCtl.arrayBinder=self;
@@ -164,16 +172,16 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, NSDictionary* in
         NSMutableDictionary* qs=[[NSMutableDictionary alloc]initWithDictionary:data];
         if (qs) {
             [mutArray addObject:qs];
-            [qs release];
         }
     }
     self.advancedFilters=mutArray;
-    [mutArray release];
+
 }
 
 
 //url is not used currently
--(NSString*)expressionForRule:(NSDictionary*)rule fileName:(NSString*)fileName url:(id)url{
+-(NSString*)expressionForRule:(NSDictionary*)rule fileName:(NSString*)fileName url:(id)url
+{
     if([[rule objectForKey:@"use"]boolValue]!=YES)return nil;
 
     NSString* result=nil;
@@ -189,7 +197,8 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, NSDictionary* in
 }
 
 //url is not used currently
--(NSString*)filteredExpressionForFileName:(NSString*)fileName url:(id)url{
+-(NSString*)filteredExpressionForFileName:(NSString*)fileName url:(id)url
+{
     if ([fileName hasSuffix:@".download"])fileName=[fileName stringByDeletingPathExtension];
     NSString* ext=[fileName pathExtension];
     if(!ext || [ext length]<=0)ext=@"----";//need?

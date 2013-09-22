@@ -2,8 +2,8 @@
 //  HTQuerySeed.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "HTQuerySeed.h"
@@ -25,7 +25,7 @@
                         [NSString HTUUIDStringWithFormat:@"%@"],@"uuid",
                         nil];
     
-    HTQuerySeed* qs=[[[HTQuerySeed alloc]initWithDict:dict]autorelease];
+    HTQuerySeed* qs=[[HTQuerySeed alloc]initWithDict:dict];
     
     return qs;
 }
@@ -77,7 +77,7 @@
 
 - (void)dealloc
 {
-    [super dealloc];
+
 }
 
 -(BOOL)shouldHiddenPostEdit

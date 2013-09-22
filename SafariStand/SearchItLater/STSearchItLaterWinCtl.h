@@ -8,8 +8,7 @@
 
 @class HTArrayController;
 @interface STSearchItLaterWinCtl : NSWindowController {
-    id silBinder;
-    
+
     IBOutlet HTArrayController *silArrayCtl;
 }
 @property(nonatomic,assign)id silBinder;

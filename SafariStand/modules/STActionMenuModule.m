@@ -2,8 +2,8 @@
 //  STActionMenuModule.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -12,7 +12,7 @@
 
 
 @implementation STActionMenuModule
-@synthesize toolbarIcon=_toolbarIcon;
+
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
@@ -25,7 +25,7 @@
 
 - (void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (void)prefValue:(NSString*)key changed:(id)value
@@ -50,7 +50,7 @@
 
 -(NSMenu*)actionPopupMenuForURL:(NSString*)currentURLString webView:(NSView*)currentWebView
 {
-    NSMenu* actMenu=[[[NSMenu alloc]initWithTitle:@"act"]autorelease];
+    NSMenu* actMenu=[[NSMenu alloc]initWithTitle:@"act"];
     
     BOOL    needSeparator=NO;
     
@@ -84,9 +84,6 @@
     [itm setAlternate:YES];
 
     
-    
-    
-    
     [actMenu addItemWithTitle:LOCALIZE(@"Copy Link as Markdown") action:@selector(STCopyWindowTitleAndURLAsMarkdown:) keyEquivalent:@""];
     itm=[actMenu addItemWithTitle:LOCALIZE(@"Copy Link as Hatena") action:@selector(STCopyWindowTitleAndURLAsHatena:) keyEquivalent:@""];
     [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
@@ -112,17 +109,15 @@
 
 -(void)actionPopupWithEvent:(NSEvent*)event forView:(NSButton*)view
 {
-    NSAutoreleasePool*  arp=[[NSAutoreleasePool alloc]init];
-    
-    NSString*  currentURLString=STSafariCurrentURLString();
-    NSView*    currentWebView=STSafariCurrentWKView();
+    @autoreleasepool {
+        NSString*  currentURLString=STSafariCurrentURLString();
+        NSView*    currentWebView=STSafariCurrentWKView();
 
-    NSMenu* actMenu=[self actionPopupMenuForURL:currentURLString webView:currentWebView];
-    
-    HTShowPopupMenuForButton(event, view, actMenu);
-    
-
-    [arp release];
+        NSMenu* actMenu=[self actionPopupMenuForURL:currentURLString webView:currentWebView];
+        
+        HTShowPopupMenuForButton(event, view, actMenu);
+        
+    }
 }
 
 
@@ -150,7 +145,7 @@
 	
 	[btn setEnabled:YES];
     
-	return [btn autorelease];
+	return btn;
 
 }
 

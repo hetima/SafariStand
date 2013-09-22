@@ -2,8 +2,8 @@
 //  STSearchItLaterWinCtl.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -11,14 +11,17 @@
 
 #import "STSafariConnect.h"
 #import "STQuickSearch.h"
+#import "HTArrayController.h"
+#import "HTWindowControllerRetainer.h"
+
 
 @implementation STSearchItLaterWinCtl
 STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
 
-@synthesize silBinder;
 
 + (void)showSearchItLaterWindow
 {
+    
     if(!sharedSearchItLaterWinCtl){
         sharedSearchItLaterWinCtl=[[STSearchItLaterWinCtl alloc]initWithWindowNibName:@"STSearchItLaterWinCtl"];
         sharedSearchItLaterWinCtl.silBinder=[STQuickSearch si];
@@ -60,11 +63,12 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
 
 - (void)dealloc
 {
-    [super dealloc];
+    LOG(@"STSearchItLaterWinCtl dealloc");
 }
 
 - (void)windowDidLoad
 {
+    [[HTWindowControllerRetainer si]addWondowController:self];
     [super windowDidLoad];
     [[self window] setContentBorderThickness:21 forEdge:NSMinYEdge];
 
@@ -77,17 +81,17 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
         [[STQuickSearch si] removeObserver:self forKeyPath:@"searchItLaterStrings"];
         sharedSearchItLaterWinCtl=nil;
     }
-    [self autorelease];
+    //[self autorelease];
 }
 
 
 -(void)setSearchItLaterStrings:(NSMutableArray *)sil
 {
-    [silBinder setSearchItLaterStrings:sil];
+    [self.silBinder setSearchItLaterStrings:sil];
 }
 -(NSMutableArray*)searchItLaterStrings
 {
-    return [silBinder searchItLaterStrings];
+    return [self.silBinder searchItLaterStrings];
 }
 
 
@@ -98,14 +102,13 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
     NSMutableDictionary* itm=[self safeArrangedObjectAtIndex:row];
     if(itm){
         id m;
-        NSMenu* actMenu=[[[NSMenu alloc]initWithTitle:@""]autorelease];
+        NSMenu* actMenu=[[NSMenu alloc]initWithTitle:@""];
         
         [[STQuickSearch si]insertItemsToMenu:actMenu withSelector:@selector(actQuickSearchMenuItem:) target:self];
         if([actMenu numberOfItems]>0){
             NSString* label=[NSString stringWithFormat:@"Search \"%@\"", [itm objectForKey:@"val"]];
             m=[[NSMenuItem alloc]initWithTitle:label action:nil keyEquivalent:@""];
             [actMenu insertItem:m atIndex:0];
-            [m release];
             [actMenu addItem:[NSMenuItem separatorItem]];
         }
 
@@ -164,7 +167,6 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
         id dic=[[STQuickSearch si]searchItLaterForString:str];
         [silArrayCtl setSelectedObjects:[NSArray arrayWithObject:dic]];
     }
-    
 }
 
 -(id)safeArrangedObjectAtIndex:(NSInteger)idx
@@ -186,7 +188,7 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
 
 - (void)dealloc
 {
-    [super dealloc];
+
 }
 
 

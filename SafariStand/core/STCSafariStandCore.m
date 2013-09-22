@@ -2,8 +2,8 @@
 //  STCSafariStandCore.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 
@@ -11,11 +11,6 @@
 #import <WebKit/WebKit.h>
 
 @implementation STCSafariStandCore
-@synthesize standMenu=_standMenu;
-@synthesize revision=_revision;
-@synthesize currentVersionString=_currentVersionString;
-@synthesize latestVersionString=_latestVersionString;
-@synthesize missMatchAlertShown=_missMatchAlertShown;
 
 static STCSafariStandCore *sharedInstance;
 
@@ -75,8 +70,6 @@ static STCSafariStandCore *sharedInstance;
             [module modulesDidFinishLoading:self];
         }
     }
-    
-    [orderedModule release];
 }
 
 
@@ -118,8 +111,7 @@ static STCSafariStandCore *sharedInstance;
 
 - (void)dealloc
 {
-    [_modules release];
-    [super dealloc];
+
 }
 
 //保存のタイミング
@@ -137,10 +129,9 @@ static STCSafariStandCore *sharedInstance;
         _modules=[[NSMutableDictionary alloc]initWithCapacity:16];
     }
     Class aClass=NSClassFromString(aClassName);
-    if(aClass){
+    if([aClass instancesRespondToSelector:@selector(initWithStand:)]){
         aIns=[[aClass alloc]initWithStand:self];
         if(aIns)[_modules setObject:aIns forKey:aClassName];
-        [aIns release];
     }
     return aIns;
 }
@@ -173,7 +164,7 @@ static STCSafariStandCore *sharedInstance;
 {
     _standMenu=[[NSMenu alloc]initWithTitle:@"Stand"];
 	NSMenu*	mainMenuBar=[NSApp mainMenu];
-    NSMenuItem *myMenuItem=[[[NSMenuItem alloc]initWithTitle:@"Stand" action:NULL keyEquivalent:@""]autorelease];
+    NSMenuItem *myMenuItem=[[NSMenuItem alloc]initWithTitle:@"Stand" action:NULL keyEquivalent:@""];
 	if(mainMenuBar && myMenuItem){
 
         [_standMenu setTitle:@"Stand"];
@@ -198,6 +189,7 @@ static STCSafariStandCore *sharedInstance;
 {
 
 }
+
 -(void)showMissMatchAlert
 {
     if (self.missMatchAlertShown) {
@@ -236,7 +228,8 @@ static STCSafariStandCore *sharedInstance;
 
 - (id)objectForKey:(NSString*)key
 {
-    return [(id)CFPreferencesCopyAppValue( (CFStringRef) key, (CFStringRef)kSafariStandPrefDomain) autorelease];
+    id result=(__bridge id)CFPreferencesCopyAppValue((__bridge CFStringRef)key, (CFStringRef)kSafariStandPrefDomain);
+    return result;
 }
 
 - (BOOL)boolForKey:(NSString*)key
@@ -248,7 +241,7 @@ static STCSafariStandCore *sharedInstance;
 {
 	BOOL	tempB;
     Boolean isValid;
-    tempB=CFPreferencesGetAppBooleanValue((CFStringRef)key, (CFStringRef)kSafariStandPrefDomain, &isValid);
+    tempB=CFPreferencesGetAppBooleanValue((__bridge CFStringRef)key, (CFStringRef)kSafariStandPrefDomain, &isValid);
     
 	if(isValid)	return tempB;
 	else		return inValue;
@@ -262,12 +255,12 @@ static STCSafariStandCore *sharedInstance;
 
 - (void)setObject:(id)value forKey:(NSString*)key
 {
-    CFPreferencesSetAppValue( (CFStringRef) key, (CFPropertyListRef) value, (CFStringRef)kSafariStandPrefDomain);
+    CFPreferencesSetAppValue( (__bridge CFStringRef) key, (__bridge CFPropertyListRef) value, (CFStringRef)kSafariStandPrefDomain);
 }
 
 - (void)setBool:(BOOL)value forKey:(NSString*)key
 {
-    CFPreferencesSetAppValue((CFStringRef)key, (CFPropertyListRef)(value ? kCFBooleanTrue : kCFBooleanFalse),
+    CFPreferencesSetAppValue((__bridge CFStringRef)key, (CFPropertyListRef)(value ? kCFBooleanTrue : kCFBooleanFalse),
                              (CFStringRef)kSafariStandPrefDomain);
 }
 
@@ -314,7 +307,7 @@ static STCSafariStandCore *sharedInstance;
 		[copy addObject:object];
 	}
     
-	return [copy autorelease];
+	return copy;
 }
 
 -(NSMutableDictionary*)makeMutableDictionaryCopy:(NSDictionary*)dict
@@ -334,7 +327,7 @@ static STCSafariStandCore *sharedInstance;
 		[copy setObject:object forKey:key];
 	}
     
-	return [copy autorelease];
+	return copy;
 }
 
 

@@ -1,8 +1,8 @@
 //
 //  HTDOMElementHierarchyMenuItem.m
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import <WebKit/WebKit.h>
@@ -43,11 +43,7 @@ NSMenuItem* HTDOMHTMLElementHierarchyMenuItemRetained(id node, NSString* title, 
     if([myMenu numberOfItems]>0){
         [myMenuItem setSubmenu:myMenu];
         result=myMenuItem;
-    }else{
-        [myMenuItem release];
     }
-    [myMenu release];
-    
     return result;
 }
 
@@ -79,7 +75,7 @@ NSString* HTDescriptionDOMHTMLElement(id node)
     self = [super initWithTitle:aString action:nil keyEquivalent:@""];
     if (self != nil) {
         _view=view;
-        _savedDOMRange=[[_view selectedDOMRange]retain];
+        _savedDOMRange=[_view selectedDOMRange];
     }
     return self;
 
@@ -94,7 +90,6 @@ NSString* HTDescriptionDOMHTMLElement(id node)
 - (void) dealloc
 {
     [self cleanupHiliter];
-    [super dealloc];
 }
 
 
@@ -102,13 +97,10 @@ NSString* HTDescriptionDOMHTMLElement(id node)
 {
 //    NSLog(@"cleanupHiliter");
     if(_savedDOMRange){
-        
         [_view setSelectedDOMRange:_savedDOMRange affinity:NSSelectionAffinityDownstream];
-        [_savedDOMRange release];
         _savedDOMRange=nil;
     }
 }
-
 
 
 - (void)hiliteNode:(id)node
@@ -116,7 +108,6 @@ NSString* HTDescriptionDOMHTMLElement(id node)
     if (![_view window])return;
     
 
-    
     if(_hiliter==nil){
         
         

@@ -7,12 +7,8 @@
 #import <Foundation/Foundation.h>
 
 
-@interface STBookmarkSeparator : STCModule {
-@private
-    IMP orig_addMenuItemForBookmark;
-}
-@property(readonly)IMP orig_addMenuItemForBookmark;
-
+@interface STBookmarkSeparator : STCModule
 
 -(NSMenuItem*)menuItemForBookmarkLeaf:(id)bookmarkLeaf;
+
 @end

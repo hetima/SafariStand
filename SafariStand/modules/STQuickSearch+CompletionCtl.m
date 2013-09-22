@@ -2,8 +2,8 @@
 //  STQuickSearch+CompletionCtl.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -13,8 +13,10 @@
 
 @implementation STQuickSearch (STQuickSearch_CompletionCtl)
 //LocationTextField
-IMP orig_textDidChange;
-static void ST_textDidChange(id self, SEL _cmd, id obj){
+
+static void (*orig_textDidChange)(id, SEL, ...);
+static void ST_textDidChange(id self, SEL _cmd, id obj)
+{
 	//NSConcreteNotification name = NSTextDidChangeNotification; object = LocationFieldEditor
     HTQuerySeed* seed=[quickSearchModule seedForLocationText:[self stringValue]];
     if(seed){
@@ -32,12 +34,12 @@ static void ST_textDidChange(id self, SEL _cmd, id obj){
         objc_msgSend(self, @selector(setDetailString:), [NSString stringWithFormat:@"QuickSearch : %@",seed.title]);
     }
     
-    
     //seedForLocationText:
 }
 
 
-BOOL isLikeURLString(NSString* inStr){
+BOOL isLikeURLString(NSString* inStr)
+{
     NSInteger len=[inStr length];
     if(len<5)return NO;
 //    if([inStr rangeOfString:@" "].location!=NSNotFound)return NO;
@@ -50,8 +52,10 @@ BOOL isLikeURLString(NSString* inStr){
     return NO;
 }
 
-IMP orig_goToToolbarLocation;
-void ST_goToToolbarLocation(id self, SEL _cmd, id obj){
+
+static void (*orig_goToToolbarLocation)(id, SEL, ...);
+void ST_goToToolbarLocation(id self, SEL _cmd, id obj)
+{
     NSString* locationString=[obj stringValue];
     HTQuerySeed* seed=[quickSearchModule seedForLocationText:locationString];
     if(seed){
@@ -77,11 +81,13 @@ void ST_goToToolbarLocation(id self, SEL _cmd, id obj){
 }
 
 
--(void)setupCompletionCtl{
-    orig_textDidChange = RMF(NSClassFromString(@"LocationTextField"),
-                                              @selector(textDidChange:), ST_textDidChange);
-    orig_goToToolbarLocation = RMF(NSClassFromString(kSafariBrowserWindowController),
-                                                    @selector(goToLocationFieldURL:), ST_goToToolbarLocation);//was goToToolbarLocation:
+-(void)setupCompletionCtl
+{
+    orig_textDidChange = (void(*)(id, SEL, ...))
+        RMF(NSClassFromString(@"LocationTextField"), @selector(textDidChange:), ST_textDidChange);
+    orig_goToToolbarLocation = (void(*)(id, SEL, ...))
+        RMF(NSClassFromString(kSafariBrowserWindowController),
+        @selector(goToLocationFieldURL:), ST_goToToolbarLocation);//was goToToolbarLocation:
 
 }
 

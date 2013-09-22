@@ -2,8 +2,8 @@
 //  STPrefWindowModule.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -11,8 +11,6 @@
 
 #import "STSDownloadModule.h"
 #import "STSContextMenuModule.h"
-
-
 
 
 @implementation STPrefWindowModule
@@ -25,7 +23,6 @@
  - (void)registerDefaults:(id)arg1;
  - (BOOL)synchronize;
  */
-
 
 -(id)initWithStand:(STCSafariStandCore*)core
 {
@@ -42,13 +39,13 @@
     return self;
 }
 
-
 - (void)dealloc
 {
-    [super dealloc];
+
 }
 
--(IBAction)actShowPrefWindow:(id)sender{
+-(IBAction)actShowPrefWindow:(id)sender
+{
     if(!prefWinCtl){
         prefWinCtl=[[STPrefWindowCtl alloc]initWithWindowNibName:@"STCPrefWin"];
         [prefWinCtl window];
@@ -58,21 +55,17 @@
 }
 
 
-
 -(void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon
 {
     [prefWinCtl addPane:view withIdentifier:identifier title:title icon:icon];
 }
 
 
-
 @end
 
 
 @implementation STPrefWindowCtl
-@synthesize oCurrentVarsionLabel=_oCurrentVarsionLabel;
-@synthesize currentVersionString=_currentVersionString;
-@synthesize latestVersionString=_latestVersionString;
+
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
@@ -82,43 +75,38 @@
         self.latestVersionString=[[STCSafariStandCore si]latestVersionString];
         
         //other plugin support
-        otherDefaults=nil;
+        self.otherDefaults=nil;
         id sudc=[NSUserDefaultsController sharedUserDefaultsController];
         id dflts=[sudc defaults];
         //NSUserDefaults or SCUserDefaults
         if (![[dflts className]isEqualToString:@"NSUserDefaults"] && [sudc respondsToSelector:@selector(_setDefaults:)]) {
-            otherDefaults=[dflts retain];
-            LOG(@"sharedUserDefaultsController %@", [otherDefaults className]);
+            self.otherDefaults=dflts;
+            LOG(@"sharedUserDefaultsController %@", [self.otherDefaults className]);
         }
     }
     return self;
 }
 
-
-
 - (void)windowDidBecomeKey:(NSNotification *)notification
 {
     //other plugin support
-    if(otherDefaults){
+    if(self.otherDefaults){
         objc_msgSend([NSUserDefaultsController sharedUserDefaultsController], 
                      @selector(_setDefaults:), [NSUserDefaults standardUserDefaults]);
-
     }
-
 }
+
 - (void)windowDidResignKey:(NSNotification *)notification
 {
 
     //other plugin support
     //シートでもresignするから注意
-    if(otherDefaults){
+    if(self.otherDefaults){
         objc_msgSend([NSUserDefaultsController sharedUserDefaultsController], 
-                     @selector(_setDefaults:), otherDefaults);
-        
+                     @selector(_setDefaults:), self.otherDefaults);
     }
     
 }
-
 
 - (void)windowWillClose:(NSNotification *)notification{
     [[STCSafariStandCore si]sendMessage:@selector(stMessagePrefWindowWillClose:) toAllModule:self];

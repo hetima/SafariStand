@@ -2,8 +2,8 @@
 //  STSTabBarModule.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import <mach/mach_time.h>
@@ -17,7 +17,7 @@
 
 
 //タブバー幅変更
-static IMP orig_getButtonWidth;
+static void (*orig_getButtonWidth)(id, SEL, ...);
 static void ST_getButtonWidth(id self, SEL _cmd, double *w, unsigned long long* leftover, char *isClipping, unsigned long long forTabCount)
 {
     orig_getButtonWidth(self, _cmd, w, leftover, isClipping, forTabCount);
@@ -60,9 +60,10 @@ static void ST_getButtonWidth(id self, SEL _cmd, double *w, unsigned long long* 
     
 }
 
-//閉じてるとき幅固定
-static IMP orig_closeTabBtn;
-static void ST_closeTabBtn(id self, SEL _cmd, id sender){
+//閉じてるとき幅固定 未実装
+static void (*orig_closeTabBtn)(id, SEL, ...);
+static void ST_closeTabBtn(id self, SEL _cmd, id sender)
+{
     [[self superview] htaoSetValue:[NSNumber numberWithBool:YES] forKey:@"STSTabBarModuleLastCloseClicked"];
     
     id tbm=[STCSafariStandCore mi:@"STSTabBarModule"];
@@ -73,7 +74,8 @@ static void ST_closeTabBtn(id self, SEL _cmd, id sender){
     orig_closeTabBtn(self, _cmd, sender);
 }
                               
--(void)layoutTabBarForExistingWindow{
+-(void)layoutTabBarForExistingWindow
+{
     //check exists window
     NSArray *windows=[NSApp windows];
     for (NSWindow* win in windows) {
@@ -118,10 +120,12 @@ static void ST_closeTabBtn(id self, SEL _cmd, id sender){
         }
 
         //タブバー幅変更
-        orig_getButtonWidth = RMF(NSClassFromString(@"TabBarView"),
+        orig_getButtonWidth = (void(*)(id, SEL,...))
+        RMF(NSClassFromString(@"TabBarView"),
                               @selector(getButtonWidth:leftover:isClipping:forTabCount:), ST_getButtonWidth);
-        //close時固定
-        //orig_closeTabBtn = RMF(NSClassFromString(@"TabButton"),  @selector(closeTab:), ST_closeTabBtn);
+        
+        //close時固定 未実装
+        //orig_closeTabBtn = (void (*)(id, SEL, ...))RMF(NSClassFromString(@"TabButton"),  @selector(closeTab:), ST_closeTabBtn);
 
     
         double minX=[[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue];
@@ -138,7 +142,7 @@ static void ST_closeTabBtn(id self, SEL _cmd, id sender){
 
 - (void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (void)prefValue:(NSString*)key changed:(id)value
@@ -148,7 +152,8 @@ static void ST_closeTabBtn(id self, SEL _cmd, id sender){
     }
 }
 
-- (BOOL)canAction{
+- (BOOL)canAction
+{
     uint64_t now=mach_absolute_time();
     if (now>nextTime) {
         nextTime=now+duration;
@@ -188,6 +193,7 @@ static void ST_closeTabBtn(id self, SEL _cmd, id sender){
 {
 
 }
+
 - (void)mouseExited:(NSEvent *)theEvent
 {
     //ここでTabBarViewが欲しいのだが
@@ -198,4 +204,5 @@ static void ST_closeTabBtn(id self, SEL _cmd, id sender){
     
     
 }
+
 @end

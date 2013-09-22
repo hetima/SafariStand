@@ -10,15 +10,9 @@
 @interface STMetadataQueryCtl : NSObject<NSMetadataQueryDelegate>{
     NSMetadataQuery* _query;
 	NSPredicate*	_typeFilter;
-    
-    
-    NSString* title;
-    BOOL isExpanded;
-    id delegate;
-
 }
-@property(nonatomic,retain)NSString* title;
-@property(nonatomic,assign)id delegate;
+@property (nonatomic,retain) NSString* title;
+@property (nonatomic,assign) id delegate;
 @property (nonatomic,assign) BOOL isExpanded;
 
 +(STMetadataQueryCtl*)bookmarksSearchCtl;

@@ -3,10 +3,11 @@
 //  SafariStand
 
 #import <Cocoa/Cocoa.h>
+
 @class STStandSearchViewCtl;
-@interface STStandSearchWinCtl : NSWindowController{
-    STStandSearchViewCtl* viewCtl;
-}
+
+@interface STStandSearchWinCtl : NSWindowController
+
 @property(nonatomic,retain)STStandSearchViewCtl* viewCtl;
 
 + (void)showStandSearcWindow;

@@ -2,8 +2,8 @@
 //  STQSToolbarSearchView.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -61,8 +61,6 @@
         width=kSearchButtonMaxWidth;
     }
     _titleSize=NSMakeSize(width, 22);
-
-    [attrStr release];
 
 }
 
@@ -162,9 +160,7 @@
 
 - (void)dealloc
 {
-    [_currentQS release];
-    self.originalSearchBtn=nil;
-    [super dealloc];
+
 }
 
 
@@ -172,12 +168,12 @@
 
 - (void)setCurrentSeed:(HTQuerySeed *)newQS
 {
-    if (newQS && _currentQS==newQS) {
+    if (newQS && self.currentQS==newQS) {
         return;
     }
-    [_currentQS release];
-    _currentQS=[newQS retain];
-    NSString* cellTitle=[_currentQS title];
+
+    self.currentQS=newQS;
+    NSString* cellTitle=[self.currentQS title];
     if (![cellTitle length]) {
         cellTitle=@"QS";
     }
@@ -210,7 +206,7 @@
 -(IBAction)actToolbarSearchBtnClick:(id)sender
 {
     //reset to default
-    [self setCurrentQS:nil];
+    self.currentQS=nil;
     
     
 }

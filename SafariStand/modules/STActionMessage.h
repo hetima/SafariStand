@@ -6,12 +6,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface STActionMessage : STCModule {
-@private
-    IMP orig_addMenuItemForBookmark;
-    IMP orig_goToBookmark;
-}
-@property(readonly) IMP orig_addMenuItemForBookmark,orig_goToBookmark;
+@interface STActionMessage : STCModule
 
 -(NSMenuItem*)menuItemForBookmarkLeaf:(id)bookmarkLeaf;
 -(BOOL)handleBookmakBarAction:(NSString*)url;

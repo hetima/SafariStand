@@ -2,8 +2,8 @@
 //  HTUtils.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import <sys/xattr.h>
@@ -127,26 +127,24 @@ NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance){
 
 void HTShowPopupMenuForButton(NSEvent* event, NSButton* view, NSMenu* aMenu)
 {
-    NSAutoreleasePool*  arp=[[NSAutoreleasePool alloc]init];
-
-    [[view cell]setHighlighted:YES];
-    //[view display];
-    //    _currentWindow=[view window];
-    
-    if([aMenu respondsToSelector:@selector(popUpInRect:ofView:)]){
-        NSRect bounds=[view bounds];
-        bounds.size.height+=2;
-        bounds.origin.x-=2;
-        objc_msgSend(aMenu, @selector(popUpInRect:ofView:), bounds, view);
-    }else{
-        [NSMenu popUpContextMenu:aMenu withEvent:event forView:view];
+    @autoreleasepool {
+        [[view cell]setHighlighted:YES];
+        //[view display];
+        //    _currentWindow=[view window];
+        
+        if([aMenu respondsToSelector:@selector(popUpInRect:ofView:)]){
+            NSRect bounds=[view bounds];
+            bounds.size.height+=2;
+            bounds.origin.x-=2;
+            objc_msgSend(aMenu, @selector(popUpInRect:ofView:), bounds, view);
+        }else{
+            [NSMenu popUpContextMenu:aMenu withEvent:event forView:view];
+        }
+        
+        //    _currentWindow=nil;
+        [[view cell]setHighlighted:NO];
+        //[view setNeedsDisplay:YES];
     }
-    
-    //    _currentWindow=nil;
-    [[view cell]setHighlighted:NO];
-    //[view setNeedsDisplay:YES];
-    
-    [arp release];
 }
 
 

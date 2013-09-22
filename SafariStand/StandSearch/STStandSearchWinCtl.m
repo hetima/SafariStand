@@ -2,19 +2,19 @@
 //  STStandSearchWinCtl.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
 #import "STStandSearchWinCtl.h"
 #import "STStandSearchViewCtl.h"
+#import "HTWindowControllerRetainer.h"
 
 
 @implementation STStandSearchWinCtl
 STStandSearchWinCtl* sharedStandSearchWinCtl;
 
-@synthesize viewCtl;
 
 + (void)showStandSearcWindow
 {
@@ -27,8 +27,7 @@ STStandSearchWinCtl* sharedStandSearchWinCtl;
 
 - (void)dealloc
 {
-    self.viewCtl=nil;
-    [super dealloc];
+    //LOG(@"STStandSearchWinCtl dealloc");
 }
 
 
@@ -44,6 +43,7 @@ STStandSearchWinCtl* sharedStandSearchWinCtl;
 
 - (void)windowDidLoad
 {
+    [[HTWindowControllerRetainer si]addWondowController:self];
     self.viewCtl=[STStandSearchViewCtl viewCtl];
     NSView* swView=[self.viewCtl view];//load
     
@@ -69,7 +69,7 @@ STStandSearchWinCtl* sharedStandSearchWinCtl;
         sharedStandSearchWinCtl=nil;
     }
     
-    [self autorelease];
+    //[self autorelease];
 }
 
 

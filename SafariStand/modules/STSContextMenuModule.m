@@ -2,8 +2,8 @@
 //  STSContextMenuModule.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with -fno-objc-arc
 #endif
 
 #import "SafariStand.h"
@@ -24,7 +24,8 @@
 static STSContextMenuModule* contextMenuModule;
 
 
-IMP orig_setMenuProxy;
+
+static void (*orig_setMenuProxy)(id, SEL, ...);
 // オリジナルの setMenuProxy: と差し替えるメソッド
 void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
 {
@@ -33,7 +34,9 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
     
     // menuProxy は WebContextMenuProxyMac クラスのポインタ
     // 16バイト目に NSPopUpButtonCell * へのポインタが格納されている
-    NSPopUpButtonCell *cell = *(NSPopUpButtonCell **)((void **)menuProxy + 2);
+    void* cellPtr=*((void **)menuProxy + 2);
+    NSPopUpButtonCell *cell = (__bridge NSPopUpButtonCell *)(cellPtr);
+    //NSPopUpButtonCell *cell = *(NSPopUpButtonCell **)((void **)menuProxy + 2);
     
     // cell から menu を取得
     // プラグインや機能拡張によって追加されたメニュー項目も含む、画面に表示する直前の状態のメニューが取り出せる
@@ -76,10 +79,11 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
         }
     }
     
-    
     // 選択文字列を調べる
     // WKView を取得。menuProxy の 24バイト目
-    id wkview = *(id *)((void **)menuProxy + 3);
+    void* wkviewPtr= *((void **)menuProxy + 3);
+    id wkview = (__bridge id)(wkviewPtr);
+    //id wkview = *(id *)((void **)menuProxy + 3);
 
     // 適当な名前で NSPasteboard 作成
     NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
@@ -102,7 +106,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
         [itm setTarget:contextMenuModule];
         [itm setRepresentedObject:wkview];
         [menu addItem:itm];
-        [itm release];
+//        [itm release];
     }
 
     
@@ -129,7 +133,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
                 [itm setTarget:contextMenuModule];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
-                [itm release];
+//                [itm release];
 
                 if([[NSUserDefaults standardUserDefaults]boolForKey:kpCopyLinkTagAddTargetBlank]){
                     itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag") 
@@ -143,7 +147,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
                 [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
                 [itm setAlternate:YES];
                 [menu insertItem:itm atIndex:++idx];
-                [itm release];
+//                [itm release];
             
             }
             
@@ -152,7 +156,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
                 [itm setTarget:contextMenuModule];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
-                [itm release];
+//                [itm release];
                 
             }
             if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowCopyLinkAndTitleContextMenu]){
@@ -160,7 +164,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
                 [itm setTarget:contextMenuModule];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
-                [itm release];
+//                [itm release];
                 
                 itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link (space) Title") action:@selector(actCopyLinkAndTitleSpaceMenu:) keyEquivalent:@""];
                 [itm setTarget:contextMenuModule];
@@ -168,7 +172,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
                 [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
                 [itm setAlternate:YES];
                 [menu insertItem:itm atIndex:++idx];
-                [itm release];
+//                [itm release];
                 
             }
         }
@@ -185,7 +189,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
             [itm setTarget:contextMenuModule];
             [itm setRepresentedObject:[copyImageItem representedObject]];
             [menu insertItem:itm atIndex:++idx];
-            [itm release];
+//            [itm release];
         }
     }
     
@@ -297,10 +301,13 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
     }
 }
 
--(void)actCopyLinkAndTitleMenu:(id)sender{
+-(void)actCopyLinkAndTitleMenu:(id)sender
+{
     [self actCopyLinkAndTitleMenu:sender separator:@"\n"];
 }
--(void)actCopyLinkAndTitleSpaceMenu:(id)sender{
+
+-(void)actCopyLinkAndTitleSpaceMenu:(id)sender
+{
     [self actCopyLinkAndTitleMenu:sender separator:@" "];
 }
 
@@ -328,7 +335,8 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
     NSData* dat=[pb dataForType:WebArchivePboardType];
     WebArchive *archive=nil;
     if (dat) {
-        archive=[[[WebArchive alloc]initWithData:dat]autorelease];
+        //archive=[[[WebArchive alloc]initWithData:dat]autorelease];
+        archive=[[WebArchive alloc]initWithData:dat];
     }
     [pb clearContents];
 
@@ -351,8 +359,8 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
     if (self) {
         contextMenuModule=self;
 
-        orig_setMenuProxy = RMF(NSClassFromString(@"WKMenuTarget"),
-                                     @selector(setMenuProxy:), ST_setMenuProxy);
+        orig_setMenuProxy = (void(*)(id, SEL, ...))
+            RMF(NSClassFromString(@"WKMenuTarget"), @selector(setMenuProxy:), ST_setMenuProxy);
 
     }
     return self;
@@ -360,8 +368,8 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
 
 - (void)dealloc
 {
-    self.squashSheetCtl=nil;
-    [super dealloc];
+//    self.squashSheetCtl=nil;
+//    [super dealloc];
 }
 
 - (void)prefValue:(NSString*)key changed:(id)value
@@ -375,7 +383,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
         SquashContextMenuSheetCtl* winCtl=[[SquashContextMenuSheetCtl alloc]initWithWindowNibName:@"SquashContextMenuSheetCtl"];
         [winCtl window];
         self.squashSheetCtl=winCtl;
-        [winCtl release];
+//        [winCtl release];
     }
     return [self.squashSheetCtl window];
 }

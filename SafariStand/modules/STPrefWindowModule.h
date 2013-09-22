@@ -23,9 +23,10 @@
 
 
 @interface STPrefWindowCtl : STCTabWithToolbarWinCtl{
-    id otherDefaults;
     
 }
+@property (nonatomic,retain)id otherDefaults;
+
 @property (nonatomic,assign)IBOutlet NSTextField* oCurrentVarsionLabel;
 @property (nonatomic,retain)NSString* currentVersionString;
 @property (nonatomic,retain)NSString* latestVersionString;

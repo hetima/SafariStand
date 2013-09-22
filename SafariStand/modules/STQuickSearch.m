@@ -2,8 +2,8 @@
 //  STQuickSearch.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 /*
@@ -52,8 +52,10 @@ STQuickSearch* quickSearchModule;
 
 
 
-IMP orig_bestURLStringForUserTypedString;
-static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
+static id (*orig_bestURLStringForUserTypedString)(id, SEL, ...);
+
+static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
+{
 	if([self hasPrefix:@"ttp://"]){
 		return [NSURL URLWithString:[@"h" stringByAppendingString:self]];
 	}
@@ -69,7 +71,6 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
         //init querySeeds
         NSMutableArray* qss=[[NSMutableArray alloc]initWithCapacity:8];
         self.querySeeds=qss;
-        [qss release];
 
 
         // ttp
@@ -107,13 +108,11 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
         //Stand Search Menu
         NSMenuItem* silMenuItem=[[NSMenuItem alloc]initWithTitle:@"Stand Search" action:@selector(showStandSearchWindow:) keyEquivalent:@""];
         [core addItemToStandMenu:silMenuItem];
-        [silMenuItem release];
 
         //Search It Later Menu
         silMenuItem=[[NSMenuItem alloc]initWithTitle:@"Search It Later" action:@selector(showSearchItLaterWindow:) keyEquivalent:@""];
         [core addItemToStandMenu:silMenuItem];
-        [silMenuItem release];
-       
+
         [core registerToolbarIdentifier:STQSToolbarIdentifier module:self];
 
     }
@@ -139,14 +138,7 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
 
 - (void)dealloc
 {
-    self.defaultQuerySeeds=nil;
-    self.querySeeds=nil;
-    self.searchItLaterStrings=nil;
-    [googleQuerySeed release];
-    googleQuerySeed=nil;
-    [googleImageQuerySeed release];
-    googleImageQuerySeed=nil;
-    [super dealloc];
+
 }
 
 -(void)applicationWillTerminate:(STCSafariStandCore*)core
@@ -173,11 +165,11 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
     NSString* imgPath=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForImageResource:@"STPrefSearch"];
     NSImage* img=[[NSImage alloc]initWithContentsOfFile:imgPath];
     [sender addPane:sqView withIdentifier:@"querySeedEdit" title:@"QuickSearch" icon:img];
-    [img release];
 
 }
 
--(void)stMessagePrefWindowWillClose:(id)prefWindowCtl{
+-(void)stMessagePrefWindowWillClose:(id)prefWindowCtl
+{
     [self saveToStorage];
 }
 
@@ -189,10 +181,8 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
 
 
 
-
 //botu
 -(void)showSearchComplViewForLocationFieldEditor:(id)textView
-
 {
 
 }
@@ -226,7 +216,6 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
             [itm setTarget:target];
             [itm setRepresentedObject:one];
             [menu insertItem:itm atIndex:idx];
-            [itm release];
             ++idx;
         }
     }
@@ -237,7 +226,6 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
         [itm setTarget:target];
         [itm setRepresentedObject:one];
         [menu insertItem:itm atIndex:idx];
-        [itm release];
     }
 }
 
@@ -263,10 +251,8 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
         NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Quick Search" action:nil keyEquivalent:@""];
         NSMenu* subMenu=[[NSMenu alloc]initWithTitle:@"Quick Search"];
         [itm setSubmenu:subMenu];
-        [subMenu release];
         [menu insertItem:itm atIndex:idx];
         [itm setState:NSOffState];
-        [itm release];
         idx=0;
         menu=subMenu;
     }
@@ -280,7 +266,6 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
             [itm setTarget:self];
             [itm setRepresentedObject:one];
             [menu insertItem:itm atIndex:idx];
-            [itm release];
             ++idx;
         }
     }
@@ -294,7 +279,6 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
     NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Search It Later" action:@selector(actAddSearchItLaterMenu:) keyEquivalent:@""];
     [itm setTarget:self];
     [menu insertItem:itm atIndex:idx];
-    [itm release];
 
 }
 
@@ -307,36 +291,42 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
     return nil;
 }
 
--(HTQuerySeed*)querySeedForUUID:(NSString*)uuid{
+-(HTQuerySeed*)querySeedForUUID:(NSString*)uuid
+{
     for (HTQuerySeed* seed in self.querySeeds) {
         if([seed.uuid isEqualToString:uuid])return seed;
     }
     return nil;
 }
 
--(void)sendQuerySeed:(HTQuerySeed*)inSeed withSearchString:(NSString*)inStr  policy:(int)policy{
+-(void)sendQuerySeed:(HTQuerySeed*)inSeed withSearchString:(NSString*)inStr  policy:(int)policy
+{
     NSURLRequest* req=[inSeed requestWithSearchString:inStr];
     STAddSearchStringHistory(inStr);
     STSafariGoToRequestWithPolicy(req, policy);
 }
 
--(void)sendQuerySeedUUID:(NSString*)uuid withSearchString:(NSString*)inStr  policy:(int)policy{
+-(void)sendQuerySeedUUID:(NSString*)uuid withSearchString:(NSString*)inStr  policy:(int)policy
+{
     HTQuerySeed* inSeed=[self querySeedForUUID:uuid];
     [self sendQuerySeed:inSeed withSearchString:inStr policy:policy];
 }
 
--(void)sendGoogleQuerySeedWithSearchString:(NSString*)inStr  policy:(int)policy{
+-(void)sendGoogleQuerySeedWithSearchString:(NSString*)inStr  policy:(int)policy
+{
     NSURLRequest* req=[googleQuerySeed requestWithSearchString:inStr];
     STAddSearchStringHistory(inStr);
     STSafariGoToRequestWithPolicy(req, policy);
 }
 
--(void)sendGoogleQuerySeedWithoutAddHistoryWithSearchString:(NSString*)inStr  policy:(int)policy{
+-(void)sendGoogleQuerySeedWithoutAddHistoryWithSearchString:(NSString*)inStr  policy:(int)policy
+{
     NSURLRequest* req=[googleQuerySeed requestWithSearchString:inStr];
     STSafariGoToRequestWithPolicy(req, policy);
 }
 
--(void)sendGoogleImageQuerySeedWithoutAddHistoryWithSearchString:(NSString*)inStr  policy:(int)policy{
+-(void)sendGoogleImageQuerySeedWithoutAddHistoryWithSearchString:(NSString*)inStr  policy:(int)policy
+{
     if (![inStr hasPrefix:@"http"]) {
         return;
     }
@@ -345,7 +335,8 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
 }
 
 
--(void)sendDefaultQuerySeedWithSearchString:(NSString*)inStr  policy:(int)policy{
+-(void)sendDefaultQuerySeedWithSearchString:(NSString*)inStr  policy:(int)policy
+{
     HTQuerySeed* defaultSeed=[self querySeedForShortcut:kDefaultSeedShortcut];
     if (!defaultSeed) {
         defaultSeed=googleQuerySeed;
@@ -384,7 +375,6 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
 }
 
 
-
 -(void)saveToStorage
 {
     id data=[self querySeedsRawData];
@@ -415,11 +405,10 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
         NSMutableDictionary* qs=[[NSMutableDictionary alloc]initWithDictionary:data];
         if (qs) {
             [sil addObject:qs];
-            [qs release];
         }
     }
     self.searchItLaterStrings=sil;
-    [sil release];
+
 }
 
 
@@ -430,11 +419,10 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
         HTQuerySeed* qs=[[HTQuerySeed alloc]initWithDict:data];
         if (qs) {
             [qss addObject:qs];
-            [qs release];
         }
     }
     self.querySeeds=qss;
-    [qss release];
+
 }
 
 -(void)importOldSetting
@@ -443,8 +431,8 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
     
     [[STCSafariStandCore si]setBool:YES forKey:kpQuickSearchOldSettingImported];
     
-    id ary = (id)CFPreferencesCopyAppValue( (CFStringRef)@"Hetima_QuickSearchDict", (CFStringRef)@"jp.hetima.SafariStand");
-    if(ary && (CFGetTypeID(ary) == CFArrayGetTypeID()) ){
+    id ary = (__bridge id)CFPreferencesCopyAppValue( (CFStringRef)@"Hetima_QuickSearchDict", (CFStringRef)@"jp.hetima.SafariStand");
+    if(ary && (CFGetTypeID((__bridge CFTypeRef)(ary)) == CFArrayGetTypeID()) ){
         for (NSDictionary* one in ary) {
             NSString* title=[one objectForKey:@"title"];
             NSString* baseUrl=[one objectForKey:@"url"];
@@ -471,11 +459,9 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
             HTQuerySeed* qs=[[HTQuerySeed alloc]initWithDict:dict];
             if(qs){
                 [self addQuerySeed:qs];
-                [qs release];
             }
         }
     }
-    [ary release];
     
     id data=[self querySeedsRawData];
     if(data)[[STCSafariStandCore si]setObject:data forKey:kpQuerySeeds];
@@ -489,11 +475,7 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd){
     NSString* plst=[b pathForResource:@"quicksearch_defaults" ofType:@"plist"];
     NSArray* qs=[[NSDictionary dictionaryWithContentsOfFile:plst]objectForKey:kpQuerySeeds];
     self.defaultQuerySeeds=qs;
-    
-    
-    
 }
-
 
 
 @end

@@ -8,17 +8,15 @@
 //#define HTFilePresetPopUpButtonAllValues @"HTFilePresetPopUpButtonAllValues"
 
 @interface HTFilePresetPopUpButton : NSPopUpButton {
-    NSString* _identifier;
     NSInteger _savedIndex;
 }
 
+@property (nonatomic, strong) NSString* presetIdentifier;
 
 - (void)setupWithIdentifier:(NSString *)identifier preset:(NSArray*)preset;
 
 - (NSInteger)valuesCacheLimit;
 - (NSString *)selectedFilePath;
-- (NSString *)presetIdentifier;
-- (void)setPresetIdentifier:(NSString *)identifier;
 
 - (void)addFilePath:(NSString *)path select:(BOOL)select;
 

@@ -2,6 +2,9 @@
 //  STClassifyDownloadAdvSheetCtl.m
 //  SafariStand
 
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
+#endif
 
 #import "SafariStand.h"
 #import "STClassifyDownloadAdvSheetCtl.h"
@@ -9,8 +12,7 @@
 #import "STSafariConnect.h"
 
 @implementation STClassifyDownloadAdvSheetCtl
-@synthesize arrayBinder;
-@synthesize basicExpField;
+
 
 -(id)defaultObjecOfHTArrayController:(id)aryCtl
 {
@@ -21,12 +23,12 @@
 }
 
 
-
-- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo{
+- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+{
     [sheet orderOut:self];
 
-    ((STSDownloadModule*)arrayBinder).basicExp=[basicExpField stringValue];
-    [arrayBinder saveToStorage];
+    ((STSDownloadModule*)self.arrayBinder).basicExp=[self.basicExpField stringValue];
+    [self.arrayBinder saveToStorage];
 }
 
 - (id)initWithWindow:(NSWindow *)window
@@ -42,34 +44,33 @@
 - (void)dealloc
 {
 
-    [super dealloc];
 }
 
 -(void)setAdvancedFilters:(NSMutableArray *)ary
 {
-    [arrayBinder setAdvancedFilters:ary];
+    [self.arrayBinder setAdvancedFilters:ary];
 }
+
 -(NSMutableArray*)advancedFilters
 {
-    return [arrayBinder advancedFilters];
+    return [self.arrayBinder advancedFilters];
 }
-
-
-
 
 
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    [basicExpField setStringValue:((STSDownloadModule*)arrayBinder).basicExp];
+    [self.basicExpField setStringValue:((STSDownloadModule*)self.arrayBinder).basicExp];
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
 
-- (IBAction)actSheetDone:(id)sender {
+- (IBAction)actSheetDone:(id)sender
+{
     [NSApp endSheet:[self window]];
 }
 
-- (IBAction)actDateFormatHelpBtn:(id)sender {
+- (IBAction)actDateFormatHelpBtn:(id)sender
+{
     NSURL* url=[NSURL URLWithString:@"http://hetima.com/safari/safaristandhelp/dateformat.html"];
     STSafariGoToURLWithPolicy(url, poNewTab);
 }

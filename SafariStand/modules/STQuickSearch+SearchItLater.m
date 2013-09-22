@@ -2,8 +2,8 @@
 //  STQuickSearch+SearchItLater.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 /*
@@ -37,14 +37,16 @@
     return sil;
 }
 
--(void)actAddSearchItLaterMenu:(id)sender{
+-(void)actAddSearchItLaterMenu:(id)sender
+{
     NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
     NSString* selectedText=[[pb stringForType:NSStringPboardType]htModeratedStringWithin:0];
     
     if(selectedText)[self searchItLaterForString:selectedText];
 }
 
--(void)actAddSearchItLaterWithFlagMenu:(id)sender{
+-(void)actAddSearchItLaterWithFlagMenu:(id)sender
+{
     NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
     NSString* selectedText=[[pb stringForType:NSStringPboardType]htModeratedStringWithin:0];
     
@@ -55,7 +57,8 @@
 }
 
 
--(NSMutableDictionary*)addSearchItLaterString:(NSString*)inStr{
+-(NSMutableDictionary*)addSearchItLaterString:(NSString*)inStr
+{
     NSDate* now=[NSDate date];
     NSNumber* count=[NSNumber numberWithInteger:0];
     inStr=[inStr stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
@@ -73,17 +76,14 @@
     return dic;
 }
 
--(void)removeSearchItLaterString:(NSString*)inStr{
-
+-(void)removeSearchItLaterString:(NSString*)inStr
+{
     NSMutableDictionary* dic=[self existingSearchItLaterForString:inStr];
     if(dic){
         [self willChangeValueForKey:@"searchItLaterStrings"];
         [self.searchItLaterStrings removeObject:dic];
         [self didChangeValueForKey:@"searchItLaterStrings"];
-        
-        
     }
-
 
 }
 

@@ -9,67 +9,68 @@
 /* Begin PBXBuildFile section */
 		AA0357C413F3CCCC003D50F3 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0357C313F3CCCC003D50F3 /* libcrypto.dylib */; };
 		AA0357CE13F41F0E003D50F3 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0357CD13F41F0E003D50F3 /* Quartz.framework */; };
-		AA04F85013B8867700A8C548 /* STCSimblLorder.m in Sources */ = {isa = PBXBuildFile; fileRef = AA04F84E13B8867700A8C548 /* STCSimblLorder.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA04F85313B88BF800A8C548 /* STSafariConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = AA04F85213B88BF800A8C548 /* STSafariConnect.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA04F85013B8867700A8C548 /* STCSimblLorder.m in Sources */ = {isa = PBXBuildFile; fileRef = AA04F84E13B8867700A8C548 /* STCSimblLorder.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA04F85313B88BF800A8C548 /* STSafariConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = AA04F85213B88BF800A8C548 /* STSafariConnect.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA0881AA13E4284B003B70DF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA0881AC13E4284B003B70DF /* Localizable.strings */; };
-		AA0881B013E51287003B70DF /* STSTitleBarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0881AF13E51287003B70DF /* STSTitleBarModule.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA09B1F213DE866100389D8B /* STKeyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = AA09B1F113DE866100389D8B /* STKeyHandler.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA0881B013E51287003B70DF /* STSTitleBarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0881AF13E51287003B70DF /* STSTitleBarModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA09B1F213DE866100389D8B /* STKeyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = AA09B1F113DE866100389D8B /* STKeyHandler.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA0B390215C28CEA00A025FF /* quicksearch_defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA0B390115C28CEA00A025FF /* quicksearch_defaults.plist */; };
-		AA0B390515C503EC00A025FF /* STActionMenuModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0B390415C503EB00A025FF /* STActionMenuModule.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA0B390515C503EC00A025FF /* STActionMenuModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0B390415C503EB00A025FF /* STActionMenuModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA0B390715C5044F00A025FF /* STTBActionMenu.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AA0B390615C5044F00A025FF /* STTBActionMenu.tiff */; };
 		AA0B390C15C54ED000A025FF /* STTBActionMenuDisabled.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AA0B390B15C54ED000A025FF /* STTBActionMenuDisabled.tiff */; };
 		AA12DA7E13B73EFA0082EBB3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA12DA7D13B73EFA0082EBB3 /* Cocoa.framework */; };
 		AA12DA8813B73EFA0082EBB3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA12DA8613B73EFA0082EBB3 /* InfoPlist.strings */; };
-		AA171B74168E05C1007A4661 /* STQuickSearch+QSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B73168E05C0007A4661 /* STQuickSearch+QSToolbar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA171B791690A4A7007A4661 /* STQSToolbarBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B781690A4A7007A4661 /* STQSToolbarBaseView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA171B7F1690A54E007A4661 /* STQSToolbarSearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B7E1690A54E007A4661 /* STQSToolbarSearchView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA396EFF13F61B1E00EF5806 /* STStandSearchViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396EFD13F61B1E00EF5806 /* STStandSearchViewCtl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA171B74168E05C1007A4661 /* STQuickSearch+QSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B73168E05C0007A4661 /* STQuickSearch+QSToolbar.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA171B791690A4A7007A4661 /* STQSToolbarBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B781690A4A7007A4661 /* STQSToolbarBaseView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA171B7F1690A54E007A4661 /* STQSToolbarSearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B7E1690A54E007A4661 /* STQSToolbarSearchView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA21447A17EEBF5400EDE661 /* STCSafariStandCore.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5D713B97CC800C9A19E /* STCSafariStandCore.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA21447D17EEDBA300EDE661 /* HTWindowControllerRetainer.m in Sources */ = {isa = PBXBuildFile; fileRef = AA21447C17EEDBA300EDE661 /* HTWindowControllerRetainer.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA21447E17EEEB0500EDE661 /* HTFilePresetPopUpButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D28F147E1E210018C949 /* HTFilePresetPopUpButton.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA396EFF13F61B1E00EF5806 /* STStandSearchViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396EFD13F61B1E00EF5806 /* STStandSearchViewCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA396F0013F61B1E00EF5806 /* STStandSearchViewCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA396EFE13F61B1E00EF5806 /* STStandSearchViewCtl.xib */; };
-		AA396F0313F61ED800EF5806 /* STMetadataQueryCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396F0213F61ED800EF5806 /* STMetadataQueryCtl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA396F0613F638C100EF5806 /* STStandSearchWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396F0513F638C100EF5806 /* STStandSearchWinCtl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA396F0313F61ED800EF5806 /* STMetadataQueryCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396F0213F61ED800EF5806 /* STMetadataQueryCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA396F0613F638C100EF5806 /* STStandSearchWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396F0513F638C100EF5806 /* STStandSearchWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA396F0813F639A100EF5806 /* STStandSearchWinCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA396F0713F639A100EF5806 /* STStandSearchWinCtl.xib */; };
-		AA47D5D813B97CC800C9A19E /* STCSafariStandCore.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5D713B97CC800C9A19E /* STCSafariStandCore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA47D5DB13B9AC3100C9A19E /* STCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DA13B9AC3100C9A19E /* STCModule.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA47D5DF13B9AE3A00C9A19E /* STBookmarkSeparator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DE13B9AE3A00C9A19E /* STBookmarkSeparator.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA47D5E213B9AFD400C9A19E /* HTObjectHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5E113B9AFD400C9A19E /* HTObjectHook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA47D5EC13B9B42800C9A19E /* NSObject+HTAssociatedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5EA13B9B42800C9A19E /* NSObject+HTAssociatedObject.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA47D5DB13B9AC3100C9A19E /* STCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DA13B9AC3100C9A19E /* STCModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA47D5DF13B9AE3A00C9A19E /* STBookmarkSeparator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DE13B9AE3A00C9A19E /* STBookmarkSeparator.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA47D5E213B9AFD400C9A19E /* HTObjectHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5E113B9AFD400C9A19E /* HTObjectHook.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA47D5EC13B9B42800C9A19E /* NSObject+HTAssociatedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5EA13B9B42800C9A19E /* NSObject+HTAssociatedObject.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA5B3AA913BC5782001453C0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5B3AA813BC5782001453C0 /* WebKit.framework */; };
-		AA5B3AAC13BC7667001453C0 /* STSContextMenuModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5B3AAB13BC7667001453C0 /* STSContextMenuModule.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA6FCF3E15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FCF3C15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA5B3AAC13BC7667001453C0 /* STSContextMenuModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5B3AAB13BC7667001453C0 /* STSContextMenuModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA6FCF3E15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FCF3C15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA6FCF3F15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF3D15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib */; };
 		AA6FCF4215D3F271008AE5AB /* SquashContextMenuItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF4415D3F271008AE5AB /* SquashContextMenuItems.plist */; };
-		AA718A9D13B9D8DA00327606 /* STActionMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718A9C13B9D8DA00327606 /* STActionMessage.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA718AA113B9F47300327606 /* STCTabWithToolbarWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718AA013B9F47200327606 /* STCTabWithToolbarWinCtl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA718AA613BA00DE00327606 /* STPrefWindowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718AA513BA00DE00327606 /* STPrefWindowModule.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA718A9D13B9D8DA00327606 /* STActionMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718A9C13B9D8DA00327606 /* STActionMessage.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA718AA113B9F47300327606 /* STCTabWithToolbarWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718AA013B9F47200327606 /* STCTabWithToolbarWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA718AA613BA00DE00327606 /* STPrefWindowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718AA513BA00DE00327606 /* STPrefWindowModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA718AA813BAD39D00327606 /* STPrefGeneral.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AA718AA713BAD39D00327606 /* STPrefGeneral.tiff */; };
-		AA718AB713BB46CB00327606 /* STCSafariStandCore+Toolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718AB613BB46CA00327606 /* STCSafariStandCore+Toolbar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA718ABA13BB524C00327606 /* STSToolbarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718AB913BB524C00327606 /* STSToolbarModule.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA775EF313DA7470001B0461 /* STSTabBarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA775EF213DA7470001B0461 /* STSTabBarModule.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA775EF713DA9603001B0461 /* NSString+HTUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = AA775EF613DA9603001B0461 /* NSString+HTUtil.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA775EFA13DB9182001B0461 /* STQuickSearch+CompletionCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA775EF913DB9182001B0461 /* STQuickSearch+CompletionCtl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AA780DA313F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA780DA113F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA718AB713BB46CB00327606 /* STCSafariStandCore+Toolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718AB613BB46CA00327606 /* STCSafariStandCore+Toolbar.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA718ABA13BB524C00327606 /* STSToolbarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718AB913BB524C00327606 /* STSToolbarModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA775EF313DA7470001B0461 /* STSTabBarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA775EF213DA7470001B0461 /* STSTabBarModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA775EF713DA9603001B0461 /* NSString+HTUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = AA775EF613DA9603001B0461 /* NSString+HTUtil.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA775EFA13DB9182001B0461 /* STQuickSearch+CompletionCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA775EF913DB9182001B0461 /* STQuickSearch+CompletionCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA780DA313F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA780DA113F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA780DA613F1C0F40042A253 /* STClassifyDownloadAdvSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA780DA513F1C0F40042A253 /* STClassifyDownloadAdvSheet.xib */; };
-		AA780DA913F1C5E00042A253 /* HTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = AA780DA813F1C5DF0042A253 /* HTUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA780DA913F1C5E00042A253 /* HTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = AA780DA813F1C5DF0042A253 /* HTUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA92216C13C04DB1006E898F /* HTQuerySeedEditViewCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA92216D13C04DB1006E898F /* HTQuerySeedEditViewCtl.xib */; };
 		AA92216E13C04DE6006E898F /* STCPrefWin.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA92216F13C04DE6006E898F /* STCPrefWin.xib */; };
-		AA934E8B13BF18650019D191 /* NSApplication+SafariStand.m in Sources */ = {isa = PBXBuildFile; fileRef = AA934E8A13BF18650019D191 /* NSApplication+SafariStand.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA934E8B13BF18650019D191 /* NSApplication+SafariStand.m in Sources */ = {isa = PBXBuildFile; fileRef = AA934E8A13BF18650019D191 /* NSApplication+SafariStand.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA9F781A13F91D8C0016874A /* WebKit2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9F781913F91D8C0016874A /* WebKit2.framework */; };
-		AAAC1AA813BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AA513BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AAAC1AAC13BE163700FB13A2 /* STQuickSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AAB13BE163700FB13A2 /* STQuickSearch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AAAC1AAF13BE2BEA00FB13A2 /* HTQuerySeed.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AAE13BE2BEA00FB13A2 /* HTQuerySeed.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AAAC1AB213BE3E0500FB13A2 /* HTArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AB113BE3E0500FB13A2 /* HTArrayController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AACAD26D13E126D700170193 /* HTWebKit2Adapter.m in Sources */ = {isa = PBXBuildFile; fileRef = AACAD26C13E126D700170193 /* HTWebKit2Adapter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AAAC1AA813BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AA513BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AAAC1AAC13BE163700FB13A2 /* STQuickSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AAB13BE163700FB13A2 /* STQuickSearch.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AAAC1AAF13BE2BEA00FB13A2 /* HTQuerySeed.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AAE13BE2BEA00FB13A2 /* HTQuerySeed.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AAAC1AB213BE3E0500FB13A2 /* HTArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AB113BE3E0500FB13A2 /* HTArrayController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AACAD26D13E126D700170193 /* HTWebKit2Adapter.m in Sources */ = {isa = PBXBuildFile; fileRef = AACAD26C13E126D700170193 /* HTWebKit2Adapter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AACAD26F13E15BF100170193 /* STPrefSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = AACAD26E13E15BF000170193 /* STPrefSearch.png */; };
-		AAD79B4E13E29DF2004CE895 /* STQuickSearch+SearchItLater.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B4D13E29DF2004CE895 /* STQuickSearch+SearchItLater.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AAD79B4E13E29DF2004CE895 /* STQuickSearch+SearchItLater.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B4D13E29DF2004CE895 /* STQuickSearch+SearchItLater.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAD79B5213E2BC09004CE895 /* STSearchItLaterWinCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAD79B5113E2BC09004CE895 /* STSearchItLaterWinCtl.xib */; };
-		AAD79B5513E2BC2E004CE895 /* STSearchItLaterWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AAD79B5513E2BC2E004CE895 /* STSearchItLaterWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAD79B5B13E2D2ED004CE895 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */; };
 		AADBCB5015C119070069E262 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AADBCB4F15C119070069E262 /* ApplicationServices.framework */; };
-		AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AAF9D293147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D28D147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AAF9D294147E1E210018C949 /* HTFilePresetPopUpButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D28F147E1E210018C949 /* HTFilePresetPopUpButton.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AAF9D293147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D28D147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAF9D295147E1E210018C949 /* HTWebClipWin.nib in Resources */ = {isa = PBXBuildFile; fileRef = AAF9D290147E1E210018C949 /* HTWebClipWin.nib */; };
-		AAF9D296147E1E210018C949 /* HTWebClipwinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D292147E1E210018C949 /* HTWebClipwinCtl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AAF9D296147E1E210018C949 /* HTWebClipwinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D292147E1E210018C949 /* HTWebClipwinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAF9D29E147E23310018C949 /* clip_edit.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AAF9D298147E23310018C949 /* clip_edit.tiff */; };
 		AAF9D29F147E23310018C949 /* clip_header.html in Resources */ = {isa = PBXBuildFile; fileRef = AAF9D299147E23310018C949 /* clip_header.html */; };
 		AAF9D2A0147E23310018C949 /* clip_header.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AAF9D29A147E23310018C949 /* clip_header.tiff */; };
@@ -108,6 +109,8 @@
 		AA171B781690A4A7007A4661 /* STQSToolbarBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STQSToolbarBaseView.m; sourceTree = "<group>"; };
 		AA171B7D1690A54D007A4661 /* STQSToolbarSearchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STQSToolbarSearchView.h; sourceTree = "<group>"; };
 		AA171B7E1690A54E007A4661 /* STQSToolbarSearchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STQSToolbarSearchView.m; sourceTree = "<group>"; };
+		AA21447B17EEDBA300EDE661 /* HTWindowControllerRetainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTWindowControllerRetainer.h; sourceTree = "<group>"; };
+		AA21447C17EEDBA300EDE661 /* HTWindowControllerRetainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTWindowControllerRetainer.m; sourceTree = "<group>"; };
 		AA396EFC13F61B1E00EF5806 /* STStandSearchViewCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STStandSearchViewCtl.h; sourceTree = "<group>"; };
 		AA396EFD13F61B1E00EF5806 /* STStandSearchViewCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STStandSearchViewCtl.m; sourceTree = "<group>"; };
 		AA396EFE13F61B1E00EF5806 /* STStandSearchViewCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STStandSearchViewCtl.xib; sourceTree = "<group>"; };
@@ -401,6 +404,8 @@
 				AACAD26C13E126D700170193 /* HTWebKit2Adapter.m */,
 				AA780DA713F1C5DF0042A253 /* HTUtils.h */,
 				AA780DA813F1C5DF0042A253 /* HTUtils.m */,
+				AA21447B17EEDBA300EDE661 /* HTWindowControllerRetainer.h */,
+				AA21447C17EEDBA300EDE661 /* HTWindowControllerRetainer.m */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -554,7 +559,7 @@
 			files = (
 				AA04F85013B8867700A8C548 /* STCSimblLorder.m in Sources */,
 				AA04F85313B88BF800A8C548 /* STSafariConnect.m in Sources */,
-				AA47D5D813B97CC800C9A19E /* STCSafariStandCore.m in Sources */,
+				AA21447A17EEBF5400EDE661 /* STCSafariStandCore.m in Sources */,
 				AA47D5DB13B9AC3100C9A19E /* STCModule.m in Sources */,
 				AA47D5DF13B9AE3A00C9A19E /* STBookmarkSeparator.m in Sources */,
 				AA47D5E213B9AFD400C9A19E /* HTObjectHook.m in Sources */,
@@ -585,13 +590,14 @@
 				AA396F0313F61ED800EF5806 /* STMetadataQueryCtl.m in Sources */,
 				AA396F0613F638C100EF5806 /* STStandSearchWinCtl.m in Sources */,
 				AAF9D293147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m in Sources */,
-				AAF9D294147E1E210018C949 /* HTFilePresetPopUpButton.m in Sources */,
 				AAF9D296147E1E210018C949 /* HTWebClipwinCtl.m in Sources */,
+				AA21447E17EEEB0500EDE661 /* HTFilePresetPopUpButton.m in Sources */,
 				AA0B390515C503EC00A025FF /* STActionMenuModule.m in Sources */,
 				AA6FCF3E15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m in Sources */,
 				AA171B74168E05C1007A4661 /* STQuickSearch+QSToolbar.m in Sources */,
 				AA171B791690A4A7007A4661 /* STQSToolbarBaseView.m in Sources */,
 				AA171B7F1690A54E007A4661 /* STQSToolbarSearchView.m in Sources */,
+				AA21447D17EEDBA300EDE661 /* HTWindowControllerRetainer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,7 +637,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
@@ -656,7 +662,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
@@ -679,7 +685,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -706,7 +712,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";

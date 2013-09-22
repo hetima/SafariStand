@@ -2,8 +2,8 @@
 //  STCModule.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 
@@ -25,7 +25,7 @@ static char modulePrefContext;
 
 - (void)dealloc
 {
-    [super dealloc];
+
 }
 
 - (void)prefValue:(NSString*)key changed:(id)value
@@ -61,4 +61,5 @@ static char modulePrefContext;
 {
     
 }
+
 @end

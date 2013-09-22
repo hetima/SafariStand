@@ -2,8 +2,8 @@
 //  HTArrayController.m
 //  SafriStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "HTArrayController.h"
@@ -13,15 +13,14 @@
 
 @implementation HTArrayController
 
-- (void)dealloc {
-
-	[_pasteboardType release];
-    [super dealloc];
-}
-- (void)awakeFromNib
+- (void)dealloc
 {
 
-    _pasteboardType=[[NSString HTUUIDStringWithFormat:@"%@_pbType"]retain];
+}
+
+- (void)awakeFromNib
+{
+    _pasteboardType=[NSString HTUUIDStringWithFormat:@"%@_pbType"];
     
 	if([_pasteboardType length]>0){
 		[oTableView registerForDraggedTypes:[NSArray arrayWithObjects:_pasteboardType, nil]];
@@ -40,6 +39,7 @@
 {
 	return oTableView;
 }
+
 - (void)add:(id)sender
 {
     id  newObject=nil;
@@ -117,7 +117,7 @@
 
     //[[self content] insertObject:[[self content] objectAtIndex:draggedIndex]atIndex: row];
     
-    id target=[[[self arrangedObjects]objectAtIndex:draggedIndex]retain];
+    id target=[[self arrangedObjects]objectAtIndex:draggedIndex];
     //[self removeObject:target];// equalTo: なやつまで削除されてしまう
     [self removeObjectAtArrangedObjectIndex:draggedIndex];
     
@@ -130,7 +130,6 @@
     }
 
     [self insertObject:target atArrangedObjectIndex:droppedIndex];
-    [target release];
     
     return droppedIndex;
 }

@@ -2,8 +2,8 @@
 //  STQSToolbarBaseView.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "STQSToolbarBaseView.h"
@@ -33,14 +33,13 @@
         id view=[[STQSToolbarSearchView alloc] initWithFrame:NSMakeRect(0, 2, kSTQSToolbarBaseWidth, 22)];
         self.rightView=view;
         [self addSubview:view];
-        [view release];
-        
     }
     return self;
 }
 
-- (void)dealloc {
-    [super dealloc];
+- (void)dealloc
+{
+
 }
 
 @end

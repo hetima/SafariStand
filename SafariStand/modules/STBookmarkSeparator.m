@@ -2,8 +2,8 @@
 //  STBookmarkSeparator.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -14,11 +14,10 @@
 #define kSeparatorLength	3
 
 @implementation STBookmarkSeparator
-@synthesize orig_addMenuItemForBookmark;
 
+static id (*orig_addMenuItemForBookmark_with)(id, SEL, ...);
 static id ST_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, id tabLocation, id menu)
 {
-
 	id returnValue=nil;
     static STBookmarkSeparator* bookmarkSeparator;
     if(!bookmarkSeparator)bookmarkSeparator=[STCSafariStandCore mi:@"STBookmarkSeparator"];
@@ -29,16 +28,16 @@ static id ST_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, id tabL
         return returnValue;
     }
     
-	returnValue=[bookmarkSeparator orig_addMenuItemForBookmark](self, _cmd, bookmark, tabLocation, menu);    
+	returnValue=orig_addMenuItemForBookmark_with(self, _cmd, bookmark, tabLocation, menu);    
     
 	return returnValue;
 }
 
 //bookmark追加ポップアップメニューに区切り線フォルダを表示しない
 //-(id)[NewBookmarksController _addBookmarkFolder:toMenu:]
-IMP orig_addBookmarkFolder_toMenu;
-
-static id ST_addBookmarkFolder_toMenu(id self, SEL _cmd, id bookmark, id menu){
+static id (*orig_addBookmarkFolder_toMenu)(id, SEL, ...);
+static id ST_addBookmarkFolder_toMenu(id self, SEL _cmd, id bookmark, id menu)
+{
     NSString* title=STWebBookmarkTitle(bookmark);
     if ([title hasPrefix:kSeparatorStr]) {
         return nil;
@@ -55,7 +54,7 @@ static id ST_addBookmarkFolder_toMenu(id self, SEL _cmd, id bookmark, id menu){
         tmpClas=NSClassFromString(@"BookmarksControllerObjC");
         if(tmpClas){
             //gSeparatorIcon=[[NSImage alloc]initWithSize:NSMakeSize(1,16)];
-            orig_addMenuItemForBookmark = RMF(
+            orig_addMenuItemForBookmark_with = (id(*)(id, SEL, ...))RMF(
                         tmpClas,
                         @selector(addMenuItemForBookmark:withTabPlacementHint:toMenu:),
                         ST_addMenuItemForBookmark_with);
@@ -64,7 +63,7 @@ static id ST_addBookmarkFolder_toMenu(id self, SEL _cmd, id bookmark, id menu){
         tmpClas=NSClassFromString(@"NewBookmarksController");
         if(tmpClas){
             //bookmark追加ポップアップメニューに区切り線フォルダを表示しない
-            orig_addBookmarkFolder_toMenu = RMF(
+            orig_addBookmarkFolder_toMenu = (id(*)(id, SEL, ...))RMF(
                         tmpClas,
                         @selector(_addBookmarkFolder:toMenu:),
                         ST_addBookmarkFolder_toMenu);
@@ -104,7 +103,6 @@ static id ST_addBookmarkFolder_toMenu(id self, SEL _cmd, id bookmark, id menu){
 			//returnValue=[menu addItemWithTitle:menuTitle action:@selector(standdummyselector) keyEquivalent:@""];
 			[returnValue setTarget:nil];
 			[returnValue setEnabled:NO];
-            [returnValue autorelease];
 			//[returnValue setRepresentedObject:nil];
 
 		}
@@ -112,4 +110,5 @@ static id ST_addBookmarkFolder_toMenu(id self, SEL _cmd, id bookmark, id menu){
     
 	return returnValue;    
 }
+
 @end

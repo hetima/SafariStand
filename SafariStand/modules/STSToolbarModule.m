@@ -2,8 +2,8 @@
 //  STSToolbarModule.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -12,10 +12,11 @@
 static STSToolbarModule* toolbarModule;
 
 @implementation STSToolbarModule
-@synthesize orig_TBitemForItemIdentifier, orig_TBallowedItemIdentifiers;
 
 
 //- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
+
+static id (*orig_TBitemForItemIdentifier)(id, SEL, ...);
 static id ST_TBitemForItemIdentifier(id self, SEL _cmd, id toolbar, NSString *itemIdentifier, BOOL real)
 {
     
@@ -24,15 +25,16 @@ static id ST_TBitemForItemIdentifier(id self, SEL _cmd, id toolbar, NSString *it
         return [toolbarModule _toolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:real];
         
 	}else{
-		return [toolbarModule orig_TBitemForItemIdentifier](self, _cmd, toolbar, itemIdentifier, real);
+		return orig_TBitemForItemIdentifier(self, _cmd, toolbar, itemIdentifier, real);
 	}
 	return nil;
 }
 
 //- (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
+static id (*orig_TBallowedItemIdentifiers)(id, SEL, ...);
 static id ST_TBallowedItemIdentifiers(id self, SEL _cmd, id toolbar)
 {
-	NSArray* result=[toolbarModule orig_TBallowedItemIdentifiers](self, _cmd, toolbar);
+	NSArray* result=orig_TBallowedItemIdentifiers(self, _cmd, toolbar);
     
     NSArray* myArray=[toolbarModule toolbarIdentifiers];
     if([myArray count]>0)result= [result arrayByAddingObjectsFromArray:myArray];
@@ -53,10 +55,10 @@ static id ST_TBallowedItemIdentifiers(id self, SEL _cmd, id toolbar)
 
         id tmpClas=NSClassFromString(@"ToolbarController");
         if(tmpClas){
-            orig_TBitemForItemIdentifier=RMF(tmpClas,
+            orig_TBitemForItemIdentifier=(id(*)(id, SEL, ...))RMF(tmpClas,
                             @selector(toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:), ST_TBitemForItemIdentifier);
             
-            orig_TBallowedItemIdentifiers=RMF(tmpClas,
+            orig_TBallowedItemIdentifiers=(id(*)(id, SEL, ...))RMF(tmpClas,
                             @selector(toolbarAllowedItemIdentifiers:), ST_TBallowedItemIdentifiers);
         }
 
@@ -66,9 +68,7 @@ static id ST_TBallowedItemIdentifiers(id self, SEL _cmd, id toolbar)
 
 - (void)dealloc
 {
-    [_toolbarItemClasses release];
-    [_toolbarIdentifiers release];
-    [super dealloc];
+
 }
 
 
@@ -147,8 +147,6 @@ static id ST_TBallowedItemIdentifiers(id self, SEL _cmd, id toolbar)
 	[btn setAction:action];
 	
 	NSToolbarItem*	result=[self toolBarItem:identifier label:label view:btn];
-    
-	[btn release];
 
     return result;
 }
@@ -163,7 +161,7 @@ static id ST_TBallowedItemIdentifiers(id self, SEL _cmd, id toolbar)
 	[result setLabel:label];
 	[result setPaletteLabel:label];
 	
-	return [result autorelease];
+	return result;
 }
 
 @end

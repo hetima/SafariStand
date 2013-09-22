@@ -2,8 +2,8 @@
 //  STStandSearchViewCtl.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -13,16 +13,16 @@
 
 
 @implementation STStandSearchViewCtl
-@synthesize searchField;
+/*
 @synthesize oOutline;
 @synthesize lastFindString;
 @synthesize oIndicator;
 @synthesize oStatusView;
 @synthesize oSearchTypeSegment;
 @synthesize oBMContextMenu;
+*/
 
-
-@synthesize bookmarksSearch, historySearch;
+//@synthesize bookmarksSearch, historySearch;
 
 //(1,0) > addSubview : view retained(n,2) > reverseOwnership(n+1==1,n-1==1)
 +(STStandSearchViewCtl*)viewCtl
@@ -32,7 +32,7 @@
                [NSBundle bundleWithIdentifier:kSafariStandBundleID] ];
 
     
-    return [result autorelease];
+    return result;
 }
 
 
@@ -49,32 +49,30 @@
 }
 
 
--(void)awakeFromNib{
-    [oStatusView setStringValue:@""];
+-(void)awakeFromNib
+{
+    [self.oStatusView setStringValue:@""];
     
     self.bookmarksSearch=[STMetadataQueryCtl bookmarksSearchCtl];
-    bookmarksSearch.delegate=self;
-    bookmarksSearch.isExpanded=YES;
+    self.bookmarksSearch.delegate=self;
+    self.bookmarksSearch.isExpanded=YES;
     self.historySearch=[STMetadataQueryCtl historySearchCtl];
-    historySearch.delegate=self;
-    historySearch.isExpanded=YES;
+    self.historySearch.delegate=self;
+    self.historySearch.isExpanded=YES;
     
     
-    [oSearchTypeSegment setImage:STSafariBundleHistoryImage() forSegment:SSModeHistorySearch];
-    [oSearchTypeSegment setImage:STSafariBundleBookmarkImage() forSegment:SSModeBookmarksSearch];
-    [oSearchTypeSegment setSelected:YES forSegment:mode];
+    [self.oSearchTypeSegment setImage:STSafariBundleHistoryImage() forSegment:SSModeHistorySearch];
+    [self.oSearchTypeSegment setImage:STSafariBundleBookmarkImage() forSegment:SSModeBookmarksSearch];
+    [self.oSearchTypeSegment setSelected:YES forSegment:mode];
 
-    [oOutline reloadData];
+    [self.oOutline reloadData];
 
 }
 
 
-- (void)dealloc {
-    self.bookmarksSearch=nil;
-    self.historySearch=nil;
-    self.lastFindString=nil;
-    
-    [super dealloc];
+- (void)dealloc
+{
+
 }
 
 
@@ -82,18 +80,18 @@
 -(void)standMetaDataTreeUpdate:(STMetadataQueryCtl*)ctl
 {
 	BOOL running=NO;
-	id query=[bookmarksSearch query];
+	id query=[self.bookmarksSearch query];
 	if([query isStarted] && ![query isStopped])running=YES;
-	query=[historySearch query];
+	query=[self.historySearch query];
 	if([query isStarted] && ![query isStopped])running=YES;
 	
 	if(running==NO){
-        [oIndicator stopAnimation:nil];
+        [self.oIndicator stopAnimation:nil];
         
     }
     
-    if ((ctl==historySearch && mode==SSModeHistorySearch)||(ctl==bookmarksSearch && mode==SSModeBookmarksSearch)) {
-        [oOutline reloadData];
+    if ((ctl==self.historySearch && mode==SSModeHistorySearch)||(ctl==self.bookmarksSearch && mode==SSModeBookmarksSearch)) {
+        [self.oOutline reloadData];
 
     }
 
@@ -105,12 +103,12 @@
 	NSString* emptyStr=@"";
 	self.lastFindString=emptyStr;
 
-	[historySearch stopAndClearMetaDataSearch];
-	[bookmarksSearch stopAndClearMetaDataSearch];
+	[self.historySearch stopAndClearMetaDataSearch];
+	[self.bookmarksSearch stopAndClearMetaDataSearch];
     
-	[oIndicator stopAnimation:nil];
+	[self.oIndicator stopAnimation:nil];
 
-	[oOutline reloadData];
+	[self.oOutline reloadData];
     [self updateStatusViewForceShowCount:YES];
 }
 
@@ -121,10 +119,10 @@
 		self.lastFindString=inStr;
 		
 		BOOL _searchContent=YES;
-		[historySearch startMetaDataSearch:inStr searchContent:_searchContent];
-		[bookmarksSearch startMetaDataSearch:inStr searchContent:_searchContent];
+		[self.historySearch startMetaDataSearch:inStr searchContent:_searchContent];
+		[self.bookmarksSearch startMetaDataSearch:inStr searchContent:_searchContent];
         
-		[oIndicator startAnimation:nil];
+		[self.oIndicator startAnimation:nil];
 	}
 }
 
@@ -135,13 +133,13 @@
 	NSString *url=[self selectedURLStringNeedsEncode:NO];
     
 	if([url length]>0){
-		[oStatusView setStringValue:url];
+		[self.oStatusView setStringValue:url];
 	}else{
 		NSString	*statStr=@"";
-        NSInteger	bmResult=[bookmarksSearch count];
-        NSInteger	hisResult=[historySearch count];
+        NSInteger	bmResult=[self.bookmarksSearch count];
+        NSInteger	hisResult=[self.historySearch count];
         statStr=[NSString stringWithFormat:@"%ld Histories / %ld Bookmarks", hisResult, bmResult ];
-		[oStatusView setStringValue:statStr];
+		[self.oStatusView setStringValue:statStr];
 
 	}
 }
@@ -154,19 +152,19 @@
 	//LOG(@"%@",NSStringFromSelector(command));
     
 	if(command==@selector(moveUp:)){	//↑
-		NSUInteger row=[oOutline selectedRow];
-		if(row==-1)row=[oOutline numberOfRows]-1;
+		NSUInteger row=[self.oOutline selectedRow];
+		if(row==-1)row=[self.oOutline numberOfRows]-1;
 		else	--row;
-		[oOutline selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
-		[oOutline scrollRowToVisible:row];
+		[self.oOutline selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+		[self.oOutline scrollRowToVisible:row];
         
 	}else if(command==@selector(moveDown:)){	//↓
-		NSUInteger row=[oOutline selectedRow];
+		NSUInteger row=[self.oOutline selectedRow];
 		if(row==-1)row=0;
 		else	++row;
-		if([oOutline numberOfRows]>row){
-			[oOutline selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
-			[oOutline scrollRowToVisible:row];
+		if([self.oOutline numberOfRows]>row){
+			[self.oOutline selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+			[self.oOutline scrollRowToVisible:row];
 		}
         
 	}else if(command==@selector(insertTab:)){
@@ -190,8 +188,8 @@
         return YES;
         
 	}else if(command==@selector(scrollToBeginningOfDocument:)){
-		[oOutline selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
-		[oOutline scrollRowToVisible:0];
+		[self.oOutline selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
+		[self.oOutline scrollRowToVisible:0];
 	}else if(command==@selector(scrollPageDown:)){
 		return YES;
 	}else if(command==@selector(scrollPageUp:)){
@@ -228,12 +226,12 @@
 
 -(void)focusToOutlineView
 {
-	[[oOutline window] makeFirstResponder:oOutline];
+	[[self.oOutline window] makeFirstResponder:self.oOutline];
 }
 
 -(void)focusToSearchField
 {
-	[searchField selectText:self];
+	[self.searchField selectText:self];
 }
 
 
@@ -259,10 +257,10 @@
             child:(int)index 
            ofItem:(id)item
 {
-    if(oOutline!=outlineView)return nil;
+    if(self.oOutline != outlineView)return nil;
     if(item==nil){
-        if(mode==SSModeBookmarksSearch)return [bookmarksSearch objectAtIndex:index];
-        else return [historySearch objectAtIndex:index];
+        if(mode==SSModeBookmarksSearch)return [self.bookmarksSearch objectAtIndex:index];
+        else return [self.historySearch objectAtIndex:index];
     }
 
     return nil;
@@ -279,11 +277,11 @@
 // item count
 - (NSInteger)outlineView:(NSOutlineView*)outlineView numberOfChildrenOfItem:(id)item
 {
-    if(oOutline!=outlineView)return 0;
+    if(self.oOutline!=outlineView)return 0;
 
     if(item==nil){
-        if(mode==SSModeBookmarksSearch)return [bookmarksSearch count];
-        else return [historySearch count];
+        if(mode==SSModeBookmarksSearch)return [self.bookmarksSearch count];
+        else return [self.historySearch count];
     }
 
     return 0;
@@ -292,7 +290,7 @@
 // item value
 - (id)outlineView:(NSOutlineView*)outlineView objectValueForTableColumn:(NSTableColumn*)column byItem:(id)item
 {
-    if(oOutline!=outlineView)return nil;
+    if(self.oOutline!=outlineView)return nil;
     
     id  identifier=[column identifier];
     
@@ -315,8 +313,8 @@
 
 - (NSMenu*)menuForOutlineView:(id)outlineView
 {
-	if(outlineView==oOutline){
-		return oBMContextMenu;
+	if(outlineView==self.oOutline){
+		return self.oBMContextMenu;
 	}
 	return nil;
 }
@@ -326,7 +324,7 @@
 
 - (IBAction)actJump:(id)sender
 {
-	if(sender==oOutline || sender==self){
+	if(sender==self.oOutline || sender==self){
 		NSString* urlStr=[self selectedURLStringNeedsEncode:YES];
         if([urlStr length]>0){
             NSURL* url=[NSURL URLWithString:urlStr];
@@ -344,7 +342,7 @@
 	//これまでの予約をキャンセル
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(actDoSearch:) object:self];
 
-    NSString* str=[searchField stringValue];
+    NSString* str=[self.searchField stringValue];
 	if([str length]==0){
 		[self clearSearch];
 	}else{
@@ -355,9 +353,9 @@
 
 -(id)selectedItem
 {
-    NSInteger idx=[oOutline selectedRow];
+    NSInteger idx=[self.oOutline selectedRow];
 	if(idx>=0){
-		return [oOutline itemAtRow:idx];
+		return [self.oOutline itemAtRow:idx];
 	}
 	return nil;
 
@@ -379,10 +377,10 @@
 
 - (IBAction)actSearchTypeSegment:(id)sender
 {
-    mode=[oSearchTypeSegment selectedSegment];
-	[oOutline reloadData];
-    [oOutline deselectAll:self];
-    [oOutline scrollToBeginningOfDocument:self];
+    mode=[self.oSearchTypeSegment selectedSegment];
+	[self.oOutline reloadData];
+    [self.oOutline deselectAll:self];
+    [self.oOutline scrollToBeginningOfDocument:self];
 }
 
 - (IBAction)actCopyFromTable:(id)sender;
@@ -428,7 +426,7 @@
 
 - (void)dealloc
 {
-	[super dealloc];
+
 }
 
 - (void)tableDoubleClicked{
@@ -496,7 +494,7 @@
 
 
 - (void)dealloc {
-    [super dealloc];
+
 }
 
 

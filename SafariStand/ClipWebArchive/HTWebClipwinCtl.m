@@ -2,8 +2,8 @@
 //  HTWebClipwinCtl.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -13,6 +13,7 @@
 #import "HTFilePresetPopUpButton.h"
 #import "HTDOMElementHierarchyMenuItem.h"
 #import "HTWebKit2Adapter.h"
+#import "HTWindowControllerRetainer.h"
 
 
 /*
@@ -23,24 +24,29 @@ title=>title
 
 */
 @implementation HTWebClipWin
+
 - (void) dealloc
 {
-    [super dealloc];
+
 }
+
 @end
 
 @implementation HTWebClipwinCtl
 
-void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef error, void* functionContext)
+void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef error, void* info)
 {
     if (archiveData) {
+        NSDictionary* dic=(__bridge NSDictionary*)info;
         NSData* data=htNSDataFromWKData(archiveData);
         WebArchive* arc=[[WebArchive alloc]initWithData:data];
 
-        [HTWebClipwinCtl showWindowForWebArchive:arc webFrame:nil info:functionContext];
-        [arc release];
-        [(NSDictionary*)functionContext release];
+        [HTWebClipwinCtl showWindowForWebArchive:arc webFrame:nil info:dic];
+
         //WKRelease(archiveData);
+    }
+    if (info) {
+        CFRelease(info);
     }
 }
 
@@ -67,9 +73,9 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
     if (!urlStr) urlStr=@"";
     NSDictionary* info=[[NSDictionary alloc]initWithObjectsAndKeys:title, @"title", urlStr, @"url", nil];
     
-    WKPageRef pageRef=(WKPageRef)objc_msgSend(wkView, @selector(pageRef));
-    WKFrameRef frameRef=WKPageGetMainFrame(pageRef);
-    WKFrameGetWebArchive(frameRef, showWindowForFrontmostWKViewGetWebArchive, info);
+    id pageRef=objc_msgSend(wkView, @selector(pageRef));
+    WKFrameRef frameRef=WKPageGetMainFrame((__bridge WKPageRef)pageRef);
+    WKFrameGetWebArchive(frameRef, showWindowForFrontmostWKViewGetWebArchive, (void*)CFBridgingRetain(info));
 }
 
 + (void)showWindowForWebArchive:(WebArchive*)arc webFrame:(WebFrame*)webFrame info:(NSDictionary*)info
@@ -90,19 +96,17 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
     self = [self initWithWindowNibName:@"HTWebClipWin"];
     if (self) {
         _filePath=nil;
-        _webArchive=[arc retain];
+        _webArchive=arc;
         if(info){
-            _defaultTitle=[[info objectForKey:@"title"]retain];
-            _urlStr=[[info objectForKey:@"url"]retain];
+            _defaultTitle=[info objectForKey:@"title"];
+            _urlStr=[info objectForKey:@"url"];
         }else{
             _defaultTitle=nil;
             _urlStr=nil;
         }
-//        if(!_defaultTitle)_defaultTitle=[[[webFrame dataSource]pageTitle]retain];
-//        if(!_urlStr)_urlStr=[[[[[webFrame dataSource]request]URL]absoluteString]retain];
-        
-        if(!_urlStr)_urlStr=[@"" retain];
-        if(!_defaultTitle)_defaultTitle=[_urlStr retain];
+
+        if(!_urlStr)_urlStr=@"";
+        if(!_defaultTitle)_defaultTitle=_urlStr;
         //URL=[[arc mainResource]URL]
     }
     return self;
@@ -110,11 +114,11 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 
 
 - (void)dealloc {
-    [_defaultTitle release];
-    [_webArchive release];
-    [_urlStr release];
-    [_filePath release];
-	[super dealloc];
+    _defaultTitle = nil;
+    _webArchive = nil;
+    _urlStr = nil;
+    _filePath = nil;
+//	[super dealloc];
 }
 
 
@@ -123,7 +127,7 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 {
 	[[NSNotificationCenter defaultCenter]removeObserver:self 
     name:WebViewDidChangeNotification object:oWebView];
-	[self autorelease];
+//	[self autorelease];
 }
 
 - (void)toggleBottomDiscloseViewDisplay:(BOOL)display {
@@ -189,7 +193,6 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 - (void)awakeFromNib
 {
 
-
     //toolbar
     NSToolbar* tb=[[NSToolbar alloc]initWithIdentifier:@"Stand_WebClip_Toolbar"];
     [tb setDelegate:self];
@@ -197,7 +200,6 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
     [tb setAutosavesConfiguration: YES];
     [tb setDisplayMode:NSToolbarDisplayModeDefault];
     [[self window]setToolbar:tb];
-    [tb release];
 
 
     //bottomview
@@ -233,6 +235,12 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 
 }
 
+- (void)windowDidLoad
+{
+    [[HTWindowControllerRetainer si]addWondowController:self];
+    [super windowDidLoad];
+}
+
 -(void)noteWebViewDidChange:(NSNotification*)note
 {
     if([[self window]representedFilename]){
@@ -245,12 +253,11 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 #pragma mark -
 
 - (NSString *)filePath {
-    return [[_filePath retain] autorelease];
+    return [_filePath copy];
 }
 
 - (void)setFilePath:(NSString *)value {
     if (_filePath != value) {
-        [_filePath release];
         _filePath = [value copy];
         
         [[self window]setTitleWithRepresentedFilename:[self filePath]];
@@ -465,7 +472,7 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
     static NSImage* clipSavecIcon;
     NSString* labelStr=nil;
     NSImage* icon=nil;
-    NSToolbarItem*  item=[[[NSToolbarItem alloc]initWithItemIdentifier:itemIdentifier]autorelease];
+    NSToolbarItem*  item=[[NSToolbarItem alloc]initWithItemIdentifier:itemIdentifier];
     
     [item setTarget:self];
     if([itemIdentifier isEqualToString:@"clip_header"]){
@@ -508,7 +515,7 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
         if(clipSaveIcon==nil){
             //NSBundle*   myBundle=[NSBundle bundleForClass:[self class]];
             //NSString* tmpStr=[myBundle pathForResource:@"clip_edit" ofType:@"tiff"];
-            clipSaveIcon=[[[NSWorkspace sharedWorkspace]iconForFileType:@"webarchive"]retain];
+            clipSaveIcon=[[NSWorkspace sharedWorkspace]iconForFileType:@"webarchive"];
         }
         icon=clipSaveIcon;
         labelStr=@"Save";
@@ -553,7 +560,6 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
                                      @selector(actRemoveElementConextMenu:), self, NO);
         if(myMenuItem){
             [result addObject:myMenuItem];
-            [myMenuItem release];
             
         }
     }

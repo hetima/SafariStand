@@ -2,8 +2,8 @@
 //  HTWebKit2Adapter.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 /*
@@ -94,7 +94,8 @@ enum Type {
 
 */
 
-NSString* htWKNSStringFromWKString(WKTypeRef wkStr){
+NSString* htWKNSStringFromWKString(WKTypeRef wkStr)
+{
     if(!wkStr || WKGetTypeID(wkStr)!=WKStringGetTypeID())return nil;
     
     size_t len=WKStringGetMaximumUTF8CStringSize(wkStr);
@@ -105,9 +106,11 @@ NSString* htWKNSStringFromWKString(WKTypeRef wkStr){
     NSString* keyStr=[[NSString alloc]initWithBytes:buf length:len-1 encoding:NSUTF8StringEncoding];
     free(buf);
     
-    return [keyStr autorelease];
+    return keyStr;
 }
-NSString* htNSStringFromWKURL(WKTypeRef wkURL){
+
+NSString* htNSStringFromWKURL(WKTypeRef wkURL)
+{
     if(!wkURL || WKGetTypeID(wkURL)!=WKURLGetTypeID())return nil;
     
     WKTypeRef wkStr=WKURLCopyString(wkURL);
@@ -116,15 +119,18 @@ NSString* htNSStringFromWKURL(WKTypeRef wkURL){
     
     return result;
 }
-NSData* htNSDataFromWKData(WKTypeRef wkData){
+
+NSData* htNSDataFromWKData(WKTypeRef wkData)
+{
     if(!wkData || WKGetTypeID(wkData)!=WKDataGetTypeID())return nil;
     
     return [NSData dataWithBytes:WKDataGetBytes(wkData) length:WKDataGetSize(wkData)];
 }
 
-NSArray* htWKDictionaryAllKeys(void* dic){
+NSArray* htWKDictionaryAllKeys(void* dic)
+{
     NSMutableArray* result=[NSMutableArray array];
-    if(dic && WKGetTypeID(dic)==WKDictionaryGetTypeID()){//8==TypeDictionary
+    if(dic && WKGetTypeID(dic)==WKDictionaryGetTypeID()){
         //WKArrayRef
         WKArrayRef wkAry=WKDictionaryCopyKeys(dic);
         int i;
@@ -140,7 +146,8 @@ NSArray* htWKDictionaryAllKeys(void* dic){
     return result;
 }
 
-WKTypeRef htWKDictionaryTypeRefForKey(void* dic, NSString* key){
+WKTypeRef htWKDictionaryTypeRefForKey(void* dic, NSString* key)
+{
     
     WKTypeRef wkStr=WKStringCreateWithUTF8CString([key cStringUsingEncoding:NSUTF8StringEncoding]);
     WKTypeRef val=WKDictionaryGetItemForKey(dic, wkStr);
@@ -150,7 +157,8 @@ WKTypeRef htWKDictionaryTypeRefForKey(void* dic, NSString* key){
 }
 
 //TypeString と TypeURL に対応。TypeURL の場合も NSString を返す
-NSString* htWKDictionaryStringForKey(void* dic, NSString* key){
+NSString* htWKDictionaryStringForKey(void* dic, NSString* key)
+{
     
     WKTypeRef wkStr=WKStringCreateWithUTF8CString([key cStringUsingEncoding:NSUTF8StringEncoding]);
     WKTypeRef val=WKDictionaryGetItemForKey(dic, wkStr);

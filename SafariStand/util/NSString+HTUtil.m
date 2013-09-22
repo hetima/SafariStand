@@ -2,8 +2,8 @@
 //  NSString+HTUtil.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 
@@ -23,31 +23,32 @@
     CFRelease(uuid);
     CFRelease(uuidStrRef);
     
-    return [result autorelease];
+    return result;
     
 }
 
 -(NSString*)htEscapeWithEncoding:(NSStringEncoding)enco{
-    
-    //return [self stringByAddingPercentEscapesUsingEncoding:enco];
-    return [((NSString*)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                                (CFStringRef)self,
-                                                                NULL,
-                                                                (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                CFStringConvertNSStringEncodingToEncoding(enco))) autorelease];
+    CFStringRef cfString=CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                            (CFStringRef)self,
+                                                            NULL,
+                                                            (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                            CFStringConvertNSStringEncodingToEncoding(enco));
+    NSString *result = CFBridgingRelease(cfString);
+    return result;
 }
 
 
--(NSArray*)htArrayWithStandardSeparation{
+-(NSArray*)htArrayWithStandardSeparation
+{
     if ([self length]==0)return nil;
     NSArray* ary=[self componentsSeparatedByString:@","];
                   //componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" ,"]];
     NSMutableArray* result=[NSMutableArray arrayWithCapacity:[ary count]];
     
     for (NSString* str in ary) {
-        str=[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        if ([str length]>0) {
-            [result addObject:str];
+        NSString* trim=[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if ([trim length]>0) {
+            [result addObject:trim];
         }
     }
     return result;
@@ -93,7 +94,6 @@
     [formatter setGroupingSeparator:@","];
     [formatter setGroupingSize:3];
     NSString* longStr=[formatter stringFromNumber:[NSNumber numberWithUnsignedLongLong:siz]];
-    [formatter release];
     
     NSString* result=[NSString stringWithFormat:@"%@ (%@ bytes)",shortStr,longStr];
     return result;
@@ -114,6 +114,8 @@
 }
 
 @end
+
+
 
 @implementation HTVerboseFileSizeStringTransformer
 

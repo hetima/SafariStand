@@ -1,8 +1,8 @@
 //
 //  HTFilePresetPopUpButton.m
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "HTFilePresetPopUpButton.h"
@@ -23,19 +23,20 @@ static NSString* HTFilePresetPopUpButtonAllValues= @"HTFilePresetPopUpButtonAllV
     return image;
 }
 
-- (id)initWithFrame:(NSRect)frame {
+- (id)initWithFrame:(NSRect)frame
+{
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code here.
         _savedIndex=-1;
+        self.presetIdentifier=nil;
     }
     return self;
 }
 
-- (void)dealloc {
-    [_identifier release];
-    _identifier=nil;
-    [super dealloc];
+- (void)dealloc
+{
+
 }
 
 
@@ -45,7 +46,7 @@ static NSString* HTFilePresetPopUpButtonAllValues= @"HTFilePresetPopUpButtonAllV
 - (void)setupWithIdentifier:(NSString *)identifier preset:(NSArray*)preset
 {
     [self removeAllItems];
-    [self setPresetIdentifier:identifier];
+    self.presetIdentifier=identifier;
     NSArray* allValues=[self allValuesFromPref];
     NSString* currentValue=[self currentValueFromPref];
     NSInteger i, cnt=[allValues count];
@@ -174,35 +175,18 @@ static NSString* HTFilePresetPopUpButtonAllValues= @"HTFilePresetPopUpButtonAllV
     return 5;
 }
 
-
 - (NSString *)selectedFilePath
 {
     return [[self selectedItem]representedObject];
 }
-
-
-- (NSString *)presetIdentifier
-{
-    return _identifier;
-}
-
-- (void)setPresetIdentifier:(NSString *)identifier
-{
-
-    if(identifier != _identifier){
-        [_identifier autorelease];
-        _identifier=[identifier retain];
-    }
-}
-
 
 #pragma mark -
 #pragma mark NSUserDefaults
 
 - (NSString *)currentValuePrefKey
 {
-    if(_identifier){
-        return [HTFilePresetPopUpButtonCurrentValue stringByAppendingString:_identifier];
+    if(self.presetIdentifier){
+        return [HTFilePresetPopUpButtonCurrentValue stringByAppendingString:self.presetIdentifier];
     }
     return nil;
 }
@@ -210,8 +194,8 @@ static NSString* HTFilePresetPopUpButtonAllValues= @"HTFilePresetPopUpButtonAllV
 
 - (NSString *)allValuesPrefKey
 {
-    if(_identifier){
-        return [HTFilePresetPopUpButtonAllValues stringByAppendingString:_identifier];
+    if(self.presetIdentifier){
+        return [HTFilePresetPopUpButtonAllValues stringByAppendingString:self.presetIdentifier];
     
     }
     return nil;

@@ -2,8 +2,8 @@
 //  SquashContextMenuSheetCtl.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -13,7 +13,6 @@
 
 @implementation SquashContextMenuSheetCtl
 
-@synthesize menuItemDefs=_menuItemDefs;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -27,10 +26,8 @@
 
 - (void)dealloc
 {
-    [super dealloc];
+
 }
-
-
 
 
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
@@ -79,7 +76,6 @@
         }
     }
     
-    [ary release];
     self.menuItemDefs=defs;
 }
 

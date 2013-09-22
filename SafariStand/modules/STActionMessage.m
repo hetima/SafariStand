@@ -2,8 +2,8 @@
 //  STActionMessage.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -13,9 +13,12 @@
 #define kActionMessageScheme	@"action_message:"
 #define kActionMessagePrefix	@"action_message"
 @implementation STActionMessage
-@synthesize orig_addMenuItemForBookmark,orig_goToBookmark;
+
+
 static STActionMessage* actionMessageModule;
 
+
+static id (*orig_addMenuItemForBookmark)(id, SEL, ...);
 static id ST_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, id tabLocation, id menu)
 {
 	id returnValue=nil;
@@ -26,10 +29,11 @@ static id ST_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, id tabL
         return returnValue;
     }
     
-	return [actionMessageModule orig_addMenuItemForBookmark](self, _cmd, bookmark, tabLocation, menu);    
+	return orig_addMenuItemForBookmark(self, _cmd, bookmark, tabLocation, menu);    
 }
 
 //BookmarkBarをクリックしたとき
+static void (*orig_goToBookmark)(id, SEL);
 static void ST_FavoriteButton_goToBookmark(id self, SEL _cmd)
 {
 	BOOL	hackHandled=NO;
@@ -42,7 +46,7 @@ static void ST_FavoriteButton_goToBookmark(id self, SEL _cmd)
 	}
 	//横取りしてなかったら元を呼ぶ
 	if(!hackHandled)
-		[actionMessageModule orig_goToBookmark](self,_cmd);
+		orig_goToBookmark(self,_cmd);
 }
 
 -(id)initWithStand:(id)core
@@ -50,12 +54,12 @@ static void ST_FavoriteButton_goToBookmark(id self, SEL _cmd)
     self = [super initWithStand:core];
     if (self) {
         actionMessageModule=self;
-        orig_addMenuItemForBookmark = RMF(
+        orig_addMenuItemForBookmark = (id(*)(id, SEL, ...))RMF(
                                     NSClassFromString(@"BookmarksControllerObjC"),
                                     @selector(addMenuItemForBookmark:withTabPlacementHint:toMenu:),
                                     ST_addMenuItemForBookmark_with);
 
-        orig_goToBookmark = RMF(NSClassFromString(@"FavoriteButton"),
+        orig_goToBookmark = (void (*)(id, SEL))RMF(NSClassFromString(@"FavoriteButton"),
                                     @selector(_goToBookmark), ST_FavoriteButton_goToBookmark);
 
     }
@@ -79,8 +83,6 @@ static void ST_FavoriteButton_goToBookmark(id self, SEL _cmd)
 			[returnValue setTarget:self];
 			[returnValue setEnabled:YES];
             [returnValue setRepresentedObject:url];
-            [returnValue autorelease];
-            
 		}
 	}		
     

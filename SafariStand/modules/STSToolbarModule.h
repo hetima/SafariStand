@@ -9,14 +9,10 @@
 @interface STSToolbarModule : STCModule {
     NSMutableDictionary* _toolbarItemClasses; //key=itemIdentifier, obj=object
     NSMutableArray* _toolbarIdentifiers;
-    
-    IMP orig_TBitemForItemIdentifier;
-    IMP orig_TBallowedItemIdentifiers;
 }
-@property(readonly)IMP orig_TBitemForItemIdentifier, orig_TBallowedItemIdentifiers;
 
 - (NSToolbarItem *)_toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag;
--(NSArray*)toolbarIdentifiers;
+- (NSArray*)toolbarIdentifiers;
 
 
 -(void)registerToolbarIdentifier:(NSString*)identifier module:(id)obj;

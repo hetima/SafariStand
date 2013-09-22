@@ -14,10 +14,10 @@ enum{
 
 @class STMetadataQueryCtl;
 @interface STStandSearchViewCtl : NSViewController{
-
+/*
     STMetadataQueryCtl* bookmarksSearch;
     STMetadataQueryCtl* historySearch;
-    NSTextField *searchField;
+
     NSOutlineView *oOutline;
     
     NSString* lastFindString;
@@ -25,19 +25,20 @@ enum{
     NSTextField *oStatusView;
     NSSegmentedControl *oSearchTypeSegment;
     NSMenu *oBMContextMenu;
-    
+    */
     NSInteger mode;
 }
 
-@property(nonatomic,retain)STMetadataQueryCtl* bookmarksSearch;
-@property(nonatomic,retain)STMetadataQueryCtl* historySearch;
-@property(nonatomic,retain)NSString* lastFindString;
-@property (assign) IBOutlet NSTextField *searchField;
-@property (assign) IBOutlet NSOutlineView *oOutline;
-@property (assign) IBOutlet NSProgressIndicator *oIndicator;
-@property (assign) IBOutlet NSTextField *oStatusView;
-@property (assign) IBOutlet NSSegmentedControl *oSearchTypeSegment;
-@property (assign) IBOutlet NSMenu *oBMContextMenu;
+@property (nonatomic,retain) STMetadataQueryCtl* bookmarksSearch;
+@property (nonatomic,retain) STMetadataQueryCtl* historySearch;
+@property (nonatomic,retain) NSString* lastFindString;
+
+@property (nonatomic, weak) IBOutlet NSTextField *searchField;
+@property (nonatomic, weak) IBOutlet NSOutlineView *oOutline;
+@property (nonatomic, weak) IBOutlet NSProgressIndicator *oIndicator;
+@property (nonatomic, weak) IBOutlet NSTextField *oStatusView;
+@property (nonatomic, weak) IBOutlet NSSegmentedControl *oSearchTypeSegment;
+@property (nonatomic, weak) IBOutlet NSMenu *oBMContextMenu;
 
 +(STStandSearchViewCtl*)viewCtl;
 

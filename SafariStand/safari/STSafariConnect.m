@@ -2,8 +2,8 @@
 //  STSafariConnect.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -307,9 +307,9 @@ void STSafariMoveTabFromOtherWindow(NSWindow* win, NSTabViewItem* item, NSIntege
 
     if (winCtl && item && idx >= 0 && [winCtl respondsToSelector:@selector(moveTabFromOtherWindow:toIndex:andShow:)]) {
         NSDisableScreenUpdates();
-        [item retain];
+
         objc_msgSend(winCtl, @selector(moveTabFromOtherWindow:toIndex:andShow:), item, idx, show);
-        [item release];
+
 //like _moveTabToNewWindow:
  /*       id sdc=[NSDocumentController sharedDocumentController];
         id tempDoc=objc_msgSend(sdc, @selector(createHiddenEmptyBrowserDocument));
@@ -346,17 +346,21 @@ id STBrowserWindowControllerMacForWKView(id wkView){
     }
     return nil;    
 }
+
+/*
 id STTabSwitcherForWinCtl(id winCtl){
     NSTabView* tabView=nil;
-    object_getInstanceVariable(winCtl, "tabSwitcher", (void **)&tabView);
+    //object_getInstanceVariable は ARC で使用不可
+    object_getInstanceVariable(winCtl, "tabSwitcher", (__bridge void **)&tabView);
     return tabView;
 }
+*/
 
 NSImage* STSafariBundleImageNamed(NSString* name){
     NSImage* result=nil;
     NSString* path=[[NSBundle mainBundle] pathForImageResource:name];
     if (path) {
-        result=[[[NSImage alloc]initByReferencingFile:path]autorelease];
+        result=[[NSImage alloc]initByReferencingFile:path];
     }
     return result;
 }
@@ -458,7 +462,7 @@ NSString* STWebBookmarkTitle(id webBookmark)
 
 - (void)dealloc
 {
-    [super dealloc];
+
 }
 
 @end

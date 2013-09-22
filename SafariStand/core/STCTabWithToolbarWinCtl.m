@@ -2,8 +2,8 @@
 //  STCTabWithToolbarWinCtl.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "NSObject+HTAssociatedObject.h"
@@ -25,9 +25,7 @@
 
 - (void)dealloc
 {
-    [_identifiers release];
-    
-    [super dealloc];
+
 }
 
 - (void)windowDidLoad
@@ -62,7 +60,7 @@
     [result setAction:@selector(actToolbarClick:)];
     [result setTarget:self];
    
-   return [result autorelease];
+   return result;
 }
 
 - (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar
@@ -83,8 +81,7 @@
     [item setLabel:title];
     if(icon)[item htaoSetValue:icon forKey:@"image"];
     [tabView addTabViewItem:item];
-    [item release];
-    
+
     [toolbar insertItemWithItemIdentifier:identifier atIndex:[[toolbar items]count]];
     
 }

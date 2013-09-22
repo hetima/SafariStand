@@ -2,8 +2,8 @@
 //  HTQuerySeedEditViewCtl.m
 //  SafariStand
 
-#if __has_feature(objc_arc)
-#error This file must be compiled with -fno-objc_arc
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC
 #endif
 
 #import "SafariStand.h"
@@ -13,8 +13,6 @@
 
 
 @implementation HTQuerySeedEditViewCtl
-@synthesize querySeedsBinder=_querySeedsBinder;
-@synthesize addPopupBtn=_addPopupBtn;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,7 +27,7 @@
 
 - (void)dealloc
 {
-    [super dealloc];
+
 }
 
 
