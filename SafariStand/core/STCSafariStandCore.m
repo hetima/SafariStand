@@ -62,6 +62,7 @@ static STCSafariStandCore *sharedInstance;
     
     
     registerAndAddOrder(@"STActionMenuModule"); //must after STSToolbarModule
+    registerAndAddOrder(@"STSidebarModule");
     
 #undef registerAndAddOrder
     

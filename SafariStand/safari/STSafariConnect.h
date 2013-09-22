@@ -50,6 +50,7 @@ void STSafariNewTabAction();
 id STSafariCreateWKViewOrWebViewAtIndexAndShow(NSWindow* win, NSInteger idx, BOOL show);
 
 id STSafariCurrentDocument();
+NSWindow* STSafariCurrentBrowserWindow();
 id STSafariCurrentTitle();
 id STSafariCurrentURLString();
 id STSafariCurrentWKView();
