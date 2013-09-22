@@ -19,7 +19,7 @@ static HTWindowControllerRetainer *sharedInstance;
     return sharedInstance;
 }
 
-- (void)addWondowController:(NSWindowController*)winCtl
+- (void)addWindowController:(NSWindowController*)winCtl
 {
 
     if([self.windowControllers indexOfObjectIdenticalTo:winCtl]!=NSNotFound){

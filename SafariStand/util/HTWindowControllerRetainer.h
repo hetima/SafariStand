@@ -10,6 +10,6 @@
 @property (nonatomic,strong)NSMutableArray* windowControllers;
 
 + (HTWindowControllerRetainer *)si;
-- (void)addWondowController:(NSWindowController*)winCtl;
+- (void)addWindowController:(NSWindowController*)winCtl;
 
 @end
