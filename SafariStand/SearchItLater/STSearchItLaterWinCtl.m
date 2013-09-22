@@ -68,7 +68,7 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
 
 - (void)windowDidLoad
 {
-    [[HTWindowControllerRetainer si]addWondowController:self];
+    [[HTWindowControllerRetainer si]addWindowController:self];
     [super windowDidLoad];
     [[self window] setContentBorderThickness:21 forEdge:NSMinYEdge];
 
