@@ -18,8 +18,8 @@
 static STActionMessage* actionMessageModule;
 
 
-static id (*orig_addMenuItemForBookmark)(id, SEL, ...);
-static id ST_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, id tabLocation, id menu)
+static id (*origAM_addMenuItemForBookmark)(id, SEL, ...);
+static id STAM_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, void* tabLocation, id menu)
 {
 	id returnValue=nil;
 
@@ -29,7 +29,7 @@ static id ST_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, id tabL
         return returnValue;
     }
     
-	return orig_addMenuItemForBookmark(self, _cmd, bookmark, tabLocation, menu);    
+	return origAM_addMenuItemForBookmark(self, _cmd, bookmark, tabLocation, menu);
 }
 
 //BookmarkBarをクリックしたとき
@@ -54,10 +54,10 @@ static void ST_FavoriteButton_goToBookmark(id self, SEL _cmd)
     self = [super initWithStand:core];
     if (self) {
         actionMessageModule=self;
-        orig_addMenuItemForBookmark = (id(*)(id, SEL, ...))RMF(
+        origAM_addMenuItemForBookmark = (id(*)(id, SEL, ...))RMF(
                                     NSClassFromString(@"BookmarksControllerObjC"),
                                     @selector(addMenuItemForBookmark:withTabPlacementHint:toMenu:),
-                                    ST_addMenuItemForBookmark_with);
+                                    STAM_addMenuItemForBookmark_with);
 
         orig_goToBookmark = (void (*)(id, SEL))RMF(NSClassFromString(@"FavoriteButton"),
                                     @selector(_goToBookmark), ST_FavoriteButton_goToBookmark);

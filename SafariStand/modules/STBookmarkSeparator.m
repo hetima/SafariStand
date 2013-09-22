@@ -15,8 +15,8 @@
 
 @implementation STBookmarkSeparator
 
-static id (*orig_addMenuItemForBookmark_with)(id, SEL, ...);
-static id ST_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, id tabLocation, id menu)
+static id (*origBS_addMenuItemForBookmark_with)(id, SEL, ...);
+static id STBS_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, void* tabLocation, id menu)
 {
 	id returnValue=nil;
     static STBookmarkSeparator* bookmarkSeparator;
@@ -27,8 +27,8 @@ static id ST_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, id tabL
         [menu addItem:returnValue];
         return returnValue;
     }
-    
-	returnValue=orig_addMenuItemForBookmark_with(self, _cmd, bookmark, tabLocation, menu);    
+
+	returnValue=origBS_addMenuItemForBookmark_with(self, _cmd, bookmark, tabLocation, menu);
     
 	return returnValue;
 }
@@ -48,18 +48,18 @@ static id ST_addBookmarkFolder_toMenu(id self, SEL _cmd, id bookmark, id menu)
 
 -(id)initWithStand:(id)core
 {
-    self = [super init];
+    self = [super initWithStand:core];
     if (self) {
         Class tmpClas;
         tmpClas=NSClassFromString(@"BookmarksControllerObjC");
         if(tmpClas){
             //gSeparatorIcon=[[NSImage alloc]initWithSize:NSMakeSize(1,16)];
-            orig_addMenuItemForBookmark_with = (id(*)(id, SEL, ...))RMF(
+            origBS_addMenuItemForBookmark_with = (id(*)(id, SEL, ...))RMF(
                         tmpClas,
                         @selector(addMenuItemForBookmark:withTabPlacementHint:toMenu:),
-                        ST_addMenuItemForBookmark_with);
+                        STBS_addMenuItemForBookmark_with);
         }
-        
+
         tmpClas=NSClassFromString(@"NewBookmarksController");
         if(tmpClas){
             //bookmark追加ポップアップメニューに区切り線フォルダを表示しない
