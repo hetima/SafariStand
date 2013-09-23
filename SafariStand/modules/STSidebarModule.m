@@ -116,7 +116,7 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
     STSidebarCtl* ctl=[STSidebarCtl viewCtl];
     
     BOOL rightSide=YES;
-    CGFloat width=400;
+    CGFloat width=kSidebarFrameMinWidth;
     
     NSRect tabViewFrame=[tabContentView frame];
     NSRect sidebarFrame=tabViewFrame;
@@ -140,6 +140,7 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
     [sidebarView setFrame:sidebarFrame];
     [tabContentView setFrame:tabViewFrame];
 
+    ctl.counterpartView=tabContentView;
     [win htaoSetValue:ctl forKey:@"sidebarCtl"];
 
 }

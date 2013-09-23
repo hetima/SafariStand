@@ -13,3 +13,8 @@
 #else
 #define LOG(...) 
 #endif
+
+typedef struct _STMinMax {
+    CGFloat min;
+    CGFloat max;
+} STMinMax;

@@ -8,6 +8,7 @@
 
 
 #import "STSidebarCtl.h"
+#import "STSidebarResizeHandleView.h"
 
 @interface STSidebarCtl ()
 
@@ -39,6 +40,52 @@
     LOG(@"STSidebarCtl d");
 }
 
+- (CGFloat)counterpartResizeLimit
+{
+    CGFloat width=[self.counterpartView frame].size.width - kCounterpartMinWidth;
+    
+    return width>=0 ? width:0;
+}
+
+- (CGFloat)sidebarFrameResizeLimit
+{
+    CGFloat width=[self.view frame].size.width - kSidebarFrameMinWidth;
+    
+    return width>=1 ? width:0;
+    
+}
+
+- (STMinMax)userDragResizeLimit
+{
+    STMinMax result;
+    CGFloat sidebarFrameResizeLimit=self.sidebarFrameResizeLimit;
+    CGFloat counterpartResizeLimit=self.counterpartResizeLimit;
+    if ([(STSidebarFrameView*)self.view rightSide]) {
+        result.max=sidebarFrameResizeLimit;
+        result.min=0-counterpartResizeLimit;
+    }else{
+        result.max=counterpartResizeLimit;
+        result.min=0-sidebarFrameResizeLimit;
+    }
+    return result;
+}
+
+- (void)sidebarResizeHandleWillStartTracking:(STSidebarResizeHandleView*)resizeHandle
+{
+    if ([(STSidebarFrameView*)self.view rightSide]) {
+        resizeHandle.rightView=self.view;
+        resizeHandle.leftView=self.counterpartView;
+    }else{
+        resizeHandle.rightView=self.counterpartView;
+        resizeHandle.leftView=self.view;
+    }
+    resizeHandle.resizeLimit=[self userDragResizeLimit];
+}
+
+- (void)sidebarResizeHandleDidEndTracking:(STSidebarResizeHandleView*)resizeHandle
+{
+    
+}
 @end
 
 
