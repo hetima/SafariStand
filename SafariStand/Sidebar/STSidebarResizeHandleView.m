@@ -35,7 +35,44 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    NSFrameRectWithWidth([self bounds], 1.0);
+#define kLineSpace 4
+#define kLinePadding 5
+    static NSColor * lightColor=nil;
+    static NSColor * darkColor=nil;
+    if (lightColor==nil) {
+        lightColor = [NSColor colorWithCalibratedWhite:0.8 alpha:1.0];
+    }
+    if (darkColor==nil) {
+        darkColor = [NSColor colorWithCalibratedWhite:0.6 alpha:1.0];
+    }
+    
+    NSRect rect=[self bounds];
+    rect.origin.y+=kLinePadding;
+    rect.size.height-=kLinePadding*2;
+    rect.size.width=1;
+    rect.origin.x+=kLinePadding;
+    
+    [lightColor set];
+    NSRectFill(rect);
+    rect.origin.x+=kLineSpace;
+    NSRectFill(rect);
+    rect.origin.x+=kLineSpace;
+    NSRectFill(rect);
+    rect.origin.x+=kLineSpace;
+    NSRectFill(rect);
+    rect.origin.x+=kLineSpace;
+    
+    rect.origin.x-=kLineSpace*4+1;
+    [darkColor set];
+    NSRectFill(rect);
+    rect.origin.x+=kLineSpace;
+    NSRectFill(rect);
+    rect.origin.x+=kLineSpace;
+    NSRectFill(rect);
+    rect.origin.x+=kLineSpace;
+    NSRectFill(rect);
+    rect.origin.x+=kLineSpace;
+
 }
 
 

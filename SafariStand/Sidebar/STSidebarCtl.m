@@ -152,7 +152,8 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    NSFrameRectWithWidth([self bounds], 8.0);
+    [[NSColor darkGrayColor]set];
+    NSFrameRectWithWidth([self bounds], 1.0);
 }
 
 
