@@ -11,9 +11,3 @@
 
 @end
 
-
-@interface STSidebarContentView : NSView
-
-@property (nonatomic,assign)BOOL rightSide;
-
-@end

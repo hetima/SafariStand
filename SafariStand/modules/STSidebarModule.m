@@ -9,6 +9,7 @@
 
 #import "SafariStand.h"
 #import "STSidebarModule.h"
+#import "STSidebarCtl.h"
 
 
 //NSTabView - (NSRect)contentRect
@@ -18,10 +19,10 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
     
     NSArray* subviews=[self subviews];
     for (NSView* subview in subviews) {
-        if ([subview isKindOfClass:[STSidebarContentView class]]) {
+        if ([subview isKindOfClass:[STSidebarFrameView class]]) {
             NSRect origRect=orig_NSTabViewContentRect(self, sel);
             NSRect sidebarRect=[subview frame];
-            BOOL rightside=[(STSidebarContentView*)subview rightSide];
+            BOOL rightside=[(STSidebarFrameView*)subview rightSide];
             
             origRect.size.width-=sidebarRect.size.width;
             if (!rightside) {
@@ -64,13 +65,40 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
     //if([key isEqualToString:])
 }
 
+
+//起動時作成済みのウインドウにサイドバー表示
+-(void)showSidebarForExistingWindow
+{
+    if (![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarEnabled]) {
+        return;
+    }
+    
+    if (![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault]) {
+        return;
+    }
+    
+    //check exists window
+    NSArray *windows=[NSApp windows];
+    for (NSWindow* win in windows) {
+        id winCtl=[win windowController];
+        if([win isVisible] && [[winCtl className]isEqualToString:kSafariBrowserWindowController]){
+            //install
+
+        }
+    }
+}
+
+
+
 -(void)toggleSidebar:(id)sender
 {
     NSWindow* win=STSafariCurrentBrowserWindow();
-    STSidebarContentView* view=[self sidebarContentViewForWindow:win];
+    //STSidebarContentView* view=[self sidebarContentViewForWindow:win];
+    
+    STSidebarCtl* ctl=[self sidebarCtlForWindow:win];
 
-    if (view) {
-        [self removeSidebar:view fromWindow:win];
+    if (ctl) {
+        [self removeSidebar:ctl fromWindow:win];
     }else{
         [self installSidebarToWindow:win];
     }
@@ -84,6 +112,9 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
     if (!tabContentView) {
         return;
     }
+    
+    STSidebarCtl* ctl=[STSidebarCtl viewCtl];
+    
     BOOL rightSide=YES;
     CGFloat width=400;
     
@@ -102,16 +133,20 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
         tabViewFrame.origin.x+=sidebarFrame.size.width;
         autoresizingMask=NSViewHeightSizable + NSViewMaxXMargin;
     }
-    STSidebarContentView* sidebarView=[[STSidebarContentView alloc]initWithFrame:sidebarFrame];
+    STSidebarFrameView* sidebarView=(STSidebarFrameView*)[ctl view];
     sidebarView.rightSide=rightSide;
     [sidebarView setAutoresizingMask:autoresizingMask];
     [[tabContentView superview]addSubview:sidebarView];
     [sidebarView setFrame:sidebarFrame];
     [tabContentView setFrame:tabViewFrame];
+
+    [win htaoSetValue:ctl forKey:@"sidebarCtl"];
+
 }
 
--(void)removeSidebar:(STSidebarContentView*)sidebarView fromWindow:(NSWindow*)win
+-(void)removeSidebar:(STSidebarCtl*)ctl fromWindow:(NSWindow*)win
 {
+    NSView* sidebarView=ctl.view;
     NSView* tabContentView=[self tabContentViewForTabView:STTabViewForWindow(win)];
     if (!tabContentView) {
         return;
@@ -127,20 +162,30 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
     NSRect unionRect=NSUnionRect(tabViewFrame, sidebarFrame);
     [tabContentView setFrame:unionRect];
     [sidebarView removeFromSuperview];
+    
+    [win htaoSetValue:nil forKey:@"sidebarCtl"];
 }
 
--(STSidebarContentView*)sidebarContentViewForWindow:(NSWindow*)win
+
+
+-(STSidebarCtl*)sidebarCtlForWindow:(NSWindow*)win
+{
+    STSidebarCtl* ctl=[win htaoValueForKey:@"sidebarCtl"];
+    return ctl;
+}
+
+-(STSidebarFrameView*)sidebarContentViewForWindow:(NSWindow*)win
 {
     NSView* tabView=STTabViewForWindow(win);
     return [self sidebarContentViewForTabView:tabView];
 }
 
--(STSidebarContentView*)sidebarContentViewForTabView:(NSView*)tabView
+-(STSidebarFrameView*)sidebarContentViewForTabView:(NSView*)tabView
 {
     NSArray* subviews=[tabView subviews];
     for (NSView* subview in subviews) {
-        if ([subview isKindOfClass:[STSidebarContentView class]]) {
-            return (STSidebarContentView*)subview;
+        if ([subview isKindOfClass:[STSidebarFrameView class]]) {
+            return (STSidebarFrameView*)subview;
         }
     }
     return nil;
@@ -161,26 +206,3 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
 @end
 
 
-@implementation STSidebarContentView
-
-- (id)initWithFrame:(NSRect)frameRect
-{
-    self = [super initWithFrame:frameRect];
-    if (self) {
-        
-    }
-    return self;
-}
-
-- (void)drawRect:(NSRect)dirtyRect
-{
-    NSFrameRectWithWidth([self bounds], 8.0);
-}
-
-
-- (void)dealloc
-{
-    LOG(@"STSidebarContentView d");
-}
-
-@end
