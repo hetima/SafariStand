@@ -51,6 +51,10 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
         NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Sidebar" action:@selector(toggleSidebar:) keyEquivalent:@""];
         [itm setTarget:self];
         [core addItemToStandMenu:itm];
+        
+        itm=[[NSMenuItem alloc]initWithTitle:@"SidebarLR" action:@selector(toggleSidebarLR:) keyEquivalent:@""];
+        [itm setTarget:self];
+        [core addItemToStandMenu:itm];
     }
     return self;
 }
@@ -102,7 +106,18 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
     }else{
         [self installSidebarToWindow:win];
     }
+}
+
+-(void)toggleSidebarLR:(id)sender
+{
+    NSWindow* win=STSafariCurrentBrowserWindow();
+    //STSidebarContentView* view=[self sidebarContentViewForWindow:win];
     
+    STSidebarCtl* ctl=[self sidebarCtlForWindow:win];
+    
+    if (ctl) {
+        [ctl setRightSide:![ctl rightSide]];
+    }
 }
 
 -(void)installSidebarToWindow:(NSWindow*)win
@@ -114,10 +129,11 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
     }
     
     STSidebarCtl* ctl=[STSidebarCtl viewCtl];
+    ctl.counterpartView=tabContentView;
     
     BOOL rightSide=YES;
     CGFloat width=kSidebarFrameMinWidth;
-    
+    /*
     NSRect tabViewFrame=[tabContentView frame];
     NSRect sidebarFrame=tabViewFrame;
     NSUInteger autoresizingMask;
@@ -139,8 +155,17 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
     [[tabContentView superview]addSubview:sidebarView];
     [sidebarView setFrame:sidebarFrame];
     [tabContentView setFrame:tabViewFrame];
+*/
+    //sidebar の frame を仮セット
+    STSidebarFrameView* sidebarView=(STSidebarFrameView*)[ctl view];
+    NSRect sidebarFrame=[tabContentView frame];
+    sidebarFrame.size.width=width;
 
-    ctl.counterpartView=tabContentView;
+    [sidebarView setFrame:sidebarFrame];
+    [[tabContentView superview]addSubview:sidebarView];
+
+    //layout
+    [ctl setRightSide:rightSide];
     [win htaoSetValue:ctl forKey:@"sidebarCtl"];
 
 }

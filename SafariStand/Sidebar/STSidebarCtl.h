@@ -19,6 +19,9 @@
 
 + (STSidebarCtl*)viewCtl;
 
+- (BOOL)rightSide;
+- (void)setRightSide:(BOOL)rightSide;
+
 - (CGFloat)counterpartResizeLimit;
 - (CGFloat)sidebarFrameResizeLimit;
 - (STMinMax)userDragResizeLimit;

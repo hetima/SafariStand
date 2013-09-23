@@ -40,6 +40,56 @@
     LOG(@"STSidebarCtl d");
 }
 
+- (BOOL)rightSide
+{
+    return  [(STSidebarFrameView*)self.view rightSide];
+}
+
+- (void)setRightSide:(BOOL)rightSide
+{
+    
+    [(STSidebarFrameView*)self.view setRightSide:rightSide];
+    
+    NSRect counterpartFrame=self.counterpartView.frame;
+    NSRect sidebarFrame=self.view.frame;
+    NSRect unionRect=NSUnionRect(counterpartFrame, sidebarFrame);
+    
+    counterpartFrame.size.width=NSWidth(unionRect)-NSWidth(sidebarFrame);
+    
+
+    NSRect resizeHandleFrame=self.oResizeHandle.frame;
+    NSUInteger resizeHandleAutoresizingMask, sidebarFrameAutoresizingMask;
+    if (rightSide) {
+        resizeHandleFrame.origin.x=0;
+        resizeHandleAutoresizingMask=NSViewMaxXMargin;
+
+        sidebarFrameAutoresizingMask=NSViewHeightSizable + NSViewMinXMargin;
+        counterpartFrame.origin.x=NSMinX(unionRect);
+        sidebarFrame.origin.x=NSMaxX(counterpartFrame);
+    }else{
+        CGFloat x=self.oResizeHandle.superview.frame.size.width;
+        resizeHandleFrame.origin.x=x-resizeHandleFrame.size.width;
+        resizeHandleAutoresizingMask=NSViewMinXMargin;
+        
+        sidebarFrameAutoresizingMask=NSViewHeightSizable + NSViewMaxXMargin;
+        sidebarFrame.origin.x=NSMinX(unionRect);
+        counterpartFrame.origin.x=NSMaxX(sidebarFrame);
+    }
+    
+    [self.counterpartView setFrame:counterpartFrame];
+    [self.view setFrame:sidebarFrame];
+    [self.view setAutoresizingMask:sidebarFrameAutoresizingMask];
+    [self.oResizeHandle setFrame:resizeHandleFrame];
+    [self.oResizeHandle setAutoresizingMask:resizeHandleAutoresizingMask];
+    
+    if (rightSide) {
+        sidebarFrame.origin.x+=counterpartFrame.size.width;
+    }else{
+        counterpartFrame.origin.x+=sidebarFrame.size.width;
+    }
+
+}
+
 - (CGFloat)counterpartResizeLimit
 {
     CGFloat width=[self.counterpartView frame].size.width - kCounterpartMinWidth;

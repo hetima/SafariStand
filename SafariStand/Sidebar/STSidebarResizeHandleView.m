@@ -35,7 +35,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    NSFrameRectWithWidth([self bounds], 18.0);
+    NSFrameRectWithWidth([self bounds], 1.0);
 }
 
 

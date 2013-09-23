@@ -30,6 +30,8 @@
 		AA21448617F027D800EDE661 /* STSidebarCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA21448417F027D800EDE661 /* STSidebarCtl.m */; };
 		AA21448717F027D800EDE661 /* STSidebarCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA21448517F027D800EDE661 /* STSidebarCtl.xib */; };
 		AA21449617F05ED800EDE661 /* STSidebarResizeHandleView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA21449517F05ED800EDE661 /* STSidebarResizeHandleView.m */; };
+		AA21449C17F07C9B00EDE661 /* DMTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = AA21449917F07C9B00EDE661 /* DMTabBar.m */; };
+		AA21449D17F07C9B00EDE661 /* DMTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AA21449B17F07C9B00EDE661 /* DMTabBarItem.m */; };
 		AA396EFF13F61B1E00EF5806 /* STStandSearchViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396EFD13F61B1E00EF5806 /* STStandSearchViewCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA396F0013F61B1E00EF5806 /* STStandSearchViewCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA396EFE13F61B1E00EF5806 /* STStandSearchViewCtl.xib */; };
 		AA396F0313F61ED800EF5806 /* STMetadataQueryCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396F0213F61ED800EF5806 /* STMetadataQueryCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -122,6 +124,10 @@
 		AA21448517F027D800EDE661 /* STSidebarCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STSidebarCtl.xib; sourceTree = "<group>"; };
 		AA21449417F05ED800EDE661 /* STSidebarResizeHandleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSidebarResizeHandleView.h; sourceTree = "<group>"; };
 		AA21449517F05ED800EDE661 /* STSidebarResizeHandleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSidebarResizeHandleView.m; sourceTree = "<group>"; };
+		AA21449817F07C9B00EDE661 /* DMTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMTabBar.h; sourceTree = "<group>"; };
+		AA21449917F07C9B00EDE661 /* DMTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMTabBar.m; sourceTree = "<group>"; };
+		AA21449A17F07C9B00EDE661 /* DMTabBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMTabBarItem.h; sourceTree = "<group>"; };
+		AA21449B17F07C9B00EDE661 /* DMTabBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMTabBarItem.m; sourceTree = "<group>"; };
 		AA396EFC13F61B1E00EF5806 /* STStandSearchViewCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STStandSearchViewCtl.h; sourceTree = "<group>"; };
 		AA396EFD13F61B1E00EF5806 /* STStandSearchViewCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STStandSearchViewCtl.m; sourceTree = "<group>"; };
 		AA396EFE13F61B1E00EF5806 /* STStandSearchViewCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STStandSearchViewCtl.xib; sourceTree = "<group>"; };
@@ -295,6 +301,7 @@
 				AA171B761690A488007A4661 /* QSToolbar */,
 				AAF9D28B147E1E210018C949 /* ClipWebArchive */,
 				AA21448217F027A500EDE661 /* Sidebar */,
+				AA21449717F07C9A00EDE661 /* DMTabBar */,
 			);
 			path = SafariStand;
 			sourceTree = "<group>";
@@ -366,6 +373,17 @@
 			);
 			path = Sidebar;
 			sourceTree = "<group>";
+		};
+		AA21449717F07C9A00EDE661 /* DMTabBar */ = {
+			isa = PBXGroup;
+			children = (
+				AA21449817F07C9B00EDE661 /* DMTabBar.h */,
+				AA21449917F07C9B00EDE661 /* DMTabBar.m */,
+				AA21449A17F07C9B00EDE661 /* DMTabBarItem.h */,
+				AA21449B17F07C9B00EDE661 /* DMTabBarItem.m */,
+			);
+			path = DMTabBar;
+			sourceTree = SOURCE_ROOT;
 		};
 		AA396EFA13F619DB00EF5806 /* StandSearch */ = {
 			isa = PBXGroup;
@@ -628,6 +646,8 @@
 				AA21448117EF556000EDE661 /* STSidebarModule.m in Sources */,
 				AA21448617F027D800EDE661 /* STSidebarCtl.m in Sources */,
 				AA21449617F05ED800EDE661 /* STSidebarResizeHandleView.m in Sources */,
+				AA21449C17F07C9B00EDE661 /* DMTabBar.m in Sources */,
+				AA21449D17F07C9B00EDE661 /* DMTabBarItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
