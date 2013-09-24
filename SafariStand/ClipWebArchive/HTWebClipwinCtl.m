@@ -63,9 +63,10 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 + (void)showWindowForCurrentWKView
 {
     id wkView=STSafariCurrentWKView();
-    if (!wkView || [wkView respondsToSelector:@selector(pageRef)]) {
+    if (!wkView || ![wkView respondsToSelector:@selector(pageRef)]) {
         return;
     }
+    
     NSString* title=STSafariCurrentTitle();
     NSString* urlStr=STSafariCurrentURLString();
 
@@ -91,7 +92,6 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 
 - (id)initWithWebArchive:(WebArchive*)arc webFrame:(WebFrame*)webFrame info:(NSDictionary*)info
 {
-    
     
     self = [self initWithWindowNibName:@"HTWebClipWin"];
     if (self) {

@@ -12,8 +12,11 @@
 
 @interface STSidebarCtl : NSViewController
 
-@property (weak) IBOutlet DMTabBar *oTabbar;
+@property (weak) IBOutlet DMTabBar *oPrimaryTabbar;
+@property (weak) IBOutlet DMTabBar *oSecondaryTabbar;
 @property (weak) IBOutlet STSidebarResizeHandleView *oResizeHandle;
+@property (weak) IBOutlet NSTabView* oPrimaryTabView;
+@property (weak) IBOutlet NSTabView* oSecondaryTabView;
 
 @property (nonatomic,assign)NSView* counterpartView;
 

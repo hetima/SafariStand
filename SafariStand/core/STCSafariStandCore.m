@@ -9,6 +9,7 @@
 
 #import "SafariStand.h"
 #import <WebKit/WebKit.h>
+#import "STTabProxy.h"
 
 @implementation STCSafariStandCore
 
@@ -104,6 +105,7 @@ static STCSafariStandCore *sharedInstance;
 
 
     [self setupStandMenu];
+    [STTabProxyController si];
 
     [self registerBuiltInModules];
 

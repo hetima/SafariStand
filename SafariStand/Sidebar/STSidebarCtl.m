@@ -10,6 +10,10 @@
 #import "STSidebarCtl.h"
 #import "STSidebarResizeHandleView.h"
 
+#import "STSafariConnect.h"
+
+#import "DMTabBar.h"
+
 @interface STSidebarCtl ()
 
 @end
@@ -39,6 +43,36 @@
 {
     LOG(@"STSidebarCtl d");
 }
+
+
+
+-(void)awakeFromNib
+{
+    [self.oPrimaryTabView setTabViewType:NSNoTabsLineBorder];
+    [self.oSecondaryTabView setTabViewType:NSNoTabsNoBorder];
+    //test
+    DMTabBarItem* itm=[DMTabBarItem tabBarItemWithIcon:STSafariBundleImageNamed(@"ToolbarBookmarksTemplate") tag:1];
+    NSArray* itms=@[itm];
+    self.oPrimaryTabbar.tabBarItems=itms;
+    [self.oPrimaryTabbar handleTabBarItemSelection:^(DMTabBarItemSelectionType selectionType, DMTabBarItem *targetTabBarItem, NSUInteger targetTabBarItemIndex) {
+        if (selectionType == DMTabBarItemSelectionType_WillSelect) {
+            //NSLog(@"Will select %lu/%@",targetTabBarItemIndex,targetTabBarItem);
+        } else if (selectionType == DMTabBarItemSelectionType_DidSelect) {
+            //NSLog(@"Did select %lu/%@",targetTabBarItemIndex,targetTabBarItem);
+        }
+    }];
+    
+    [self.oSecondaryTabbar handleTabBarItemSelection:^(DMTabBarItemSelectionType selectionType, DMTabBarItem *targetTabBarItem, NSUInteger targetTabBarItemIndex) {
+        if (selectionType == DMTabBarItemSelectionType_WillSelect) {
+            //NSLog(@"Will select %lu/%@",targetTabBarItemIndex,targetTabBarItem);
+        } else if (selectionType == DMTabBarItemSelectionType_DidSelect) {
+            //NSLog(@"Did select %lu/%@",targetTabBarItemIndex,targetTabBarItem);
+        }
+    }];
+
+}
+
+
 
 - (BOOL)rightSide
 {
@@ -136,6 +170,67 @@
 {
     
 }
+
+
+#pragma mark - NSSplitView delegate
+
+
+- (void)splitViewDidResizeSubviews:(NSNotification *)notification;
+{
+
+}
+
+- (BOOL)splitView:(NSSplitView *)splitView shouldAdjustSizeOfSubview:(NSView *)subview
+{
+
+    return YES;
+}
+
+- (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview
+{
+    return YES;
+}
+
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
+{
+#define kSplitViewBottomMinHeight 25
+    if (proposedMin<kSplitViewBottomMinHeight) {
+        return kSplitViewBottomMinHeight;
+    }
+
+    return proposedMin;
+
+}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
+{
+#define kSplitViewBottomMinHeight 25
+    LOG(@"proposedMax %lu,%2f", dividerIndex, proposedMax);
+
+    
+    return proposedMax-kSplitViewBottomMinHeight;
+}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainSplitPosition:(CGFloat)proposedPosition ofSubviewAt:(NSInteger)dividerIndex
+{
+    //LOG(@"%lu,%2f", dividerIndex, proposedPosition);
+    //snap to SouceList min width
+    /*if (dividerIndex==0){
+     
+     if(proposedPosition<=SouceViewMinWidth*2) {
+     if (proposedPosition>SouceViewMinWidth*1.6) {
+     return SouceViewMinWidth*2;
+     }
+     return SouceViewMinWidth;
+     }
+     }*/
+    return proposedPosition;
+}
+
+
+#pragma mark -
+
 @end
 
 
@@ -152,8 +247,8 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    [[NSColor darkGrayColor]set];
-    NSFrameRectWithWidth([self bounds], 1.0);
+//    [[NSColor darkGrayColor]set];
+//    NSFrameRectWithWidth([self bounds], 1.0);
 }
 
 

@@ -32,6 +32,7 @@
 		AA21449617F05ED800EDE661 /* STSidebarResizeHandleView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA21449517F05ED800EDE661 /* STSidebarResizeHandleView.m */; };
 		AA21449C17F07C9B00EDE661 /* DMTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = AA21449917F07C9B00EDE661 /* DMTabBar.m */; };
 		AA21449D17F07C9B00EDE661 /* DMTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AA21449B17F07C9B00EDE661 /* DMTabBarItem.m */; };
+		AA2144A017F0B9FB00EDE661 /* STTabProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = AA21449F17F0B91200EDE661 /* STTabProxy.m */; };
 		AA396EFF13F61B1E00EF5806 /* STStandSearchViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396EFD13F61B1E00EF5806 /* STStandSearchViewCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA396F0013F61B1E00EF5806 /* STStandSearchViewCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA396EFE13F61B1E00EF5806 /* STStandSearchViewCtl.xib */; };
 		AA396F0313F61ED800EF5806 /* STMetadataQueryCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396F0213F61ED800EF5806 /* STMetadataQueryCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -128,6 +129,8 @@
 		AA21449917F07C9B00EDE661 /* DMTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMTabBar.m; sourceTree = "<group>"; };
 		AA21449A17F07C9B00EDE661 /* DMTabBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMTabBarItem.h; sourceTree = "<group>"; };
 		AA21449B17F07C9B00EDE661 /* DMTabBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMTabBarItem.m; sourceTree = "<group>"; };
+		AA21449E17F0B91200EDE661 /* STTabProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STTabProxy.h; sourceTree = "<group>"; };
+		AA21449F17F0B91200EDE661 /* STTabProxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STTabProxy.m; sourceTree = "<group>"; };
 		AA396EFC13F61B1E00EF5806 /* STStandSearchViewCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STStandSearchViewCtl.h; sourceTree = "<group>"; };
 		AA396EFD13F61B1E00EF5806 /* STStandSearchViewCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STStandSearchViewCtl.m; sourceTree = "<group>"; };
 		AA396EFE13F61B1E00EF5806 /* STStandSearchViewCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STStandSearchViewCtl.xib; sourceTree = "<group>"; };
@@ -239,6 +242,8 @@
 			children = (
 				AA04F85113B88BF800A8C548 /* STSafariConnect.h */,
 				AA04F85213B88BF800A8C548 /* STSafariConnect.m */,
+				AA21449E17F0B91200EDE661 /* STTabProxy.h */,
+				AA21449F17F0B91200EDE661 /* STTabProxy.m */,
 			);
 			path = safari;
 			sourceTree = "<group>";
@@ -648,6 +653,7 @@
 				AA21449617F05ED800EDE661 /* STSidebarResizeHandleView.m in Sources */,
 				AA21449C17F07C9B00EDE661 /* DMTabBar.m in Sources */,
 				AA21449D17F07C9B00EDE661 /* DMTabBarItem.m in Sources */,
+				AA2144A017F0B9FB00EDE661 /* STTabProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
