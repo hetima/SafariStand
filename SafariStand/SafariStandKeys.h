@@ -45,6 +45,8 @@
 
 #define kpImprovePathPopupMenu @"Stand_ImprovePathPopupMenu"
 
+#define kpSidebarEnabled @"Stand_SidebarEnabled"
+#define kpSidebarShowsDefault @"Stand_SidebarShowsDefault"
 
 #define kpSquashContextMenuItemEnabled @"Stand_SquashContextMenuItemEnabled"
 #define kpSquashContextMenuItemTags @"Stand_SquashContextMenuItemTags"
