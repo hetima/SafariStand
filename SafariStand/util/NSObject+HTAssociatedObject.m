@@ -21,14 +21,25 @@ static char htaokey;
     return objc_getAssociatedObject(self, &htaokey);
 }
 
+//value==nil なら remove
 - (void)htaoSetValue:(id)value forKey:(id)key
 {
+    if (!key) {
+        return;
+    }
+    
     NSMutableDictionary* dic=[self htaoDictionary];
     if(!dic){
-        dic=[NSMutableDictionary dictionaryWithObject:value forKey:key];
-        objc_setAssociatedObject(self, &htaokey, dic, OBJC_ASSOCIATION_RETAIN);
+        if (value) {
+            dic=[NSMutableDictionary dictionaryWithObject:value forKey:key];
+            objc_setAssociatedObject(self, &htaokey, dic, OBJC_ASSOCIATION_RETAIN);
+        }
     }else{
-        [dic setObject:value forKey:key];
+        if (value) {
+            [dic setObject:value forKey:key];
+        }else{
+            [dic removeObjectForKey:key];
+        }
     }
 }
 
@@ -36,7 +47,6 @@ static char htaokey;
 {
     NSDictionary* dic=[self htaoDictionary];
     return [dic objectForKey:key];
-    
 }
 
 

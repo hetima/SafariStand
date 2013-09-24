@@ -208,7 +208,8 @@ int STSafariWindowPolicyFromCurrentEvent(){
 
 #pragma mark -
 #pragma mark access
-id STSafariCurrentDocument(){
+id STSafariCurrentDocument()
+{
     NSDocument* doc=nil;
 	id sdc=[NSDocumentController sharedDocumentController];
     if([sdc respondsToSelector:@selector(frontmostBrowserDocument)]){
@@ -217,11 +218,20 @@ id STSafariCurrentDocument(){
     return doc;
 }
 
-id STSafariCurrentTitle(){
+NSWindow* STSafariCurrentBrowserWindow()
+{
+    NSView* view=STSafariCurrentWKView();
+    return [view window];
+}
+
+id STSafariCurrentTitle()
+{
     NSDocument* doc=STSafariCurrentDocument();
     return [doc displayName];
 }
-id STSafariCurrentURLString(){
+
+id STSafariCurrentURLString()
+{
     NSString*   urlStr=nil;
     NSDocument* doc=STSafariCurrentDocument();
     if([doc respondsToSelector:@selector(URLString)]){
@@ -231,7 +241,8 @@ id STSafariCurrentURLString(){
 }
 
 
-id STSafariCurrentWKView(){
+id STSafariCurrentWKView()
+{
     /*
      BrowserDocument.currentBrowserWebView
      BrowserDocument.currentBrowserOrOverlayWebView
@@ -245,7 +256,8 @@ id STSafariCurrentWKView(){
     return currentWebView;
 }
 
-NSInteger STWindowSelectedTabIndex(NSWindow* win){
+NSInteger STWindowSelectedTabIndex(NSWindow* win)
+{
     id winCtl=[win windowController];
 	if([winCtl respondsToSelector:@selector(selectedTabIndex)]){
         return (NSInteger)objc_msgSend(winCtl, @selector(selectedTabIndex));
@@ -253,14 +265,17 @@ NSInteger STWindowSelectedTabIndex(NSWindow* win){
     return -1;
 }
 
-id STWKViewForTabViewItem(id tabViewItem){
+id STWKViewForTabViewItem(id tabViewItem)
+{
 	if([tabViewItem respondsToSelector:@selector(wkView)]){
         return objc_msgSend(tabViewItem, @selector(wkView));
 	}
     return nil;
 }
+
 //
-id STTabViewItemForWKView(id wkView){
+id STTabViewItemForWKView(id wkView)
+{
     id winCtl=STBrowserWindowControllerMacForWKView(wkView);
     if([winCtl respondsToSelector:@selector(tabViewItemForWebView:)]){
         return objc_msgSend(winCtl, @selector(tabViewItemForWebView:), wkView);
@@ -269,7 +284,8 @@ id STTabViewItemForWKView(id wkView){
 }
 
 //STTabSwitcherForWinCtl() でもいいか
-id STTabViewForWindow(NSWindow* win){
+id STTabViewForWindow(NSWindow* win)
+{
     id result=nil;
     id winCtl=[win windowController];
     if([[winCtl className]isEqualToString:kSafariBrowserWindowController]
