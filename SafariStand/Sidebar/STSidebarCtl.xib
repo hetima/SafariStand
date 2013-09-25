@@ -37,7 +37,7 @@
 			</object>
 			<object class="NSCustomView" id="1005">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">268</int>
+				<int key="NSvFlags">4364</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSSplitView" id="530232528">
 						<reference key="NSNextResponder" ref="1005"/>
@@ -45,11 +45,11 @@
 						<array class="NSMutableArray" key="NSSubviews">
 							<object class="NSCustomView" id="939233567">
 								<reference key="NSNextResponder" ref="530232528"/>
-								<int key="NSvFlags">256</int>
+								<int key="NSvFlags">4352</int>
 								<array class="NSMutableArray" key="NSSubviews">
 									<object class="NSTabView" id="568882836">
 										<reference key="NSNextResponder" ref="939233567"/>
-										<int key="NSvFlags">18</int>
+										<int key="NSvFlags">4114</int>
 										<string key="NSFrameSize">{338, 256}</string>
 										<reference key="NSSuperview" ref="939233567"/>
 										<reference key="NSWindow"/>
@@ -60,11 +60,10 @@
 												<string key="NSIdentifier">1</string>
 												<object class="NSView" key="NSView" id="1053630129">
 													<reference key="NSNextResponder" ref="568882836"/>
-													<int key="NSvFlags">256</int>
+													<int key="NSvFlags">4352</int>
 													<string key="NSFrameSize">{338, 256}</string>
 													<reference key="NSSuperview" ref="568882836"/>
 													<reference key="NSWindow"/>
-													<reference key="NSNextKeyView"/>
 													<string key="NSReuseIdentifierKey">_NS:11</string>
 												</object>
 												<string key="NSLabel">Tab</string>
@@ -103,11 +102,11 @@
 							</object>
 							<object class="NSCustomView" id="808780104">
 								<reference key="NSNextResponder" ref="530232528"/>
-								<int key="NSvFlags">256</int>
+								<int key="NSvFlags">4352</int>
 								<array class="NSMutableArray" key="NSSubviews">
 									<object class="NSTabView" id="346899563">
 										<reference key="NSNextResponder" ref="808780104"/>
-										<int key="NSvFlags">18</int>
+										<int key="NSvFlags">4114</int>
 										<string key="NSFrameSize">{338, 273}</string>
 										<reference key="NSSuperview" ref="808780104"/>
 										<reference key="NSWindow"/>
@@ -118,7 +117,7 @@
 												<string key="NSIdentifier">1</string>
 												<object class="NSView" key="NSView" id="582967245">
 													<reference key="NSNextResponder" ref="346899563"/>
-													<int key="NSvFlags">256</int>
+													<int key="NSvFlags">4352</int>
 													<string key="NSFrameSize">{338, 273}</string>
 													<reference key="NSSuperview" ref="346899563"/>
 													<reference key="NSWindow"/>
@@ -141,11 +140,10 @@
 									</object>
 									<object class="NSCustomView" id="269681578">
 										<reference key="NSNextResponder" ref="808780104"/>
-										<int key="NSvFlags">266</int>
+										<int key="NSvFlags">4362</int>
 										<string key="NSFrame">{{0, 273}, {338, 25}}</string>
 										<reference key="NSSuperview" ref="808780104"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<string key="NSClassName">DMTabBar</string>
 									</object>
@@ -167,11 +165,11 @@
 					</object>
 					<object class="NSCustomView" id="843041861">
 						<reference key="NSNextResponder" ref="1005"/>
-						<int key="NSvFlags">266</int>
+						<int key="NSvFlags">4362</int>
 						<array class="NSMutableArray" key="NSSubviews">
 							<object class="NSCustomView" id="280546281">
 								<reference key="NSNextResponder" ref="843041861"/>
-								<int key="NSvFlags">268</int>
+								<int key="NSvFlags">4364</int>
 								<string key="NSFrame">{{0, 1}, {24, 24}}</string>
 								<reference key="NSSuperview" ref="843041861"/>
 								<reference key="NSWindow"/>
