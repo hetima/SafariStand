@@ -109,7 +109,7 @@
     self.tabListCtl=[STVTabListCtl viewCtl];
     [self.tabListCtl setupWithTabView:nil];
     //setup tabview
-    [self.oPrimaryTabView setTabViewType:NSNoTabsLineBorder];
+    [self.oPrimaryTabView setTabViewType:NSNoTabsNoBorder];
     //[self.oPrimaryTabView setDelegate:nil];
     
     NSTabViewItem* tabListItem=[[NSTabViewItem alloc]initWithIdentifier:@"tablist"];
