@@ -24,11 +24,12 @@
 static STTabProxyController *sharedInstance;
 
 //tabの数変更を監視する
+//順番入れ替えのときは2回呼ばれる(remove->insert)
 static void (*orig_tabViewDidChangeNum)(id, SEL, ...); //TabBarView tabViewDidChangeNumberOfTabViewItems:
-static void ST_tabViewDidChangeNum(id self, SEL _cmd, id obj)
+static void ST_tabViewDidChangeNum(id self, SEL _cmd, id /*NSTabView*/ tabView)
 {
-	orig_tabViewDidChangeNum(self,_cmd, obj);
-	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:obj];
+	orig_tabViewDidChangeNum(self,_cmd, tabView);
+	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
 }
 
 //tabの選択を監視する
@@ -41,14 +42,15 @@ static void ST_tabViewDidSelectItem(id self, SEL _cmd, id obj, id item)
 	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidSelectItemNote object:obj];
 }
 
-//- (void)replaceTabView:(id)arg1;
+//TabBarView - (void)replaceTabView:(id)arg1;
 //tabView入れ替わりを監視
+//bookmarks bar の「すべてをタブで開く」などで呼ばれる。NSTabView ごと入れ替わる
 static void (*orig_replaceTabView)(id, SEL, ...);
-static void ST_replaceTabView(id self, SEL _cmd, id obj)
+static void ST_replaceTabView(id self, SEL _cmd, id/*NSTabView*/ tabView)
 {
-    orig_replaceTabView(self, _cmd, obj);
-    [[STTabProxyController si]maintainTabSelectionOrder:[STTabProxy tabProxyForTabViewItem:obj]];
-	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:obj];
+    orig_replaceTabView(self, _cmd, tabView);
+    [[STTabProxyController si]maintainTabSelectionOrder:[STTabProxy tabProxyForTabViewItem:tabView]];
+	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
     
 }
 
@@ -63,6 +65,7 @@ static id ST_initWithTabBarView(id self, SEL _cmd, id tabBarView, BOOL useWebKit
     return result;
 }
 
+//未使用
 //tabViewItem が取り除かれるとき STTabProxyリストから除外
 static void (*orig_removeTabViewItem)(id, SEL, ...);
 static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)

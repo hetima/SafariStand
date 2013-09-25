@@ -8,9 +8,11 @@
 #define kCounterpartMinWidth 100
 #define kSidebarFrameMinWidth 200
 
-@class DMTabBar, STSidebarResizeHandleView;
+@class DMTabBar, STSidebarResizeHandleView, STVTabListCtl;
 
-@interface STSidebarCtl : NSViewController
+@interface STSidebarCtl : NSViewController <NSTabViewDelegate>
+
+@property (nonatomic,strong) STVTabListCtl* tabListCtl;
 
 @property (weak) IBOutlet DMTabBar *oPrimaryTabbar;
 @property (weak) IBOutlet DMTabBar *oSecondaryTabbar;
@@ -21,6 +23,7 @@
 @property (nonatomic,assign)NSView* counterpartView;
 
 + (STSidebarCtl*)viewCtl;
++(STSidebarCtl*)viewCtlWithCounterpartView:(NSView*)view;
 
 - (BOOL)rightSide;
 - (void)setRightSide:(BOOL)rightSide;

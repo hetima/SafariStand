@@ -44,6 +44,8 @@
 		AA47D5EC13B9B42800C9A19E /* NSObject+HTAssociatedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5EA13B9B42800C9A19E /* NSObject+HTAssociatedObject.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA5B3AA913BC5782001453C0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5B3AA813BC5782001453C0 /* WebKit.framework */; };
 		AA5B3AAC13BC7667001453C0 /* STSContextMenuModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5B3AAB13BC7667001453C0 /* STSContextMenuModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA671A7D17F205B3000A470C /* STVTabListCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA671A7B17F205B3000A470C /* STVTabListCtl.m */; };
+		AA671A7E17F205B3000A470C /* STVTabListCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA671A7C17F205B3000A470C /* STVTabListCtl.xib */; };
 		AA6FCF3E15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FCF3C15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA6FCF3F15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF3D15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib */; };
 		AA6FCF4215D3F271008AE5AB /* SquashContextMenuItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF4415D3F271008AE5AB /* SquashContextMenuItems.plist */; };
@@ -153,6 +155,9 @@
 		AA5B3AA813BC5782001453C0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		AA5B3AAA13BC7667001453C0 /* STSContextMenuModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSContextMenuModule.h; sourceTree = "<group>"; };
 		AA5B3AAB13BC7667001453C0 /* STSContextMenuModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSContextMenuModule.m; sourceTree = "<group>"; };
+		AA671A7A17F205B3000A470C /* STVTabListCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STVTabListCtl.h; sourceTree = "<group>"; };
+		AA671A7B17F205B3000A470C /* STVTabListCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STVTabListCtl.m; sourceTree = "<group>"; };
+		AA671A7C17F205B3000A470C /* STVTabListCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STVTabListCtl.xib; sourceTree = "<group>"; };
 		AA6FCF3B15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquashContextMenuSheetCtl.h; sourceTree = "<group>"; };
 		AA6FCF3C15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquashContextMenuSheetCtl.m; sourceTree = "<group>"; };
 		AA6FCF3D15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SquashContextMenuSheetCtl.xib; sourceTree = "<group>"; };
@@ -375,6 +380,9 @@
 				AA21448517F027D800EDE661 /* STSidebarCtl.xib */,
 				AA21449417F05ED800EDE661 /* STSidebarResizeHandleView.h */,
 				AA21449517F05ED800EDE661 /* STSidebarResizeHandleView.m */,
+				AA671A7A17F205B3000A470C /* STVTabListCtl.h */,
+				AA671A7B17F205B3000A470C /* STVTabListCtl.m */,
+				AA671A7C17F205B3000A470C /* STVTabListCtl.xib */,
 			);
 			path = Sidebar;
 			sourceTree = "<group>";
@@ -597,6 +605,7 @@
 				AA6FCF3F15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib in Resources */,
 				AA6FCF4215D3F271008AE5AB /* SquashContextMenuItems.plist in Resources */,
 				AA21448717F027D800EDE661 /* STSidebarCtl.xib in Resources */,
+				AA671A7E17F205B3000A470C /* STVTabListCtl.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -654,6 +663,7 @@
 				AA21449C17F07C9B00EDE661 /* DMTabBar.m in Sources */,
 				AA21449D17F07C9B00EDE661 /* DMTabBarItem.m in Sources */,
 				AA2144A017F0B9FB00EDE661 /* STTabProxy.m in Sources */,
+				AA671A7D17F205B3000A470C /* STVTabListCtl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

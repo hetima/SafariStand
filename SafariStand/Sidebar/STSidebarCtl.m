@@ -9,6 +9,7 @@
 
 #import "STSidebarCtl.h"
 #import "STSidebarResizeHandleView.h"
+#import "STVTabListCtl.h"
 
 #import "STSafariConnect.h"
 
@@ -25,6 +26,14 @@
     
     STSidebarCtl* result=[[STSidebarCtl alloc]initWithNibName:@"STSidebarCtl" bundle:
                                      [NSBundle bundleWithIdentifier:kSafariStandBundleID]];
+    
+    return result;
+}
+
++(STSidebarCtl*)viewCtlWithCounterpartView:(NSView*)view
+{
+    STSidebarCtl* result=[STSidebarCtl viewCtl];
+    result.counterpartView=view;
     
     return result;
 }
@@ -48,12 +57,27 @@
 
 -(void)awakeFromNib
 {
+    
+    self.tabListCtl=[STVTabListCtl viewCtl];
+    [self.tabListCtl setupWithTabView:nil];
+    //setup tabview
     [self.oPrimaryTabView setTabViewType:NSNoTabsLineBorder];
+    //[self.oPrimaryTabView setDelegate:nil];
+    
+    NSTabViewItem* tabListItem=[[NSTabViewItem alloc]initWithIdentifier:@"tablist"];
+    [tabListItem setView:self.tabListCtl.view];
+    [self.oPrimaryTabView addTabViewItem:tabListItem];
+    [self.oPrimaryTabView selectTabViewItem:tabListItem];
+    
     [self.oSecondaryTabView setTabViewType:NSNoTabsNoBorder];
-    //test
+    //[self.oSecondaryTabView setDelegate:nil];
+
+    
+    //setup tabbar
     DMTabBarItem* itm=[DMTabBarItem tabBarItemWithIcon:STSafariBundleImageNamed(@"ToolbarBookmarksTemplate") tag:1];
     NSArray* itms=@[itm];
     self.oPrimaryTabbar.tabBarItems=itms;
+    
     [self.oPrimaryTabbar handleTabBarItemSelection:^(DMTabBarItemSelectionType selectionType, DMTabBarItem *targetTabBarItem, NSUInteger targetTabBarItemIndex) {
         if (selectionType == DMTabBarItemSelectionType_WillSelect) {
             //NSLog(@"Will select %lu/%@",targetTabBarItemIndex,targetTabBarItem);
@@ -70,6 +94,7 @@
         }
     }];
 
+    
 }
 
 

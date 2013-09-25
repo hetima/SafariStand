@@ -284,7 +284,7 @@ id STTabViewItemForWKView(id wkView)
 }
 
 //STTabSwitcherForWinCtl() でもいいか
-id STTabViewForWindow(NSWindow* win)
+id/* NSTabView */ STTabViewForWindow(NSWindow* win)
 {
     id result=nil;
     id winCtl=[win windowController];

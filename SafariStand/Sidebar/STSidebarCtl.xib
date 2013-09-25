@@ -53,7 +53,6 @@
 										<string key="NSFrame">{{-7, -10}, {352, 272}}</string>
 										<reference key="NSSuperview" ref="939233567"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="1053630129"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<array class="NSMutableArray" key="NSTabViewItems">
 											<object class="NSTabViewItem" id="565337887">
@@ -111,7 +110,6 @@
 										<string key="NSFrame">{{-7, -10}, {352, 286}}</string>
 										<reference key="NSSuperview" ref="808780104"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="582967245"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<array class="NSMutableArray" key="NSTabViewItems">
 											<object class="NSTabViewItem" id="533710356">
@@ -145,7 +143,6 @@
 										<string key="NSFrame">{{0, 273}, {338, 25}}</string>
 										<reference key="NSSuperview" ref="808780104"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<string key="NSClassName">DMTabBar</string>
 									</object>
@@ -236,6 +233,22 @@
 						<reference key="destination" ref="346899563"/>
 					</object>
 					<int key="connectionID">36</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">oPrimaryTabbar</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="843041861"/>
+					</object>
+					<int key="connectionID">37</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">oSecondaryTabbar</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="269681578"/>
+					</object>
+					<int key="connectionID">38</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -399,7 +412,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">36</int>
+			<int key="maxID">38</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

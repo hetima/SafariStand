@@ -128,8 +128,7 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
         return;
     }
     
-    STSidebarCtl* ctl=[STSidebarCtl viewCtl];
-    ctl.counterpartView=tabContentView;
+    STSidebarCtl* ctl=[STSidebarCtl viewCtlWithCounterpartView:tabContentView];
     
     BOOL rightSide=YES;
     CGFloat width=kSidebarFrameMinWidth;
