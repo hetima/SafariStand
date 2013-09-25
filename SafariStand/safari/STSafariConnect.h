@@ -57,6 +57,7 @@ id STSafariCurrentWKView();
 id STWKViewForTabViewItem(id tabViewItem);
 id STTabViewItemForWKView(id wkView);
 id STTabViewForWindow(NSWindow* win);
+NSView* /* TabContentView */ STTabContentViewForTabView(NSView* tabView);
 
 void STMoveTabViewItemToIndex(id tabViewItem, NSInteger idx);
 void STSafariMoveTabToNewWindow(NSTabViewItem* item);

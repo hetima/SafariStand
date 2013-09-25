@@ -297,6 +297,18 @@ id/* NSTabView */ STTabViewForWindow(NSWindow* win)
     return result;
 }
 
+NSView* /* TabContentView */ STTabContentViewForTabView(NSView* tabView)
+{
+    NSArray* subviews=[tabView subviews];
+    for (NSView* subview in subviews) {
+        if ([[subview className]isEqualToString:@"TabContentView"]) {
+            return subview;
+        }
+    }
+    return nil;
+}
+
+
 //-(void)[BrowserWindowControllerMac moveTab:toIndex:]
 void STMoveTabViewItemToIndex(id tabViewItem, NSInteger idx)
 {

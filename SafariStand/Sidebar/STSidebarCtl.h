@@ -20,10 +20,13 @@
 @property (weak) IBOutlet NSTabView* oPrimaryTabView;
 @property (weak) IBOutlet NSTabView* oSecondaryTabView;
 
-@property (nonatomic,assign)NSView* counterpartView;
+@property (nonatomic,weak)NSTabView* targetView;
+@property (nonatomic,weak)NSView* counterpartView;
 
 + (STSidebarCtl*)viewCtl;
-+(STSidebarCtl*)viewCtlWithCounterpartView:(NSView*)view;
+
+- (void)installToTabView:(NSTabView*)view sidebarWidth:(CGFloat)width rightSide:(BOOL)rightSide;
+- (void)uninstallFromTabView;
 
 - (BOOL)rightSide;
 - (void)setRightSide:(BOOL)rightSide;

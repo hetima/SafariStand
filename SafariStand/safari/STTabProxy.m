@@ -34,12 +34,12 @@ static void ST_tabViewDidChangeNum(id self, SEL _cmd, id /*NSTabView*/ tabView)
 
 //tabの選択を監視する
 static void (*orig_tabViewDidSelectItem)(id, SEL, ...); //TabBarView tabView:didSelectTabViewItem:
-static void ST_tabViewDidSelectItem(id self, SEL _cmd, id obj, id item)
+static void ST_tabViewDidSelectItem(id self, SEL _cmd, id tabView, id item)
 {
-	orig_tabViewDidSelectItem(self,_cmd, obj, item);
+    orig_tabViewDidSelectItem(self,_cmd, tabView, item);
     STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:item];
     proxy.isUnread=NO;
-	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidSelectItemNote object:obj];
+	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidSelectItemNote object:tabView];
 }
 
 //TabBarView - (void)replaceTabView:(id)arg1;
@@ -50,6 +50,8 @@ static void ST_replaceTabView(id self, SEL _cmd, id/*NSTabView*/ tabView)
 {
     orig_replaceTabView(self, _cmd, tabView);
     [[STTabProxyController si]maintainTabSelectionOrder:[STTabProxy tabProxyForTabViewItem:tabView]];
+    
+	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView]; //重要：こっちが先
 	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
     
 }

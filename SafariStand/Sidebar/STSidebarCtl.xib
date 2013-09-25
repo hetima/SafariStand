@@ -50,9 +50,10 @@
 									<object class="NSTabView" id="568882836">
 										<reference key="NSNextResponder" ref="939233567"/>
 										<int key="NSvFlags">18</int>
-										<string key="NSFrame">{{-7, -10}, {352, 272}}</string>
+										<string key="NSFrameSize">{338, 256}</string>
 										<reference key="NSSuperview" ref="939233567"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="1053630129"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<array class="NSMutableArray" key="NSTabViewItems">
 											<object class="NSTabViewItem" id="565337887">
@@ -60,10 +61,10 @@
 												<object class="NSView" key="NSView" id="1053630129">
 													<reference key="NSNextResponder" ref="568882836"/>
 													<int key="NSvFlags">256</int>
-													<string key="NSFrame">{{10, 33}, {332, 226}}</string>
+													<string key="NSFrameSize">{338, 256}</string>
 													<reference key="NSSuperview" ref="568882836"/>
 													<reference key="NSWindow"/>
-													<reference key="NSNextKeyView" ref="568882836"/>
+													<reference key="NSNextKeyView"/>
 													<string key="NSReuseIdentifierKey">_NS:11</string>
 												</object>
 												<string key="NSLabel">Tab</string>
@@ -85,7 +86,7 @@
 											<double key="NSSize">13</double>
 											<int key="NSfFlags">1044</int>
 										</object>
-										<int key="NSTvFlags">0</int>
+										<int key="NSTvFlags">6</int>
 										<bool key="NSAllowTruncatedLabels">YES</bool>
 										<bool key="NSDrawsBackground">YES</bool>
 										<array class="NSMutableArray" key="NSSubviews">
@@ -107,9 +108,10 @@
 									<object class="NSTabView" id="346899563">
 										<reference key="NSNextResponder" ref="808780104"/>
 										<int key="NSvFlags">18</int>
-										<string key="NSFrame">{{-7, -10}, {352, 286}}</string>
+										<string key="NSFrameSize">{338, 273}</string>
 										<reference key="NSSuperview" ref="808780104"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="582967245"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<array class="NSMutableArray" key="NSTabViewItems">
 											<object class="NSTabViewItem" id="533710356">
@@ -117,10 +119,10 @@
 												<object class="NSView" key="NSView" id="582967245">
 													<reference key="NSNextResponder" ref="346899563"/>
 													<int key="NSvFlags">256</int>
-													<string key="NSFrame">{{10, 33}, {332, 240}}</string>
+													<string key="NSFrameSize">{338, 273}</string>
 													<reference key="NSSuperview" ref="346899563"/>
 													<reference key="NSWindow"/>
-													<reference key="NSNextKeyView" ref="269681578"/>
+													<reference key="NSNextKeyView" ref="346899563"/>
 													<string key="NSReuseIdentifierKey">_NS:11</string>
 												</object>
 												<string key="NSLabel">Tab</string>
@@ -130,7 +132,7 @@
 										</array>
 										<reference key="NSSelectedTabViewItem" ref="533710356"/>
 										<reference key="NSFont" ref="589175387"/>
-										<int key="NSTvFlags">0</int>
+										<int key="NSTvFlags">6</int>
 										<bool key="NSAllowTruncatedLabels">YES</bool>
 										<bool key="NSDrawsBackground">YES</bool>
 										<array class="NSMutableArray" key="NSSubviews">
@@ -143,6 +145,7 @@
 										<string key="NSFrame">{{0, 273}, {338, 25}}</string>
 										<reference key="NSSuperview" ref="808780104"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<string key="NSClassName">DMTabBar</string>
 									</object>

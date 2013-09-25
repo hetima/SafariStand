@@ -9,6 +9,7 @@
 #define STTabProxyCreatedNote @"STTabProxyCreatedNote"
 #define STTabViewDidChangeNote @"STTabViewDidChangeNote"
 #define STTabViewDidSelectItemNote @"STTabViewDidSelectItemNote"
+#define STTabViewDidReplaceNote @"STTabViewDidReplaceNote"
 
 
 @interface STTabProxyController : NSObject {

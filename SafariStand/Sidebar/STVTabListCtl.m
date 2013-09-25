@@ -38,6 +38,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
+
 - (void)setupWithTabView:(NSTabView*)tabView
 {
     [self updateTabs:tabView];
@@ -56,7 +61,7 @@
 - (void)tabViewUpdated:(NSNotification*)note
 {
     NSTabView* tabView=[note object];
-    if ([[self view]window]==[tabView window]) {
+    if (self.view.window==[tabView window]) {
         [self updateTabs:tabView];
     }
 }
@@ -64,7 +69,7 @@
 - (void)tabViewItemSelected:(NSNotification*)note
 {
     NSTabView* tabView=[note object];
-    if ([[self view]window]==[tabView window]) {
+    if (self.view.window==[tabView window]) {
         [self takeSelectionFromTabView:tabView];
     }
 }

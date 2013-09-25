@@ -8,10 +8,12 @@
 
 
 #import "STSidebarCtl.h"
+#import "STTabProxy.h"
 #import "STSidebarResizeHandleView.h"
 #import "STVTabListCtl.h"
 
 #import "STSafariConnect.h"
+#import "NSObject+HTAssociatedObject.h"
 
 #import "DMTabBar.h"
 
@@ -30,19 +32,12 @@
     return result;
 }
 
-+(STSidebarCtl*)viewCtlWithCounterpartView:(NSView*)view
-{
-    STSidebarCtl* result=[STSidebarCtl viewCtl];
-    result.counterpartView=view;
-    
-    return result;
-}
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Initialization code here.
+        self.targetView=nil;
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewReplaced:) name:STTabViewDidReplaceNote object:nil];
     }
     
     return self;
@@ -50,9 +45,62 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
     LOG(@"STSidebarCtl d");
 }
 
+- (void)installToTabView:(NSTabView*)tabView sidebarWidth:(CGFloat)width rightSide:(BOOL)rightSide
+{
+    if (self.targetView) {
+        [self uninstallFromTabView];
+    }
+    
+    self.targetView=tabView;
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewItemSelected:) name:STTabViewDidSelectItemNote object:self.targetView];
+    
+    
+    //sidebar の frame を仮セット
+    NSRect sidebarFrame=[tabView frame];
+    sidebarFrame.size.width=width;
+    
+    [self.view setFrame:sidebarFrame];
+    [tabView addSubview:self.view];
+    
+    //layout
+    [self layout:rightSide];
+     
+}
+
+- (void)uninstallFromTabView
+{
+    if (!self.targetView) {
+        return;
+    }
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:STTabViewDidSelectItemNote object:self.targetView];
+    [self.view removeFromSuperview];
+    
+    //TabContentView を修正
+    NSRect counterpartFrame=NSMakeRect(0, 0, NSWidth(self.targetView.frame), NSHeight(self.targetView.frame));
+    [self.counterpartView setFrame:counterpartFrame];
+    
+    self.targetView=nil;
+}
+
+- (void)tabViewReplaced:(NSNotification*)note
+{
+    //古い tabView は既に window から取り除かれているので self.view.window==nil
+    LOG(@"%@",self.view.superview);
+    NSTabView* tabView=[note object];
+    STSidebarCtl* ctl=[tabView.window htaoValueForKey:@"sidebarCtl"];
+    if (self==ctl) {
+        [self installToTabView:tabView sidebarWidth:NSWidth(self.view.frame) rightSide:[self rightSide]];
+    }
+}
+
+- (void)tabViewItemSelected:(NSNotification*)note
+{
+    [self layout:[self rightSide]];
+}
 
 
 -(void)awakeFromNib
@@ -106,12 +154,27 @@
 
 - (void)setRightSide:(BOOL)rightSide
 {
+    BOOL currentSide=[(STSidebarFrameView*)self.view rightSide];
+    if (currentSide != rightSide) {
+        [self layout:rightSide];
+    }
+}
+
+
+- (void)layout:(BOOL)rightSide
+{
+    NSView* counterpartView=STTabContentViewForTabView(self.targetView);
+    if (!counterpartView) {
+        NSLog(@"Error: TabContentView not found.");
+        return;
+    }
+    self.counterpartView=counterpartView;
     
     [(STSidebarFrameView*)self.view setRightSide:rightSide];
     
-    NSRect counterpartFrame=self.counterpartView.frame;
-    NSRect sidebarFrame=self.view.frame;
-    NSRect unionRect=NSUnionRect(counterpartFrame, sidebarFrame);
+    NSRect counterpartFrame=NSMakeRect(0, 0, NSWidth(self.targetView.frame), NSHeight(self.targetView.frame));
+    NSRect sidebarFrame=NSMakeRect(0, 0, NSWidth(self.view.frame), NSHeight(self.targetView.frame));
+    NSRect unionRect=counterpartFrame;
     
     counterpartFrame.size.width=NSWidth(unionRect)-NSWidth(sidebarFrame);
     
@@ -148,6 +211,8 @@
     }
 
 }
+
+#pragma mark - NSSplitView
 
 - (CGFloat)counterpartResizeLimit
 {
@@ -197,9 +262,6 @@
 }
 
 
-#pragma mark - NSSplitView delegate
-
-
 - (void)splitViewDidResizeSubviews:(NSNotification *)notification;
 {
 
@@ -220,6 +282,7 @@
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
 {
 #define kSplitViewBottomMinHeight 25
+
     if (proposedMin<kSplitViewBottomMinHeight) {
         return kSplitViewBottomMinHeight;
     }
@@ -231,9 +294,7 @@
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
 {
 #define kSplitViewBottomMinHeight 25
-    LOG(@"proposedMax %lu,%2f", dividerIndex, proposedMax);
 
-    
     return proposedMax-kSplitViewBottomMinHeight;
 }
 
@@ -268,12 +329,6 @@
         
     }
     return self;
-}
-
-- (void)drawRect:(NSRect)dirtyRect
-{
-//    [[NSColor darkGrayColor]set];
-//    NSFrameRectWithWidth([self bounds], 1.0);
 }
 
 
