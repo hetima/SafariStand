@@ -18,5 +18,11 @@ http://hetima.com/
 https://twitter.com/hetima
 
 # License
+SafariStand  
+MIT License. Copyright (c) 2013 hetima
 
-MIT License
+[HTSymbolHook](https://github.com/hetima/HTSymbolHook)  
+MIT License. Copyright (c) 2013 hetima
+
+[DMTabBar](https://github.com/malcommac/DMTabBar)  
+MIT License. Copyright (c) 2012 Daniele Margutti
