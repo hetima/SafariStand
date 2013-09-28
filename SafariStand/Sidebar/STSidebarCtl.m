@@ -21,6 +21,10 @@
 
 @end
 
+#define kTabListTag 1
+#define kTabListIdentifier @"tablist"
+
+
 @implementation STSidebarCtl
 
 +(STSidebarCtl*)viewCtl
@@ -112,7 +116,7 @@
     [self.oPrimaryTabView setTabViewType:NSNoTabsNoBorder];
     //[self.oPrimaryTabView setDelegate:nil];
     
-    NSTabViewItem* tabListItem=[[NSTabViewItem alloc]initWithIdentifier:@"tablist"];
+    NSTabViewItem* tabListItem=[[NSTabViewItem alloc]initWithIdentifier:kTabListIdentifier];
     [tabListItem setView:self.tabListCtl.view];
     [self.oPrimaryTabView addTabViewItem:tabListItem];
     [self.oPrimaryTabView selectTabViewItem:tabListItem];
@@ -122,23 +126,25 @@
 
     
     //setup tabbar
-    DMTabBarItem* itm=[DMTabBarItem tabBarItemWithIcon:STSafariBundleImageNamed(@"ToolbarBookmarksTemplate") tag:1];
+    DMTabBarItem* itm=[DMTabBarItem tabBarItemWithIcon:[NSImage imageNamed:@"NSIconViewTemplate"] tag:kTabListTag];
     NSArray* itms=@[itm];
     self.oPrimaryTabbar.tabBarItems=itms;
     
     [self.oPrimaryTabbar handleTabBarItemSelection:^(DMTabBarItemSelectionType selectionType, DMTabBarItem *targetTabBarItem, NSUInteger targetTabBarItemIndex) {
         if (selectionType == DMTabBarItemSelectionType_WillSelect) {
-            //NSLog(@"Will select %lu/%@",targetTabBarItemIndex,targetTabBarItem);
+
         } else if (selectionType == DMTabBarItemSelectionType_DidSelect) {
-            //NSLog(@"Did select %lu/%@",targetTabBarItemIndex,targetTabBarItem);
+            if (targetTabBarItem.tag==kTabListTag) {
+                [self.oPrimaryTabView selectTabViewItemWithIdentifier:kTabListIdentifier];
+            }
         }
     }];
     
     [self.oSecondaryTabbar handleTabBarItemSelection:^(DMTabBarItemSelectionType selectionType, DMTabBarItem *targetTabBarItem, NSUInteger targetTabBarItemIndex) {
         if (selectionType == DMTabBarItemSelectionType_WillSelect) {
-            //NSLog(@"Will select %lu/%@",targetTabBarItemIndex,targetTabBarItem);
+
         } else if (selectionType == DMTabBarItemSelectionType_DidSelect) {
-            //NSLog(@"Did select %lu/%@",targetTabBarItemIndex,targetTabBarItem);
+
         }
     }];
 
