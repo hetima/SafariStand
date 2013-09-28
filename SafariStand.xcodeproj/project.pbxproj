@@ -57,6 +57,7 @@
 		AA671B2B17F704FF000A470C /* udis86.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1E17F704FF000A470C /* udis86.c */; };
 		AA671B2C17F704FF000A470C /* mach_override.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1F17F704FF000A470C /* mach_override.c */; };
 		AA671B2D17F704FF000A470C /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = AA671B2117F704FF000A470C /* README.markdown */; };
+		AA671B3017F71D96000A470C /* STWKClientHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA671B2F17F71D96000A470C /* STWKClientHook.m */; };
 		AA6FCF3E15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FCF3C15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA6FCF3F15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF3D15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib */; };
 		AA6FCF4215D3F271008AE5AB /* SquashContextMenuItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF4415D3F271008AE5AB /* SquashContextMenuItems.plist */; };
@@ -190,6 +191,8 @@
 		AA671B2017F704FF000A470C /* mach_override.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_override.h; sourceTree = "<group>"; };
 		AA671B2117F704FF000A470C /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		AA671B2217F704FF000A470C /* udis86.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = udis86.h; sourceTree = "<group>"; };
+		AA671B2E17F71D96000A470C /* STWKClientHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWKClientHook.h; sourceTree = "<group>"; };
+		AA671B2F17F71D96000A470C /* STWKClientHook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWKClientHook.m; sourceTree = "<group>"; };
 		AA6FCF3B15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquashContextMenuSheetCtl.h; sourceTree = "<group>"; };
 		AA6FCF3C15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquashContextMenuSheetCtl.m; sourceTree = "<group>"; };
 		AA6FCF3D15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SquashContextMenuSheetCtl.xib; sourceTree = "<group>"; };
@@ -281,6 +284,8 @@
 				AA04F85213B88BF800A8C548 /* STSafariConnect.m */,
 				AA21449E17F0B91200EDE661 /* STTabProxy.h */,
 				AA21449F17F0B91200EDE661 /* STTabProxy.m */,
+				AA671B2E17F71D96000A470C /* STWKClientHook.h */,
+				AA671B2F17F71D96000A470C /* STWKClientHook.m */,
 			);
 			path = safari;
 			sourceTree = "<group>";
@@ -752,6 +757,7 @@
 				AA671B2A17F704FF000A470C /* syn.c in Sources */,
 				AA671B2B17F704FF000A470C /* udis86.c in Sources */,
 				AA671B2C17F704FF000A470C /* mach_override.c in Sources */,
+				AA671B3017F71D96000A470C /* STWKClientHook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
