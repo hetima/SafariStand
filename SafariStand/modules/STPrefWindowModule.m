@@ -13,7 +13,10 @@
 #import "STSContextMenuModule.h"
 
 
-@implementation STPrefWindowModule
+@implementation STPrefWindowModule {
+
+    STCTabWithToolbarWinCtl* _prefWinCtl;
+}
 
 /*
  @interface SCUserDefaults : NSUserDefaults
@@ -46,18 +49,18 @@
 
 -(IBAction)actShowPrefWindow:(id)sender
 {
-    if(!prefWinCtl){
-        prefWinCtl=[[STPrefWindowCtl alloc]initWithWindowNibName:@"STCPrefWin"];
-        [prefWinCtl window];
+    if(!_prefWinCtl){
+        _prefWinCtl=[[STPrefWindowCtl alloc]initWithWindowNibName:@"STCPrefWin"];
+        [_prefWinCtl window];
         [[STCSafariStandCore si]sendMessage:@selector(stMessagePrefWindowLoaded:) toAllModule:self];
     }
-    [prefWinCtl showWindow:self];
+    [_prefWinCtl showWindow:self];
 }
 
 
 -(void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon
 {
-    [prefWinCtl addPane:view withIdentifier:identifier title:title icon:icon];
+    [_prefWinCtl addPane:view withIdentifier:identifier title:title icon:icon];
 }
 
 

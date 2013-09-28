@@ -7,11 +7,7 @@
 
 #define kSafariStandPrefDomain @"com.hetima.SafariStand"
 
-@interface STCSafariStandCore : NSObject {
-    BOOL _startup;
-    NSMutableDictionary* _modules;
-    
-}
+@interface STCSafariStandCore : NSObject
 
 @property(nonatomic,readonly)NSMenu *standMenu;
 

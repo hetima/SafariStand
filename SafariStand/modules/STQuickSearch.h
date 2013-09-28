@@ -8,13 +8,9 @@
 #define kDefaultSeedShortcut @"default"
 #define STQSToolbarIdentifier @"com.hetima.SafariStand.QSToolbar"
 
-@class HTQuerySeedEditViewCtl;
 
-@interface STQuickSearch : STCModule <HTQuerySeedsBinder>{
-    HTQuerySeedEditViewCtl* querySeedEditViewCtl;
-    HTQuerySeed* googleQuerySeed;
-    HTQuerySeed* googleImageQuerySeed;
-}
+@interface STQuickSearch : STCModule <HTQuerySeedsBinder>
+
 @property(nonatomic,retain)NSMutableArray* querySeeds;
 @property(nonatomic,retain)NSArray* defaultQuerySeeds;
 @property(nonatomic,retain)NSMutableArray* searchItLaterStrings;

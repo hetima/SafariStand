@@ -6,10 +6,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface STSToolbarModule : STCModule {
-    NSMutableDictionary* _toolbarItemClasses; //key=itemIdentifier, obj=object
-    NSMutableArray* _toolbarIdentifiers;
-}
+@interface STSToolbarModule : STCModule
 
 - (NSToolbarItem *)_toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag;
 - (NSArray*)toolbarIdentifiers;

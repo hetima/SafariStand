@@ -12,8 +12,10 @@
 #import "STClassifyDownloadAdvSheetCtl.h"
 
 
-@implementation STSDownloadModule
-@synthesize advancedFilters, basicExp;
+@implementation STSDownloadModule {
+    STClassifyDownloadAdvSheetCtl* _advSheetCtl;
+}
+
 /*
  1: DownloadsPath/file.name.download
  2: DownloadsPath/modPath/file.name
@@ -88,7 +90,7 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 {
     self = [super initWithStand:core];
     if (self) {
-        advSheetCtl=nil;
+        _advSheetCtl=nil;
         [self loadFromStorage];
 
         orig_pathWithUniqueFilenameForPath = (id(*)(id, SEL, ...))RMF(NSClassFromString(@"NSFileManager"),
@@ -146,12 +148,12 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 
 -(NSWindow*)advancedSettingSheet
 {
-    if (!advSheetCtl) {
-        advSheetCtl=[[STClassifyDownloadAdvSheetCtl alloc]initWithWindowNibName:@"STClassifyDownloadAdvSheet"];
-        advSheetCtl.arrayBinder=self;
-        [advSheetCtl window];
+    if (!_advSheetCtl) {
+        _advSheetCtl=[[STClassifyDownloadAdvSheetCtl alloc]initWithWindowNibName:@"STClassifyDownloadAdvSheet"];
+        _advSheetCtl.arrayBinder=self;
+        [_advSheetCtl window];
     }
-    return [advSheetCtl window];
+    return [_advSheetCtl window];
 }
 
 

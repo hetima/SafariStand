@@ -15,6 +15,7 @@
 #define kSearchButtonMargin 8
 
 @implementation STQSToolbarSearchBtnCell
+
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
     NSRect drawRect=NSInsetRect(cellFrame, kSearchButtonMargin, 4);
@@ -245,6 +246,7 @@
     }
     
 }
+
 - (BOOL)performKeyEquivalent:(NSEvent *)theEvent
 {
 	if([theEvent type]==NSKeyDown){

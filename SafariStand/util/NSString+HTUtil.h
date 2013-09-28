@@ -7,10 +7,10 @@
 
 
 @interface NSString (NSString_HTUtil)
-+(NSString*)HTUUIDStringWithFormat:(NSString*)ptn;
--(NSString*)htEscapeWithEncoding:(NSStringEncoding)enco;
--(NSArray*)htArrayWithStandardSeparation;
--(NSString*)htModeratedStringWithin:(NSInteger)max;
++ (NSString*)HTUUIDStringWithFormat:(NSString*)ptn;
+- (NSString*)htEscapeWithEncoding:(NSStringEncoding)enco;
+- (NSArray*)htArrayWithStandardSeparation;
+- (NSString*)htModeratedStringWithin:(NSInteger)max;
 + (NSString *)htFileSizeStringFromSize:(uint64_t)siz;
 + (NSString *)htVerboseFileSizeStringFromSize:(uint64_t)siz;
 

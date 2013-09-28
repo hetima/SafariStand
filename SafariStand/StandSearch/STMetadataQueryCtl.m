@@ -19,7 +19,10 @@
  */
 
 
-@implementation STMetadataQueryCtl
+@implementation STMetadataQueryCtl {
+    NSMetadataQuery* _query;
+	NSPredicate*	_typeFilter;
+}
 
 +(STMetadataQueryCtl*)bookmarksSearchCtl
 {

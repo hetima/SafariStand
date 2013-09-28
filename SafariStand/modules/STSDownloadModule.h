@@ -5,13 +5,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class STClassifyDownloadAdvSheetCtl;
 
-@interface STSDownloadModule : STCModule {
-    STClassifyDownloadAdvSheetCtl* advSheetCtl;
-    NSMutableArray* advancedFilters;
-    NSString* basicExp;
-}
+@interface STSDownloadModule : STCModule
+
 @property(nonatomic,retain)NSMutableArray* advancedFilters;
 @property(nonatomic,retain)NSString* basicExp;
 -(NSWindow*)advancedSettingSheet;

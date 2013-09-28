@@ -21,10 +21,12 @@ defaults delete com.apple.Safari Stand_QuerySeeds
 
 STQuickSearch* quickSearchModule;
 
-@implementation STQuickSearch
-@synthesize querySeeds=_querySeeds;
-@synthesize searchItLaterStrings=_searchItLaterStrings;
-@synthesize defaultQuerySeeds=_defaultQuerySeeds;
+@implementation STQuickSearch {
+    HTQuerySeedEditViewCtl* _querySeedEditViewCtl;
+    HTQuerySeed* _googleQuerySeed;
+    HTQuerySeed* _googleImageQuerySeed;
+}
+
 
 + (STQuickSearch *)si
 {    
@@ -86,7 +88,7 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
                             [NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding],@"encoding",
                             //[NSString HTUUIDStringWithFormat:@"%@"],@"uuid",
                             nil];
-        googleQuerySeed=[[HTQuerySeed alloc]initWithDict:dict];
+        _googleQuerySeed=[[HTQuerySeed alloc]initWithDict:dict];
         
         dict=[NSDictionary dictionaryWithObjectsAndKeys:
                             @"GoogleImage",@"title",
@@ -97,7 +99,7 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
                             [NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding],@"encoding",
                             //[NSString HTUUIDStringWithFormat:@"%@"],@"uuid",
                             nil];
-        googleImageQuerySeed=[[HTQuerySeed alloc]initWithDict:dict];
+        _googleImageQuerySeed=[[HTQuerySeed alloc]initWithDict:dict];
         
         
         [self loadFromStorage];
@@ -153,13 +155,13 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
 
 -(void)stMessagePrefWindowLoaded:(STPrefWindowModule*)sender
 {
-    querySeedEditViewCtl=[[HTQuerySeedEditViewCtl alloc]initWithNibName:@"HTQuerySeedEditViewCtl" 
+    _querySeedEditViewCtl=[[HTQuerySeedEditViewCtl alloc]initWithNibName:@"HTQuerySeedEditViewCtl"
                             bundle:[NSBundle bundleWithIdentifier:kSafariStandBundleID]];
 
-    querySeedEditViewCtl.querySeedsBinder=self;
-    NSView* sqView=[querySeedEditViewCtl view];
+    _querySeedEditViewCtl.querySeedsBinder=self;
+    NSView* sqView=[_querySeedEditViewCtl view];
     
-    [querySeedEditViewCtl setupAddPopup:self.defaultQuerySeeds];
+    [_querySeedEditViewCtl setupAddPopup:self.defaultQuerySeeds];
     
     //STPrefSearch
     NSString* imgPath=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForImageResource:@"STPrefSearch"];
@@ -220,7 +222,7 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
         }
     }
     if(idx==0){
-        HTQuerySeed* one=googleQuerySeed;
+        HTQuerySeed* one=_googleQuerySeed;
         NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:one.title action:sel keyEquivalent:@""];
         [itm setKeyEquivalentModifierMask:0];
         [itm setTarget:target];
@@ -314,14 +316,14 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
 
 -(void)sendGoogleQuerySeedWithSearchString:(NSString*)inStr  policy:(int)policy
 {
-    NSURLRequest* req=[googleQuerySeed requestWithSearchString:inStr];
+    NSURLRequest* req=[_googleQuerySeed requestWithSearchString:inStr];
     STAddSearchStringHistory(inStr);
     STSafariGoToRequestWithPolicy(req, policy);
 }
 
 -(void)sendGoogleQuerySeedWithoutAddHistoryWithSearchString:(NSString*)inStr  policy:(int)policy
 {
-    NSURLRequest* req=[googleQuerySeed requestWithSearchString:inStr];
+    NSURLRequest* req=[_googleQuerySeed requestWithSearchString:inStr];
     STSafariGoToRequestWithPolicy(req, policy);
 }
 
@@ -330,7 +332,7 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
     if (![inStr hasPrefix:@"http"]) {
         return;
     }
-    NSURLRequest* req=[googleImageQuerySeed requestWithSearchString:inStr];
+    NSURLRequest* req=[_googleImageQuerySeed requestWithSearchString:inStr];
     STSafariGoToRequestWithPolicy(req, policy);
 }
 
@@ -339,7 +341,7 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
 {
     HTQuerySeed* defaultSeed=[self querySeedForShortcut:kDefaultSeedShortcut];
     if (!defaultSeed) {
-        defaultSeed=googleQuerySeed;
+        defaultSeed=_googleQuerySeed;
     }
     [self sendQuerySeed:defaultSeed withSearchString:inStr  policy:policy];
     

@@ -12,10 +12,8 @@
 #define STTabViewDidReplaceNote @"STTabViewDidReplaceNote"
 
 
-@interface STTabProxyController : NSObject {
-    NSMutableArray* allTabProxy;
-    
-}
+@interface STTabProxyController : NSObject
+
 @property(nonatomic, retain)NSMutableArray* allTabProxy;
 
 + (STTabProxyController *)si;

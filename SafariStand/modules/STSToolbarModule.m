@@ -11,7 +11,10 @@
 
 static STSToolbarModule* toolbarModule;
 
-@implementation STSToolbarModule
+@implementation STSToolbarModule {
+    NSMutableDictionary* _toolbarItemClasses; //key=itemIdentifier, obj=object
+    NSMutableArray* _toolbarIdentifiers;
+}
 
 
 //- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
@@ -117,7 +120,8 @@ static id ST_TBallowedItemIdentifiers(id self, SEL _cmd, id toolbar)
     return nil;
 }
 
--(NSArray*)toolbarIdentifiers{
+-(NSArray*)toolbarIdentifiers
+{
     return _toolbarIdentifiers;
 }
 

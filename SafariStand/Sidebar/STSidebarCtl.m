@@ -126,9 +126,10 @@
 
     
     //setup tabbar
-    DMTabBarItem* itm=[DMTabBarItem tabBarItemWithIcon:[NSImage imageNamed:@"NSIconViewTemplate"] tag:kTabListTag];
-    NSArray* itms=@[itm];
-    self.oPrimaryTabbar.tabBarItems=itms;
+    self.oPrimaryTabbar.tabBarItems=({
+        DMTabBarItem* itm=[DMTabBarItem tabBarItemWithIcon:[NSImage imageNamed:@"NSIconViewTemplate"] tag:kTabListTag];
+        @[itm];
+    });
     
     [self.oPrimaryTabbar handleTabBarItemSelection:^(DMTabBarItemSelectionType selectionType, DMTabBarItem *targetTabBarItem, NSUInteger targetTabBarItemIndex) {
         if (selectionType == DMTabBarItemSelectionType_WillSelect) {

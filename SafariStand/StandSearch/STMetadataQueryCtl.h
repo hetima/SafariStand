@@ -7,10 +7,8 @@
 
 @protocol STMetadataQueryCtlDelegate;
 
-@interface STMetadataQueryCtl : NSObject<NSMetadataQueryDelegate>{
-    NSMetadataQuery* _query;
-	NSPredicate*	_typeFilter;
-}
+@interface STMetadataQueryCtl : NSObject<NSMetadataQueryDelegate>
+
 @property (nonatomic,retain) NSString* title;
 @property (nonatomic,assign) id delegate;
 @property (nonatomic,assign) BOOL isExpanded;

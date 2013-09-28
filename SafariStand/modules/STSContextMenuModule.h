@@ -7,10 +7,8 @@
 
 @class SquashContextMenuSheetCtl;
 
-@interface STSContextMenuModule : STCModule {
+@interface STSContextMenuModule : STCModule
 
-    
-}
 @property (nonatomic,retain)SquashContextMenuSheetCtl* squashSheetCtl;
 
 -(NSWindow*)advancedSquashSettingSheet;

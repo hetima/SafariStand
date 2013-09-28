@@ -35,6 +35,7 @@
 {
     [self.querySeedsBinder setQuerySeeds:qss];
 }
+
 -(NSMutableArray*)querySeeds
 {
     return [self.querySeedsBinder querySeeds];

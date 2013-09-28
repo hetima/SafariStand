@@ -12,7 +12,11 @@
 #import "STTabProxy.h"
 #import "STWKClientHook.h"
 
-@implementation STCSafariStandCore
+@implementation STCSafariStandCore {
+    BOOL _startup;
+    NSMutableDictionary* _modules;
+    
+}
 
 static STCSafariStandCore *sharedInstance;
 

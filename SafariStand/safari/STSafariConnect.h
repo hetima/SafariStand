@@ -11,7 +11,7 @@
 //2==新規ウィンドウ  5==新規ウィンドウうしろ
 //4==tab 5==tabうしろ
 
-enum safariWindowPolicy{
+enum safariWindowPolicy {
     poNormal=0, //000
     poNormal_back=1, //001
     poNewWindow=2, //010

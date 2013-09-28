@@ -13,21 +13,7 @@ enum{
 
 
 @class STMetadataQueryCtl;
-@interface STStandSearchViewCtl : NSViewController{
-/*
-    STMetadataQueryCtl* bookmarksSearch;
-    STMetadataQueryCtl* historySearch;
-
-    NSOutlineView *oOutline;
-    
-    NSString* lastFindString;
-    NSProgressIndicator *oIndicator;
-    NSTextField *oStatusView;
-    NSSegmentedControl *oSearchTypeSegment;
-    NSMenu *oBMContextMenu;
-    */
-    NSInteger mode;
-}
+@interface STStandSearchViewCtl : NSViewController
 
 @property (nonatomic,retain) STMetadataQueryCtl* bookmarksSearch;
 @property (nonatomic,retain) STMetadataQueryCtl* historySearch;

@@ -12,17 +12,10 @@
 
 
 
-@implementation STStandSearchViewCtl
-/*
-@synthesize oOutline;
-@synthesize lastFindString;
-@synthesize oIndicator;
-@synthesize oStatusView;
-@synthesize oSearchTypeSegment;
-@synthesize oBMContextMenu;
-*/
+@implementation STStandSearchViewCtl {
+    NSInteger mode;
+}
 
-//@synthesize bookmarksSearch, historySearch;
 
 //(1,0) > addSubview : view retained(n,2) > reverseOwnership(n+1==1,n-1==1)
 +(STStandSearchViewCtl*)viewCtl
@@ -244,6 +237,7 @@
 		[item setIsExpanded:YES];
 	}
 }
+
 - (void)outlineViewItemDidCollapse:(NSNotification *)notification
 {
 	id item=[[notification userInfo]objectForKey:@"NSObject"];
@@ -253,9 +247,7 @@
 }
 
 //item object
-- (id)outlineView:(NSOutlineView*)outlineView 
-            child:(int)index 
-           ofItem:(id)item
+- (id)outlineView:(NSOutlineView*)outlineView child:(int)index ofItem:(id)item
 {
     if(self.oOutline != outlineView)return nil;
     if(item==nil){

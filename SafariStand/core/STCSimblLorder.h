@@ -6,8 +6,6 @@
 #import <Foundation/Foundation.h>
 
 
-@interface STCSimblLorder : NSObject {
-    
-}
+@interface STCSimblLorder : NSObject
 
 @end

@@ -10,7 +10,6 @@
 #import "NSString+HTUtil.h"
 
 @implementation HTQuerySeed
-@synthesize title,baseUrl,shortcut,encoding,method,posts,use,uuid,referrer;
 
 +(id)querySeed
 {
@@ -39,11 +38,11 @@
         self.baseUrl=[dic objectForKey:@"baseUrl"];
         self.shortcut=[dic objectForKey:@"shortcut"];
         self.encoding=[dic objectForKey:@"encoding"];
-        self.method=[dic objectForKey:@"method"]; if(!method)self.method=@"GET";
-        self.posts=[[dic objectForKey:@"posts"]mutableCopy]; if(!posts)self.posts=[NSMutableArray array];
-        self.use=[dic objectForKey:@"use"]; if(!use)self.use=[NSNumber numberWithBool:YES];
-        self.uuid=[dic objectForKey:@"uuid"]; if(!uuid)self.uuid=[NSString HTUUIDStringWithFormat:@"%@"];
-        self.referrer=[dic objectForKey:@"referrer"]; if(!referrer)self.referrer=@"";
+        self.method=[dic objectForKey:@"method"]; if(!_method)self.method=@"GET";
+        self.posts=[[dic objectForKey:@"posts"]mutableCopy]; if(!_posts)self.posts=[NSMutableArray array];
+        self.use=[dic objectForKey:@"use"]; if(!_use)self.use=[NSNumber numberWithBool:YES];
+        self.uuid=[dic objectForKey:@"uuid"]; if(!_uuid)self.uuid=[NSString HTUUIDStringWithFormat:@"%@"];
+        self.referrer=[dic objectForKey:@"referrer"]; if(!_referrer)self.referrer=@"";
     }
     
     return self;
@@ -51,25 +50,25 @@
 
 -(NSDictionary*)dictionaryData
 {
-    if(!title)self.title=@"";
-    if(!baseUrl)self.baseUrl=@"";
-    if(!shortcut)self.shortcut=@"";
-    if(!method)self.method=@"GET";
-    if(!encoding)self.encoding=[NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding];
-    if(!posts)self.posts=[NSMutableArray array];
-    if(!use)self.use=[NSNumber numberWithBool:YES];
-    if(!referrer)self.referrer=@"";
-    if(!uuid)self.uuid=[NSString HTUUIDStringWithFormat:@"%@"];
+    if(!_title)self.title=@"";
+    if(!_baseUrl)self.baseUrl=@"";
+    if(!_shortcut)self.shortcut=@"";
+    if(!_method)self.method=@"GET";
+    if(!_encoding)self.encoding=[NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding];
+    if(!_posts)self.posts=[NSMutableArray array];
+    if(!_use)self.use=[NSNumber numberWithBool:YES];
+    if(!_referrer)self.referrer=@"";
+    if(!_uuid)self.uuid=[NSString HTUUIDStringWithFormat:@"%@"];
     NSDictionary* result=[NSDictionary dictionaryWithObjectsAndKeys:
-                          title,@"title",
-                          baseUrl,@"baseUrl",
-                          shortcut,@"shortcut",
-                          encoding,@"encoding",
-                          method,@"method",
-                          posts,@"posts",
-                          use,@"use",
-                          referrer,@"referrer",
-                          uuid,@"uuid",
+                          _title, @"title",
+                          _baseUrl, @"baseUrl",
+                          _shortcut, @"shortcut",
+                          _encoding, @"encoding",
+                          _method, @"method",
+                          _posts, @"posts",
+                          _use, @"use",
+                          _referrer, @"referrer",
+                          _uuid, @"uuid",
                           nil];
 
     return result;
@@ -86,7 +85,8 @@
     return YES;
 }
 
--(NSURLRequest*)requestWithLocationString:(NSString*)inStr{
+-(NSURLRequest*)requestWithLocationString:(NSString*)inStr
+{
     NSString* serachStr=nil;
     
     NSRange aRange=[inStr rangeOfString:@" "];
@@ -96,7 +96,8 @@
     return [self requestWithSearchString:serachStr];
 }
 
--(NSURLRequest*)requestWithSearchString:(NSString*)inStr{
+-(NSURLRequest*)requestWithSearchString:(NSString*)inStr
+{
     if([self.baseUrl hasPrefix:@"quicksearch:"])return nil;
     NSStringEncoding enco=[self.encoding integerValue];
     inStr=[inStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];

@@ -6,9 +6,8 @@
 #import <Foundation/Foundation.h>
 
 
-@interface STSTitleBarModule : STCModule {
-@private
-    
-}
+@interface STSTitleBarModule : STCModule
+
 - (void)alterPathPopUpMenu:(NSMenu*)menu;
+
 @end

@@ -11,12 +11,7 @@
 @class STCTabWithToolbarWinCtl;
 
 
-@interface STPrefWindowModule : STCModule {
-@private
-    STCTabWithToolbarWinCtl* prefWinCtl;
-    
-
-}
+@interface STPrefWindowModule : STCModule
 
 -(void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon;
 @end

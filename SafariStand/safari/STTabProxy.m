@@ -18,7 +18,6 @@
 
 
 @implementation STTabProxyController
-@synthesize allTabProxy;
 
 
 static STTabProxyController *sharedInstance;

@@ -6,15 +6,10 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface STCTabWithToolbarWinCtl : NSWindowController {
-@private
-    IBOutlet NSToolbar *oToolbar;
-    IBOutlet NSTabView *oTabView;
-    
-    NSMutableArray* _identifiers;
-}
-@property (readonly)NSToolbar* oToolbar;
-@property (readonly)NSTabView* oTabView;
+@interface STCTabWithToolbarWinCtl : NSWindowController
+
+@property (nonatomic, weak) IBOutlet NSToolbar* oToolbar;
+@property (nonatomic, weak) IBOutlet NSTabView* oTabView;
 
 -(void)addIdentifier:(NSString*)identifier;
 

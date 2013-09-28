@@ -6,18 +6,8 @@
 #import <Foundation/Foundation.h>
 
 
-@interface HTQuerySeed : NSObject {
-    NSString* title;
-    NSString* baseUrl;
-    NSString* shortcut;
-    NSString* method;
-    NSNumber* encoding;
-    NSMutableArray* posts;
-    NSNumber* use;
-    NSString* referrer;
-    
-    NSString* uuid;
-}
+@interface HTQuerySeed : NSObject
+
 @property(nonatomic,retain)NSString* title;
 @property(nonatomic,retain)NSString* baseUrl;
 @property(nonatomic,retain)NSString* shortcut;

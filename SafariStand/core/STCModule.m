@@ -23,11 +23,6 @@ static char modulePrefContext;
     return self;
 }
 
-- (void)dealloc
-{
-
-}
-
 - (void)prefValue:(NSString*)key changed:(id)value
 {
 }

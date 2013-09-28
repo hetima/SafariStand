@@ -10,13 +10,15 @@
 #import "STCTabWithToolbarWinCtl.h"
 
 
-@implementation STCTabWithToolbarWinCtl
-@synthesize oToolbar, oTabView;
+@implementation STCTabWithToolbarWinCtl{
+    NSMutableArray* _identifiers;
+
+}
+
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
     if (self) {
-        // Initialization code here.
         _identifiers=[[NSMutableArray alloc]initWithCapacity:4];
     }
     return self;
@@ -31,9 +33,9 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    id selectedId=[[oTabView selectedTabViewItem]identifier];
+    id selectedId=[[self.oTabView selectedTabViewItem]identifier];
     
-    [oToolbar setSelectedItemIdentifier:selectedId];
+    [self.oToolbar setSelectedItemIdentifier:selectedId];
 }
 
 -(void)addIdentifier:(NSString*)identifier
@@ -43,13 +45,13 @@
 
 - (IBAction)actToolbarClick:(id)sender {
     NSString* idn=[sender itemIdentifier];
-    [oTabView selectTabViewItemWithIdentifier:idn];
-    [oToolbar setSelectedItemIdentifier:idn];
+    [self.oTabView selectTabViewItemWithIdentifier:idn];
+    [self.oToolbar setSelectedItemIdentifier:idn];
 }
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
 {
-    NSTabViewItem* tab=[oTabView tabViewItemAtIndex:[oTabView indexOfTabViewItemWithIdentifier:itemIdentifier]];
+    NSTabViewItem* tab=[self.oTabView tabViewItemAtIndex:[self.oTabView indexOfTabViewItemWithIdentifier:itemIdentifier]];
     NSImage* image=[tab htaoValueForKey:@"image"];
     NSString* label=[tab label];
 
