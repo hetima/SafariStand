@@ -46,6 +46,17 @@
 		AA5B3AAC13BC7667001453C0 /* STSContextMenuModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5B3AAB13BC7667001453C0 /* STSContextMenuModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA671A7D17F205B3000A470C /* STVTabListCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA671A7B17F205B3000A470C /* STVTabListCtl.m */; };
 		AA671A7E17F205B3000A470C /* STVTabListCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA671A7C17F205B3000A470C /* STVTabListCtl.xib */; };
+		AA671B2317F704FF000A470C /* HTSymbolHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA671B0D17F704FF000A470C /* HTSymbolHook.m */; };
+		AA671B2417F704FF000A470C /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = AA671B0F17F704FF000A470C /* .gitignore */; };
+		AA671B2517F704FF000A470C /* decode.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1117F704FF000A470C /* decode.c */; };
+		AA671B2617F704FF000A470C /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1417F704FF000A470C /* input.c */; };
+		AA671B2717F704FF000A470C /* itab.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1617F704FF000A470C /* itab.c */; };
+		AA671B2817F704FF000A470C /* syn-att.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1817F704FF000A470C /* syn-att.c */; };
+		AA671B2917F704FF000A470C /* syn-intel.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1917F704FF000A470C /* syn-intel.c */; };
+		AA671B2A17F704FF000A470C /* syn.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1A17F704FF000A470C /* syn.c */; };
+		AA671B2B17F704FF000A470C /* udis86.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1E17F704FF000A470C /* udis86.c */; };
+		AA671B2C17F704FF000A470C /* mach_override.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1F17F704FF000A470C /* mach_override.c */; };
+		AA671B2D17F704FF000A470C /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = AA671B2117F704FF000A470C /* README.markdown */; };
 		AA6FCF3E15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FCF3C15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA6FCF3F15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF3D15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib */; };
 		AA6FCF4215D3F271008AE5AB /* SquashContextMenuItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF4415D3F271008AE5AB /* SquashContextMenuItems.plist */; };
@@ -158,6 +169,27 @@
 		AA671A7A17F205B3000A470C /* STVTabListCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STVTabListCtl.h; sourceTree = "<group>"; };
 		AA671A7B17F205B3000A470C /* STVTabListCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STVTabListCtl.m; sourceTree = "<group>"; };
 		AA671A7C17F205B3000A470C /* STVTabListCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STVTabListCtl.xib; sourceTree = "<group>"; };
+		AA671B0C17F704FF000A470C /* HTSymbolHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTSymbolHook.h; sourceTree = "<group>"; };
+		AA671B0D17F704FF000A470C /* HTSymbolHook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTSymbolHook.m; sourceTree = "<group>"; };
+		AA671B0F17F704FF000A470C /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		AA671B1117F704FF000A470C /* decode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = decode.c; sourceTree = "<group>"; };
+		AA671B1217F704FF000A470C /* decode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = decode.h; sourceTree = "<group>"; };
+		AA671B1317F704FF000A470C /* extern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = extern.h; sourceTree = "<group>"; };
+		AA671B1417F704FF000A470C /* input.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = input.c; sourceTree = "<group>"; };
+		AA671B1517F704FF000A470C /* input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = input.h; sourceTree = "<group>"; };
+		AA671B1617F704FF000A470C /* itab.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = itab.c; sourceTree = "<group>"; };
+		AA671B1717F704FF000A470C /* itab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itab.h; sourceTree = "<group>"; };
+		AA671B1817F704FF000A470C /* syn-att.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "syn-att.c"; sourceTree = "<group>"; };
+		AA671B1917F704FF000A470C /* syn-intel.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "syn-intel.c"; sourceTree = "<group>"; };
+		AA671B1A17F704FF000A470C /* syn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = syn.c; sourceTree = "<group>"; };
+		AA671B1B17F704FF000A470C /* syn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = syn.h; sourceTree = "<group>"; };
+		AA671B1C17F704FF000A470C /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		AA671B1D17F704FF000A470C /* udint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = udint.h; sourceTree = "<group>"; };
+		AA671B1E17F704FF000A470C /* udis86.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udis86.c; sourceTree = "<group>"; };
+		AA671B1F17F704FF000A470C /* mach_override.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mach_override.c; sourceTree = "<group>"; };
+		AA671B2017F704FF000A470C /* mach_override.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_override.h; sourceTree = "<group>"; };
+		AA671B2117F704FF000A470C /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
+		AA671B2217F704FF000A470C /* udis86.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = udis86.h; sourceTree = "<group>"; };
 		AA6FCF3B15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquashContextMenuSheetCtl.h; sourceTree = "<group>"; };
 		AA6FCF3C15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquashContextMenuSheetCtl.m; sourceTree = "<group>"; };
 		AA6FCF3D15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SquashContextMenuSheetCtl.xib; sourceTree = "<group>"; };
@@ -258,6 +290,7 @@
 			children = (
 				AA12DA8313B73EFA0082EBB3 /* SafariStand */,
 				AAAC1AA213BE14AE00FB13A2 /* HTQuerySeed */,
+				AA671B0B17F704FF000A470C /* HTSymbolHook */,
 				AA12DA7C13B73EFA0082EBB3 /* Frameworks */,
 				AA12DA7B13B73EFA0082EBB3 /* Products */,
 			);
@@ -467,6 +500,50 @@
 			path = util;
 			sourceTree = "<group>";
 		};
+		AA671B0B17F704FF000A470C /* HTSymbolHook */ = {
+			isa = PBXGroup;
+			children = (
+				AA671B0C17F704FF000A470C /* HTSymbolHook.h */,
+				AA671B0D17F704FF000A470C /* HTSymbolHook.m */,
+				AA671B0E17F704FF000A470C /* mach_override */,
+			);
+			path = HTSymbolHook;
+			sourceTree = "<group>";
+		};
+		AA671B0E17F704FF000A470C /* mach_override */ = {
+			isa = PBXGroup;
+			children = (
+				AA671B0F17F704FF000A470C /* .gitignore */,
+				AA671B1017F704FF000A470C /* libudis86 */,
+				AA671B1F17F704FF000A470C /* mach_override.c */,
+				AA671B2017F704FF000A470C /* mach_override.h */,
+				AA671B2117F704FF000A470C /* README.markdown */,
+				AA671B2217F704FF000A470C /* udis86.h */,
+			);
+			path = mach_override;
+			sourceTree = "<group>";
+		};
+		AA671B1017F704FF000A470C /* libudis86 */ = {
+			isa = PBXGroup;
+			children = (
+				AA671B1117F704FF000A470C /* decode.c */,
+				AA671B1217F704FF000A470C /* decode.h */,
+				AA671B1317F704FF000A470C /* extern.h */,
+				AA671B1417F704FF000A470C /* input.c */,
+				AA671B1517F704FF000A470C /* input.h */,
+				AA671B1617F704FF000A470C /* itab.c */,
+				AA671B1717F704FF000A470C /* itab.h */,
+				AA671B1817F704FF000A470C /* syn-att.c */,
+				AA671B1917F704FF000A470C /* syn-intel.c */,
+				AA671B1A17F704FF000A470C /* syn.c */,
+				AA671B1B17F704FF000A470C /* syn.h */,
+				AA671B1C17F704FF000A470C /* types.h */,
+				AA671B1D17F704FF000A470C /* udint.h */,
+				AA671B1E17F704FF000A470C /* udis86.c */,
+			);
+			path = libudis86;
+			sourceTree = "<group>";
+		};
 		AA6FCF3415D3E953008AE5AB /* SquashContextMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -606,6 +683,8 @@
 				AA6FCF4215D3F271008AE5AB /* SquashContextMenuItems.plist in Resources */,
 				AA21448717F027D800EDE661 /* STSidebarCtl.xib in Resources */,
 				AA671A7E17F205B3000A470C /* STVTabListCtl.xib in Resources */,
+				AA671B2417F704FF000A470C /* .gitignore in Resources */,
+				AA671B2D17F704FF000A470C /* README.markdown in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -664,6 +743,15 @@
 				AA21449D17F07C9B00EDE661 /* DMTabBarItem.m in Sources */,
 				AA2144A017F0B9FB00EDE661 /* STTabProxy.m in Sources */,
 				AA671A7D17F205B3000A470C /* STVTabListCtl.m in Sources */,
+				AA671B2317F704FF000A470C /* HTSymbolHook.m in Sources */,
+				AA671B2517F704FF000A470C /* decode.c in Sources */,
+				AA671B2617F704FF000A470C /* input.c in Sources */,
+				AA671B2717F704FF000A470C /* itab.c in Sources */,
+				AA671B2817F704FF000A470C /* syn-att.c in Sources */,
+				AA671B2917F704FF000A470C /* syn-intel.c in Sources */,
+				AA671B2A17F704FF000A470C /* syn.c in Sources */,
+				AA671B2B17F704FF000A470C /* udis86.c in Sources */,
+				AA671B2C17F704FF000A470C /* mach_override.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
