@@ -1,5 +1,5 @@
 //
-//  STQuickSearch+SearchItLater.m
+//  STQuickSearchModule+SearchItLater.m
 //  SafariStand
 
 #if !__has_feature(objc_arc)
@@ -12,11 +12,11 @@
 
 #import "SafariStand.h"
 #import "STSafariConnect.h"
-#import "STQuickSearch.h"
+#import "STQuickSearchModule.h"
 
 
 
-@implementation STQuickSearch (STQuickSearch_SearchItLater)
+@implementation STQuickSearchModule (STQuickSearchModule_SearchItLater)
 
 -(NSMutableDictionary*)existingSearchItLaterForString:(NSString*)str
 {

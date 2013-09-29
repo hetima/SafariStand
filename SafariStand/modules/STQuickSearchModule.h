@@ -1,5 +1,5 @@
 //
-//  STQuickSearch.h
+//  STQuickSearchModule.h
 //  SafariStand
 
 #import <Foundation/Foundation.h>
@@ -9,12 +9,12 @@
 #define STQSToolbarIdentifier @"com.hetima.SafariStand.QSToolbar"
 
 
-@interface STQuickSearch : STCModule <HTQuerySeedsBinder>
+@interface STQuickSearchModule : STCModule <HTQuerySeedsBinder>
 
 @property(nonatomic,retain)NSMutableArray* querySeeds;
 @property(nonatomic,retain)NSArray* defaultQuerySeeds;
 @property(nonatomic,retain)NSMutableArray* searchItLaterStrings;
-+ (STQuickSearch *)si;
++ (STQuickSearchModule *)si;
 +(int)tabPolicy;
 
 
@@ -34,7 +34,7 @@
 @end
 
 
-@interface STQuickSearch (DataIo)
+@interface STQuickSearchModule (DataIo)
 -(NSArray*)enabledQuerySeeds;
 -(void)saveToStorage;
 -(void)loadFromStorage;
@@ -46,7 +46,7 @@
 @end
 
 
-@interface STQuickSearch (STQuickSearch_SearchItLater)
+@interface STQuickSearchModule (STQuickSearchModule_SearchItLater)
 -(NSMutableDictionary*)searchItLaterForString:(NSString*)str;
 -(NSMutableDictionary*)existingSearchItLaterForString:(NSString*)str;
 
@@ -55,11 +55,16 @@
 @end
 
 
-@interface STQuickSearch (QSToolbar)
+@interface STQuickSearchModule (QSToolbar)
 - (NSToolbarItem *)quickSearchToolbarItemWillBeInsertedIntoToolbar:(BOOL)flag;
 -(void)quickSearchToolbarPopupWithEvent:(NSEvent*)event forView:(NSButton*)view;
 
 @end
 
+@interface STQuickSearchModule (STQuickSearchModule_Completion)
+-(void)setupCompletionCtl;
+-(HTQuerySeed*)seedForLocationText:(NSString*)inStr;
+@end
 
-extern STQuickSearch* quickSearchModule;
+
+extern STQuickSearchModule* quickSearchModule;

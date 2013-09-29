@@ -10,7 +10,7 @@
 #import "STSearchItLaterWinCtl.h"
 
 #import "STSafariConnect.h"
-#import "STQuickSearch.h"
+#import "STQuickSearchModule.h"
 #import "HTArrayController.h"
 #import "HTWindowControllerRetainer.h"
 
@@ -24,8 +24,8 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
     
     if(!sharedSearchItLaterWinCtl){
         sharedSearchItLaterWinCtl=[[STSearchItLaterWinCtl alloc]initWithWindowNibName:@"STSearchItLaterWinCtl"];
-        sharedSearchItLaterWinCtl.silBinder=[STQuickSearch si];
-        [[STQuickSearch si] addObserver:sharedSearchItLaterWinCtl
+        sharedSearchItLaterWinCtl.silBinder=[STQuickSearchModule si];
+        [[STQuickSearchModule si] addObserver:sharedSearchItLaterWinCtl
                   forKeyPath:@"searchItLaterStrings" 
                      options:(NSKeyValueObservingOptionNew)
                      context:NULL];
@@ -78,7 +78,7 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
 - (void)windowWillClose:(NSNotification *)aNotification
 {
     if(sharedSearchItLaterWinCtl==self){
-        [[STQuickSearch si] removeObserver:self forKeyPath:@"searchItLaterStrings"];
+        [[STQuickSearchModule si] removeObserver:self forKeyPath:@"searchItLaterStrings"];
         sharedSearchItLaterWinCtl=nil;
     }
     //[self autorelease];
@@ -104,7 +104,7 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
         id m;
         NSMenu* actMenu=[[NSMenu alloc]initWithTitle:@""];
         
-        [[STQuickSearch si]insertItemsToMenu:actMenu withSelector:@selector(actQuickSearchMenuItem:) target:self];
+        [[STQuickSearchModule si]insertItemsToMenu:actMenu withSelector:@selector(actQuickSearchMenuItem:) target:self];
         if([actMenu numberOfItems]>0){
             NSString* label=[NSString stringWithFormat:@"Search \"%@\"", [itm objectForKey:@"val"]];
             m=[[NSMenuItem alloc]initWithTitle:label action:nil keyEquivalent:@""];
@@ -131,8 +131,8 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
     if(itm){
         NSString* selectedText=[itm objectForKey:@"val"];
         if([selectedText length]){
-            [[STQuickSearch si]sendQuerySeed:seed withSearchString:selectedText
-                            policy:[STQuickSearch tabPolicy]];
+            [[STQuickSearchModule si]sendQuerySeed:seed withSearchString:selectedText
+                            policy:[STQuickSearchModule tabPolicy]];
         }
     }
 }
@@ -164,7 +164,7 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
     NSString* str=[[pb stringForType:NSStringPboardType]htModeratedStringWithin:1024];
 
     if([str length]){
-        id dic=[[STQuickSearch si]searchItLaterForString:str];
+        id dic=[[STQuickSearchModule si]searchItLaterForString:str];
         [silArrayCtl setSelectedObjects:[NSArray arrayWithObject:dic]];
     }
 }

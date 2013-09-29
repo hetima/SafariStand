@@ -8,12 +8,12 @@
 
 #import "SafariStand.h"
 #import "STSContextMenuModule.h"
-#import "STQuickSearch.h"
+#import "STQuickSearchModule.h"
 #import <WebKit/WebKit.h>
 #import "HTWebKit2Adapter.h"
 #import "HTWebClipwinCtl.h"
 
-#import "SquashContextMenuSheetCtl.h"
+#import "STSquashContextMenuSheetCtl.h"
 
 
 //#define DEBUG_MENUDUMP 0
@@ -94,7 +94,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
     NSUInteger len=[selectedText length];
     if(len>0 && len<1024){//あんまり長いのは除外
         //LOG(@"%@",[pb stringForType:NSStringPboardType]);
-        [[STQuickSearch si]setupContextMenu:menu];
+        [[STQuickSearchModule si]setupContextMenu:menu];
     }
     
     //Clip Web Archive
@@ -228,7 +228,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
     if(type==WKDictionaryGetTypeID()){ //8==TypeDictionary
         NSString* urlStr=htWKDictionaryStringForKey(apiObject, @"ImageURL");
         LOG(@"%@",urlStr);
-        [[STQuickSearch si]sendGoogleImageQuerySeedWithoutAddHistoryWithSearchString:urlStr policy:[STQuickSearch tabPolicy]];
+        [[STQuickSearchModule si]sendGoogleImageQuerySeedWithoutAddHistoryWithSearchString:urlStr policy:[STQuickSearchModule tabPolicy]];
     }
 }
 
@@ -380,7 +380,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
 -(NSWindow*)advancedSquashSettingSheet
 {
     if (!self.squashSheetCtl) {
-        SquashContextMenuSheetCtl* winCtl=[[SquashContextMenuSheetCtl alloc]initWithWindowNibName:@"SquashContextMenuSheetCtl"];
+        STSquashContextMenuSheetCtl* winCtl=[[STSquashContextMenuSheetCtl alloc]initWithWindowNibName:@"STSquashContextMenuSheetCtl"];
         [winCtl window];
         self.squashSheetCtl=winCtl;
 //        [winCtl release];

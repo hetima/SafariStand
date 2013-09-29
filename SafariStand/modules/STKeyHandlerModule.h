@@ -1,11 +1,11 @@
 //
-//  STKeyHandler.h
+//  STKeyHandlerModule.h
 //  SafariStand
 
 #import <Foundation/Foundation.h>
 
 
-@interface STKeyHandler : STCModule {
+@interface STKeyHandlerModule : STCModule {
     NSMenuItem* oneKeyNavigationMenuItem;
     
 }

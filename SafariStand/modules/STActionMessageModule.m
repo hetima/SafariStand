@@ -1,5 +1,5 @@
 //
-//  STActionMessage.m
+//  STActionMessageModule.m
 //  SafariStand
 
 #if !__has_feature(objc_arc)
@@ -7,15 +7,15 @@
 #endif
 
 #import "SafariStand.h"
-#import "STActionMessage.h"
+#import "STActionMessageModule.h"
 #import "STSafariConnect.h"
 
 #define kActionMessageScheme	@"action_message:"
 #define kActionMessagePrefix	@"action_message"
-@implementation STActionMessage
+@implementation STActionMessageModule
 
 
-static STActionMessage* actionMessageModule;
+static STActionMessageModule* actionMessageModule;
 
 
 static id (*origAM_addMenuItemForBookmark)(id, SEL, ...);

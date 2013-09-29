@@ -1,5 +1,5 @@
 //
-//  STQuickSearch.m
+//  STQuickSearchModule.m
 //  SafariStand
 
 #if !__has_feature(objc_arc)
@@ -12,23 +12,21 @@ defaults delete com.apple.Safari Stand_QuerySeeds
 
 #import "SafariStand.h"
 #import "STSafariConnect.h"
-#import "STQuickSearch.h"
+#import "STQuickSearchModule.h"
 #import "STPrefWindowModule.h"
 #import "HTQuerySeedEditViewCtl.h"
 
-#import "STQuickSearch+CompletionCtl.h"
 
+STQuickSearchModule* quickSearchModule;
 
-STQuickSearch* quickSearchModule;
-
-@implementation STQuickSearch {
+@implementation STQuickSearchModule {
     HTQuerySeedEditViewCtl* _querySeedEditViewCtl;
     HTQuerySeed* _googleQuerySeed;
     HTQuerySeed* _googleImageQuerySeed;
 }
 
 
-+ (STQuickSearch *)si
++ (STQuickSearchModule *)si
 {    
     return quickSearchModule;
 }
@@ -197,7 +195,7 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
     NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
     NSString* selectedText=[pb stringForType:NSStringPboardType];
     if(seed && selectedText){
-        [self sendQuerySeed:seed withSearchString:selectedText  policy:[STQuickSearch tabPolicy]];
+        [self sendQuerySeed:seed withSearchString:selectedText  policy:[STQuickSearchModule tabPolicy]];
     }
 }
 
@@ -351,7 +349,7 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
 
 
 
-@implementation STQuickSearch (DataIo)
+@implementation STQuickSearchModule (DataIo)
 -(NSArray*)enabledQuerySeeds
 {
     return [self.querySeeds filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"use=true"]];

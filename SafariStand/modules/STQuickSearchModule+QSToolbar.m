@@ -1,5 +1,5 @@
 //
-//  STQuickSearch+QSToolbar.m
+//  STQuickSearchModule+QSToolbar.m
 //  SafariStand
 
 #if !__has_feature(objc_arc)
@@ -7,12 +7,12 @@
 #endif
 
 #import "SafariStand.h"
-#import "STQuickSearch.h"
+#import "STQuickSearchModule.h"
 #import "STSToolbarModule.h"
 #import "STQSToolbarBaseView.h"
 
 
-@implementation STQuickSearch (QSToolbar)
+@implementation STQuickSearchModule (QSToolbar)
 
 - (NSToolbarItem *)quickSearchToolbarItemWillBeInsertedIntoToolbar:(BOOL)flag
 {

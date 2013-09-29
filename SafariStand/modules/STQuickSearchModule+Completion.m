@@ -1,5 +1,5 @@
 //
-//  STQuickSearch+CompletionCtl.m
+//  STQuickSearchModule+Completion.m
 //  SafariStand
 
 #if !__has_feature(objc_arc)
@@ -7,11 +7,11 @@
 #endif
 
 #import "SafariStand.h"
-#import "STQuickSearch+CompletionCtl.h"
+#import "STQuickSearchModule.h"
 #import "STSafariConnect.h"
 
 
-@implementation STQuickSearch (STQuickSearch_CompletionCtl)
+@implementation STQuickSearchModule (STQuickSearchModule_Completion)
 //LocationTextField
 
 static void (*orig_textDidChange)(id, SEL, ...);

@@ -26,7 +26,7 @@
     // Drawing code here.
 }
 
-- (id)initWithQuickSearch:(STQuickSearch*)qs
+- (id)initWithQuickSearch:(STQuickSearchModule*)qs
 {
     self = [super initWithFrame:NSMakeRect(0,0, kSTQSToolbarBaseWidth, 25)];
     if (self) {

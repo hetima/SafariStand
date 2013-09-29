@@ -8,7 +8,7 @@
 
 #import "SafariStand.h"
 #import "STQSToolbarSearchView.h"
-#import "STQuickSearch+CompletionCtl.h"
+#import "STQuickSearchModule.h"
 
 #define kDefaultSearchButtonWidth 40
 #define kSearchButtonMaxWidth 100

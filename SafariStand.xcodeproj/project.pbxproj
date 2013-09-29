@@ -13,14 +13,14 @@
 		AA04F85313B88BF800A8C548 /* STSafariConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = AA04F85213B88BF800A8C548 /* STSafariConnect.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA0881AA13E4284B003B70DF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA0881AC13E4284B003B70DF /* Localizable.strings */; };
 		AA0881B013E51287003B70DF /* STSTitleBarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0881AF13E51287003B70DF /* STSTitleBarModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		AA09B1F213DE866100389D8B /* STKeyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = AA09B1F113DE866100389D8B /* STKeyHandler.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA09B1F213DE866100389D8B /* STKeyHandlerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA09B1F113DE866100389D8B /* STKeyHandlerModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA0B390215C28CEA00A025FF /* quicksearch_defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA0B390115C28CEA00A025FF /* quicksearch_defaults.plist */; };
 		AA0B390515C503EC00A025FF /* STActionMenuModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0B390415C503EB00A025FF /* STActionMenuModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA0B390715C5044F00A025FF /* STTBActionMenu.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AA0B390615C5044F00A025FF /* STTBActionMenu.tiff */; };
 		AA0B390C15C54ED000A025FF /* STTBActionMenuDisabled.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AA0B390B15C54ED000A025FF /* STTBActionMenuDisabled.tiff */; };
 		AA12DA7E13B73EFA0082EBB3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA12DA7D13B73EFA0082EBB3 /* Cocoa.framework */; };
 		AA12DA8813B73EFA0082EBB3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA12DA8613B73EFA0082EBB3 /* InfoPlist.strings */; };
-		AA171B74168E05C1007A4661 /* STQuickSearch+QSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B73168E05C0007A4661 /* STQuickSearch+QSToolbar.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA171B74168E05C1007A4661 /* STQuickSearchModule+QSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B73168E05C0007A4661 /* STQuickSearchModule+QSToolbar.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA171B791690A4A7007A4661 /* STQSToolbarBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B781690A4A7007A4661 /* STQSToolbarBaseView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA171B7F1690A54E007A4661 /* STQSToolbarSearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B7E1690A54E007A4661 /* STQSToolbarSearchView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA21447A17EEBF5400EDE661 /* STCSafariStandCore.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5D713B97CC800C9A19E /* STCSafariStandCore.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -58,10 +58,10 @@
 		AA671B2C17F704FF000A470C /* mach_override.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1F17F704FF000A470C /* mach_override.c */; };
 		AA671B2D17F704FF000A470C /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = AA671B2117F704FF000A470C /* README.markdown */; };
 		AA671B3017F71D96000A470C /* STWKClientHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA671B2F17F71D96000A470C /* STWKClientHook.m */; };
-		AA6FCF3E15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FCF3C15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		AA6FCF3F15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF3D15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib */; };
+		AA6FCF3E15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FCF3C15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA6FCF3F15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF3D15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib */; };
 		AA6FCF4215D3F271008AE5AB /* SquashContextMenuItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF4415D3F271008AE5AB /* SquashContextMenuItems.plist */; };
-		AA718A9D13B9D8DA00327606 /* STActionMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718A9C13B9D8DA00327606 /* STActionMessage.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA718A9D13B9D8DA00327606 /* STActionMessageModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718A9C13B9D8DA00327606 /* STActionMessageModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA718AA113B9F47300327606 /* STCTabWithToolbarWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718AA013B9F47200327606 /* STCTabWithToolbarWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA718AA613BA00DE00327606 /* STPrefWindowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718AA513BA00DE00327606 /* STPrefWindowModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA718AA813BAD39D00327606 /* STPrefGeneral.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AA718AA713BAD39D00327606 /* STPrefGeneral.tiff */; };
@@ -69,7 +69,7 @@
 		AA718ABA13BB524C00327606 /* STSToolbarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA718AB913BB524C00327606 /* STSToolbarModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA775EF313DA7470001B0461 /* STSTabBarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA775EF213DA7470001B0461 /* STSTabBarModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA775EF713DA9603001B0461 /* NSString+HTUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = AA775EF613DA9603001B0461 /* NSString+HTUtil.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		AA775EFA13DB9182001B0461 /* STQuickSearch+CompletionCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA775EF913DB9182001B0461 /* STQuickSearch+CompletionCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA775EFA13DB9182001B0461 /* STQuickSearchModule+Completion.m in Sources */ = {isa = PBXBuildFile; fileRef = AA775EF913DB9182001B0461 /* STQuickSearchModule+Completion.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA780DA313F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA780DA113F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA780DA613F1C0F40042A253 /* STClassifyDownloadAdvSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA780DA513F1C0F40042A253 /* STClassifyDownloadAdvSheet.xib */; };
 		AA780DA913F1C5E00042A253 /* HTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = AA780DA813F1C5DF0042A253 /* HTUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -78,12 +78,12 @@
 		AA934E8B13BF18650019D191 /* NSApplication+SafariStand.m in Sources */ = {isa = PBXBuildFile; fileRef = AA934E8A13BF18650019D191 /* NSApplication+SafariStand.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA9F781A13F91D8C0016874A /* WebKit2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9F781913F91D8C0016874A /* WebKit2.framework */; };
 		AAAC1AA813BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AA513BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		AAAC1AAC13BE163700FB13A2 /* STQuickSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AAB13BE163700FB13A2 /* STQuickSearch.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AAAC1AAC13BE163700FB13A2 /* STQuickSearchModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AAB13BE163700FB13A2 /* STQuickSearchModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAAC1AAF13BE2BEA00FB13A2 /* HTQuerySeed.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AAE13BE2BEA00FB13A2 /* HTQuerySeed.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAAC1AB213BE3E0500FB13A2 /* HTArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AB113BE3E0500FB13A2 /* HTArrayController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AACAD26D13E126D700170193 /* HTWebKit2Adapter.m in Sources */ = {isa = PBXBuildFile; fileRef = AACAD26C13E126D700170193 /* HTWebKit2Adapter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AACAD26F13E15BF100170193 /* STPrefSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = AACAD26E13E15BF000170193 /* STPrefSearch.png */; };
-		AAD79B4E13E29DF2004CE895 /* STQuickSearch+SearchItLater.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B4D13E29DF2004CE895 /* STQuickSearch+SearchItLater.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AAD79B4E13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B4D13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAD79B5213E2BC09004CE895 /* STSearchItLaterWinCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAD79B5113E2BC09004CE895 /* STSearchItLaterWinCtl.xib */; };
 		AAD79B5513E2BC2E004CE895 /* STSearchItLaterWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAD79B5B13E2D2ED004CE895 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */; };
@@ -111,8 +111,8 @@
 		AA0881AD13E4289A003B70DF /* ja */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		AA0881AE13E51286003B70DF /* STSTitleBarModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSTitleBarModule.h; sourceTree = "<group>"; };
 		AA0881AF13E51287003B70DF /* STSTitleBarModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSTitleBarModule.m; sourceTree = "<group>"; };
-		AA09B1F013DE866000389D8B /* STKeyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STKeyHandler.h; sourceTree = "<group>"; };
-		AA09B1F113DE866100389D8B /* STKeyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STKeyHandler.m; sourceTree = "<group>"; };
+		AA09B1F013DE866000389D8B /* STKeyHandlerModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STKeyHandlerModule.h; sourceTree = "<group>"; };
+		AA09B1F113DE866100389D8B /* STKeyHandlerModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STKeyHandlerModule.m; sourceTree = "<group>"; };
 		AA0B390115C28CEA00A025FF /* quicksearch_defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = quicksearch_defaults.plist; sourceTree = "<group>"; };
 		AA0B390315C503EB00A025FF /* STActionMenuModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STActionMenuModule.h; sourceTree = "<group>"; };
 		AA0B390415C503EB00A025FF /* STActionMenuModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STActionMenuModule.m; sourceTree = "<group>"; };
@@ -125,7 +125,7 @@
 		AA12DA8513B73EFA0082EBB3 /* SafariStand-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SafariStand-Info.plist"; sourceTree = "<group>"; };
 		AA12DA8713B73EFA0082EBB3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AA12DA8913B73EFA0082EBB3 /* SafariStand-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SafariStand-Prefix.pch"; sourceTree = "<group>"; };
-		AA171B73168E05C0007A4661 /* STQuickSearch+QSToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "STQuickSearch+QSToolbar.m"; sourceTree = "<group>"; };
+		AA171B73168E05C0007A4661 /* STQuickSearchModule+QSToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "STQuickSearchModule+QSToolbar.m"; sourceTree = "<group>"; };
 		AA171B771690A4A7007A4661 /* STQSToolbarBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STQSToolbarBaseView.h; sourceTree = "<group>"; };
 		AA171B781690A4A7007A4661 /* STQSToolbarBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STQSToolbarBaseView.m; sourceTree = "<group>"; };
 		AA171B7D1690A54D007A4661 /* STQSToolbarSearchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STQSToolbarSearchView.h; sourceTree = "<group>"; };
@@ -193,13 +193,13 @@
 		AA671B2217F704FF000A470C /* udis86.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = udis86.h; sourceTree = "<group>"; };
 		AA671B2E17F71D96000A470C /* STWKClientHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWKClientHook.h; sourceTree = "<group>"; };
 		AA671B2F17F71D96000A470C /* STWKClientHook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWKClientHook.m; sourceTree = "<group>"; };
-		AA6FCF3B15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquashContextMenuSheetCtl.h; sourceTree = "<group>"; };
-		AA6FCF3C15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquashContextMenuSheetCtl.m; sourceTree = "<group>"; };
-		AA6FCF3D15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SquashContextMenuSheetCtl.xib; sourceTree = "<group>"; };
+		AA6FCF3B15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSquashContextMenuSheetCtl.h; sourceTree = "<group>"; };
+		AA6FCF3C15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSquashContextMenuSheetCtl.m; sourceTree = "<group>"; };
+		AA6FCF3D15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STSquashContextMenuSheetCtl.xib; sourceTree = "<group>"; };
 		AA6FCF4315D3F271008AE5AB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/SquashContextMenuItems.plist; sourceTree = "<group>"; };
 		AA6FCF4515D3F287008AE5AB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ja; path = ja.lproj/SquashContextMenuItems.plist; sourceTree = "<group>"; };
-		AA718A9B13B9D8DA00327606 /* STActionMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STActionMessage.h; sourceTree = "<group>"; };
-		AA718A9C13B9D8DA00327606 /* STActionMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STActionMessage.m; sourceTree = "<group>"; };
+		AA718A9B13B9D8DA00327606 /* STActionMessageModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STActionMessageModule.h; sourceTree = "<group>"; };
+		AA718A9C13B9D8DA00327606 /* STActionMessageModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STActionMessageModule.m; sourceTree = "<group>"; };
 		AA718A9E13B9DF0000327606 /* SafariStandKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafariStandKeys.h; sourceTree = "<group>"; };
 		AA718A9F13B9F47200327606 /* STCTabWithToolbarWinCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCTabWithToolbarWinCtl.h; sourceTree = "<group>"; };
 		AA718AA013B9F47200327606 /* STCTabWithToolbarWinCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCTabWithToolbarWinCtl.m; sourceTree = "<group>"; };
@@ -213,8 +213,7 @@
 		AA775EF213DA7470001B0461 /* STSTabBarModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSTabBarModule.m; sourceTree = "<group>"; };
 		AA775EF513DA9603001B0461 /* NSString+HTUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTUtil.h"; sourceTree = "<group>"; };
 		AA775EF613DA9603001B0461 /* NSString+HTUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTUtil.m"; sourceTree = "<group>"; };
-		AA775EF813DB9182001B0461 /* STQuickSearch+CompletionCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "STQuickSearch+CompletionCtl.h"; sourceTree = "<group>"; };
-		AA775EF913DB9182001B0461 /* STQuickSearch+CompletionCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "STQuickSearch+CompletionCtl.m"; sourceTree = "<group>"; };
+		AA775EF913DB9182001B0461 /* STQuickSearchModule+Completion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "STQuickSearchModule+Completion.m"; sourceTree = "<group>"; };
 		AA780DA013F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STClassifyDownloadAdvSheetCtl.h; sourceTree = "<group>"; };
 		AA780DA113F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STClassifyDownloadAdvSheetCtl.m; sourceTree = "<group>"; };
 		AA780DA513F1C0F40042A253 /* STClassifyDownloadAdvSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STClassifyDownloadAdvSheet.xib; sourceTree = "<group>"; };
@@ -227,8 +226,8 @@
 		AA9F781913F91D8C0016874A /* WebKit2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit2.framework; path = System/Library/PrivateFrameworks/WebKit2.framework; sourceTree = SDKROOT; };
 		AAAC1AA413BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTQuerySeedEditViewCtl.h; sourceTree = "<group>"; };
 		AAAC1AA513BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTQuerySeedEditViewCtl.m; sourceTree = "<group>"; };
-		AAAC1AAA13BE163700FB13A2 /* STQuickSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STQuickSearch.h; sourceTree = "<group>"; };
-		AAAC1AAB13BE163700FB13A2 /* STQuickSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STQuickSearch.m; sourceTree = "<group>"; };
+		AAAC1AAA13BE163700FB13A2 /* STQuickSearchModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STQuickSearchModule.h; sourceTree = "<group>"; };
+		AAAC1AAB13BE163700FB13A2 /* STQuickSearchModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STQuickSearchModule.m; sourceTree = "<group>"; };
 		AAAC1AAD13BE2BEA00FB13A2 /* HTQuerySeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTQuerySeed.h; sourceTree = "<group>"; };
 		AAAC1AAE13BE2BEA00FB13A2 /* HTQuerySeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTQuerySeed.m; sourceTree = "<group>"; };
 		AAAC1AB013BE3E0500FB13A2 /* HTArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTArrayController.h; sourceTree = "<group>"; };
@@ -236,7 +235,7 @@
 		AACAD26B13E126D700170193 /* HTWebKit2Adapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTWebKit2Adapter.h; sourceTree = "<group>"; };
 		AACAD26C13E126D700170193 /* HTWebKit2Adapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTWebKit2Adapter.m; sourceTree = "<group>"; };
 		AACAD26E13E15BF000170193 /* STPrefSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = STPrefSearch.png; sourceTree = "<group>"; };
-		AAD79B4D13E29DF2004CE895 /* STQuickSearch+SearchItLater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "STQuickSearch+SearchItLater.m"; sourceTree = "<group>"; };
+		AAD79B4D13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "STQuickSearchModule+SearchItLater.m"; sourceTree = "<group>"; };
 		AAD79B5113E2BC09004CE895 /* STSearchItLaterWinCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STSearchItLaterWinCtl.xib; sourceTree = "<group>"; };
 		AAD79B5313E2BC2E004CE895 /* STSearchItLaterWinCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSearchItLaterWinCtl.h; sourceTree = "<group>"; };
 		AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSearchItLaterWinCtl.m; sourceTree = "<group>"; };
@@ -456,24 +455,23 @@
 			children = (
 				AA47D5DD13B9AE3A00C9A19E /* STBookmarkSeparator.h */,
 				AA47D5DE13B9AE3A00C9A19E /* STBookmarkSeparator.m */,
-				AA718A9B13B9D8DA00327606 /* STActionMessage.h */,
-				AA718A9C13B9D8DA00327606 /* STActionMessage.m */,
+				AA718A9B13B9D8DA00327606 /* STActionMessageModule.h */,
+				AA718A9C13B9D8DA00327606 /* STActionMessageModule.m */,
 				AA718AA413BA00DE00327606 /* STPrefWindowModule.h */,
 				AA718AA513BA00DE00327606 /* STPrefWindowModule.m */,
 				AA718AB813BB524C00327606 /* STSToolbarModule.h */,
 				AA718AB913BB524C00327606 /* STSToolbarModule.m */,
 				AA5B3AAA13BC7667001453C0 /* STSContextMenuModule.h */,
 				AA5B3AAB13BC7667001453C0 /* STSContextMenuModule.m */,
-				AAAC1AAA13BE163700FB13A2 /* STQuickSearch.h */,
-				AAAC1AAB13BE163700FB13A2 /* STQuickSearch.m */,
-				AA171B73168E05C0007A4661 /* STQuickSearch+QSToolbar.m */,
-				AAD79B4D13E29DF2004CE895 /* STQuickSearch+SearchItLater.m */,
-				AA775EF813DB9182001B0461 /* STQuickSearch+CompletionCtl.h */,
-				AA775EF913DB9182001B0461 /* STQuickSearch+CompletionCtl.m */,
+				AAAC1AAA13BE163700FB13A2 /* STQuickSearchModule.h */,
+				AAAC1AAB13BE163700FB13A2 /* STQuickSearchModule.m */,
+				AA171B73168E05C0007A4661 /* STQuickSearchModule+QSToolbar.m */,
+				AAD79B4D13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m */,
+				AA775EF913DB9182001B0461 /* STQuickSearchModule+Completion.m */,
 				AA775EF113DA7470001B0461 /* STSTabBarModule.h */,
 				AA775EF213DA7470001B0461 /* STSTabBarModule.m */,
-				AA09B1F013DE866000389D8B /* STKeyHandler.h */,
-				AA09B1F113DE866100389D8B /* STKeyHandler.m */,
+				AA09B1F013DE866000389D8B /* STKeyHandlerModule.h */,
+				AA09B1F113DE866100389D8B /* STKeyHandlerModule.m */,
 				AA0881AE13E51286003B70DF /* STSTitleBarModule.h */,
 				AA0881AF13E51287003B70DF /* STSTitleBarModule.m */,
 				AAF8702413E55E4E00AC67A1 /* STSDownloadModule.h */,
@@ -552,9 +550,9 @@
 		AA6FCF3415D3E953008AE5AB /* SquashContextMenu */ = {
 			isa = PBXGroup;
 			children = (
-				AA6FCF3B15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.h */,
-				AA6FCF3C15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m */,
-				AA6FCF3D15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib */,
+				AA6FCF3B15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.h */,
+				AA6FCF3C15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m */,
+				AA6FCF3D15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib */,
 				AA6FCF4415D3F271008AE5AB /* SquashContextMenuItems.plist */,
 			);
 			path = SquashContextMenu;
@@ -684,7 +682,7 @@
 				AA0B390215C28CEA00A025FF /* quicksearch_defaults.plist in Resources */,
 				AA0B390715C5044F00A025FF /* STTBActionMenu.tiff in Resources */,
 				AA0B390C15C54ED000A025FF /* STTBActionMenuDisabled.tiff in Resources */,
-				AA6FCF3F15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.xib in Resources */,
+				AA6FCF3F15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib in Resources */,
 				AA6FCF4215D3F271008AE5AB /* SquashContextMenuItems.plist in Resources */,
 				AA21448717F027D800EDE661 /* STSidebarCtl.xib in Resources */,
 				AA671A7E17F205B3000A470C /* STVTabListCtl.xib in Resources */,
@@ -707,23 +705,23 @@
 				AA47D5DF13B9AE3A00C9A19E /* STBookmarkSeparator.m in Sources */,
 				AA47D5E213B9AFD400C9A19E /* HTObjectHook.m in Sources */,
 				AA47D5EC13B9B42800C9A19E /* NSObject+HTAssociatedObject.m in Sources */,
-				AA718A9D13B9D8DA00327606 /* STActionMessage.m in Sources */,
+				AA718A9D13B9D8DA00327606 /* STActionMessageModule.m in Sources */,
 				AA718AA113B9F47300327606 /* STCTabWithToolbarWinCtl.m in Sources */,
 				AA718AA613BA00DE00327606 /* STPrefWindowModule.m in Sources */,
 				AA718AB713BB46CB00327606 /* STCSafariStandCore+Toolbar.m in Sources */,
 				AA718ABA13BB524C00327606 /* STSToolbarModule.m in Sources */,
 				AA5B3AAC13BC7667001453C0 /* STSContextMenuModule.m in Sources */,
 				AAAC1AA813BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m in Sources */,
-				AAAC1AAC13BE163700FB13A2 /* STQuickSearch.m in Sources */,
+				AAAC1AAC13BE163700FB13A2 /* STQuickSearchModule.m in Sources */,
 				AAAC1AAF13BE2BEA00FB13A2 /* HTQuerySeed.m in Sources */,
 				AAAC1AB213BE3E0500FB13A2 /* HTArrayController.m in Sources */,
 				AA934E8B13BF18650019D191 /* NSApplication+SafariStand.m in Sources */,
 				AA775EF313DA7470001B0461 /* STSTabBarModule.m in Sources */,
 				AA775EF713DA9603001B0461 /* NSString+HTUtil.m in Sources */,
-				AA775EFA13DB9182001B0461 /* STQuickSearch+CompletionCtl.m in Sources */,
-				AA09B1F213DE866100389D8B /* STKeyHandler.m in Sources */,
+				AA775EFA13DB9182001B0461 /* STQuickSearchModule+Completion.m in Sources */,
+				AA09B1F213DE866100389D8B /* STKeyHandlerModule.m in Sources */,
 				AACAD26D13E126D700170193 /* HTWebKit2Adapter.m in Sources */,
-				AAD79B4E13E29DF2004CE895 /* STQuickSearch+SearchItLater.m in Sources */,
+				AAD79B4E13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m in Sources */,
 				AAD79B5513E2BC2E004CE895 /* STSearchItLaterWinCtl.m in Sources */,
 				AA0881B013E51287003B70DF /* STSTitleBarModule.m in Sources */,
 				AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */,
@@ -736,8 +734,8 @@
 				AAF9D296147E1E210018C949 /* HTWebClipwinCtl.m in Sources */,
 				AA21447E17EEEB0500EDE661 /* HTFilePresetPopUpButton.m in Sources */,
 				AA0B390515C503EC00A025FF /* STActionMenuModule.m in Sources */,
-				AA6FCF3E15D3EA3A008AE5AB /* SquashContextMenuSheetCtl.m in Sources */,
-				AA171B74168E05C1007A4661 /* STQuickSearch+QSToolbar.m in Sources */,
+				AA6FCF3E15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m in Sources */,
+				AA171B74168E05C1007A4661 /* STQuickSearchModule+QSToolbar.m in Sources */,
 				AA171B791690A4A7007A4661 /* STQSToolbarBaseView.m in Sources */,
 				AA171B7F1690A54E007A4661 /* STQSToolbarSearchView.m in Sources */,
 				AA21447D17EEDBA300EDE661 /* HTWindowControllerRetainer.m in Sources */,

@@ -5,11 +5,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class SquashContextMenuSheetCtl;
+@class STSquashContextMenuSheetCtl;
 
 @interface STSContextMenuModule : STCModule
 
-@property (nonatomic,retain)SquashContextMenuSheetCtl* squashSheetCtl;
+@property (nonatomic,retain)STSquashContextMenuSheetCtl* squashSheetCtl;
 
 -(NSWindow*)advancedSquashSettingSheet;
 

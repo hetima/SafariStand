@@ -1,12 +1,12 @@
 //
-//  STActionMessage.h
+//  STActionMessageModule.h
 //  SafariStand
 
 
 #import <Foundation/Foundation.h>
 
 
-@interface STActionMessage : STCModule
+@interface STActionMessageModule : STCModule
 
 -(NSMenuItem*)menuItemForBookmarkLeaf:(id)bookmarkLeaf;
 -(BOOL)handleBookmakBarAction:(NSString*)url;

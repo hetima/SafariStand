@@ -55,13 +55,13 @@ static STCSafariStandCore *sharedInstance;
     registerAndAddOrder(@"STSToolbarModule");
     registerAndAddOrder(@"STPrefWindowModule");
 
-    registerAndAddOrder(@"STSContextMenuModule"); //STQuickSearch
-    registerAndAddOrder(@"STQuickSearch"); //STPrefWindowModule
+    registerAndAddOrder(@"STSContextMenuModule"); //STQuickSearchModule
+    registerAndAddOrder(@"STQuickSearchModule"); //STPrefWindowModule
     registerAndAddOrder(@"STBookmarkSeparator");
-    registerAndAddOrder(@"STActionMessage");
+    registerAndAddOrder(@"STActionMessageModule");
 
     registerAndAddOrder(@"STSTabBarModule");
-    registerAndAddOrder(@"STKeyHandler");
+    registerAndAddOrder(@"STKeyHandlerModule");
 
     registerAndAddOrder(@"STSTitleBarModule");
     registerAndAddOrder(@"STSDownloadModule");

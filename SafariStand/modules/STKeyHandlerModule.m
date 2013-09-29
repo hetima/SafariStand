@@ -1,5 +1,5 @@
 //
-//  STKeyHandler.m
+//  STKeyHandlerModule.m
 //  SafariStand
 
 #if !__has_feature(objc_arc)
@@ -7,10 +7,10 @@
 #endif
 
 #import "SafariStand.h"
-#import "STKeyHandler.h"
+#import "STKeyHandlerModule.h"
 
 
-@implementation STKeyHandler
+@implementation STKeyHandlerModule
 
 - (id)initWithStand:(id)core
 {

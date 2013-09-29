@@ -14,7 +14,7 @@
 
 #import "HTWebClipwinCtl.h"
 
-#import "STQuickSearch.h"
+#import "STQuickSearchModule.h"
 
 @implementation NSApplication (NSApplication_SafariStand)
 #ifdef DEBUG
@@ -168,8 +168,8 @@
     }
     NSString* searchStr=[NSString stringWithFormat:@"site:%@", aStr];
     
-    [[STQuickSearch si]sendGoogleQuerySeedWithoutAddHistoryWithSearchString:searchStr
-                            policy:[STQuickSearch tabPolicy]];
+    [[STQuickSearchModule si]sendGoogleQuerySeedWithoutAddHistoryWithSearchString:searchStr
+                            policy:[STQuickSearchModule tabPolicy]];
 
 }
 

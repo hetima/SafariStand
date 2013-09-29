@@ -8,11 +8,11 @@
 #define kSTQSToolbarBaseWidth 200
 #define kSTQSToolbarLeftWidth 64
 
-@class STQuickSearch, STQSToolbarSearchView;
+@class STQuickSearchModule, STQSToolbarSearchView;
 
 @interface STQSToolbarBaseView : NSView
 @property(nonatomic, assign) STQSToolbarSearchView* rightView;
 
-- (id)initWithQuickSearch:(STQuickSearch*)qs;
+- (id)initWithQuickSearch:(STQuickSearchModule*)qs;
 
 @end

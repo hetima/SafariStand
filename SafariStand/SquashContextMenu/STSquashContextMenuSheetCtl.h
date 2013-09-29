@@ -1,11 +1,11 @@
 //
-//  SquashContextMenuSheetCtl.h
+//  STSquashContextMenuSheetCtl.h
 //  SafariStand
 
 
 #import <Cocoa/Cocoa.h>
 
-@interface SquashContextMenuSheetCtl : NSWindowController
+@interface STSquashContextMenuSheetCtl : NSWindowController
 
 @property (nonatomic, retain)NSMutableArray* menuItemDefs;
 

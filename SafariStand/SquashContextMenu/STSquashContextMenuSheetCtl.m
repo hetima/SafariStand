@@ -1,5 +1,5 @@
 //
-//  SquashContextMenuSheetCtl.m
+//  STSquashContextMenuSheetCtl.m
 //  SafariStand
 
 #if !__has_feature(objc_arc)
@@ -7,11 +7,11 @@
 #endif
 
 #import "SafariStand.h"
-#import "SquashContextMenuSheetCtl.h"
+#import "STSquashContextMenuSheetCtl.h"
 
 
 
-@implementation SquashContextMenuSheetCtl
+@implementation STSquashContextMenuSheetCtl
 
 
 - (id)initWithWindow:(NSWindow *)window
