@@ -68,7 +68,8 @@ static id ST_initWithTabBarView(id self, SEL _cmd, id tabBarView, BOOL useWebKit
 
 //未使用
 //tabViewItem が取り除かれるとき STTabProxyリストから除外
-static void (*orig_removeTabViewItem)(id, SEL, ...);
+/*
+ static void (*orig_removeTabViewItem)(id, SEL, ...);
 static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
 {
     id proxy=[STTabProxy tabProxyForTabViewItem:tabViewItem];
@@ -80,7 +81,7 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     }
     orig_removeTabViewItem(self, _cmd, tabViewItem);
 }
-
+*/
 
 //tabViewItem がdealloc、 STTabProxyリストから除外
 static void (*orig_tabViewItem_dealloc)(id, SEL);

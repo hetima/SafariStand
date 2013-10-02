@@ -61,7 +61,8 @@ static void ST_getButtonWidth(id self, SEL _cmd, double *w, unsigned long long* 
 }
 
 //閉じてるとき幅固定 未実装
-static void (*orig_closeTabBtn)(id, SEL, ...);
+/*
+ static void (*orig_closeTabBtn)(id, SEL, ...);
 static void ST_closeTabBtn(id self, SEL _cmd, id sender)
 {
     [[self superview] htaoSetValue:[NSNumber numberWithBool:YES] forKey:@"STSTabBarModuleLastCloseClicked"];
@@ -73,7 +74,8 @@ static void ST_closeTabBtn(id self, SEL _cmd, id sender)
     LOG(@"%@,%@",[[self superview]className],NSStringFromRect([self frame]));
     orig_closeTabBtn(self, _cmd, sender);
 }
-                              
+*/
+
 -(void)layoutTabBarForExistingWindow
 {
     //check exists window
