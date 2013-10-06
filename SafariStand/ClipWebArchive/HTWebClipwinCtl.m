@@ -74,8 +74,8 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
     if (!urlStr) urlStr=@"";
     NSDictionary* info=[[NSDictionary alloc]initWithObjectsAndKeys:title, @"title", urlStr, @"url", nil];
     
-    id pageRef=objc_msgSend(wkView, @selector(pageRef));
-    WKFrameRef frameRef=WKPageGetMainFrame((__bridge WKPageRef)pageRef);
+    WKPageRef pageRef=(__bridge WKPageRef)(objc_msgSend(wkView, @selector(pageRef)));
+    WKFrameRef frameRef=WKPageGetMainFrame(pageRef);
     WKFrameGetWebArchive(frameRef, showWindowForFrontmostWKViewGetWebArchive, (void*)CFBridgingRetain(info));
 }
 
