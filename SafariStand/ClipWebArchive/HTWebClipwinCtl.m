@@ -34,21 +34,6 @@ title=>title
 
 @implementation HTWebClipwinCtl
 
-void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef error, void* info)
-{
-    if (archiveData) {
-        NSDictionary* dic=(__bridge NSDictionary*)info;
-        NSData* data=htNSDataFromWKData(archiveData);
-        WebArchive* arc=[[WebArchive alloc]initWithData:data];
-
-        [HTWebClipwinCtl showWindowForWebArchive:arc webFrame:nil info:dic];
-
-        //WKRelease(archiveData);
-    }
-    if (info) {
-        CFRelease(info);
-    }
-}
 
 + (void)showUntitledWindow
 {
@@ -63,27 +48,43 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 + (void)showWindowForCurrentWKView
 {
     id wkView=STSafariCurrentWKView();
-    if (!wkView || ![wkView respondsToSelector:@selector(pageRef)]) {
+    if (!wkView) {
         return;
     }
     
     NSString* title=STSafariCurrentTitle();
     NSString* urlStr=STSafariCurrentURLString();
 
-    if (!title) title=@"";
-    if (!urlStr) urlStr=@"";
-    NSDictionary* info=[[NSDictionary alloc]initWithObjectsAndKeys:title, @"title", urlStr, @"url", nil];
-    
-    WKPageRef pageRef=(__bridge WKPageRef)(objc_msgSend(wkView, @selector(pageRef)));
-    WKFrameRef frameRef=WKPageGetMainFrame(pageRef);
-    WKFrameGetWebArchive(frameRef, showWindowForFrontmostWKViewGetWebArchive, (void*)CFBridgingRetain(info));
+    NSDictionary* info=({
+        if (!title) title=@"";
+        if (!urlStr) urlStr=@"";
+        
+        @{@"title":title, @"url":urlStr};
+    });
+
+    WKPageRef pageRef=htWKPageRefForWKView(wkView);
+    if (pageRef) {
+        WKFrameRef frameRef=WKPageGetMainFrame(pageRef);
+        
+        WKFrameGetWebArchive_b(frameRef, ^(WKDataRef archiveData, WKErrorRef error){
+            if (archiveData) {
+                NSDictionary* dic=info;
+                NSData* data=htNSDataFromWKData(archiveData);
+                WebArchive* arc=[[WebArchive alloc]initWithData:data];
+                
+                [HTWebClipwinCtl showWindowForWebArchive:arc webFrame:nil info:dic];
+                
+                //WKRelease(archiveData);
+            }
+        });
+    }
 }
 
 + (void)showWindowForWebArchive:(WebArchive*)arc webFrame:(WebFrame*)webFrame info:(NSDictionary*)info
 {
     //create
     HTWebClipwinCtl*  winCtl=[[HTWebClipwinCtl alloc]initWithWebArchive:arc webFrame:webFrame info:info];
-    if(winCtl){				
+    if(winCtl){
         [winCtl showWindow:nil];
     }            
 
@@ -112,25 +113,16 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
     return self;
 }
 
-
-- (void)dealloc {
-    _defaultTitle = nil;
-    _webArchive = nil;
-    _urlStr = nil;
-    _filePath = nil;
-//	[super dealloc];
-}
-
-
-
 - (void)windowWillClose:(NSNotification *)aNotification
 {
+    [oWebView setUIDelegate:nil];
 	[[NSNotificationCenter defaultCenter]removeObserver:self 
     name:WebViewDidChangeNotification object:oWebView];
-//	[self autorelease];
+
 }
 
-- (void)toggleBottomDiscloseViewDisplay:(BOOL)display {
+- (void)toggleBottomDiscloseViewDisplay:(BOOL)display
+{
 // www.mactech.com/articles/mactech/Vol.16/16.09/DrawersandDisclosure/index.html
    NSWindow *win = [self window];
    NSRect winFrame = [win frame];
@@ -224,8 +216,6 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
     if(_filePath){
         [[self window]setTitleWithRepresentedFilename:[self filePath]];
     }
-//    [self insertContentHeader];
-
 
 
 	//observe edit
@@ -252,11 +242,13 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 
 #pragma mark -
 
-- (NSString *)filePath {
+- (NSString *)filePath
+{
     return [_filePath copy];
 }
 
-- (void)setFilePath:(NSString *)value {
+- (void)setFilePath:(NSString *)value
+{
     if (_filePath != value) {
         _filePath = [value copy];
         
@@ -311,6 +303,7 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 {
     [self saveToDisk];
 }
+
 -(IBAction)actSave:(id)sender
 {
     [self saveToDisk];
@@ -367,6 +360,7 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 {
     [self insertMemo:[oMemoTextView string]];
 }
+
 -(IBAction)actClearMemo:(id)sender
 {
     [self insertMemo:nil];
