@@ -11,6 +11,7 @@
  */
 
 #import "HTWebKit2Adapter.h"
+#import <objc/message.h>
 
 /*
 //from WebKit2/Shared/APIObject.h
@@ -173,5 +174,31 @@ NSString* htWKDictionaryStringForKey(void* dic, NSString* key)
     return nil;
 }
 
+void htWKGoToURL(id wkView, NSURL* urlToGo)
+{
+    if (!urlToGo || !wkView) {
+        return;
+    }
+    
+    WKPageRef pageRef=htWKPageRefForWKView(wkView);
+    if (!pageRef) {
+        return;
+    }
+    
+    WKURLRef urlRef=WKURLCreateWithCFURL((__bridge CFURLRef)(urlToGo));
+    WKPageLoadURL(pageRef, urlRef);
+    WKRelease(urlRef);
+    
+}
+
+WKPageRef htWKPageRefForWKView(id wkView)
+{
+    if (!wkView || ![wkView respondsToSelector:@selector(pageRef)]) {
+        return nil;
+    }
+    
+    WKPageRef pageRef=(__bridge WKPageRef)(objc_msgSend(wkView, @selector(pageRef)));
+    return pageRef;
+}
 
 

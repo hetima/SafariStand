@@ -261,7 +261,10 @@ static void ST_setLabel(id self, SEL _cmd, NSString* label)
     
 }
 
-
+- (void)goToURL:(NSURL*)urlToGo
+{
+    htWKGoToURL([self wkView], urlToGo);
+}
 
 +(STTabProxy*)tabProxyForWKView:(id)wkView
 {

@@ -9,6 +9,9 @@
 
 #import "STVTabListCtl.h"
 #import "STTabProxy.h"
+#import "HTUtils.h"
+#import "STSafariConnect.h"
+#import "HTWebKit2Adapter.h"
 
 @interface STVTabListCtl ()
 
@@ -36,6 +39,11 @@
     }
     
     return self;
+}
+
+-(void)awakeFromNib
+{
+    [self.oTableView registerForDraggedTypes:@[STTABLIST_DRAG_ITEM_TYPE, @"public.url", @"public.file-url", NSStringPboardType]];
 }
 
 - (void)dealloc
@@ -88,4 +96,80 @@
     }
 }
 
+#pragma mark - drag and drop
+
+- (BOOL)tableView:(NSTableView *)aTableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard
+{
+    [pboard declareTypes:@[STTABLIST_DRAG_ITEM_TYPE] owner:self];
+    
+    NSMutableArray* ary=[[NSMutableArray alloc]initWithCapacity:[rowIndexes count]];
+    NSUInteger currentIndex = [rowIndexes firstIndex];
+    while (currentIndex != NSNotFound) {
+        [ary addObject:@(currentIndex)];
+        currentIndex = [rowIndexes indexGreaterThanIndex:currentIndex];
+    }
+    [pboard setPropertyList:ary forType:STTABLIST_DRAG_ITEM_TYPE];
+    return YES;
+}
+
+- (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation
+{
+    if (operation==NSTableViewDropOn) {
+        return NSDragOperationNone;
+    }
+    
+    NSArray *dragTypes = [[info draggingPasteboard]types];
+    if([dragTypes containsObject:STTABLIST_DRAG_ITEM_TYPE]){
+        return NSDragOperationMove;
+    }
+    
+    
+    NSURL *aURL=HTBestURLFromPasteboard([info draggingPasteboard], NO);
+    if (aURL) {
+        return NSDragOperationCopy;
+    }
+
+    return NSDragOperationNone;
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id < NSDraggingInfo >)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation
+{
+    if (operation==NSTableViewDropOn) {
+        return NO;
+    }
+    
+    BOOL acceptDrop = NO;
+    NSPasteboard *pb=[info draggingPasteboard];
+    NSArray *dragTypes = [pb types];
+    
+    if ([dragTypes containsObject:STTABLIST_DRAG_ITEM_TYPE]) {
+        acceptDrop = YES;
+        id sender=[info draggingSource];
+        if (sender==self) {
+            
+        }else{
+            
+        }
+        
+    } else {
+        NSURL *urlToGo=HTBestURLFromPasteboard([info draggingPasteboard], YES);
+        if (urlToGo) {
+            acceptDrop = YES;
+            
+            _ignoreObserve=YES;
+            
+            id newTabItem=STSafariCreateWKViewOrWebViewAtIndexAndShow([aTableView window], row, YES);
+            if(newTabItem){
+                STTabProxy* newProxy=[STTabProxy tabProxyForTabViewItem:newTabItem];
+                [newProxy goToURL:urlToGo];
+            }
+            _ignoreObserve=NO;
+            
+            [self updateTabs:[newTabItem tabView]];
+        }
+    }
+
+    return acceptDrop;
+
+}
 @end

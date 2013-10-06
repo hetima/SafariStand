@@ -85,6 +85,9 @@ extern WKArrayRef WKArrayCreate(WKTypeRef* values, size_t numberOfValues);
 extern WKTypeRef WKArrayGetItemAtIndex(WKArrayRef array, size_t index);
 extern size_t WKArrayGetSize(WKArrayRef array);
 
+//WKPage
+extern void WKPageLoadURL(WKPageRef page, WKURLRef url);
+
 //WKFrame
 extern WKURLRef WKFrameCopyURL(WKFrameRef frame);
 typedef void (*WKFrameGetResourceDataFunction)(WKDataRef data, WKErrorRef error, void* functionContext);
@@ -113,4 +116,5 @@ NSArray* htWKDictionaryAllKeys(void* dic);
 WKTypeRef htWKDictionaryTypeRefForKey(void*dic, NSString* key);
 NSString* htWKDictionaryStringForKey(void*dic, NSString* key);
 
-
+void htWKGoToURL(id wkView, NSURL* urlToGo);
+WKPageRef htWKPageRefForWKView(id wkView);

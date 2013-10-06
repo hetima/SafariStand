@@ -55,6 +55,8 @@
 +(STTabProxy*)tabProxyForTabViewItem:(id)item;
 - (id)initWithTabViewItem:(id)item;
 
+- (void)goToURL:(NSURL*)url;
+
 - (id)window;
 - (id)wkView;
 -(BOOL)canClose;
