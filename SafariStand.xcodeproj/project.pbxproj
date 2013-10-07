@@ -88,9 +88,9 @@
 		AAD79B5513E2BC2E004CE895 /* STSearchItLaterWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAD79B5B13E2D2ED004CE895 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */; };
 		AADBCB5015C119070069E262 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AADBCB4F15C119070069E262 /* ApplicationServices.framework */; };
+		AAEC852018026D38007A5DD4 /* HTWebClipWin.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */; };
 		AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAF9D293147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D28D147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		AAF9D295147E1E210018C949 /* HTWebClipWin.nib in Resources */ = {isa = PBXBuildFile; fileRef = AAF9D290147E1E210018C949 /* HTWebClipWin.nib */; };
 		AAF9D296147E1E210018C949 /* HTWebClipwinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D292147E1E210018C949 /* HTWebClipwinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAF9D29E147E23310018C949 /* clip_edit.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AAF9D298147E23310018C949 /* clip_edit.tiff */; };
 		AAF9D29F147E23310018C949 /* clip_header.html in Resources */ = {isa = PBXBuildFile; fileRef = AAF9D299147E23310018C949 /* clip_header.html */; };
@@ -241,13 +241,13 @@
 		AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSearchItLaterWinCtl.m; sourceTree = "<group>"; };
 		AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		AADBCB4F15C119070069E262 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HTWebClipWin.xib; sourceTree = "<group>"; };
 		AAF8702413E55E4E00AC67A1 /* STSDownloadModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSDownloadModule.h; sourceTree = "<group>"; };
 		AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSDownloadModule.m; sourceTree = "<group>"; };
 		AAF9D28C147E1E210018C949 /* HTDOMElementHierarchyMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTDOMElementHierarchyMenuItem.h; sourceTree = "<group>"; };
 		AAF9D28D147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTDOMElementHierarchyMenuItem.m; sourceTree = "<group>"; };
 		AAF9D28E147E1E210018C949 /* HTFilePresetPopUpButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTFilePresetPopUpButton.h; sourceTree = "<group>"; };
 		AAF9D28F147E1E210018C949 /* HTFilePresetPopUpButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTFilePresetPopUpButton.m; sourceTree = "<group>"; };
-		AAF9D290147E1E210018C949 /* HTWebClipWin.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = HTWebClipWin.nib; sourceTree = "<group>"; };
 		AAF9D291147E1E210018C949 /* HTWebClipwinCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTWebClipwinCtl.h; sourceTree = "<group>"; };
 		AAF9D292147E1E210018C949 /* HTWebClipwinCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTWebClipwinCtl.m; sourceTree = "<group>"; };
 		AAF9D298147E23310018C949 /* clip_edit.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = clip_edit.tiff; sourceTree = "<group>"; };
@@ -598,7 +598,7 @@
 				AAF9D28D147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m */,
 				AAF9D28E147E1E210018C949 /* HTFilePresetPopUpButton.h */,
 				AAF9D28F147E1E210018C949 /* HTFilePresetPopUpButton.m */,
-				AAF9D290147E1E210018C949 /* HTWebClipWin.nib */,
+				AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */,
 				AAF9D291147E1E210018C949 /* HTWebClipwinCtl.h */,
 				AAF9D292147E1E210018C949 /* HTWebClipwinCtl.m */,
 				AAF9D298147E23310018C949 /* clip_edit.tiff */,
@@ -670,9 +670,9 @@
 				AAD79B5213E2BC09004CE895 /* STSearchItLaterWinCtl.xib in Resources */,
 				AA0881AA13E4284B003B70DF /* Localizable.strings in Resources */,
 				AA780DA613F1C0F40042A253 /* STClassifyDownloadAdvSheet.xib in Resources */,
+				AAEC852018026D38007A5DD4 /* HTWebClipWin.xib in Resources */,
 				AA396F0013F61B1E00EF5806 /* STStandSearchViewCtl.xib in Resources */,
 				AA396F0813F639A100EF5806 /* STStandSearchWinCtl.xib in Resources */,
-				AAF9D295147E1E210018C949 /* HTWebClipWin.nib in Resources */,
 				AAF9D29E147E23310018C949 /* clip_edit.tiff in Resources */,
 				AAF9D29F147E23310018C949 /* clip_header.html in Resources */,
 				AAF9D2A0147E23310018C949 /* clip_header.tiff in Resources */,
