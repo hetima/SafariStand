@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "0500"
+   version = "1.7">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AA12DA7913B73EFA0082EBB3"
+               BuildableName = "SafariStand.bundle"
+               BlueprintName = "SafariStand"
+               ReferencedContainer = "container:SafariStand.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      buildConfiguration = "Debug">
+      <Testables>
+      </Testables>
+   </TestAction>
+   <LaunchAction
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Debug"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      allowLocationSimulation = "YES">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "mkdir -p ~/Library/Application\ Support/SIMBL/Plugins/&#10;cd ~/Library/Application\ Support/SIMBL/Plugins/&#10;for bundle in &quot;${TARGET_BUILD_DIR}/*.bundle&quot;; do&#10;    export bundle_name=`basename ${bundle}`&#10;    [ -d ${bundle_name} ] &amp;&amp; mv ${bundle_name} ${bundle_name}.backup&#10;    cp -pR ${bundle} ${bundle_name}&#10;done">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "AA12DA7913B73EFA0082EBB3"
+                     BuildableName = "SafariStand.bundle"
+                     BlueprintName = "SafariStand"
+                     ReferencedContainer = "container:SafariStand.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "cd ~/Library/Application\ Support/SIMBL/Plugins/&#10;for bundle in &quot;${TARGET_BUILD_DIR}/*.bundle&quot;; do&#10;    export bundle_name=`basename ${bundle}`&#10;    rm -rf ${bundle_name}&#10;    [ -d ${bundle_name}.backup ] &amp;&amp; mv ${bundle_name}.backup ${bundle_name}&#10;done">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "AA12DA7913B73EFA0082EBB3"
+                     BuildableName = "SafariStand.bundle"
+                     BlueprintName = "SafariStand"
+                     ReferencedContainer = "container:SafariStand.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
+      <PathRunnable
+         FilePath = "/Applications/Safari.app">
+      </PathRunnable>
+      <AdditionalOptions>
+      </AdditionalOptions>
+   </LaunchAction>
+   <ProfileAction
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Release"
+      debugDocumentVersioning = "YES">
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>
