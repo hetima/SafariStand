@@ -21,8 +21,8 @@ info=NSDictionary
 node=>DOMNode
 url=>urlStr
 title=>title
-
 */
+
 @implementation HTWebClipWin
 
 - (void) dealloc
@@ -32,7 +32,13 @@ title=>title
 
 @end
 
-@implementation HTWebClipwinCtl
+@implementation HTWebClipwinCtl {
+    
+    WebArchive* _webArchive;
+    NSString* _defaultTitle;
+    NSString* _urlStr;
+    NSString* _filePath;
+}
 
 
 + (void)showUntitledWindow
@@ -115,102 +121,40 @@ title=>title
 
 - (void)windowWillClose:(NSNotification *)aNotification
 {
-    [oWebView setUIDelegate:nil];
+    [self.oWebView setUIDelegate:nil];
 	[[NSNotificationCenter defaultCenter]removeObserver:self 
-    name:WebViewDidChangeNotification object:oWebView];
+    name:WebViewDidChangeNotification object:self.oWebView];
 
 }
 
-- (void)toggleBottomDiscloseViewDisplay:(BOOL)display
-{
-// www.mactech.com/articles/mactech/Vol.16/16.09/DrawersandDisclosure/index.html
-   NSWindow *win = [self window];
-   NSRect winFrame = [win frame];
-
-// we'll need to know the size of both boxes in this case:
-   NSRect topFrame = [oMainView frame];
-   NSRect bottomFrame = [oBottomDiscloseView frame];
-
-// get the original settings for reestablishing later:
-   NSInteger topMask = [oMainView autoresizingMask];
-   NSInteger bottomMask = [oBottomDiscloseView autoresizingMask];
-   
-// toggle the state
-   NSInteger stateToSet = 1 - [oDisclosureButton tag];
-   
-   [win disableFlushWindow];
-
-// set the boxes to not automatically resize when the window resizes:
-   [oMainView setAutoresizingMask:NSViewNotSizable];
-   [oBottomDiscloseView setAutoresizingMask:NSViewNotSizable];
-
-   // if the button's state is 1, then stateToSet == 0, collapse it:
-   if (stateToSet == 0) {
-       // adjust the desired height and origin of the window:
-        winFrame.size.height -= NSHeight(bottomFrame);
-        winFrame.origin.y += NSHeight(bottomFrame);
-	    // adjust the origin of the bottom box well below the window:
-        bottomFrame.origin.y = -NSHeight(bottomFrame);
-		// begin the top box at the bottom of the window
-        topFrame.origin.y = 0.0;
-   } else {
-	   // stack the boxes one on top of the other:
-       bottomFrame.origin.y = 0.0;
-       topFrame.origin.y = NSHeight(bottomFrame);
-
-       // adjust the desired height and origin of the window:
-       winFrame.size.height += NSHeight(bottomFrame);
-       winFrame.origin.y -= NSHeight(bottomFrame);
-   }
-
-   // adjust locations of the boxes:
-   [oMainView setFrame:topFrame];
-   [oBottomDiscloseView setFrame:bottomFrame];
-
-   // change the state of the button to reflect new arrangement:
-   [oDisclosureButton setState:stateToSet];
-   [oDisclosureButton setTag:stateToSet];
-
-  // resize the window and display:
-   [win setFrame:winFrame display:display];
-
-   // reset the boxes to their original autosize masks:
-   [oMainView setAutoresizingMask:topMask];
-   [oBottomDiscloseView setAutoresizingMask:bottomMask];
-
-   [win enableFlushWindow];
-
-}
 
 - (void)awakeFromNib
 {
 
     //toolbar
-    NSToolbar* tb=[[NSToolbar alloc]initWithIdentifier:@"Stand_WebClip_Toolbar"];
-    [tb setDelegate:self];
-    [tb setAllowsUserCustomization:YES];
-    [tb setAutosavesConfiguration: YES];
-    [tb setDisplayMode:NSToolbarDisplayModeDefault];
-    [[self window]setToolbar:tb];
+    [[self window]setToolbar:({
+        NSToolbar* toolbar=[[NSToolbar alloc]initWithIdentifier:@"Stand_WebClip_Toolbar"];
+        [toolbar setDelegate:self];
+        [toolbar setAllowsUserCustomization:YES];
+        [toolbar setAutosavesConfiguration: YES];
+        [toolbar setDisplayMode:NSToolbarDisplayModeDefault];
+        toolbar;
+    })];
 
 
-    //bottomview
-    [oDisclosureButton setTag:1];
-    [self toggleBottomDiscloseViewDisplay:NO];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES);
-    
     //popup
-    [oDirPopUp setupWithIdentifier:@"HTWebClipwin" preset:paths];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES);
+    [self.oDirPopUp setupWithIdentifier:@"HTWebClipwin" preset:paths];
 	[[super window] setFrameAutosaveName:@"Stand_WebClipWin"];
 
-    [oFileNameFld setStringValue:_defaultTitle];
+    [self.oFileNameFld setStringValue:_defaultTitle];
 
     //webview
-    [oWebView setUIDelegate:self];
+    [self.oWebView setUIDelegate:self];
     if(_webArchive){
-        [[oWebView mainFrame]loadArchive:_webArchive];
+        [[self.oWebView mainFrame]loadArchive:_webArchive];
     }else{
-        [[oWebView mainFrame]loadHTMLString:@"<html><body></body></html>" baseURL:nil];
+        [[self.oWebView mainFrame]loadHTMLString:@"<html><body></body></html>" baseURL:nil];
     }
     
     if(_filePath){
@@ -221,7 +165,7 @@ title=>title
 	//observe edit
 	[[NSNotificationCenter defaultCenter]addObserver:self
 	 selector:@selector(noteWebViewDidChange:)
-	 name:WebViewDidChangeNotification object:oWebView];
+	 name:WebViewDidChangeNotification object:self.oWebView];
 
 }
 
@@ -253,25 +197,21 @@ title=>title
         _filePath = [value copy];
         
         [[self window]setTitleWithRepresentedFilename:[self filePath]];
-        [oFileNameFld setEnabled:NO];
-        [oDirPopUp setEnabled:NO];
+        [self.oFileNameFld setEnabled:NO];
+        [self.oDirPopUp setEnabled:NO];
     }
 }
 
 
 
-
-
-
 -(BOOL)writeToFile:(NSString *)filePath
 {
-    //WebArchive* arc=[[[oWebView mainFrame]dataSource]webArchive];
-    WebArchive* arc=[[[oWebView windowScriptObject]evaluateWebScript:@"document"]webArchive];
+    //WebArchive* arc=[[[self.oWebView mainFrame]dataSource]webArchive];
+    WebArchive* arc=[[[self.oWebView windowScriptObject]evaluateWebScript:@"document"]webArchive];
     BOOL result=[[arc data]writeToFile:filePath atomically:YES];
 
     //HTClearFileQuarantineState(filePath);
 
-    
     [self setDocumentEdited:NO];
 
     return result;
@@ -286,8 +226,8 @@ title=>title
         return;
     }
     
-    NSString* fileName=[oFileNameFld stringValue];
-    NSString* dirPath=[oDirPopUp selectedFilePath];
+    NSString* fileName=[self.oFileNameFld stringValue];
+    NSString* dirPath=[self.oDirPopUp selectedFilePath];
     fileName=(NSString*)objc_msgSend(fileName, @selector(_web_filenameByFixingIllegalCharacters));
     if([fileName length]>0 && dirPath){
         filePath=[[dirPath stringByAppendingPathComponent:fileName]stringByAppendingPathExtension:@"webarchive"];
@@ -316,18 +256,44 @@ title=>title
 }
 
 
--(IBAction)actToggleBottomDiscloseViewDisplay:(id)sender
+-(IBAction)actEditMemo:(id)sender
 {
-[self performSelector:@selector(toggleBottomDiscloseViewDisplay:) 
-			withObject:0 afterDelay:0.01];
-//    [self toggleBottomDiscloseViewDisplay:NO];
+    if (self.oMemoPopover.isShown) {
+        [self.oMemoPopover performClose:nil];
+        return;
+    }
+    
+    NSView* relativeView=nil;
+    NSRect relativeRect=NSZeroRect;
+/*
+    NSToolbar* tb=self.window.toolbar;
+    if ([tb isVisible]) {
+        NSArray *itms=[tb visibleItems];
+        for (NSToolbarItem* itm in itms) {
+            if([[itm itemIdentifier]isEqualToString:@"clip_memo"]){
+                relativeView=[itm view];
+                //NSButton だと思った？　残念 (null) でした！
+                break;
+            }
+        }
+    }
+*/
+    if (!relativeView) {
+        relativeView=self.oWebView;
+        relativeRect=[relativeView bounds];
+        relativeRect.origin.y=NSMaxY(relativeRect)-20;
+        relativeRect.size.height=20;
+    }
+    
+    [self.oMemoPopover showRelativeToRect:relativeRect ofView:relativeView preferredEdge:CGRectMinYEdge];
+    
 }
 
 -(IBAction)actToggleEditable:(id)sender
 {
-    if([oWebView respondsToSelector:@selector(setEditable:)]){
-        BOOL value=![oWebView isEditable];
-        [oWebView setEditable:value];
+    if([self.oWebView respondsToSelector:@selector(setEditable:)]){
+        BOOL value=![self.oWebView isEditable];
+        [self.oWebView setEditable:value];
         if([sender respondsToSelector:@selector(setTitle:)]){
             if(value){
                 [sender setTitle:@"End Edit"];
@@ -354,15 +320,14 @@ title=>title
 }
 
 
-
-
 -(IBAction)actInsertMemo:(id)sender
 {
-    [self insertMemo:[oMemoTextView string]];
+    [self insertMemo:[self.oMemoTextView string]];
 }
 
 -(IBAction)actClearMemo:(id)sender
 {
+    [self.oMemoTextView setString:@""];
     [self insertMemo:nil];
 }
 
@@ -370,7 +335,7 @@ title=>title
 {
 //kClipContentHeaderID
     BOOL result=NO;
-    WebScriptObject* so=[oWebView windowScriptObject];
+    WebScriptObject* so=[self.oWebView windowScriptObject];
     DOMHTMLDocument* doc=[so evaluateWebScript:@"document"];
     
     DOMNode* head=[doc getElementById:@"safaristand-clip-header"];
@@ -399,7 +364,6 @@ title=>title
     }
 
 
-
     return result;
 
 }
@@ -407,7 +371,7 @@ title=>title
 - (void)insertMemo:(NSString*)memo
 {
 //kClipContentHeaderID
-    WebScriptObject* so=[oWebView windowScriptObject];
+    WebScriptObject* so=[self.oWebView windowScriptObject];
     DOMHTMLDocument* doc=[so evaluateWebScript:@"document"];
 
     NSMutableString* headStr=nil;
@@ -435,12 +399,16 @@ title=>title
     }
     
     if(_filePath)[self setDocumentEdited:YES];
-
+    
+    if (self.oMemoPopover.isShown) {
+        [self.oMemoPopover performClose:nil];
+        return;
+    }
 }
 
 
 
-#pragma mark -
+#pragma mark - - toolbar
 
 
 - (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
@@ -495,7 +463,7 @@ title=>title
         }
         icon=clipMemoIcon;
         labelStr=@"Memo";
-        [item setAction:@selector(actToggleBottomDiscloseViewDisplay:)];
+        [item setAction:@selector(actEditMemo:)];
     }else if([itemIdentifier isEqualToString:@"clip_savec"]){
         if(clipSavecIcon==nil){
             NSBundle*   myBundle=[NSBundle bundleForClass:[self class]];
@@ -529,8 +497,8 @@ title=>title
 
 
 
-#pragma mark -
-#pragma mark ----- UIDelegate
+#pragma mark - - UIDelegate
+
 - (void)webView:(WebView *)sender setStatusText:(NSString *)text
 {
 
@@ -559,17 +527,15 @@ title=>title
     }
     return result;
 }
-#pragma mark -
-#pragma mark ----- MenuDelegate
 
-- (void)actRemoveElementConextMenu:(id)sender{
-    
+#pragma mark - - MenuDelegate
+
+- (void)actRemoveElementConextMenu:(id)sender
+{
     DOMNode* node=[sender representedObject];
     if(node){
         [[node parentNode]removeChild:node];
-        
     }
-
 }
 
 

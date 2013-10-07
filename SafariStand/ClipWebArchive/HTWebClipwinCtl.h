@@ -10,28 +10,17 @@
 @class HTFilePresetPopUpButton;
 
 @interface HTWebClipWin : NSWindow
-{
 
-}
 @end
 
-@interface HTWebClipwinCtl : NSWindowController <NSToolbarDelegate>{
-	IBOutlet WebView	*oWebView;
-    IBOutlet HTFilePresetPopUpButton *oDirPopUp;
-    IBOutlet NSTextField* oFileNameFld;
-    WebArchive* _webArchive;
-    NSString* _defaultTitle;
-    NSString* _urlStr;
-    IBOutlet NSTextView* oMemoTextView;
-    
-    IBOutlet NSView* oMainView;
-    IBOutlet NSView* oBottomDiscloseView;
-    IBOutlet NSButton* oDisclosureButton;
-    NSString* _filePath;
-    
-    id _hiliter;
+@interface HTWebClipwinCtl : NSWindowController <NSToolbarDelegate>
 
-}
+@property (weak) IBOutlet WebView *oWebView;
+@property (weak) IBOutlet NSTextField* oFileNameFld;
+@property (assign) IBOutlet NSTextView* oMemoTextView;
+@property (weak) IBOutlet HTFilePresetPopUpButton *oDirPopUp;
+@property (strong) IBOutlet NSPopover *oMemoPopover;
+
 + (void)showUntitledWindow;
 + (void)showWindowForCurrentWKView;
 + (void)showWindowForWebArchive:(WebArchive*)arc webFrame:(WebFrame*)webFrame info:(NSDictionary*)info;
@@ -45,13 +34,13 @@
 
 
 
--(IBAction)actSave:(id)sender;
--(IBAction)actToggleEditable:(id)sender;
--(IBAction)actInsertContentHeader:(id)sender;
--(IBAction)actInsertMemo:(id)sender;
--(IBAction)actClearMemo:(id)sender;
+- (IBAction)actSave:(id)sender;
+- (IBAction)actToggleEditable:(id)sender;
+- (IBAction)actInsertContentHeader:(id)sender;
+- (IBAction)actInsertMemo:(id)sender;
+- (IBAction)actClearMemo:(id)sender;
 
--(IBAction)actToggleBottomDiscloseViewDisplay:(id)sender;
+- (IBAction)actEditMemo:(id)sender;
 
 
 - (BOOL)insertContentHeaderToggle:(BOOL)toggle;
