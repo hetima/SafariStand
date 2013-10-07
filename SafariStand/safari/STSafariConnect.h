@@ -61,7 +61,7 @@ NSView* /* TabContentView */ STTabContentViewForTabView(NSView* tabView);
 
 void STMoveTabViewItemToIndex(id tabViewItem, NSInteger idx);
 void STSafariMoveTabToNewWindow(NSTabViewItem* item);
-void STSafariMoveTabFromOtherWindow(NSWindow* win, NSTabViewItem* item, NSInteger idx, BOOL show);
+void STSafariMoveTabToOtherWindow(NSTabViewItem* itemToMove, NSWindow* destWindow, NSInteger destIndex, BOOL show);
 void STSafariReloadTab(NSTabViewItem* item);
 BOOL STSafariCanReloadTab(NSTabViewItem* item);
 

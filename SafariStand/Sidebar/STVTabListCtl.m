@@ -144,11 +144,20 @@
     
     if ([dragTypes containsObject:STTABLIST_DRAG_ITEM_TYPE]) {
         acceptDrop = YES;
-        id sender=[info draggingSource];
-        if (sender==self) {
+        
+        id sender=[info draggingSource]; //NSTableView
+        NSArray *indexes = [pb propertyListForType:STTABLIST_DRAG_ITEM_TYPE];
+
+        if (sender==aTableView) {
             
         }else{
-            
+            STVTabListCtl* draggedCtl=(STVTabListCtl*)[sender dataSource];
+            NSEnumerator* e=[indexes reverseObjectEnumerator];
+            NSNumber* index;
+            while (index=[e nextObject]) {
+                STTabProxy* draggedProxy=[draggedCtl.tabs objectAtIndex:[index integerValue]];
+                STSafariMoveTabToOtherWindow(draggedProxy.tabViewItem, [aTableView window], row, YES);
+            }
         }
         
     } else {

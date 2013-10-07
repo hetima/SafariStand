@@ -329,14 +329,14 @@ void STSafariMoveTabToNewWindow(NSTabViewItem* item)
     
 }
 
-void STSafariMoveTabFromOtherWindow(NSWindow* win, NSTabViewItem* item, NSInteger idx, BOOL show)
+void STSafariMoveTabToOtherWindow(NSTabViewItem* itemToMove, NSWindow* destWindow, NSInteger destIndex, BOOL show)
 {
-    id winCtl=[win windowController];
+    id winCtl=[destWindow windowController];
 
-    if (winCtl && item && idx >= 0 && [winCtl respondsToSelector:@selector(moveTabFromOtherWindow:toIndex:andShow:)]) {
+    if (winCtl && itemToMove && destIndex >= 0 && [winCtl respondsToSelector:@selector(moveTabFromOtherWindow:toIndex:andShow:)]) {
         NSDisableScreenUpdates();
 
-        objc_msgSend(winCtl, @selector(moveTabFromOtherWindow:toIndex:andShow:), item, idx, show);
+        objc_msgSend(winCtl, @selector(moveTabFromOtherWindow:toIndex:andShow:), itemToMove, destIndex, show);
 
 //like _moveTabToNewWindow:
  /*       id sdc=[NSDocumentController sharedDocumentController];
@@ -351,7 +351,8 @@ void STSafariMoveTabFromOtherWindow(NSWindow* win, NSTabViewItem* item, NSIntege
     
 }
 
-void STSafariReloadTab(NSTabViewItem* item){
+void STSafariReloadTab(NSTabViewItem* item)
+{
     NSWindow* win=[[item tabView]window];
     id winCtl=[win windowController];
     if (item && [winCtl respondsToSelector:@selector(_reloadTab:)]) {
@@ -359,7 +360,9 @@ void STSafariReloadTab(NSTabViewItem* item){
     }
     
 }
-BOOL STSafariCanReloadTab(NSTabViewItem* item){
+
+BOOL STSafariCanReloadTab(NSTabViewItem* item)
+{
     NSWindow* win=[[item tabView]window];
     id winCtl=[win windowController];
     if (item && [winCtl respondsToSelector:@selector(canReloadTab:)]) {
@@ -368,7 +371,8 @@ BOOL STSafariCanReloadTab(NSTabViewItem* item){
     return NO;
 }
 
-id STBrowserWindowControllerMacForWKView(id wkView){
+id STBrowserWindowControllerMacForWKView(id wkView)
+{
     if ([wkView respondsToSelector:@selector(browserWindowControllerMac)]) {
         return objc_msgSend(wkView, @selector(browserWindowControllerMac));
     }
@@ -384,7 +388,8 @@ id STTabSwitcherForWinCtl(id winCtl){
 }
 */
 
-NSImage* STSafariBundleImageNamed(NSString* name){
+NSImage* STSafariBundleImageNamed(NSString* name)
+{
     NSImage* result=nil;
     NSString* path=[[NSBundle mainBundle] pathForImageResource:name];
     if (path) {
@@ -393,13 +398,18 @@ NSImage* STSafariBundleImageNamed(NSString* name){
     return result;
 }
 
-NSImage* STSafariBundleBookmarkImage(){
+NSImage* STSafariBundleBookmarkImage()
+{
     return STSafariBundleImageNamed(@"ToolbarBookmarksTemplate");
 }
-NSImage* STSafariBundleHistoryImage(){
+
+NSImage* STSafariBundleHistoryImage()
+{
     return STSafariBundleImageNamed(@"ToolbarHistoryTemplate");
 }
-NSImage* STSafariBundleReadinglistmage(){
+
+NSImage* STSafariBundleReadinglistmage()
+{
     return STSafariBundleImageNamed(@"ReadingList-GlassesSmall");    
 }
 
