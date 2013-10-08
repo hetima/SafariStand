@@ -69,6 +69,7 @@
 - (void)tabViewUpdated:(NSNotification*)note
 {
     NSTabView* tabView=[note object];
+    //window 基準でチェックしてるので tabView ごと入れ替わっても大丈夫
     if (self.view.window==[tabView window]) {
         [self updateTabs:tabView];
     }
@@ -209,4 +210,15 @@
     return acceptDrop;
 
 }
+
+@end
+
+@implementation STVTabListCellView
+
+- (IBAction)actCloseBtn:(id)sender
+{
+    STTabProxy* tabProxy=[self objectValue];
+    [tabProxy actClose:self];
+}
+
 @end

@@ -549,7 +549,8 @@ static void ST_setLabel(id self, SEL _cmd, NSString* label)
     LOG(@"didFinishLoadForFrame");
 }*/
 
-- (IBAction)actClose:(id)sender {
+- (IBAction)actClose:(id)sender
+{
     if (invalid) return; //連続呼び出し対策
     
     id winCtl=STBrowserWindowControllerMacForWKView([self wkView]);
@@ -564,7 +565,9 @@ static void ST_setLabel(id self, SEL _cmd, NSString* label)
     }
     
 }
-- (IBAction)actCloseOther:(id)sender {
+
+- (IBAction)actCloseOther:(id)sender
+{
     if (![self isThereOtherTab]||invalid) return;
     
     
@@ -575,45 +578,56 @@ static void ST_setLabel(id self, SEL _cmd, NSString* label)
     }
 }
 
-- (IBAction)actReload:(id)sender {
+- (IBAction)actReload:(id)sender
+{
     STSafariReloadTab(self.tabViewItem);
 }
 
-- (IBAction)actMoveTabToNewWindow:(id)sender {
+- (IBAction)actMoveTabToNewWindow:(id)sender
+{
     if (![self isThereOtherTab]||invalid) return;
     STSafariMoveTabToNewWindow(self.tabViewItem);
 }
 
 #pragma mark - IKImageBrowserItem Protocol
-- (NSString *)  imageUID{
+
+- (NSString *)  imageUID
+{
     return HTMD5StringFromString([self URLString]);
 }
-- (NSString *) imageRepresentationType{
+
+- (NSString *) imageRepresentationType
+{
     return IKImageBrowserNSImageRepresentationType;
 }
 
-- (id) imageRepresentation{
+- (id) imageRepresentation
+{
     return [self image];
 }
 
-- (NSUInteger) imageVersion{
+- (NSUInteger) imageVersion
+{
     return 1;
 }
 
-- (NSString *) imageTitle{
+- (NSString *) imageTitle
+{
     return [self title];
 }
 
-- (NSString *) imageSubtitle{
+- (NSString *) imageSubtitle
+{
     return [self URLString];
 }
 
-
-- (BOOL) isSelectable{
+- (BOOL) isSelectable
+{
     return YES;
 }
 
--(void)installedToSidebar:(id)ctl{
+-(void)installedToSidebar:(id)ctl
+{
     
     if (ctl) {
         self.wantsImage=YES;

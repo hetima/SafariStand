@@ -17,4 +17,12 @@
 
 - (void)setupWithTabView:(NSTabView*)tabView;
 
+
+@end
+
+
+@interface STVTabListCellView : NSTableCellView
+
+- (IBAction)actCloseBtn:(id)sender;
+
 @end

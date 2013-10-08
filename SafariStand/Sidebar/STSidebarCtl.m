@@ -110,7 +110,7 @@
 {
     
     self.tabListCtl=[STVTabListCtl viewCtl];
-    [self.tabListCtl setupWithTabView:nil];
+    [self.tabListCtl setupWithTabView:self.targetView];
     //setup tabview
     [self.oPrimaryTabView setTabViewType:NSNoTabsNoBorder];
     //[self.oPrimaryTabView setDelegate:nil];

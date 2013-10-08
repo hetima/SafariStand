@@ -45,7 +45,7 @@
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
-                                            <tableCellView id="22">
+                                            <tableCellView id="22" customClass="STVTabListCellView">
                                                 <rect key="frame" x="1" y="1" width="475" height="55"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
@@ -62,7 +62,7 @@
                                                         </connections>
                                                     </textField>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="43">
-                                                        <rect key="frame" x="81" y="8" width="394" height="17"/>
+                                                        <rect key="frame" x="81" y="8" width="355" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="exmample.com" id="44">
                                                             <font key="font" metaFont="cellTitle"/>
@@ -73,6 +73,17 @@
                                                             <binding destination="22" name="value" keyPath="objectValue.domain" id="H14-ls-UmZ"/>
                                                         </connections>
                                                     </textField>
+                                                    <button verticalHuggingPriority="750" id="A3m-wV-uN7">
+                                                        <rect key="frame" x="438" y="11" width="34" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                        <buttonCell key="cell" type="roundRect" title="x" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Npu-vU-uxN">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="controlContent"/>
+                                                        </buttonCell>
+                                                        <connections>
+                                                            <action selector="actCloseBtn:" target="22" id="XWJ-Db-cEp"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <connections>
                                                     <outlet property="textField" destination="23" id="25"/>
