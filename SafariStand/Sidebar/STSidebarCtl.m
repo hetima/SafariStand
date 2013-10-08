@@ -93,7 +93,6 @@
 - (void)tabViewReplaced:(NSNotification*)note
 {
     //古い tabView は既に window から取り除かれているので self.view.window==nil
-    LOG(@"%@",self.view.superview);
     NSTabView* tabView=[note object];
     STSidebarCtl* ctl=[tabView.window htaoValueForKey:@"sidebarCtl"];
     if (self==ctl) {
@@ -130,13 +129,16 @@
         DMTabBarItem* itm=[DMTabBarItem tabBarItemWithIcon:[NSImage imageNamed:@"NSIconViewTemplate"] tag:kTabListTag];
         @[itm];
     });
+
+    //DMTabBar の Block にキャプチャされると循環参照するので __weak
+    STSidebarCtl* __weak weakSelf=self;
     
     [self.oPrimaryTabbar handleTabBarItemSelection:^(DMTabBarItemSelectionType selectionType, DMTabBarItem *targetTabBarItem, NSUInteger targetTabBarItemIndex) {
         if (selectionType == DMTabBarItemSelectionType_WillSelect) {
 
         } else if (selectionType == DMTabBarItemSelectionType_DidSelect) {
             if (targetTabBarItem.tag==kTabListTag) {
-                [self.oPrimaryTabView selectTabViewItemWithIdentifier:kTabListIdentifier];
+                [weakSelf.oPrimaryTabView selectTabViewItemWithIdentifier:kTabListIdentifier];
             }
         }
     }];
