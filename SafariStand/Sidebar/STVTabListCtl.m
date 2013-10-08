@@ -148,9 +148,38 @@
         id sender=[info draggingSource]; //NSTableView
         NSArray *indexes = [pb propertyListForType:STTABLIST_DRAG_ITEM_TYPE];
 
+        //drag from same view
         if (sender==aTableView) {
+            _ignoreObserve=YES;
+            NSMutableArray* aboveArray=[NSMutableArray array];
+            NSMutableArray* insertedArray=[NSMutableArray array];
+            NSMutableArray* belowArray=[NSMutableArray array];
             
-        }else{
+            NSInteger i;
+            NSInteger cnt=[self.tabs count];
+            for (i=0; i<cnt; i++) {
+                STTabProxy* tabProxy=[self.tabs objectAtIndex:i];
+                if ([indexes containsObject:[NSNumber numberWithInteger:i]]) {
+                    [insertedArray addObject:tabProxy];
+                }else if (i<row) {
+                    [aboveArray addObject:tabProxy];
+                }else{
+                    [belowArray addObject:tabProxy];
+                }
+            }
+            [aboveArray addObjectsFromArray:insertedArray];
+            [aboveArray addObjectsFromArray:belowArray];
+            cnt=[aboveArray count];
+            for (i=0; i<cnt; i++) {
+                STTabProxy* tabProxy=[aboveArray objectAtIndex:i];
+                
+                STMoveTabViewItemToIndex(tabProxy.tabViewItem, i);
+            }
+            _ignoreObserve=NO;
+            self.tabs=aboveArray;
+            
+        //drag from other view
+        }else if([[sender dataSource]isKindOfClass:[STVTabListCtl class]]) {
             STVTabListCtl* draggedCtl=(STVTabListCtl*)[sender dataSource];
             NSEnumerator* e=[indexes reverseObjectEnumerator];
             NSNumber* index;
@@ -159,7 +188,7 @@
                 STSafariMoveTabToOtherWindow(draggedProxy.tabViewItem, [aTableView window], row, YES);
             }
         }
-        
+    //drag other element
     } else {
         NSURL *urlToGo=HTBestURLFromPasteboard([info draggingPasteboard], YES);
         if (urlToGo) {
@@ -173,7 +202,6 @@
                 [newProxy goToURL:urlToGo];
             }
             _ignoreObserve=NO;
-            
             [self updateTabs:[newTabItem tabView]];
         }
     }
