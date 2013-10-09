@@ -64,6 +64,11 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
 
 }
 
+- (void)modulesDidFinishLoading:(id)core
+{
+    [self showSidebarForExistingWindow];
+}
+
 - (void)prefValue:(NSString*)key changed:(id)value
 {
     //if([key isEqualToString:])
@@ -73,10 +78,7 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
 //起動時作成済みのウインドウにサイドバー表示
 -(void)showSidebarForExistingWindow
 {
-    if (![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarEnabled]) {
-        return;
-    }
-    
+
     if (![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault]) {
         return;
     }
@@ -87,7 +89,7 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
         id winCtl=[win windowController];
         if([win isVisible] && [[winCtl className]isEqualToString:kSafariBrowserWindowController]){
             //install
-
+            [self installSidebarToWindow:win];
         }
     }
 }
@@ -124,7 +126,7 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
 {
     NSTabView* tabView=STTabViewForWindow(win);
 
-    if (!tabView) {
+    if ([self sidebarCtlForWindow:win] || !tabView) {
         return;
     }
     BOOL rightSide=YES;
