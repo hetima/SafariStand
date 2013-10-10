@@ -38,6 +38,7 @@
 		AA396F0313F61ED800EF5806 /* STMetadataQueryCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396F0213F61ED800EF5806 /* STMetadataQueryCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA396F0613F638C100EF5806 /* STStandSearchWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396F0513F638C100EF5806 /* STStandSearchWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA396F0813F639A100EF5806 /* STStandSearchWinCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA396F0713F639A100EF5806 /* STStandSearchWinCtl.xib */; };
+		AA3B13481806822B00DDF075 /* STTabProxyController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B13471806822B00DDF075 /* STTabProxyController.m */; };
 		AA47D5DB13B9AC3100C9A19E /* STCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DA13B9AC3100C9A19E /* STCModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA47D5DF13B9AE3A00C9A19E /* STBookmarkSeparator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DE13B9AE3A00C9A19E /* STBookmarkSeparator.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA47D5E213B9AFD400C9A19E /* HTObjectHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5E113B9AFD400C9A19E /* HTObjectHook.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -153,6 +154,8 @@
 		AA396F0413F638C100EF5806 /* STStandSearchWinCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STStandSearchWinCtl.h; sourceTree = "<group>"; };
 		AA396F0513F638C100EF5806 /* STStandSearchWinCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STStandSearchWinCtl.m; sourceTree = "<group>"; };
 		AA396F0713F639A100EF5806 /* STStandSearchWinCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STStandSearchWinCtl.xib; sourceTree = "<group>"; };
+		AA3B13461806822B00DDF075 /* STTabProxyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTabProxyController.h; sourceTree = "<group>"; };
+		AA3B13471806822B00DDF075 /* STTabProxyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTabProxyController.m; sourceTree = "<group>"; };
 		AA47D5D413B9797B00C9A19E /* SafariStand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafariStand.h; sourceTree = "<group>"; };
 		AA47D5D613B97CC800C9A19E /* STCSafariStandCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCSafariStandCore.h; sourceTree = "<group>"; };
 		AA47D5D713B97CC800C9A19E /* STCSafariStandCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCSafariStandCore.m; sourceTree = "<group>"; };
@@ -281,6 +284,8 @@
 			children = (
 				AA04F85113B88BF800A8C548 /* STSafariConnect.h */,
 				AA04F85213B88BF800A8C548 /* STSafariConnect.m */,
+				AA3B13461806822B00DDF075 /* STTabProxyController.h */,
+				AA3B13471806822B00DDF075 /* STTabProxyController.m */,
 				AA21449E17F0B91200EDE661 /* STTabProxy.h */,
 				AA21449F17F0B91200EDE661 /* STTabProxy.m */,
 				AA671B2E17F71D96000A470C /* STWKClientHook.h */,
@@ -715,6 +720,7 @@
 				AAAC1AAC13BE163700FB13A2 /* STQuickSearchModule.m in Sources */,
 				AAAC1AAF13BE2BEA00FB13A2 /* HTQuerySeed.m in Sources */,
 				AAAC1AB213BE3E0500FB13A2 /* HTArrayController.m in Sources */,
+				AA3B13481806822B00DDF075 /* STTabProxyController.m in Sources */,
 				AA934E8B13BF18650019D191 /* NSApplication+SafariStand.m in Sources */,
 				AA775EF313DA7470001B0461 /* STSTabBarModule.m in Sources */,
 				AA775EF713DA9603001B0461 /* NSString+HTUtil.m in Sources */,

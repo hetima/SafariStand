@@ -9,7 +9,7 @@
 
 #import "SafariStand.h"
 #import <WebKit/WebKit.h>
-#import "STTabProxy.h"
+#import "STTabProxyController.h"
 #import "STWKClientHook.h"
 
 @implementation STCSafariStandCore {

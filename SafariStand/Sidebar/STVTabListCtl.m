@@ -9,6 +9,7 @@
 
 #import "STVTabListCtl.h"
 #import "STTabProxy.h"
+#import "STTabProxyController.h"
 #import "HTUtils.h"
 #import "STSafariConnect.h"
 #import "HTWebKit2Adapter.h"
