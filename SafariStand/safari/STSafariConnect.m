@@ -416,6 +416,13 @@ NSImage* STSafariBundleReadinglistmage()
 #pragma mark -
 #pragma mark etc
 
+NSString* STSafariWebpagePreviewsPath()
+{
+    NSString* path=[NSHomeDirectory() stringByStandardizingPath];
+    path=[path stringByAppendingPathComponent:@"Library/Caches/com.apple.Safari/Webpage Previews"];
+    return path;
+}
+
 NSString* STThumbnailForURLString(NSString* URLString, NSString* ext)
 {
     if ([ext isEqualToString:@"jpg"]) {
@@ -425,8 +432,7 @@ NSString* STThumbnailForURLString(NSString* URLString, NSString* ext)
     }
     NSString* md5Str=HTMD5StringFromString(URLString);
     
-    NSString* path=[NSHomeDirectory() stringByStandardizingPath];
-    path=[path stringByAppendingPathComponent:@"Library/Caches/com.apple.Safari/Webpage Previews"];
+    NSString* path=STSafariWebpagePreviewsPath();
     NSString* name=[NSString stringWithFormat:@"%@.%@", md5Str, ext];
     path=[path stringByAppendingPathComponent:name];
     

@@ -28,6 +28,7 @@ enum webbookmarktype {
 
 #define kSafariBrowserWindowController @"BrowserWindowControllerMac"
 
+NSString* STSafariWebpagePreviewsPath();
 NSString* STThumbnailForURLString(NSString* URLString, NSString* ext);
 
 BOOL STSafariOpenNewTabsInFront();
