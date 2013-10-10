@@ -302,7 +302,7 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
 -(void)sendQuerySeed:(HTQuerySeed*)inSeed withSearchString:(NSString*)inStr  policy:(int)policy
 {
     NSURLRequest* req=[inSeed requestWithSearchString:inStr];
-    STAddSearchStringHistory(inStr);
+    STSafariAddSearchStringHistory(inStr);
     STSafariGoToRequestWithPolicy(req, policy);
 }
 
@@ -315,7 +315,7 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
 -(void)sendGoogleQuerySeedWithSearchString:(NSString*)inStr  policy:(int)policy
 {
     NSURLRequest* req=[_googleQuerySeed requestWithSearchString:inStr];
-    STAddSearchStringHistory(inStr);
+    STSafariAddSearchStringHistory(inStr);
     STSafariGoToRequestWithPolicy(req, policy);
 }
 

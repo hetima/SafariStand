@@ -40,7 +40,7 @@ static void ST_FavoriteButton_goToBookmark(id self, SEL _cmd)
 	if([[NSUserDefaults standardUserDefaults]boolForKey:kpActionMessageEnabled] && [self respondsToSelector:@selector(bookmark)]){
 		id	bookmark=objc_msgSend(self,@selector(bookmark));
 		if(bookmark){
-			NSString	*url=STWebBookmarkURLString(bookmark);
+			NSString	*url=STSafariWebBookmarkURLString(bookmark);
 			hackHandled=[actionMessageModule handleBookmakBarAction:url];
 		}
 	}
@@ -71,13 +71,13 @@ static void ST_FavoriteButton_goToBookmark(id self, SEL _cmd)
 {
 	id returnValue=nil;
     
-    int bookmarkType=STWebBookmarkType(bookmarkLeaf);
+    int bookmarkType=STSafariWebBookmarkType(bookmarkLeaf);
 	if(bookmarkType==wbBookmark){
 		//this is WebBookmarkLeaf
-        NSString *url=STWebBookmarkURLString(bookmarkLeaf);
+        NSString *url=STSafariWebBookmarkURLString(bookmarkLeaf);
         
         if([url hasPrefix:kActionMessageScheme]){
-            NSString*   menuTitle=STWebBookmarkTitle(bookmarkLeaf);
+            NSString*   menuTitle=STSafariWebBookmarkTitle(bookmarkLeaf);
 
             returnValue=[[NSMenuItem alloc]initWithTitle:menuTitle action:@selector(actHandleBookmakItem:) keyEquivalent:@""];
 			[returnValue setTarget:self];

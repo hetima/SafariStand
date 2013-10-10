@@ -32,7 +32,7 @@
 
 +(STTabProxy*)tabProxyForWKView:(id)wkView
 {
-    return [STTabViewItemForWKView(wkView) htaoValueForKey:@"STTabProxy"];
+    return [STSafariTabViewItemForWKView(wkView) htaoValueForKey:@"STTabProxy"];
 }
 
 +(STTabProxy*)tabProxyForTabViewItem:(id)item
@@ -75,14 +75,14 @@
 
 - (id)window
 {
-    id winCtl=STBrowserWindowControllerMacForWKView([self wkView]);
+    id winCtl=STSafariBrowserWindowControllerForWKView([self wkView]);
     return [winCtl window];
     //return [[tabViewItem view]window];
 }
 
 - (id)wkView
 {
-    return STWKViewForTabViewItem(_tabViewItem);
+    return STSafariWKViewForTabViewItem(_tabViewItem);
 }
 
 -(BOOL)canClose{
@@ -115,7 +115,7 @@
 
 -(NSString*)imagePathForExt:(NSString*)ext
 {
-    return STThumbnailForURLString([self URLString], ext);
+    return STSafariThumbnailForURLString([self URLString], ext);
 
 }
 
@@ -267,7 +267,7 @@
 {
     if([_tabViewItem tabState]==NSSelectedTab)return;
     
-    id ctl=STBrowserWindowControllerMacForWKView([self wkView]);
+    id ctl=STSafariBrowserWindowControllerForWKView([self wkView]);
     if ([ctl respondsToSelector:@selector(_showTab:)]) {
         objc_msgSend(ctl, @selector(_showTab:), _tabViewItem);
     }
@@ -317,7 +317,7 @@
 {
     if (invalid) return; //連続呼び出し対策
     
-    id winCtl=STBrowserWindowControllerMacForWKView([self wkView]);
+    id winCtl=STSafariBrowserWindowControllerForWKView([self wkView]);
     if (![self canClose]) {
         [[winCtl window]performClose:nil];
     }else{
@@ -336,7 +336,7 @@
     
     
     //BrowserWindowControllerMac - (void)tryToCloseOtherTabsWhenReady:(NSTabViewItem*)arg1;
-    id winCtl=STBrowserWindowControllerMacForWKView([self wkView]);
+    id winCtl=STSafariBrowserWindowControllerForWKView([self wkView]);
     if ([winCtl respondsToSelector:@selector(tryToCloseOtherTabsWhenReady:)]) {
         objc_msgSend(winCtl, @selector(tryToCloseOtherTabsWhenReady:), _tabViewItem);
     }

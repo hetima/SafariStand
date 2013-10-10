@@ -63,7 +63,7 @@ void ST_goToToolbarLocation(id self, SEL _cmd, id obj)
         if(req){
             //rangeOfString+1 は直前のrequestWithLocationString:で保証済み
             NSString* searchStr=[locationString substringFromIndex:[locationString rangeOfString:@" "].location+1];
-            STAddSearchStringHistory(searchStr);
+            STSafariAddSearchStringHistory(searchStr);
             STSafariGoToRequestWithPolicy(req, STSafariWindowPolicyFromCurrentEvent());
         }
         // FIXME: shortcut のみを打ち込むとreq==nilになってどこへも飛ばない

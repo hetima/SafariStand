@@ -29,7 +29,7 @@ enum webbookmarktype {
 #define kSafariBrowserWindowController @"BrowserWindowControllerMac"
 
 NSString* STSafariWebpagePreviewsPath();
-NSString* STThumbnailForURLString(NSString* URLString, NSString* ext);
+NSString* STSafariThumbnailForURLString(NSString* URLString, NSString* ext);
 
 BOOL STSafariOpenNewTabsInFront();
 int STSafariWindowPolicyNewTab();
@@ -46,7 +46,7 @@ void STSafariDownloadRequest(NSURLRequest* req);
 void STSafariDownloadURLWithFileName(NSURL* url, NSString* fileName);
 void STSafariDownloadRequestWithFileName(NSURLRequest* req, NSString* fileName);
 
-
+//Safari
 void STSafariNewTabAction();
 id STSafariCreateWKViewOrWebViewAtIndexAndShow(NSWindow* win, NSInteger idx, BOOL show);
 
@@ -55,21 +55,21 @@ NSWindow* STSafariCurrentBrowserWindow();
 id STSafariCurrentTitle();
 id STSafariCurrentURLString();
 id STSafariCurrentWKView();
-id STWKViewForTabViewItem(id tabViewItem);
-id STTabViewItemForWKView(id wkView);
-id STTabViewForWindow(NSWindow* win);
-NSView* /* TabContentView */ STTabContentViewForTabView(NSView* tabView);
+id STSafariWKViewForTabViewItem(id tabViewItem);
+id STSafariTabViewItemForWKView(id wkView);
+id /* NSTabView */ STSafariTabViewForWindow(NSWindow* win);
+NSView* /* TabContentView */ STSafariTabContentViewForTabView(NSView* tabView);
 
-void STMoveTabViewItemToIndex(id tabViewItem, NSInteger idx);
+void STSafariMoveTabViewItemToIndex(id tabViewItem, NSInteger idx);
 void STSafariMoveTabToNewWindow(NSTabViewItem* item);
 void STSafariMoveTabToOtherWindow(NSTabViewItem* itemToMove, NSWindow* destWindow, NSInteger destIndex, BOOL show);
 void STSafariReloadTab(NSTabViewItem* item);
 BOOL STSafariCanReloadTab(NSTabViewItem* item);
 
-id STBrowserWindowControllerMacForWKView(id wkView);
+id STSafariBrowserWindowControllerForWKView(id wkView);
 //id STTabSwitcherForWinCtl(id winCtl);
 
-NSInteger STWindowSelectedTabIndex(NSWindow* win);
+NSInteger STSafariSelectedTabIndexForWindow(NSWindow* win);
 
 NSImage* STSafariBundleImageNamed(NSString* name);
 NSImage* STSafariBundleBookmarkImage();
@@ -78,20 +78,11 @@ NSImage* STSafariBundleReadinglistmage();
 
 //WebBookmark, WebBookmarkLeaf
 
-void STAddSearchStringHistory(NSString* str);
+void STSafariAddSearchStringHistory(NSString* str);
 
-int STWebBookmarkType(id webBookmark);
-NSString* STWebBookmarkURLString(id webBookmark);
-NSString* STWebBookmarkTitle(id webBookmark);
-
-
+int STSafariWebBookmarkType(id webBookmark);
+NSString* STSafariWebBookmarkURLString(id webBookmark);
+NSString* STSafariWebBookmarkTitle(id webBookmark);
 
 
 
-
-@interface STSafariConnect : NSObject {
-@private
-    
-}
-
-@end

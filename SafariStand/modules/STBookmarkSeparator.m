@@ -38,7 +38,7 @@ static id STBS_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, void*
 static id (*orig_addBookmarkFolder_toMenu)(id, SEL, ...);
 static id ST_addBookmarkFolder_toMenu(id self, SEL _cmd, id bookmark, id menu)
 {
-    NSString* title=STWebBookmarkTitle(bookmark);
+    NSString* title=STSafariWebBookmarkTitle(bookmark);
     if ([title hasPrefix:kSeparatorStr]) {
         return nil;
     }
@@ -80,14 +80,14 @@ static id ST_addBookmarkFolder_toMenu(id self, SEL _cmd, id bookmark, id menu)
 {
 	id returnValue=nil;
     
-    int bookmarkType=STWebBookmarkType(bookmarkLeaf);
+    int bookmarkType=STSafariWebBookmarkType(bookmarkLeaf);
     
 	if(bookmarkType==wbFolder){
 		//this is WebBookmarkLeaf
 		NSString *menuTitle=nil;
 		BOOL	isSeparator=NO;
 
-        NSString*   title=STWebBookmarkTitle(bookmarkLeaf);
+        NSString*   title=STSafariWebBookmarkTitle(bookmarkLeaf);
         if([title hasPrefix:kSeparatorStr]){
             isSeparator=YES;
             if([title length]==kSeparatorLength)return [NSMenuItem separatorItem];

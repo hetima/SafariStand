@@ -175,7 +175,7 @@
             for (i=0; i<cnt; i++) {
                 STTabProxy* tabProxy=[aboveArray objectAtIndex:i];
                 
-                STMoveTabViewItemToIndex(tabProxy.tabViewItem, i);
+                STSafariMoveTabViewItemToIndex(tabProxy.tabViewItem, i);
             }
             _ignoreObserve=NO;
             self.tabs=aboveArray;

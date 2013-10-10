@@ -124,7 +124,7 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
 
 -(void)installSidebarToWindow:(NSWindow*)win
 {
-    NSTabView* tabView=STTabViewForWindow(win);
+    NSTabView* tabView=STSafariTabViewForWindow(win);
 
     if ([self sidebarCtlForWindow:win] || !tabView) {
         return;
@@ -156,7 +156,7 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
 
 -(STSidebarFrameView*)sidebarContentViewForWindow:(NSWindow*)win
 {
-    NSView* tabView=STTabViewForWindow(win);
+    NSView* tabView=STSafariTabViewForWindow(win);
     return [self sidebarContentViewForTabView:tabView];
 }
 

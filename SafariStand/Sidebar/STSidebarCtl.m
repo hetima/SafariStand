@@ -172,7 +172,7 @@
 
 - (void)layout:(BOOL)rightSide
 {
-    NSView* counterpartView=STTabContentViewForTabView(self.targetView);
+    NSView* counterpartView=STSafariTabContentViewForTabView(self.targetView);
     if (!counterpartView) {
         NSLog(@"Error: TabContentView not found.");
         return;

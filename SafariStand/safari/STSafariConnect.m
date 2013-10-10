@@ -256,7 +256,7 @@ id STSafariCurrentWKView()
     return currentWebView;
 }
 
-NSInteger STWindowSelectedTabIndex(NSWindow* win)
+NSInteger STSafariSelectedTabIndexForWindow(NSWindow* win)
 {
     id winCtl=[win windowController];
 	if([winCtl respondsToSelector:@selector(selectedTabIndex)]){
@@ -265,7 +265,7 @@ NSInteger STWindowSelectedTabIndex(NSWindow* win)
     return -1;
 }
 
-id STWKViewForTabViewItem(id tabViewItem)
+id STSafariWKViewForTabViewItem(id tabViewItem)
 {
 	if([tabViewItem respondsToSelector:@selector(wkView)]){
         return objc_msgSend(tabViewItem, @selector(wkView));
@@ -274,9 +274,9 @@ id STWKViewForTabViewItem(id tabViewItem)
 }
 
 //
-id STTabViewItemForWKView(id wkView)
+id STSafariTabViewItemForWKView(id wkView)
 {
-    id winCtl=STBrowserWindowControllerMacForWKView(wkView);
+    id winCtl=STSafariBrowserWindowControllerForWKView(wkView);
     if([winCtl respondsToSelector:@selector(tabViewItemForWebView:)]){
         return objc_msgSend(winCtl, @selector(tabViewItemForWebView:), wkView);
     }
@@ -284,7 +284,7 @@ id STTabViewItemForWKView(id wkView)
 }
 
 //STTabSwitcherForWinCtl() でもいいか
-id/* NSTabView */ STTabViewForWindow(NSWindow* win)
+id/* NSTabView */ STSafariTabViewForWindow(NSWindow* win)
 {
     id result=nil;
     id winCtl=[win windowController];
@@ -297,7 +297,7 @@ id/* NSTabView */ STTabViewForWindow(NSWindow* win)
     return result;
 }
 
-NSView* /* TabContentView */ STTabContentViewForTabView(NSView* tabView)
+NSView* /* TabContentView */ STSafariTabContentViewForTabView(NSView* tabView)
 {
     NSArray* subviews=[tabView subviews];
     for (NSView* subview in subviews) {
@@ -310,7 +310,7 @@ NSView* /* TabContentView */ STTabContentViewForTabView(NSView* tabView)
 
 
 //-(void)[BrowserWindowControllerMac moveTab:toIndex:]
-void STMoveTabViewItemToIndex(id tabViewItem, NSInteger idx)
+void STSafariMoveTabViewItemToIndex(id tabViewItem, NSInteger idx)
 {
     NSWindow* win=[[tabViewItem tabView]window];
     id winCtl=[win windowController];
@@ -371,7 +371,7 @@ BOOL STSafariCanReloadTab(NSTabViewItem* item)
     return NO;
 }
 
-id STBrowserWindowControllerMacForWKView(id wkView)
+id STSafariBrowserWindowControllerForWKView(id wkView)
 {
     if ([wkView respondsToSelector:@selector(browserWindowControllerMac)]) {
         return objc_msgSend(wkView, @selector(browserWindowControllerMac));
@@ -423,7 +423,7 @@ NSString* STSafariWebpagePreviewsPath()
     return path;
 }
 
-NSString* STThumbnailForURLString(NSString* URLString, NSString* ext)
+NSString* STSafariThumbnailForURLString(NSString* URLString, NSString* ext)
 {
     if ([ext isEqualToString:@"jpg"]) {
         ext=@"jpeg";
@@ -443,7 +443,8 @@ NSString* STThumbnailForURLString(NSString* URLString, NSString* ext)
 }
 
 
-void STAddSearchStringHistory(NSString* str){
+void STSafariAddSearchStringHistory(NSString* str)
+{
     id webSearchFieldCell=NSClassFromString(@"WebSearchFieldCell");
     if([webSearchFieldCell respondsToSelector:@selector(addSearchString:)]){
         objc_msgSend(webSearchFieldCell, @selector(addSearchString:), str);
@@ -459,14 +460,12 @@ void STAddSearchStringHistory(NSString* str){
         [pb clearContents];
         [pb setString:kwd forType:NSStringPboardType];
     }
-    
-
 }
 
 
 
 
-int STWebBookmarkType(id webBookmark)
+int STSafariWebBookmarkType(id webBookmark)
 {
     if([webBookmark respondsToSelector:@selector(bookmarkType)]){
         int safariType=(int)objc_msgSend(webBookmark, @selector(bookmarkType));
@@ -476,14 +475,15 @@ int STWebBookmarkType(id webBookmark)
     return wbInvalid;
 }
 
-NSString* STWebBookmarkURLString(id webBookmark)
+NSString* STSafariWebBookmarkURLString(id webBookmark)
 {
     if([webBookmark respondsToSelector:@selector(URLString)]){
         return objc_msgSend(webBookmark, @selector(URLString));
     }
     return nil;
 }
-NSString* STWebBookmarkTitle(id webBookmark)
+
+NSString* STSafariWebBookmarkTitle(id webBookmark)
 {
     if([webBookmark respondsToSelector:@selector(title)]){
         return objc_msgSend(webBookmark, @selector(title));
@@ -491,22 +491,3 @@ NSString* STWebBookmarkTitle(id webBookmark)
     return nil;
 }
 
-@implementation STSafariConnect
-
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        // Initialization code here.
-    }
-    
-    return self;
-}
-
-
-- (void)dealloc
-{
-
-}
-
-@end
