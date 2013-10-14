@@ -1,10 +1,7 @@
 //
 //  STPreviewImageManager.h
 //  SafariStand
-//
-//  Created by main on 2013/10/12.
-//
-//
+
 
 #import <Foundation/Foundation.h>
 
