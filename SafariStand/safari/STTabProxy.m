@@ -12,9 +12,6 @@
 #import "SafariStand.h"
 #import "STTabProxy.h"
 #import "STTabProxyController.h"
-//#import <WebKit2/WKImage.h>
-//#import <WebKit2/WKImageCG.h>
-//#import <WebKit2/WKBundlePage.h>
 
 #import "HTWebKit2Adapter.h"
 #import "STFakeJSCommand.h"
@@ -23,7 +20,6 @@
 @implementation STTabProxy
 {
     BOOL invalid;
-    
 }
 
 - (void)goToURL:(NSURL*)urlToGo
@@ -60,7 +56,6 @@
 
         [[STTabProxyController si]addTabProxy:self];
         self.title=[item title];
-//        [self release];
         //まだwindowに入ってない
         [[NSNotificationCenter defaultCenter]postNotificationName:STTabProxyCreatedNote object:self];
     }
@@ -71,14 +66,12 @@
 - (void)dealloc
 {
     LOG(@"STTabProxy dealloc");
-
 }
 
 - (id)window
 {
     id winCtl=STSafariBrowserWindowControllerForWKView([self wkView]);
     return [winCtl window];
-    //return [[tabViewItem view]window];
 }
 
 - (id)wkView
@@ -97,6 +90,7 @@
     return NO;
      */
 }
+
 -(BOOL)isThereOtherTab
 {
     if([[_tabViewItem tabView]numberOfTabViewItems]>1)return YES;
@@ -105,11 +99,7 @@
 }
 
 
-/*
-- (NSString*)title
-{
-    return [tabViewItem title];
-}*/
+
 
 - (NSString*)URLString
 {
@@ -132,146 +122,15 @@
     [self willChangeValueForKey:@"image"];
     self.cachedImage=image;
     [self didChangeValueForKey:@"image"];
-    
-    
 }
 
-- (void)updateImage
-{
-    return;
-
-    if (self.isLoading|| !self.wantsImage)return;
-/*    NSString* currentURLString=[self URLString];
-    
-    if (![currentURLString isEqualToString:_cachedImageURLString] || !self.cachedImage) {
-        NSImage* icn=htWKIconImageForURLString(currentURLString, (WKPageRef)[[self wkView]pageRef]);
-        [self willChangeValueForKey:@"icon"];
-        self.cachedImage=icn;
-        [self didChangeValueForKey:@"icon"];
-    }
-*/
-    /*
-    //WKPagePrivate.h
-    extern WKImageRef WKPageCreateSnapshotOfVisibleContent(WKPageRef page);
-    
-    WKView* pView=[self wkView];
-    WKPageRef pRef=[pView pageRef];
-    WKImageRef wkImgRef=WKPageCreateSnapshotOfVisibleContent(pRef);
-    CGImageRef imageRef=WKImageCreateCGImage(wkImgRef);
-    NSImage* srcImg = [[NSImage alloc] initWithCGImage:imageRef size:NSZeroSize];
-
-    //縮小
-    NSSize imgSize=NSMakeSize(480, 380);
-    NSSize srcSize=[srcImg size];
-    
-    NSRect srcRect=NSMakeRect(0,0,srcSize.width,srcSize.height);
-    srcRect.size.height=(srcSize.width/imgSize.width)*imgSize.height;
-
-    if(![srcImg isFlipped])
-        srcRect.origin.y=srcSize.height-srcRect.size.height;
-
-    NSImage* img=[[[NSImage alloc]initWithSize:imgSize]autorelease];
-    //            [img setFlipped:YES];
-    [img setScalesWhenResized:YES];
-    
-    [img lockFocus];
-    [[NSGraphicsContext currentContext]saveGraphicsState];
-    [[NSGraphicsContext currentContext]setImageInterpolation:NSImageInterpolationMedium];
-    
-    [srcImg drawInRect:NSMakeRect(0,0,imgSize.width,imgSize.height)
-               fromRect:srcRect
-              operation:NSCompositeCopy fraction:1.0];
-    
-    [[NSGraphicsContext currentContext]restoreGraphicsState];
-    [img unlockFocus];
-    
-    [srcImg release];
-    CGImageRelease(imageRef);
-    WKRelease(wkImgRef);
-    
-    [self willChangeValueForKey:@"image"];
-    self.cachedImage=img;
-    [self didChangeValueForKey:@"image"];
-    
-    */
-    
-}
-
-#define kWebViewThumbDefaultWidth 320
-#define kWebViewThumbMaxWidth 1024
-//#define kWebViewThumbHeightRatio 4.5
-//#define kWebViewThumbPadding 6
-//#define kWebViewThumbPaddingBottom 18
-- (NSImage*)makeImage
-{
-    NSImage* img=nil;
-	NSView* pView=nil;
-	NSImage* tempImg=nil;
-	NSSize  thumbSize;
-    
-    CGFloat dfWidth=kWebViewThumbDefaultWidth;
-    //[[self window]disableCursorRects];
-    //[[self window]disableFlushWindow];
-    //    [[self window]disableScreenUpdatesUntilFlush];
-    pView=[self wkView];
-	if(pView){//WebHTMLView
-		//サイズ計算
-        //CGFloat scaleX=1.0;
-        CGFloat scaleY=0.5;
-        
-		NSSize imgSize=[pView frame].size;
-        //if(pView==self && imgSize.width>20)imgSize.width-=16;//スクロールバー除外
-        CGFloat disHeight=floor(imgSize.width*scaleY); //比率で掛けて縮小 width基準
-		if(imgSize.height > disHeight)imgSize.height=disHeight;
-        
-        NSRect clipRect=[pView frame];
-        
-        if(![pView isFlipped])
-            clipRect.origin.y=clipRect.size.height-imgSize.height;
-        
-        clipRect.size=imgSize;
-        
-        //イメージ生成
-        tempImg=[[NSImage alloc]initWithSize:imgSize];
-        [tempImg setScalesWhenResized:YES];
-        [tempImg setFlipped:YES];
-        [tempImg lockFocus];
-        [pView drawRect:NSMakeRect(0,0,[tempImg size].width,[tempImg size].height)];
-        [tempImg unlockFocus];
-		
-		if(tempImg){
-            //比率で掛けて縮小
-            thumbSize.height=floorf(imgSize.height/(imgSize.width/dfWidth));
-            thumbSize.width=dfWidth;
-            img=[[NSImage alloc]initWithSize:thumbSize];
-            //            [img setFlipped:YES];
-            [img setScalesWhenResized:YES];
-            
-            [img lockFocus];
-            [[NSGraphicsContext currentContext]saveGraphicsState];
-            [[NSGraphicsContext currentContext]setImageInterpolation:NSImageInterpolationHigh];
-            //[tempImg draw];
-            
-            [tempImg drawInRect:NSMakeRect(0,0,thumbSize.width,thumbSize.height)
-                       fromRect:NSMakeRect(0,0,imgSize.width,imgSize.height)
-                      operation:NSCompositeCopy fraction:1.0];
-            
-            [[NSGraphicsContext currentContext]restoreGraphicsState];
-            [img unlockFocus];
-		}
-	}
-    //[[self window]enableFlushWindow];
-    //[[self window]enableCursorRects];
-	return img;
-    
-    
-}
 
 
 -(NSImage*)image
 {
     return self.cachedImage;
 }
+
 -(NSImage*)icon
 {
     return self.cachedImage;
@@ -388,9 +247,5 @@
 }
 
 
-
-
-
 @end
-
 

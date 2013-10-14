@@ -33,33 +33,32 @@
 
 
 
-+(STTabProxy*)tabProxyForWKView:(id)wkView;
-+(STTabProxy*)tabProxyForTabViewItem:(id)item;
++ (STTabProxy*)tabProxyForWKView:(id)wkView;
++ (STTabProxy*)tabProxyForTabViewItem:(id)item;
 - (id)initWithTabViewItem:(id)item;
 
 - (void)goToURL:(NSURL*)url;
 
 - (id)window;
 - (id)wkView;
--(BOOL)canClose;
--(BOOL)isThereOtherTab;
+- (BOOL)canClose;
+- (BOOL)isThereOtherTab;
 
-//- (NSString*)title;
 - (NSString*)URLString;
--(NSString*)imagePathForExt:(NSString*)ext;
--(NSImage*)image;
--(NSImage*)icon;
+- (NSString*)imagePathForExt:(NSString*)ext;
+- (NSImage*)image;
+- (NSImage*)icon;
 - (void)previewImageDelivered:(STPreviewImageDelivery*)delivery;
 
 - (NSTabView *)tabView;
--(void)selectTab;
+- (void)selectTab;
 
 
--(void)didStartProgress;
--(void)didFinishProgress;
+- (void)didStartProgress;
+- (void)didFinishProgress;
 
--(void)installedToSidebar:(id)ctl;
--(void)uninstalledFromSidebar:(id)ctl;
+- (void)installedToSidebar:(id)ctl;
+- (void)uninstalledFromSidebar:(id)ctl;
 
 
 - (IBAction)actClose:(id)sender;
