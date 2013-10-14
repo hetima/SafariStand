@@ -12,6 +12,8 @@
 #import "STSidebarCtl.h"
 
 
+@implementation STSidebarModule
+
 //NSTabView - (NSRect)contentRect
 static NSRect (*orig_NSTabViewContentRect)(id, SEL);
 static NSRect ST_NSTabViewContentRect(id self, SEL sel)
@@ -36,7 +38,25 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
 }
 
 
-@implementation STSidebarModule
+//kpSidebarShowsDefault
+static void (*orig_showWindow)(id, SEL, id);
+static void ST_showWindow(id self, SEL _cmd, id sender)
+{
+    orig_showWindow(self, _cmd, sender);
+    if ( ![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault] ||
+        [self htaoValueForKey:@"STSMShouldNotShowSidebarAuto"] ) {
+        return;
+    }
+    
+    [self htaoSetValue:@YES forKey:@"STSMShouldNotShowSidebarAuto"];
+    NSSize winSize=[[self window]frame].size;
+    if(winSize.width>640 && winSize.height>600){
+        [[STCSafariStandCore mi:@"STSidebarModule"]installSidebarToWindow:[self window]];
+    }
+    
+    
+}
+
 
 - (id)initWithStand:(id)core
 {
@@ -45,8 +65,9 @@ static NSRect ST_NSTabViewContentRect(id self, SEL sel)
         orig_NSTabViewContentRect = (NSRect (*)(id, SEL))RMF(NSClassFromString(@"NSTabView"),
                                                    @selector(contentRect), ST_NSTabViewContentRect);
 
-        
-        //[self observePrefValue:];
+        //kpSidebarShowsDefault
+        orig_showWindow = (void (*)(id, SEL, id))RMF(NSClassFromString(kSafariBrowserWindowController),  @selector(showWindow:), ST_showWindow);
+
 
         NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Sidebar" action:@selector(toggleSidebar:) keyEquivalent:@""];
         [itm setTarget:self];

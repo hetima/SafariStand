@@ -17,7 +17,8 @@
 //#import <WebKit2/WKBundlePage.h>
 
 #import "HTWebKit2Adapter.h"
-
+#import "STFakeJSCommand.h"
+#import "STPreviewImageManager.h"
 
 @implementation STTabProxy
 {
@@ -85,7 +86,8 @@
     return STSafariWKViewForTabViewItem(_tabViewItem);
 }
 
--(BOOL)canClose{
+-(BOOL)canClose
+{
     if([[_tabViewItem tabView]numberOfTabViewItems]>1)return YES;
     return NO;
     /*
@@ -95,7 +97,8 @@
     return NO;
      */
 }
--(BOOL)isThereOtherTab{
+-(BOOL)isThereOtherTab
+{
     if([[_tabViewItem tabView]numberOfTabViewItems]>1)return YES;
     
     return NO;
@@ -119,8 +122,24 @@
 
 }
 
+- (void)previewImageDelivered:(STPreviewImageDelivery*)delivery
+{
+    NSImage* image=delivery.image;
+    if (!image) {
+        NSString* imagePath=delivery.path;
+        image=[[NSImage alloc]initByReferencingFile:imagePath];
+    }
+    [self willChangeValueForKey:@"image"];
+    self.cachedImage=image;
+    [self didChangeValueForKey:@"image"];
+    
+    
+}
+
 - (void)updateImage
 {
+    return;
+
     if (self.isLoading|| !self.wantsImage)return;
 /*    NSString* currentURLString=[self URLString];
     
@@ -284,9 +303,14 @@
     self.isLoading=YES;
     //[self didChangeValueForKey:@"isLoading"];
     
+    [self willChangeValueForKey:@"image"];
+    self.cachedImage=nil;
+    [self didChangeValueForKey:@"image"];
+    
     //self.domain=@"";
     
 }
+
 -(void)didFinishProgress
 {
     LOG(@"didFinishProgress");
@@ -299,19 +323,29 @@
     self.title=[self.tabViewItem title];
     self.domain=[[NSURL URLWithString:[self URLString]] host];
 
-    if (self.wantsImage) {
-        //これまでの予約をキャンセル
-        [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                                 selector:@selector(updateImage) object:nil];
-        //新しい予約を入れる
-        [self performSelector:@selector(updateImage) withObject:nil afterDelay:0.2];        
+    if (self.wantsImage && [self.domain length]>0) {
+        [[[STTabProxyController si]previewImageManager]requestPreviewImage:self instantDelivery:NO];
     }
-    
-    
 }
-/*-(void)didFinishLoadForFrame{
-    LOG(@"didFinishLoadForFrame");
-}*/
+
+-(void)installedToSidebar:(id)ctl
+{
+    if (!self.wantsImage) {
+        self.wantsImage=YES;
+        [[[STTabProxyController si]previewImageManager]requestPreviewImage:self instantDelivery:YES];
+    }
+}
+
+//This method may be called after target tab has closed.
+-(void)uninstalledFromSidebar:(id)ctl
+{
+    if (self.wantsImage) {
+        self.wantsImage=NO;
+        self.cachedImage=nil;
+    }
+}
+
+#pragma mark - IBAction
 
 - (IBAction)actClose:(id)sender
 {
@@ -353,59 +387,10 @@
     STSafariMoveTabToNewWindow(self.tabViewItem);
 }
 
-#pragma mark - IKImageBrowserItem Protocol
 
-- (NSString *)  imageUID
-{
-    return HTMD5StringFromString([self URLString]);
-}
 
-- (NSString *) imageRepresentationType
-{
-    return IKImageBrowserNSImageRepresentationType;
-}
-
-- (id) imageRepresentation
-{
-    return [self image];
-}
-
-- (NSUInteger) imageVersion
-{
-    return 1;
-}
-
-- (NSString *) imageTitle
-{
-    return [self title];
-}
-
-- (NSString *) imageSubtitle
-{
-    return [self URLString];
-}
-
-- (BOOL) isSelectable
-{
-    return YES;
-}
-
--(void)installedToSidebar:(id)ctl
-{
-    
-    if (ctl) {
-        self.wantsImage=YES;
-        //新しい予約を入れる
-        [self performSelector:@selector(updateImage) withObject:nil afterDelay:0.2];        
-    }else{
-        self.wantsImage=NO;
-        [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                                 selector:@selector(updateImage) object:nil];
-        self.cachedImage=nil;
-    }
-}
-
-#pragma mark - frame
 
 
 @end
+
+

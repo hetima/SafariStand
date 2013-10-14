@@ -80,6 +80,9 @@
     if (!self.targetView) {
         return;
     }
+    
+    [self.tabListCtl uninstallFromTabView];
+    
     [[NSNotificationCenter defaultCenter]removeObserver:self name:STTabViewDidSelectItemNote object:self.targetView];
     [self.view removeFromSuperview];
     

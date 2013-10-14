@@ -12,7 +12,7 @@
 #define STTabViewDidReplaceNote @"STTabViewDidReplaceNote"
 
 
-@class STFrame;
+@class STPreviewImageDelivery;
 
 @interface STTabProxy : NSObject
 
@@ -49,6 +49,7 @@
 -(NSString*)imagePathForExt:(NSString*)ext;
 -(NSImage*)image;
 -(NSImage*)icon;
+- (void)previewImageDelivered:(STPreviewImageDelivery*)delivery;
 
 - (NSTabView *)tabView;
 -(void)selectTab;
@@ -58,6 +59,7 @@
 -(void)didFinishProgress;
 
 -(void)installedToSidebar:(id)ctl;
+-(void)uninstalledFromSidebar:(id)ctl;
 
 
 - (IBAction)actClose:(id)sender;
@@ -67,5 +69,4 @@
 - (IBAction)actMoveTabToNewWindow:(id)sender;
 
 @end
-
 

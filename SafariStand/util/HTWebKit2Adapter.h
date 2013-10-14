@@ -14,6 +14,26 @@
 /*
  もしくは使うものだけ抜き出してこんな風に貼り付ける
  */
+struct WKPoint {
+    double x;
+    double y;
+};
+typedef struct WKPoint WKPoint;
+
+struct WKSize {
+    double width;
+    double height;
+};
+typedef struct WKSize WKSize;
+
+struct WKRect {
+    WKPoint origin;
+    WKSize size;
+};
+typedef struct WKRect WKRect;
+
+
+
 typedef uint32_t WKTypeID;
 typedef const void* WKTypeRef;
 

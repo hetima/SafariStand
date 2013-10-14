@@ -39,6 +39,9 @@
 		AA396F0613F638C100EF5806 /* STStandSearchWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396F0513F638C100EF5806 /* STStandSearchWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA396F0813F639A100EF5806 /* STStandSearchWinCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA396F0713F639A100EF5806 /* STStandSearchWinCtl.xib */; };
 		AA3B13481806822B00DDF075 /* STTabProxyController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B13471806822B00DDF075 /* STTabProxyController.m */; };
+		AA3B13531808461900DDF075 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA3B13521808461900DDF075 /* JavaScriptCore.framework */; };
+		AA3B1356180932F400DDF075 /* STFakeJSCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B1355180932F400DDF075 /* STFakeJSCommand.m */; };
+		AA3B135C180978E600DDF075 /* STPreviewImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B135B180978E600DDF075 /* STPreviewImageManager.m */; };
 		AA47D5DB13B9AC3100C9A19E /* STCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DA13B9AC3100C9A19E /* STCModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA47D5DF13B9AE3A00C9A19E /* STBookmarkSeparator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DE13B9AE3A00C9A19E /* STBookmarkSeparator.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA47D5E213B9AFD400C9A19E /* HTObjectHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5E113B9AFD400C9A19E /* HTObjectHook.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -156,6 +159,11 @@
 		AA396F0713F639A100EF5806 /* STStandSearchWinCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STStandSearchWinCtl.xib; sourceTree = "<group>"; };
 		AA3B13461806822B00DDF075 /* STTabProxyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTabProxyController.h; sourceTree = "<group>"; };
 		AA3B13471806822B00DDF075 /* STTabProxyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTabProxyController.m; sourceTree = "<group>"; };
+		AA3B13521808461900DDF075 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		AA3B1354180932F400DDF075 /* STFakeJSCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFakeJSCommand.h; sourceTree = "<group>"; };
+		AA3B1355180932F400DDF075 /* STFakeJSCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFakeJSCommand.m; sourceTree = "<group>"; };
+		AA3B135A180978E600DDF075 /* STPreviewImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPreviewImageManager.h; sourceTree = "<group>"; };
+		AA3B135B180978E600DDF075 /* STPreviewImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPreviewImageManager.m; sourceTree = "<group>"; };
 		AA47D5D413B9797B00C9A19E /* SafariStand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafariStand.h; sourceTree = "<group>"; };
 		AA47D5D613B97CC800C9A19E /* STCSafariStandCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCSafariStandCore.h; sourceTree = "<group>"; };
 		AA47D5D713B97CC800C9A19E /* STCSafariStandCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCSafariStandCore.m; sourceTree = "<group>"; };
@@ -272,6 +280,7 @@
 				AAD79B5B13E2D2ED004CE895 /* CoreFoundation.framework in Frameworks */,
 				AA12DA7E13B73EFA0082EBB3 /* Cocoa.framework in Frameworks */,
 				AA5B3AA913BC5782001453C0 /* WebKit.framework in Frameworks */,
+				AA3B13531808461900DDF075 /* JavaScriptCore.framework in Frameworks */,
 				AA9F781A13F91D8C0016874A /* WebKit2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,6 +299,10 @@
 				AA21449F17F0B91200EDE661 /* STTabProxy.m */,
 				AA671B2E17F71D96000A470C /* STWKClientHook.h */,
 				AA671B2F17F71D96000A470C /* STWKClientHook.m */,
+				AA3B1354180932F400DDF075 /* STFakeJSCommand.h */,
+				AA3B1355180932F400DDF075 /* STFakeJSCommand.m */,
+				AA3B135A180978E600DDF075 /* STPreviewImageManager.h */,
+				AA3B135B180978E600DDF075 /* STPreviewImageManager.m */,
 			);
 			path = safari;
 			sourceTree = "<group>";
@@ -316,6 +329,7 @@
 		AA12DA7C13B73EFA0082EBB3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA3B13521808461900DDF075 /* JavaScriptCore.framework */,
 				AADBCB4F15C119070069E262 /* ApplicationServices.framework */,
 				AA0357CD13F41F0E003D50F3 /* Quartz.framework */,
 				AA0357C313F3CCCC003D50F3 /* libcrypto.dylib */,
@@ -709,6 +723,7 @@
 				AA47D5DB13B9AC3100C9A19E /* STCModule.m in Sources */,
 				AA47D5DF13B9AE3A00C9A19E /* STBookmarkSeparator.m in Sources */,
 				AA47D5E213B9AFD400C9A19E /* HTObjectHook.m in Sources */,
+				AA3B1356180932F400DDF075 /* STFakeJSCommand.m in Sources */,
 				AA47D5EC13B9B42800C9A19E /* NSObject+HTAssociatedObject.m in Sources */,
 				AA718A9D13B9D8DA00327606 /* STActionMessageModule.m in Sources */,
 				AA718AA113B9F47300327606 /* STCTabWithToolbarWinCtl.m in Sources */,
@@ -758,6 +773,7 @@
 				AA671B2717F704FF000A470C /* itab.c in Sources */,
 				AA671B2817F704FF000A470C /* syn-att.c in Sources */,
 				AA671B2917F704FF000A470C /* syn-intel.c in Sources */,
+				AA3B135C180978E600DDF075 /* STPreviewImageManager.m in Sources */,
 				AA671B2A17F704FF000A470C /* syn.c in Sources */,
 				AA671B2B17F704FF000A470C /* udis86.c in Sources */,
 				AA671B2C17F704FF000A470C /* mach_override.c in Sources */,

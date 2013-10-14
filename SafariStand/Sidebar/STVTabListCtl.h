@@ -16,7 +16,7 @@
 +(STVTabListCtl*)viewCtl;
 
 - (void)setupWithTabView:(NSTabView*)tabView;
-
+- (void)uninstallFromTabView;
 
 @end
 

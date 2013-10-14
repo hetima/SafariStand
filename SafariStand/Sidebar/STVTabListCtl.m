@@ -60,9 +60,24 @@
     
 }
 
+- (void)uninstallFromTabView
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    [self.tabs makeObjectsPerformSelector:@selector(uninstalledFromSidebar:) withObject:self];
+}
+
 - (void)updateTabs:(NSTabView*)tabView
 {
+    NSMutableArray *previousTabs=self.tabs;
     NSMutableArray *currentTabs=[STTabProxyController tabProxiesForTabView:tabView];
+    for (STTabProxy* proxy in currentTabs) {
+        [previousTabs removeObjectIdenticalTo:proxy];
+        [proxy installedToSidebar:self];
+    }
+    
+    //ここで残ってるのは閉じられたタブがほとんどだと思う。その場合この処理は必要ないんだけど
+    [previousTabs makeObjectsPerformSelector:@selector(uninstalledFromSidebar:) withObject:self];
+    
     self.tabs=currentTabs;
     
 }

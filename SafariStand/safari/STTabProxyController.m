@@ -10,6 +10,7 @@
 #import "SafariStand.h"
 #import "STTabProxy.h"
 #import "STTabProxyController.h"
+#import "STPreviewImageManager.h"
 
 //#import <WebKit2/WKImage.h>
 //#import <WebKit2/WKImageCG.h>
@@ -114,6 +115,8 @@ static void ST_setLabel(id self, SEL _cmd, NSString* label)
 
 - (void)setup
 {
+    _previewImageManager=[[STPreviewImageManager alloc]init];
+
     NSMutableArray* ary=[[NSMutableArray alloc]initWithCapacity:32];
     self.allTabProxy=ary;
 

@@ -48,7 +48,72 @@ NSString* HTMD5StringFromString(NSString* inStr)
                 digest[14], digest[15]];
 }
 
-NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance){
+NSColor* HTColorFromHTMLString(NSString *inStr)
+{
+    NSColor* result=nil;
+    unsigned int colorCode=0;
+    if([inStr length]==4) {
+        inStr=[NSString stringWithFormat:@"#%@%@%@%@%@%@",
+               [inStr substringWithRange:NSMakeRange(1, 1)],
+               [inStr substringWithRange:NSMakeRange(1, 1)],
+               [inStr substringWithRange:NSMakeRange(2, 1)],
+               [inStr substringWithRange:NSMakeRange(2, 1)],
+               [inStr substringWithRange:NSMakeRange(3, 1)],
+               [inStr substringWithRange:NSMakeRange(3, 1)]
+               ];
+    }
+    
+    if([inStr length]==7) {
+        NSString* hexStr=[NSString stringWithFormat:@"0x%@",[inStr substringFromIndex:1]];
+        
+        NSScanner* scanner=[NSScanner scannerWithString:hexStr];
+        if([scanner scanHexInt:&colorCode]){
+            unsigned char redByte = (unsigned char)(colorCode >> 16);
+            unsigned char greenByte	= (unsigned char)(colorCode >> 8);
+            unsigned char blueByte	= (unsigned char)(colorCode);
+            result = [NSColor colorWithDeviceRed:(float)redByte / 255.0
+                                           green:(float)greenByte / 255.0
+                                            blue:(float)blueByte / 255.0
+                                           alpha:1.0];
+        }
+    }
+    
+    return result;
+}
+
+NSData* HTPNGDataRepresentation(NSImage* image)
+{
+    NSBitmapImageRep *rep = [NSBitmapImageRep imageRepWithData:[image TIFFRepresentation]];
+    CGImageRef imageRef = [rep CGImage];
+    if(imageRef) {
+		NSMutableData *data = [NSMutableData data];
+		CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)data, kUTTypePNG, 1, NULL);
+		//NSDictionary *properties = @{};
+		CGImageDestinationAddImage(destination, imageRef, nil);
+		CGImageDestinationFinalize(destination);
+		CFRelease(destination);
+		return data;
+	}
+    return nil;
+}
+
+NSImage* HTImageWithBackgroundColor(NSImage* image, NSColor* color)
+{
+    NSImage* canvas=[[NSImage alloc]initWithSize:[image size]];
+    [canvas lockFocus];
+    NSRect rect=NSZeroRect;
+    rect.size=[image size];
+    CGFloat radius=rect.size.height/10;
+    NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
+    [color set];
+    [path fill];
+    [image drawAtPoint:NSZeroPoint fromRect:rect operation:NSCompositeSourceOver fraction:1.0];
+    [canvas unlockFocus];
+    return canvas;
+}
+
+NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance)
+{
     NSURL* result=nil;
     //if ([pb respondsToSelector:@selector(_web_bestURL)])result=objc_msgSend(pb, @selector(_web_bestURL));
     if(needsInstance && [[pb types] containsObject:NSURLPboardType]){
