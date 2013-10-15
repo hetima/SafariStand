@@ -201,4 +201,84 @@ WKPageRef htWKPageRefForWKView(id wkView)
     return pageRef;
 }
 
+//favicon
+/*NSImage* htWKIconImageForWKView(id wkView, CGFloat desireSize)
+{
+    NSImage* img=nil;
+    WKSize wkSize;
+    
+    WKPageRef pageRef=htWKPageRefForWKView(wkView);
+    WKFrameRef frameRef=WKPageGetMainFrame(pageRef);
+    WKURLRef urlRef=WKFrameCopyURL(frameRef);
+    
+    WKContextRef context=WKPageGetContext(pageRef);
+    WKIconDatabaseRef iconDatabaseRef=WKContextGetIconDatabase(context);
+    wkSize.width=desireSize;
+    wkSize.height=desireSize;
+    CGImageRef imgRef=WKIconDatabaseTryGetCGImageForURL(iconDatabaseRef, urlRef, wkSize);
+
+    if (imgRef) {
+        NSSize size=NSMakeSize(desireSize, desireSize);
+        img=[[NSImage alloc]initWithCGImage:imgRef size:size];
+        //CGImageRelease(imgRef); cause crash
+    }
+    WKRelease(urlRef);
+    
+    return img;
+}
+*/
+
+NSImage* htWKIconImageForWKView(id wkView, CGFloat maxSize)
+{
+    NSImage* img=nil;
+    
+    WKPageRef pageRef=htWKPageRefForWKView(wkView);
+    WKFrameRef frameRef=WKPageGetMainFrame(pageRef);
+    WKURLRef urlRef=WKFrameCopyURL(frameRef);
+    
+    WKContextRef context=WKPageGetContext(pageRef);
+    WKIconDatabaseRef iconDatabaseRef=WKContextGetIconDatabase(context);
+    CFArrayRef images=WKIconDatabaseTryCopyCGImageArrayForURL(iconDatabaseRef, urlRef);
+    if (images) {
+        CGImageRef imgRefToUse=nil;
+
+        CGImageRef imgRefHigh=nil;
+        CGImageRef imgRefLow=nil;
+        size_t widthHigh=9999;
+        size_t widthLow=0;
+        NSInteger i, cnt=CFArrayGetCount(images);
+        for (i=0; i<cnt; i++) {
+            CGImageRef imgRef=(CGImageRef)CFArrayGetValueAtIndex(images, i);
+            size_t width=CGImageGetWidth(imgRef);
+            if (width<=maxSize && width>widthLow) {
+                imgRefLow=imgRef;
+                widthLow=width;
+            }else if(width>maxSize && width<widthHigh){
+                imgRefHigh=imgRef;
+                widthHigh=width;
+            }
+        }
+        
+        if(imgRefLow){
+            imgRefToUse=imgRefLow;
+            maxSize=0; //use CGImageRef size
+        } else if(imgRefHigh) {
+            imgRefToUse=imgRefHigh;
+        } else {
+            imgRefToUse=(CGImageRef)CFArrayGetValueAtIndex(images, 0);
+        }
+        
+        if (imgRefToUse) {
+            NSSize size=NSMakeSize(maxSize, maxSize);
+            img=[[NSImage alloc]initWithCGImage:imgRefToUse size:size];
+            //CGImageRelease(imgRef); cause crash
+        }
+        
+        CFRelease(images);
+    }
+    WKRelease(urlRef);
+    
+    return img;
+}
+
 

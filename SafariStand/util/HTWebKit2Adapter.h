@@ -69,6 +69,8 @@ typedef const struct OpaqueWKUserContentURLPattern* WKUserContentURLPatternRef;
 typedef const struct OpaqueWKFrame* WKFrameRef;
 typedef const struct OpaqueWKPage* WKPageRef;
 
+typedef const struct OpaqueWKContext* WKContextRef;
+typedef const struct OpaqueWKIconDatabase* WKIconDatabaseRef;
 
 
 extern WKTypeID WKGetTypeID(WKTypeRef type);
@@ -107,6 +109,7 @@ extern size_t WKArrayGetSize(WKArrayRef array);
 
 //WKPage
 extern void WKPageLoadURL(WKPageRef page, WKURLRef url);
+extern WKContextRef WKPageGetContext(WKPageRef page);
 
 //WKFrame
 extern WKURLRef WKFrameCopyURL(WKFrameRef frame);
@@ -121,6 +124,11 @@ typedef void (^WKFrameGetWebArchiveBlock)(WKDataRef archiveData, WKErrorRef erro
 extern void WKFrameGetWebArchive_b(WKFrameRef frame, WKFrameGetWebArchiveBlock block);
 
 extern WKFrameRef WKPageGetMainFrame(WKPageRef page);
+
+extern WKURLRef WKURLCreateWithUTF8CString(const char* string);
+extern WKIconDatabaseRef WKContextGetIconDatabase(WKContextRef context);
+extern CGImageRef WKIconDatabaseTryGetCGImageForURL(WKIconDatabaseRef iconDatabase, WKURLRef url, WKSize size);
+extern CFArrayRef WKIconDatabaseTryCopyCGImageArrayForURL(WKIconDatabaseRef iconDatabase, WKURLRef url);
 
 /*
  抜き出し終わり
@@ -140,3 +148,7 @@ NSString* htWKDictionaryStringForKey(void*dic, NSString* key);
 
 void htWKGoToURL(id wkView, NSURL* urlToGo);
 WKPageRef htWKPageRefForWKView(id wkView);
+
+NSImage* htWKIconImageForWKView(id wkView, CGFloat maxSize);
+
+

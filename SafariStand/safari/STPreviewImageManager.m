@@ -10,6 +10,7 @@
 #import "STPreviewImageManager.h"
 #import "STTabProxy.h"
 #import "STFakeJSCommand.h"
+#import "HTWebKit2Adapter.h"
 
 #define kSTPreviewImageOwnFilePrefix @"STP_"
 
@@ -49,11 +50,18 @@
     STPreviewImageDelivery* delivery=[[STPreviewImageDelivery alloc]initWithTabProxy:tabProxy];
     
     if ([URLString hasPrefix:@"http:"]) {
-        nameHash=HTMD5StringFromString(URLString);
-        if (instantDelivery) {
-            delivery.path=[self instantPreviewImagePathForNameHash:nameHash];
-            // ここで path が nil の場合更新待ちになるのだが、読み込みは終わってるのでたぶん更新来ない
-            // _deliveries の中で待ちぼうけになるだけで実害はあまりないけど気になる
+        id wkView=[tabProxy wkView];
+        NSImage* icon=htWKIconImageForWKView(wkView, 32.0);
+        if (icon) {
+            delivery.image=icon;
+        }else{
+        
+            nameHash=HTMD5StringFromString(URLString);
+            if (instantDelivery) {
+                delivery.path=[self instantPreviewImagePathForNameHash:nameHash];
+                // ここで path が nil の場合更新待ちになるのだが、読み込みは終わってるのでたぶん更新来ない
+                // _deliveries の中で待ちぼうけになるだけで実害はあまりないけど気になる
+            }
         }
     }else{
         nameHash=[NSString stringWithFormat:@"%@%@", kSTPreviewImageOwnFilePrefix, tabProxy.domain];
