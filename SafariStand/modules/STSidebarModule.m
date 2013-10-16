@@ -44,11 +44,11 @@ static void ST_showWindow(id self, SEL _cmd, id sender)
 {
     orig_showWindow(self, _cmd, sender);
     if ( ![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault] ||
-        [self htaoValueForKey:@"STSMShouldNotShowSidebarAuto"] ) {
+        [self htaoValueForKey:kAOValueNotShowSidebarAuto] ) {
         return;
     }
     
-    [self htaoSetValue:@YES forKey:@"STSMShouldNotShowSidebarAuto"];
+    [self htaoSetValue:@YES forKey:kAOValueNotShowSidebarAuto];
     NSSize winSize=[[self window]frame].size;
     if(winSize.width>640 && winSize.height>600){
         [[STCSafariStandCore mi:@"STSidebarModule"]installSidebarToWindow:[self window]];

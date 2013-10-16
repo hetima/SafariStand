@@ -3,6 +3,7 @@
 //  SafariStand
 
 
+#import "SafariStand.h"
 #import "STWKClientHook.h"
 #import "STTabProxy.h"
 #import "HTWebKit2Adapter.h"
@@ -46,6 +47,26 @@ void STWK_didFinishProgress(WKPageRef page, const void* clientInfo)
     [proxy didFinishProgress];
 }
 
+//Safari::WK::showPage(OpaqueWKPage const*, void const*)
+//__ZN6Safari2WKL8showPageEPK12OpaqueWKPagePKv
+void (*orig_showPage)(WKPageRef, const void*);
+void STWK_showPage(WKPageRef page, const void* clientInfo)
+{
+    //JavaScriptで開いたウインドウにはサイドバーを自動表示しないようにする
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault]) {
+        
+        void* wkView=STWK_WKPageRefGetWKView(page);
+        id winCtl=STSafariBrowserWindowControllerForWKView((__bridge id)(wkView));
+        id tabView=STSafariTabViewForWindow([winCtl window]);
+        if ([tabView numberOfTabViewItems]<=1){
+            [winCtl htaoSetValue:@YES forKey:kAOValueNotShowSidebarAuto];
+        }
+    }
+    
+    orig_showPage(page, clientInfo);
+
+}
+
 void STWKClientHook()
 {
     HTSymbolHook* hook=[HTSymbolHook symbolHookWithImageNameSuffix:@"/Safari.framework/Versions/A/Safari"];
@@ -56,5 +77,8 @@ void STWKClientHook()
         [hook overrideSymbol:@"__ZN6Safari2WKL17didFinishProgressEPK12OpaqueWKPagePKv"
                      withPtr:(void*)STWK_didFinishProgress
                reentryIsland:(void**)&orig_didFinishProgress];
+        [hook overrideSymbol:@"__ZN6Safari2WKL8showPageEPK12OpaqueWKPagePKv"
+                     withPtr:(void*)STWK_showPage
+               reentryIsland:(void**)&orig_showPage];
     }
 }

@@ -75,4 +75,6 @@
 
 #define kSafariStandPBKey @"com.hetima.safaristand.cm"
 
+#define kAOValueNotShowSidebarAuto @"STSMShouldNotShowSidebarAuto"
+
 #endif
