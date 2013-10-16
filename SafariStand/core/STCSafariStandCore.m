@@ -36,6 +36,24 @@ static STCSafariStandCore *sharedInstance;
     return [[STCSafariStandCore si]moduleForClassName:moduleClassName];
 }
 
++ (NSString *)standLibraryPath:(NSString*)subPath
+{
+    NSString* path=[NSHomeDirectory() stringByStandardizingPath];
+    path=[path stringByAppendingPathComponent:@"Library/Safari/Stand"];
+    if (![[NSFileManager defaultManager]fileExistsAtPath:path]) {
+        [[NSFileManager defaultManager]createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    if (!subPath) {
+        return path;
+    }
+    
+    path=[path stringByAppendingPathComponent:subPath];
+    if (![[NSFileManager defaultManager]fileExistsAtPath:path]) {
+        [[NSFileManager defaultManager]createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return path;
+}
+
 - (id)init
 {
     self = [super init];

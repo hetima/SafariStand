@@ -75,7 +75,7 @@
         [proxy installedToSidebar:self];
     }
     
-    //ここで残ってるのは閉じられたタブがほとんどだと思う。その場合この処理は必要ないんだけど
+    //ここで残ってるのは閉じられたタブと移動中一時的に外されたタブ
     [previousTabs makeObjectsPerformSelector:@selector(uninstalledFromSidebar:) withObject:self];
     
     self.tabs=currentTabs;

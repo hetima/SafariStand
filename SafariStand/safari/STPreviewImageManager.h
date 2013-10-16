@@ -9,6 +9,8 @@
 
 @interface STPreviewImageManager : NSObject
 
++ (NSString*)previewImageCachePath;
+
 - (void)requestPreviewImage:(STTabProxy*)tabProxy instantDelivery:(BOOL)instantDelivery;
 - (void)invalidateRequestForTabProxy:(STTabProxy*)tabProxy;
 
@@ -20,6 +22,7 @@
 @property (nonatomic, strong)NSString* path;
 @property (nonatomic, strong)NSString* nameHash;
 @property (nonatomic, strong)NSImage* image;
+
 
 - (id)initWithTabProxy:(STTabProxy*)tabProxy;
 - (void)deliver;

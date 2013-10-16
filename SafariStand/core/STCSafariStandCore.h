@@ -18,6 +18,7 @@
 
 + (STCSafariStandCore *)si;
 + (id)mi:(NSString*)moduleClassName;
++ (NSString *)standLibraryPath:(NSString*)subPath;
 
 -(void)startup;
 

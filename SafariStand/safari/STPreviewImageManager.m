@@ -15,8 +15,23 @@
 #define kSTPreviewImageOwnFilePrefix @"STP_"
 
 @implementation STPreviewImageManager {
-    FSEventStreamRef _eventStream;
+
     NSMutableArray* _deliveries;
+}
+
++ (NSString*)previewImageCachePath
+{
+    static NSString* previewImageCachePath=nil;
+    if (!previewImageCachePath) {
+        NSString* path=[NSHomeDirectory() stringByStandardizingPath];
+        previewImageCachePath=[path stringByAppendingPathComponent:@"Library/Caches/com.apple.Safari/Webpage Previews(SafariStand)"];
+    }
+    
+    if (![[NSFileManager defaultManager]fileExistsAtPath:previewImageCachePath]) {
+        [[NSFileManager defaultManager]createDirectoryAtPath:previewImageCachePath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    
+    return previewImageCachePath;
 }
 
 - (id)init
@@ -24,7 +39,6 @@
     self = [super init];
     if (self) {
         _deliveries=[[NSMutableArray alloc]init];
-        [self setupPreviewEventStream];
     }
     return self;
 }
@@ -43,53 +57,84 @@
 }
 
 /*
- instantDelivery==YES だとなるべく即時 deliver。Webpage Previews キャッシュ使わない場合は意味がないフラグになる
+ instantDelivery==YES だと即時 deliver、キューには入れない
+ instantDelivery==NO だと即時 deliver、キューに入れるかもしれない
  */
 - (void)requestPreviewImage:(STTabProxy*)tabProxy instantDelivery:(BOOL)instantDelivery
 {
     [self invalidateRequestForTabProxy:tabProxy];
+    NSString* domain=tabProxy.domain;
+    if (![domain length]) {
+        return;
+    }
+    
     NSString* URLString=[tabProxy URLString];
     NSString* nameHash=nil;
     STPreviewImageDelivery* delivery=[[STPreviewImageDelivery alloc]initWithTabProxy:tabProxy];
     
-    if ([URLString hasPrefix:@"http:"]) {
-        id wkView=[tabProxy wkView];
-        NSImage* icon=htWKIconImageForWKView(wkView, 32.0);
-        if (icon) {
-            delivery.image=icon;
-        }else{
-        
-            nameHash=HTMD5StringFromString(URLString);
-            if (instantDelivery) {
-                delivery.path=[self instantPreviewImagePathForNameHash:nameHash];
-                // ここで path が nil の場合更新待ちになるのだが、読み込みは終わってるのでたぶん更新来ない
-                // _deliveries の中で待ちぼうけになるだけで実害はあまりないけど気になる
-            }
-        }
-    }else{
-        nameHash=[NSString stringWithFormat:@"%@%@", kSTPreviewImageOwnFilePrefix, tabProxy.domain];
-        
-        NSString* imagePath=[self instantPreviewImagePathForNameHash:nameHash];
-        if (imagePath) {
-            delivery.path=imagePath;
-        }else{
-            [self fetchDomainPreviewImage:(STTabProxy*)tabProxy];
-        }
+    //カスタムイメージ
+    NSString* imagePath=[self userDefinedImagePathForName:domain];
+    if (imagePath) {
+        delivery.path=imagePath;
+        [delivery deliver];
+        return;
+    }
+    nameHash=[NSString stringWithFormat:@"%@%@", kSTPreviewImageOwnFilePrefix, domain];
+    imagePath=[self previewImageCachePathForNameHash:nameHash];
+    if (imagePath) {
+        delivery.path=imagePath;
+        [delivery deliver];
+        return;
     }
     
-    delivery.nameHash=nameHash;
+    //favicon
+    id wkView=[tabProxy wkView];
+    NSImage* icon=htWKIconImageForWKView(wkView, 32.0);
+    if (icon) {
+        delivery.image=icon;
+    }
+    
+    //favicon が小さい、もしくは存在しない
+    if (icon.size.width<32) {
+        NSURL* url=[NSURL URLWithString:URLString];
+
+        //とりあえずドメイントップページだった場合のみ画像を取ってくる
+        if ([[url path]length]==1) { // @"/"
+            delivery.nameHash=nameHash;
+            //小さい favicon を取得済みだったらとりあえず投げる
+            if (delivery.image||delivery.path) {
+                [delivery deliver];
+
+                delivery.image=nil;
+                delivery.path=nil;
+            }
+            if(!instantDelivery) {
+                [_deliveries addObject:delivery];
+                [self fetchDomainPreviewImage:(STTabProxy*)tabProxy];
+                return;
+            }
+        }
+    }
     
     if (delivery.path || delivery.image) {
         [delivery deliver];
-    }else{
-        [_deliveries addObject:delivery];
     }
 }
 
-- (NSString*)instantPreviewImagePathForNameHash:(NSString*)nameHash
+- (NSString*)userDefinedImagePathForName:(NSString*)name
 {
-    NSString* parentPath=STSafariWebpagePreviewsPath();
-    
+    NSString* parentPath=[STCSafariStandCore standLibraryPath:@"WebpagePreviews"];
+    return [self imagePathForName:name inDirectory:parentPath];
+}
+
+- (NSString*)previewImageCachePathForNameHash:(NSString*)nameHash
+{
+    NSString* parentPath=[STPreviewImageManager previewImageCachePath];
+    return [self imagePathForName:nameHash inDirectory:parentPath];
+}
+
+- (NSString*)imagePathForName:(NSString*)nameHash inDirectory:(NSString*)parentPath
+{
     NSArray* exts=@[@"jpeg", @"png", @"jpg"];
     for (NSString* ext in exts) {
         NSString* name=[NSString stringWithFormat:@"%@.%@", nameHash, ext];
@@ -101,7 +146,8 @@
     return nil;
 }
 
-#pragma mark - Self preview cache
+
+#pragma mark - preview cache
 
 - (void)fetchDomainPreviewImage:(STTabProxy*)tabProxy
 {
@@ -116,6 +162,7 @@
         return {'tileImage':z[0].content,'tileColor':y}\
     }\
     z=document.evaluate(\"//meta[@itemprop='image']\", document.head).iterateNext();if(z)return z.content;\
+    z=document.evaluate(\"//meta[@property='og:image']\", document.head).iterateNext();if(z)return z.content;\
     })();"
      
      onTarget:tabProxy.tabViewItem completionHandler:^(id result){
@@ -148,7 +195,7 @@
                      }
                      if (mime) {
                          NSColor* bgColor=HTColorFromHTMLString(bgColorString);
-                         NSString* path=STSafariWebpagePreviewsPath();
+                         NSString* path=[STPreviewImageManager previewImageCachePath];
                          NSString* name=[NSString stringWithFormat:@"%@%@.%@", kSTPreviewImageOwnFilePrefix, host, mime];
                          path=[path stringByAppendingPathComponent:name];
                          if (bgColor) {
@@ -160,46 +207,16 @@
                              }
                          }
                          [data writeToFile:path atomically:YES];
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             [self wbpagePreviewCacheUpdated:@[path]];
+                         });
+                         
                      }
                  }
              });
          }
          
      }];
-}
-
-
-#pragma mark - Safari preview cache
-
-#define STTabProxyPreviewLatency			((CFTimeInterval)2.0)
-
-static void STTabProxyPreviewEventsCallback(
-                                            ConstFSEventStreamRef streamRef,
-                                            void *callbackCtxInfo,
-                                            size_t numEvents,
-                                            void *eventPaths, // CFArrayRef
-                                            const FSEventStreamEventFlags eventFlags[],
-                                            const FSEventStreamEventId eventIds[])
-{
-	NSArray *eventPathsArray=(__bridge NSArray *)eventPaths;
-    NSMutableArray* ary=[NSMutableArray arrayWithCapacity:numEvents];
-
-	for (NSUInteger i = 0; i < numEvents; ++i) {
-		//FSEventStreamEventFlags flags = eventFlags[i];
-		//FSEventStreamEventId identifier = eventIds[i];
-        NSString *eventPath = [eventPathsArray objectAtIndex:i];
-        
-        if ([[NSFileManager defaultManager]fileExistsAtPath:eventPath] &&
-            ([eventPath hasSuffix:@"jpeg"]||[[eventPath lastPathComponent]hasPrefix:kSTPreviewImageOwnFilePrefix]) ) {
-            [ary addObject:eventPath];
-            
-        }
-	}
-    
-    if ([ary count]) {
-        STPreviewImageManager *ctl=(__bridge STPreviewImageManager *)callbackCtxInfo;
-        [ctl wbpagePreviewCacheUpdated:ary];
-    }
 }
 
 - (void)wbpagePreviewCacheUpdated:(NSArray*)paths
@@ -213,47 +230,6 @@ static void STTabProxyPreviewEventsCallback(
                 [_deliveries removeObjectIdenticalTo:delivery];
                 break;
             }
-        }
-    }
-}
-
-- (void)invalidatePreviewEventStream
-{
-    if (_eventStream) {
-        FSEventStreamStop(_eventStream);
-        FSEventStreamInvalidate(_eventStream);
-        FSEventStreamRelease(_eventStream);
-        _eventStream = nil;
-    }
-}
-
-- (void)setupPreviewEventStream
-{
-    [self invalidatePreviewEventStream];
-    NSString* path=STSafariWebpagePreviewsPath();
-    if (path) {
-        NSArray* watchPaths=@[path];
-        FSEventStreamCreateFlags   flags = (kFSEventStreamCreateFlagUseCFTypes |
-                                            kFSEventStreamCreateFlagWatchRoot);
-        flags |= kFSEventStreamCreateFlagFileEvents;
-        
-        FSEventStreamContext callbackCtx;
-        callbackCtx.version			= 0;
-        callbackCtx.info			= (__bridge void *)self;
-        callbackCtx.retain			= NULL;
-        callbackCtx.release			= NULL;
-        callbackCtx.copyDescription	= NULL;
-        
-        _eventStream = FSEventStreamCreate(kCFAllocatorDefault,
-                                           &STTabProxyPreviewEventsCallback,
-                                           &callbackCtx,
-                                           (__bridge CFArrayRef)watchPaths,
-                                           kFSEventStreamEventIdSinceNow,
-                                           STTabProxyPreviewLatency,
-                                           flags);
-        FSEventStreamScheduleWithRunLoop(_eventStream, [[NSRunLoop currentRunLoop]getCFRunLoop], kCFRunLoopDefaultMode);
-        if (!FSEventStreamStart(_eventStream)) {
-            
         }
     }
 }
