@@ -42,6 +42,9 @@
     }
 }
 
+/*
+ instantDelivery==YES だとなるべく即時 deliver。Webpage Previews キャッシュ使わない場合は意味がないフラグになる
+ */
 - (void)requestPreviewImage:(STTabProxy*)tabProxy instantDelivery:(BOOL)instantDelivery
 {
     [self invalidateRequestForTabProxy:tabProxy];
