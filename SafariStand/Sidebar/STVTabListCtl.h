@@ -26,3 +26,11 @@
 - (IBAction)actCloseBtn:(id)sender;
 
 @end
+
+@interface STVTabListButton : NSButton
+
+@end
+
+@interface STVTabListButtonCell : NSButtonCell
+
+@end

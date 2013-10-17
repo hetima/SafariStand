@@ -237,4 +237,43 @@
     [tabProxy actClose:self];
 }
 
+-(void)drawRect:(NSRect)dirtyRect
+{
+    [[NSColor lightGrayColor] setStroke];
+    [NSBezierPath setDefaultLineWidth:0.0f];
+    [NSBezierPath strokeLineFromPoint:NSMakePoint(NSMinX(self.bounds), NSMinY(self.bounds))
+                              toPoint:NSMakePoint(NSMaxX(self.bounds), NSMinY(self.bounds))];
+}
+
+@end
+
+
+
+@implementation STVTabListButton
+
+@end
+
+
+
+@implementation STVTabListButtonCell
+
+-(void)awakeFromNib
+{
+    NSImage* image=[self image];
+
+    NSImage* lightImage=({
+        NSImage* lightImage=[[NSImage alloc]initWithSize:[image size]];
+        [lightImage lockFocus];
+        NSRect rect=NSZeroRect;
+        rect.size=[image size];
+        [image drawAtPoint:NSZeroPoint fromRect:rect operation:NSCompositeCopy fraction:0.33];
+        [lightImage unlockFocus];
+        lightImage;
+    });
+    
+    [self setAlternateImage:image];
+    [self setImage:lightImage];
+    
+}
+
 @end
