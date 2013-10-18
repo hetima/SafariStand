@@ -56,7 +56,7 @@
 {
     if(tabView)[self updateTabs:tabView];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewUpdated:) name:STTabViewDidChangeNote object:nil];
-    //[[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewItemSelected:) name:STTabViewDidSelectItemNote object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewItemSelected:) name:STTabViewDidSelectItemNote object:nil];
     
 }
 
@@ -95,7 +95,8 @@
 {
     NSTabView* tabView=[note object];
     if (self.view.window==[tabView window]) {
-        [self takeSelectionFromTabView:tabView];
+        //もうちょっとうまい方法はあるだろうけど
+        [self.oTableView reloadData];
     }
 }
 
@@ -253,10 +254,31 @@
 
 -(void)drawRect:(NSRect)dirtyRect
 {
-    [[NSColor lightGrayColor] setStroke];
-    [NSBezierPath setDefaultLineWidth:0.0f];
-    [NSBezierPath strokeLineFromPoint:NSMakePoint(NSMinX(self.bounds), NSMinY(self.bounds))
+    STTabProxy* tabProxy=[self objectValue];
+    if (tabProxy.isSelected) {
+
+        static NSColor* borderColor=nil;
+        if (!borderColor) {
+            borderColor=[NSColor colorWithCalibratedRed:1.0f/255.0f green:100.0f/255.0f blue:205.0f/255.0f alpha:1.0];
+        }
+        [borderColor setStroke];
+        
+        NSShadow* shadow=[[NSShadow alloc]init];
+        [shadow setShadowColor:borderColor];
+        [shadow setShadowBlurRadius:2.0];
+        [shadow set];
+        
+        NSBezierPath *bp=[NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:5 yRadius:5];
+        [bp setLineWidth:5.0f];
+        [bp stroke];
+        
+    }else{
+    
+        [[NSColor lightGrayColor] setStroke];
+        [NSBezierPath setDefaultLineWidth:0.0f];
+        [NSBezierPath strokeLineFromPoint:NSMakePoint(NSMinX(self.bounds), NSMinY(self.bounds))
                               toPoint:NSMakePoint(NSMaxX(self.bounds), NSMinY(self.bounds))];
+    }
 }
 
 @end

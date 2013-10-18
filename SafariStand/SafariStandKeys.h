@@ -47,6 +47,7 @@
 
 #define kpSidebarEnabled @"Stand_SidebarEnabled"
 #define kpSidebarShowsDefault @"Stand_SidebarShowsDefault"
+#define kpSidebarIsRightSide @"Stand_SidebarIsRightSide"
 
 #define kpSquashContextMenuItemEnabled @"Stand_SquashContextMenuItemEnabled"
 #define kpSquashContextMenuItemTags @"Stand_SquashContextMenuItemTags"

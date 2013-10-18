@@ -139,7 +139,9 @@ static void ST_showWindow(id self, SEL _cmd, id sender)
     STSidebarCtl* ctl=[self sidebarCtlForWindow:win];
     
     if (ctl) {
-        [ctl setRightSide:![ctl rightSide]];
+        BOOL rightSide=![ctl rightSide];
+        [[NSUserDefaults standardUserDefaults]setBool:rightSide forKey:kpSidebarIsRightSide];
+        [ctl setRightSide:rightSide];
     }
 }
 
@@ -150,7 +152,7 @@ static void ST_showWindow(id self, SEL _cmd, id sender)
     if ([self sidebarCtlForWindow:win] || !tabView) {
         return;
     }
-    BOOL rightSide=YES;
+    BOOL rightSide=[[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarIsRightSide];
     CGFloat width=kSidebarFrameMinWidth;
     
     STSidebarCtl* ctl=[STSidebarCtl viewCtl];

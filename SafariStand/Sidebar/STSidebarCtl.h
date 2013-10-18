@@ -14,6 +14,7 @@
 
 @property (nonatomic,strong) STVTabListCtl* tabListCtl;
 
+@property (weak) IBOutlet NSSplitView *oSplitView;
 @property (weak) IBOutlet DMTabBar *oPrimaryTabbar;
 @property (weak) IBOutlet DMTabBar *oSecondaryTabbar;
 @property (weak) IBOutlet STSidebarResizeHandleView *oResizeHandle;

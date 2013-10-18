@@ -216,11 +216,14 @@
     [self.oResizeHandle setFrame:resizeHandleFrame];
     [self.oResizeHandle setAutoresizingMask:resizeHandleAutoresizingMask];
     
+    NSRect splitViewFrame=self.oSplitView.frame;
+    splitViewFrame.size.width=NSWidth(self.view.frame)-1;
     if (rightSide) {
-        sidebarFrame.origin.x+=counterpartFrame.size.width;
+        splitViewFrame.origin.x=1;
     }else{
-        counterpartFrame.origin.x+=sidebarFrame.size.width;
+        splitViewFrame.origin.x=0;
     }
+    [self.oSplitView setFrame:splitViewFrame];
 
 }
 
@@ -287,16 +290,16 @@
 
 - (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview
 {
-    return YES;
+    return NO;
 }
 
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
 {
-#define kSplitViewBottomMinHeight 25
+#define kSplitViewTopMinHeight 25
 
-    if (proposedMin<kSplitViewBottomMinHeight) {
-        return kSplitViewBottomMinHeight;
+    if (proposedMin<kSplitViewTopMinHeight) {
+        return kSplitViewTopMinHeight;
     }
 
     return proposedMin;
@@ -305,7 +308,7 @@
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
 {
-#define kSplitViewBottomMinHeight 25
+#define kSplitViewBottomMinHeight 24
 
     return proposedMax-kSplitViewBottomMinHeight;
 }
