@@ -38,8 +38,18 @@ static void (*orig_tabViewDidSelectItem)(id, SEL, ...); //TabBarView tabView:did
 static void ST_tabViewDidSelectItem(id self, SEL _cmd, id tabView, id item)
 {
     orig_tabViewDidSelectItem(self,_cmd, tabView, item);
-    STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:item];
-    proxy.isUnread=NO;
+    
+    NSArray* tabViewItems=[tabView tabViewItems];
+    for (NSTabViewItem* eachItem in tabViewItems) {
+        STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:eachItem];
+        if (eachItem==item) {
+            proxy.isUnread=NO;
+            proxy.isSelected=YES;
+        }else if (proxy.isSelected){
+            proxy.isSelected=NO;
+        }
+    }
+    
 	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidSelectItemNote object:tabView];
 }
 
@@ -129,7 +139,12 @@ static void ST_setLabel(id self, SEL _cmd, NSString* label)
             NSArray* tabs=objc_msgSend(winCtl, @selector(orderedTabViewItems));
             for (id tabViewItem in tabs) {
                 //if ([tabViewItem respondsToSelector:@selector(usesWebKit2)] && objc_msgSend(tabViewItem, @selector(usesWebKit2))) {
-                    id proxy __unused=[[STTabProxy alloc]initWithTabViewItem:tabViewItem];
+                STTabProxy* proxy =[[STTabProxy alloc]initWithTabViewItem:tabViewItem];
+                if ([[tabViewItem tabView]selectedTabViewItem]==tabViewItem) {
+                    proxy.isSelected=YES;
+                }else{
+                    proxy.isSelected=NO;
+                }
                 //}
             }
         }
