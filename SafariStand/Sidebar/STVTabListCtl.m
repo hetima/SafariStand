@@ -113,6 +113,20 @@
     }
 }
 
+#pragma mark - 
+
+- (IBAction)actTableViewClicked:(id)sender
+{
+    NSInteger clickedIndex=[self.oTableView clickedRow];
+    if (clickedIndex>=0) {
+        STTabProxy* tabProxy=[self.tabs objectAtIndex:clickedIndex];
+        [tabProxy selectTab];
+        return;
+    }else if ([[NSApp currentEvent]clickCount]==2) {
+        [NSApp sendAction:@selector(newTab:) to:nil from:nil];
+    }
+}
+
 #pragma mark - drag and drop
 
 - (BOOL)tableView:(NSTableView *)aTableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard

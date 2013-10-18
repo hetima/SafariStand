@@ -18,6 +18,8 @@
 - (void)setupWithTabView:(NSTabView*)tabView;
 - (void)uninstallFromTabView;
 
+- (IBAction)actTableViewClicked:(id)sender;
+
 @end
 
 
