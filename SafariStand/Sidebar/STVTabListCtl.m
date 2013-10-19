@@ -114,7 +114,7 @@
     }
 }
 
-#pragma mark - 
+#pragma mark - tableView
 
 - (IBAction)actTableViewClicked:(id)sender
 {
@@ -126,6 +126,15 @@
     }else if ([[NSApp currentEvent]clickCount]==2) {
         [NSApp sendAction:@selector(newTab:) to:nil from:nil];
     }
+}
+
+-(NSMenu*)menuForTabListTableView:(STVTabListTableView*)listView row:(NSInteger)row
+{
+    NSMenu* menu=[[NSMenu alloc]initWithTitle:@""];
+    if ([self.tabs count]>row) {
+        [menu addItemWithTitle:@"test" action:nil keyEquivalent:@""];
+    }
+    return menu;
 }
 
 #pragma mark - drag and drop
@@ -243,6 +252,23 @@
 }
 
 @end
+
+
+#pragma mark - Support Classes
+
+
+@implementation STVTabListTableView
+
+- (NSMenu *)menuForEvent:(NSEvent *)theEvent
+{
+	NSInteger row = [self rowAtPoint:[self convertPoint:[theEvent locationInWindow] fromView:nil]];
+    
+    return [self.oTabListCtl menuForTabListTableView:self row:row];
+}
+
+@end
+
+
 
 @implementation STVTabListCellView
 

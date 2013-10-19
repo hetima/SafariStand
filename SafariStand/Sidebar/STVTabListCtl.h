@@ -23,16 +23,27 @@
 @end
 
 
+
+@interface STVTabListTableView : NSTableView
+
+@property (weak) IBOutlet STVTabListCtl *oTabListCtl;
+
+@end
+
+
 @interface STVTabListCellView : NSTableCellView
 
 - (IBAction)actCloseBtn:(id)sender;
 
 @end
 
+
 @interface STVTabListButton : NSButton
 
 @end
 
+
 @interface STVTabListButtonCell : NSButtonCell
 
 @end
+
