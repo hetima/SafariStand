@@ -72,7 +72,7 @@
     [tabView addSubview:self.view];
     
     //adjust splitView
-    [self.oSplitView setPosition:NSHeight(self.oSplitView.frame)-kSplitViewBottomMinHeight ofDividerAtIndex:0];
+    [self collapseSecondaryView];
     
     //layout
     [self layout:rightSide];
@@ -204,8 +204,8 @@
         counterpartFrame.origin.x=NSMinX(unionRect);
         sidebarFrame.origin.x=NSMaxX(counterpartFrame);
     }else{
-        CGFloat x=self.oResizeHandle.superview.frame.size.width;
-        resizeHandleFrame.origin.x=x-resizeHandleFrame.size.width;
+        CGFloat x=NSWidth(self.oResizeHandle.superview.frame);
+        resizeHandleFrame.origin.x=x-NSWidth(resizeHandleFrame);
         resizeHandleAutoresizingMask=NSViewMinXMargin;
         
         sidebarFrameAutoresizingMask=NSViewHeightSizable + NSViewMaxXMargin;
@@ -240,14 +240,14 @@
 
 - (CGFloat)counterpartResizeLimit
 {
-    CGFloat width=[self.counterpartView frame].size.width - kCounterpartMinWidth;
+    CGFloat width=NSWidth(self.counterpartView.frame) - kCounterpartMinWidth;
     
     return width>=0 ? width:0;
 }
 
 - (CGFloat)sidebarFrameResizeLimit
 {
-    CGFloat width=[self.view frame].size.width - kSidebarFrameMinWidth;
+    CGFloat width=NSWidth(self.view.frame) - kSidebarFrameMinWidth;
     
     return width>=1 ? width:0;
     
@@ -256,8 +256,14 @@
 - (STMinMax)userDragResizeLimit
 {
     STMinMax result;
+    CGFloat margin=kSidebarFrameMaxWidth-NSWidth(self.view.frame);
+    
     CGFloat sidebarFrameResizeLimit=self.sidebarFrameResizeLimit;
     CGFloat counterpartResizeLimit=self.counterpartResizeLimit;
+    if (counterpartResizeLimit>margin) {
+        counterpartResizeLimit=margin;
+    }
+    
     if ([self rightSide]) {
         result.max=sidebarFrameResizeLimit;
         result.min=0-counterpartResizeLimit;
@@ -283,11 +289,16 @@
 - (void)sidebarResizeHandleDidEndTracking:(STSidebarResizeHandleView*)resizeHandle
 {
     if(!([self.view.window styleMask] & NSFullScreenWindowMask)) {
-        [[NSUserDefaults standardUserDefaults]setFloat:self.view.frame.size.width forKey:kpSidebarWidth];
+        [[NSUserDefaults standardUserDefaults]setFloat:NSWidth(self.view.frame) forKey:kpSidebarWidth];
     }
 }
 
 #pragma mark - NSSplitView
+
+- (void)collapseSecondaryView
+{
+    [self.oSplitView setPosition:NSHeight(self.oSplitView.frame)-kSplitViewBottomMinHeight ofDividerAtIndex:0];
+}
 
 - (void)splitViewDidResizeSubviews:(NSNotification *)notification;
 {

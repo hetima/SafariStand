@@ -116,9 +116,9 @@
     NSRect leftFrame=self.leftView.frame;
     NSRect rightFrame=self.rightView.frame;
     
-    leftFrame.size.width=_beginningLeftFrame.size.width+dx;
-    rightFrame.size.width=_beginningRightFrame.size.width-dx;
-    rightFrame.origin.x=_beginningRightFrame.origin.x+dx;
+    leftFrame.size.width=NSWidth(_beginningLeftFrame)+dx;
+    rightFrame.size.width=NSWidth(_beginningRightFrame)-dx;
+    rightFrame.origin.x=NSMinX(_beginningRightFrame)+dx;
     
     [self.leftView setFrame:leftFrame];
     [self.rightView setFrame:rightFrame];

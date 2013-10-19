@@ -7,6 +7,7 @@
 
 #define kCounterpartMinWidth 100
 #define kSidebarFrameMinWidth 200
+#define kSidebarFrameMaxWidth 800
 
 @class DMTabBar, STSidebarResizeHandleView, STVTabListCtl;
 
