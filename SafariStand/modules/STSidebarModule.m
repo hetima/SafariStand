@@ -153,7 +153,15 @@ static void ST_showWindow(id self, SEL _cmd, id sender)
         return;
     }
     BOOL rightSide=[[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarIsRightSide];
-    CGFloat width=kSidebarFrameMinWidth;
+    CGFloat width=[[NSUserDefaults standardUserDefaults]floatForKey:kpSidebarWidth];
+    if (width<kSidebarFrameMinWidth) {
+        width=kSidebarFrameMinWidth;
+    }
+    CGFloat influence=(win.frame.size.width)/2;
+    if (width>influence) {
+        width=influence;
+    }
+
     
     STSidebarCtl* ctl=[STSidebarCtl viewCtl];
     [ctl installToTabView:tabView sidebarWidth:width rightSide:rightSide];

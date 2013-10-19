@@ -24,6 +24,7 @@
 #define kTabListTag 1
 #define kTabListIdentifier @"tablist"
 
+#define kSplitViewBottomMinHeight 24
 
 @implementation STSidebarCtl
 
@@ -69,6 +70,9 @@
     
     [self.view setFrame:sidebarFrame];
     [tabView addSubview:self.view];
+    
+    //adjust splitView
+    [self.oSplitView setPosition:NSHeight(self.oSplitView.frame)-kSplitViewBottomMinHeight ofDividerAtIndex:0];
     
     //layout
     [self layout:rightSide];
@@ -154,7 +158,6 @@
         }
     }];
 
-    
 }
 
 
@@ -216,18 +219,24 @@
     [self.oResizeHandle setFrame:resizeHandleFrame];
     [self.oResizeHandle setAutoresizingMask:resizeHandleAutoresizingMask];
     
+    //adjust 1 px
     NSRect splitViewFrame=self.oSplitView.frame;
+    NSRect primaryTabbarFrame=self.oPrimaryTabbar.frame;
     splitViewFrame.size.width=NSWidth(self.view.frame)-1;
+    primaryTabbarFrame.size.width=NSWidth(self.view.frame)-1;
     if (rightSide) {
         splitViewFrame.origin.x=1;
+        primaryTabbarFrame.origin.x=1;
     }else{
         splitViewFrame.origin.x=0;
+        primaryTabbarFrame.origin.x=0;
     }
     [self.oSplitView setFrame:splitViewFrame];
+    [self.oPrimaryTabbar setFrame:primaryTabbarFrame];
 
 }
 
-#pragma mark - NSSplitView
+#pragma mark - sidebarResizeHandle
 
 - (CGFloat)counterpartResizeLimit
 {
@@ -249,7 +258,7 @@
     STMinMax result;
     CGFloat sidebarFrameResizeLimit=self.sidebarFrameResizeLimit;
     CGFloat counterpartResizeLimit=self.counterpartResizeLimit;
-    if ([(STSidebarFrameView*)self.view rightSide]) {
+    if ([self rightSide]) {
         result.max=sidebarFrameResizeLimit;
         result.min=0-counterpartResizeLimit;
     }else{
@@ -261,7 +270,7 @@
 
 - (void)sidebarResizeHandleWillStartTracking:(STSidebarResizeHandleView*)resizeHandle
 {
-    if ([(STSidebarFrameView*)self.view rightSide]) {
+    if ([self rightSide]) {
         resizeHandle.rightView=self.view;
         resizeHandle.leftView=self.counterpartView;
     }else{
@@ -273,9 +282,12 @@
 
 - (void)sidebarResizeHandleDidEndTracking:(STSidebarResizeHandleView*)resizeHandle
 {
-    
+    if(!([self.view.window styleMask] & NSFullScreenWindowMask)) {
+        [[NSUserDefaults standardUserDefaults]setFloat:self.view.frame.size.width forKey:kpSidebarWidth];
+    }
 }
 
+#pragma mark - NSSplitView
 
 - (void)splitViewDidResizeSubviews:(NSNotification *)notification;
 {
@@ -285,6 +297,10 @@
 - (BOOL)splitView:(NSSplitView *)splitView shouldAdjustSizeOfSubview:(NSView *)subview
 {
 
+    if (subview==[self.oSecondaryTabView superview]) {
+        return NO;
+    }
+    
     return YES;
 }
 
@@ -308,7 +324,6 @@
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
 {
-#define kSplitViewBottomMinHeight 24
 
     return proposedMax-kSplitViewBottomMinHeight;
 }
