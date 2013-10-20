@@ -6,13 +6,14 @@
 #error This file must be compiled with ARC
 #endif
 
-
+#import "SafariStand.h"
 #import "STVTabListCtl.h"
 #import "STTabProxy.h"
 #import "STTabProxyController.h"
 #import "HTUtils.h"
 #import "STSafariConnect.h"
 #import "HTWebKit2Adapter.h"
+#import "STQuickSearchModule.h"
 
 @interface STVTabListCtl ()
 
@@ -128,13 +129,117 @@
     }
 }
 
--(NSMenu*)menuForTabListTableView:(STVTabListTableView*)listView row:(NSInteger)row
+#pragma mark - menu
+
+- (IBAction)actGoToClipboard:(id)sender
+{
+    NSURL* url=[sender representedObject];
+
+    //tab will created in frontmost window
+    if (url) {
+        STSafariGoToURLWithPolicy(url, poNewTab);
+    }
+}
+
+- (NSMenu*)menuForEmptyTarget
 {
     NSMenu* menu=[[NSMenu alloc]initWithTitle:@""];
-    if ([self.tabs count]>row) {
-        [menu addItemWithTitle:@"test" action:nil keyEquivalent:@""];
+    NSMenuItem* itm;
+    NSMenuItem* separator=nil;
+
+    //tab will created in frontmost window
+    itm=[menu addItemWithTitle:@"New Tab" action:@selector(newTab:) keyEquivalent:@""];
+    separator=[NSMenuItem separatorItem];
+    
+    //goToClipboard
+    NSURL* url=HTBestURLFromPasteboard([NSPasteboard generalPasteboard], YES);
+    //BOOL goToClipboardMenuItemShown=NO;
+    if (url) {
+        NSString* title=LOCALIZE(@"Go To \"%@\"");
+        NSString* urlStr=[url absoluteString];
+        if ([urlStr length]>42) {
+            urlStr=[[urlStr substringToIndex:39]stringByAppendingString:@"..."];
+        }
+
+        title=[NSString stringWithFormat:title, urlStr];
+        if (separator) {
+            [menu addItem:separator];
+            separator=nil;
+        }
+        itm=[menu addItemWithTitle:title action:@selector(actGoToClipboard:) keyEquivalent:@""];
+        [itm setTarget:self];
+        [itm setRepresentedObject:url];
+    
+    //search Clipboard
+    }else{
+        NSPasteboard* pb=[NSPasteboard generalPasteboard];
+        NSString* searchString=[[pb stringForType:NSStringPboardType]htModeratedStringWithin:255];
+        NSMenu* qsMenu=nil;
+        if([searchString length]){
+            qsMenu=[[STQuickSearchModule si]standardQuickSearchMenuWithSearchString:searchString];
+        }
+        if (qsMenu) {
+            NSString* title=LOCALIZE(@"Search \"%@\"");
+            if ([searchString length]>42) {
+                searchString=[[searchString substringToIndex:39]stringByAppendingString:@"..."];
+            }
+            title=[NSString stringWithFormat:title, searchString];
+            if (separator) {
+                [menu addItem:separator];
+                separator=nil;
+            }
+            itm=[menu addItemWithTitle:title action:nil keyEquivalent:@""];
+            [itm setSubmenu:qsMenu];
+        }
     }
+    
     return menu;
+}
+
+- (NSMenu*)menuForTabProxy:(STTabProxy*)tabProxy
+{
+    if (!tabProxy){
+        return [self menuForEmptyTarget];
+    }
+
+    NSMenu* menu=[[NSMenu alloc]initWithTitle:@""];
+    NSMenuItem* itm;
+    NSMenuItem* separator=nil;
+    
+    itm=[menu addItemWithTitle:@"Close Tab" action:@selector(actClose:) keyEquivalent:@""];
+    [itm setTarget:tabProxy];
+    
+    if ([tabProxy isThereOtherTab]) {
+        itm=[menu addItemWithTitle:@"Close Other Tab" action:@selector(actCloseOther:) keyEquivalent:@""];
+        [itm setTarget:tabProxy];
+        
+        itm=[menu addItemWithTitle:@"Move Tab To New Window" action:@selector(actMoveTabToNewWindow:) keyEquivalent:@""];
+        [itm setTarget:tabProxy];
+    }
+    
+    separator=[NSMenuItem separatorItem];
+    
+    if (STSafariCanReloadTab([tabProxy tabViewItem])) {
+        if (separator) {
+            [menu addItem:separator];
+            separator=nil;
+        }
+        itm=[menu addItemWithTitle:@"Reload Tab" action:@selector(actReload:) keyEquivalent:@""];
+        [itm setTarget:tabProxy];
+    }
+    
+    return menu;
+}
+
+- (NSMenu*)menuForTabListTableView:(STVTabListTableView*)listView row:(NSInteger)row
+{
+    if (row==-1) {
+        return [self menuForEmptyTarget];
+    } else if ([self.tabs count]>row) {
+        STTabProxy* tabProxy=[self.tabs objectAtIndex:row];
+        return [self menuForTabProxy:tabProxy];
+    }
+    return nil;
 }
 
 #pragma mark - drag and drop

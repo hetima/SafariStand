@@ -132,7 +132,6 @@ NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance)
     NSString* type=[pb availableTypeFromArray:availableTypes];
 
 
-    
 	if([type isEqualToString:@"public.url"]){
         if(!needsInstance){
             result=(id)availableTypes;
@@ -155,12 +154,13 @@ NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance)
                 result=[NSURL URLWithString:urlStr];
             }
         }
-
-        
         
 	}else if([type isEqualToString:NSStringPboardType]){
 		NSString* urlString=[pb stringForType:NSStringPboardType];
         urlString=[urlString htModeratedStringWithin:0];
+        if ([urlString hasPrefix:@"ttp://"]) {
+            urlString=[@"h" stringByAppendingString:urlString];
+        }
         if([urlString hasPrefix:@"http://"]||[urlString hasPrefix:@"https://"]){
             if(!needsInstance){
                 result=(id)availableTypes;
@@ -168,23 +168,7 @@ NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance)
                 result=[NSURL URLWithString:urlString];
             }
         }
-        /*
-		NSInteger length=[urlString length];
-        if(length<1024*8){
-        urlString=[urlString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            if([urlString hasPrefix:@"http://"]||[urlString hasPrefix:@"https://"]){
-                NSArray* tmpAry=[urlString componentsSeparatedByString:@"\n"];
-                if([tmpAry count]>0)urlString=[tmpAry objectAtIndex:0];
-                urlString=[urlString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                if(!needsInstance){
-                    result=(id)availableTypes;
-                }else{
-                    result=[NSURL URLWithString:urlString];
-                }
-            }
-        }*/
 	}
-    
 
     return result;
 }

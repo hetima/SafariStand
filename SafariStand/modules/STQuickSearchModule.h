@@ -30,7 +30,8 @@
 -(void)sendDefaultQuerySeedWithSearchString:(NSString*)inStr  policy:(int)policy;
 
 -(void)setupContextMenu:(NSMenu*)menu;
--(void)insertItemsToMenu:(NSMenu*)menu withSelector:(SEL)sel target:(id)target;
+-(NSMenu*)standardQuickSearchMenuWithSearchString:(NSString*)searchString;
+-(NSMenu*)insertQuickSearchMenuItemsToMenu:(NSMenu*)menu withSelector:(SEL)sel target:(id)target;
 @end
 
 

@@ -190,7 +190,8 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
 #pragma mark -
 #pragma mark action
 
--(void)actQuickSearchMenu:(id)sender{
+-(void)actQuickSearchMenu:(id)sender
+{
     HTQuerySeed* seed=[sender representedObject];
     NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
     NSString* selectedText=[pb stringForType:NSStringPboardType];
@@ -202,10 +203,28 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
 
 #pragma mark -
 
--(void)insertItemsToMenu:(NSMenu*)menu withSelector:(SEL)sel target:(id)target{
+- (NSMenu*)standardQuickSearchMenuWithSearchString:(NSString*)searchString
+{
+    if ([searchString length]) {
+
+        NSPasteboard* qspb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
+        [qspb clearContents];
+        [qspb setString:searchString forType:NSStringPboardType];
+        
+        
+        return [self insertQuickSearchMenuItemsToMenu:nil withSelector:@selector(actQuickSearchMenu:) target:self];
+    }
+    
+    return nil;
+}
+
+-(NSMenu*)insertQuickSearchMenuItemsToMenu:(NSMenu*)menu withSelector:(SEL)sel target:(id)target
+{
 
     NSInteger idx=0;
-    
+    if (!menu) {
+        menu=[[NSMenu alloc]initWithTitle:@""];
+    }
 
     for (HTQuerySeed* one in self.querySeeds) {
         if([one.use boolValue] && [one.title length]>0){
@@ -227,6 +246,8 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
         [itm setRepresentedObject:one];
         [menu insertItem:itm atIndex:idx];
     }
+    
+    return menu;
 }
 
 -(void)setupContextMenu:(NSMenu*)menu

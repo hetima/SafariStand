@@ -104,7 +104,7 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
         id m;
         NSMenu* actMenu=[[NSMenu alloc]initWithTitle:@""];
         
-        [[STQuickSearchModule si]insertItemsToMenu:actMenu withSelector:@selector(actQuickSearchMenuItem:) target:self];
+        [[STQuickSearchModule si]insertQuickSearchMenuItemsToMenu:actMenu withSelector:@selector(actQuickSearchMenuItem:) target:self];
         if([actMenu numberOfItems]>0){
             NSString* label=[NSString stringWithFormat:@"Search \"%@\"", [itm objectForKey:@"val"]];
             m=[[NSMenuItem alloc]initWithTitle:label action:nil keyEquivalent:@""];
