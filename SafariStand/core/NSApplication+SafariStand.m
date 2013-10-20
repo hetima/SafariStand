@@ -190,7 +190,11 @@
 -(void)STToggleSidebar:(id)sender
 {
     [(STSidebarModule*)[STCSafariStandCore mi:@"STSidebarModule"]toggleSidebar:nil];
+}
 
+-(void)STToggleSidebarLR:(id)sender
+{
+    [(STSidebarModule*)[STCSafariStandCore mi:@"STSidebarModule"]toggleSidebarLR:nil];
 }
 
 

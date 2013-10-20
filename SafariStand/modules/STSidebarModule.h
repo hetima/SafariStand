@@ -10,6 +10,7 @@
 @interface STSidebarModule : STCModule
 
 - (void)toggleSidebar:(id)sender;
+- (void)toggleSidebarLR:(id)sender;
 
 @end
 
