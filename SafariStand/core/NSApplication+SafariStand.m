@@ -39,10 +39,13 @@
 }
 #endif
 
--(void)showSearchItLaterWindow:(id)sender{
+-(void)showSearchItLaterWindow:(id)sender
+{
     [STSearchItLaterWinCtl showSearchItLaterWindow];
 }
--(void)showStandSearchWindow:(id)sender{
+
+-(void)showStandSearchWindow:(id)sender
+{
     [STStandSearchWinCtl showStandSearcWindow];
 }
 
@@ -59,6 +62,7 @@
         [pb setString:title forType:NSStringPboardType];
     }
 }
+
 -(void)STCopyWindowURL:(id)sender
 {
     NSString*   urlStr=STSafariCurrentURLString();
@@ -83,6 +87,7 @@
         }
     }
 }
+
 -(void)STCopyWindowURLTagBlank:(id)sender
 {
     NSString*   title=STSafariCurrentTitle();

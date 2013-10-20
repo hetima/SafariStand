@@ -30,11 +30,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-
-}
-
 - (void)prefValue:(NSString*)key changed:(id)value
 {
     if([key isEqualToString:kpSwitchTabWithOneKeyEnabled]){
@@ -83,14 +78,17 @@
     }
 }
 
--(void)insertOneKeyNavigationMenuItem{
+-(void)insertOneKeyNavigationMenuItem
+{
     NSMenu* standMenu=[STCSafariStandCore si].standMenu;
     id toRemove=[standMenu itemWithTag:kMenuItemTagOneKeyNavigation];
     if(!toRemove){
         [[STCSafariStandCore si]addItemToStandMenu:oneKeyNavigationMenuItem];
     }
 }
--(void)removeOneKeyNavigationMenuItem{
+
+-(void)removeOneKeyNavigationMenuItem
+{
     NSMenu* standMenu=[STCSafariStandCore si].standMenu;
     id toRemove=[standMenu itemWithTag:kMenuItemTagOneKeyNavigation];
     if(toRemove){

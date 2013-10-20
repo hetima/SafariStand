@@ -15,7 +15,6 @@
 //typedef double (*msg64)(id, SEL,...);
 
 
-
 //タブバー幅変更
 static void (*orig_getButtonWidth)(id, SEL, ...);
 static void ST_getButtonWidth(id self, SEL _cmd, double *w, unsigned long long* leftover, char *isClipping, unsigned long long forTabCount)

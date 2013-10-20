@@ -25,11 +25,6 @@
 }
 
 
-- (void)dealloc
-{
-
-}
-
 - (void)windowDidLoad
 {
     [super windowDidLoad];
@@ -43,7 +38,8 @@
     [_identifiers addObject:identifier];
 }
 
-- (IBAction)actToolbarClick:(id)sender {
+- (IBAction)actToolbarClick:(id)sender
+{
     NSString* idn=[sender itemIdentifier];
     [self.oTabView selectTabViewItemWithIdentifier:idn];
     [self.oToolbar setSelectedItemIdentifier:idn];

@@ -42,7 +42,6 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
     if ([keyPath isEqual:@"searchItLaterStrings"]) {
         [self willChangeValueForKey:@"searchItLaterStrings"];
         [self didChangeValueForKey:@"searchItLaterStrings"];
-        //LOG(@"searchItLaterStrings change %@",change);
     }else{
         /*[super observeValueForKeyPath:keyPath
                          ofObject:object 
@@ -89,6 +88,7 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
 {
     [self.silBinder setSearchItLaterStrings:sil];
 }
+
 -(NSMutableArray*)searchItLaterStrings
 {
     return [self.silBinder searchItLaterStrings];
@@ -196,10 +196,12 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
 {
     [(STSearchItLaterWinCtl*)[self delegate]copy:self];
 }
+
 - (IBAction)delete:(id)sender
 {
     [(STSearchItLaterWinCtl*)[self delegate]delete:self];
 }
+
 - (IBAction)paste:(id)sender
 {
     [(STSearchItLaterWinCtl*)[self delegate]paste:self];

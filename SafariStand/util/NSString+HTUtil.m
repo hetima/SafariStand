@@ -27,7 +27,8 @@
     
 }
 
--(NSString*)htEscapeWithEncoding:(NSStringEncoding)enco{
+-(NSString*)htEscapeWithEncoding:(NSStringEncoding)enco
+{
     CFStringRef cfString=CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                             (CFStringRef)self,
                                                             NULL,
@@ -54,7 +55,8 @@
     return result;
 }
 
--(NSString*)htModeratedStringWithin:(NSInteger)max{
+-(NSString*)htModeratedStringWithin:(NSInteger)max
+{
     NSString* result=nil;
     if ([self length]<1024*8) {
         NSArray* tmpAry=[[self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] componentsSeparatedByString:@"\n"];

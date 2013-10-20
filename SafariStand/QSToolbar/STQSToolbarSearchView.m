@@ -159,13 +159,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-
-}
-
-
-
 
 - (void)setCurrentSeed:(HTQuerySeed *)newQS
 {

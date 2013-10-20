@@ -50,10 +50,6 @@ void ST_popUpContextMenu(id self, SEL _cmd, NSMenu* menu, NSPoint pt, double wid
     return self;
 }
 
-- (void)dealloc
-{
-
-}
 
 - (void)prefValue:(NSString*)key changed:(id)value
 {

@@ -72,6 +72,7 @@
     return [self writeItemsAtIndexes:rowIndexes toPasteboard:pboard];
 
 }
+
 - (BOOL)collectionView:(NSCollectionView *)collectionView writeItemsAtIndexes:(NSIndexSet *)indexes toPasteboard:(NSPasteboard *)pasteboard
 {
     return [self writeItemsAtIndexes:indexes toPasteboard:pasteboard];

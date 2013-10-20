@@ -65,7 +65,8 @@ static STCSafariStandCore *sharedInstance;
     return self;
 }
 
--(void)registerBuiltInModules{
+-(void)registerBuiltInModules
+{
 #define registerAndAddOrder(name) module=[self registerModule:name];if(module)[orderedModule addObject:module];
     
     id module;
@@ -135,11 +136,6 @@ static STCSafariStandCore *sharedInstance;
     [self registerBuiltInModules];
 
     
-}
-
-- (void)dealloc
-{
-
 }
 
 //保存のタイミング
