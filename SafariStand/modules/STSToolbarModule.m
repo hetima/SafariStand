@@ -134,7 +134,7 @@ static id ST_TBallowedItemIdentifiers(id self, SEL _cmd, id toolbar)
 
 
 
--(id)simpleToolBarItem:(NSString*)identifier label:(NSString*)label action:(SEL)action iconName:(NSImage*)iconImage
+-(id)simpleToolBarItem:(NSString*)identifier label:(NSString*)label action:(SEL)action iconImage:(NSImage*)iconImage
 {
     
 	//NSSegmentedControl

@@ -10,7 +10,7 @@
 #import "SafariStand.h"
 #import "STSidebarModule.h"
 #import "STSidebarCtl.h"
-
+#import "STSToolbarModule.h"
 
 @implementation STSidebarModule
 
@@ -76,6 +76,9 @@ static void ST_showWindow(id self, SEL _cmd, id sender)
         itm=[[NSMenuItem alloc]initWithTitle:@"SidebarLR" action:@selector(toggleSidebarLR:) keyEquivalent:@""];
         [itm setTarget:self];
         [core addItemToStandMenu:itm];
+
+        [core registerToolbarIdentifier:STSidebarTBItemIdentifier module:self];
+
     }
     return self;
 }
@@ -93,6 +96,23 @@ static void ST_showWindow(id self, SEL _cmd, id sender)
 - (void)prefValue:(NSString*)key changed:(id)value
 {
     //if([key isEqualToString:])
+}
+
+- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
+{
+    NSToolbarItem* result=nil;
+    if ([itemIdentifier isEqualToString:STSidebarTBItemIdentifier]) {
+        static NSImage* STTBToggleSidebarIcon=nil;
+        if (!STTBToggleSidebarIcon) {
+            NSString* imgPath=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForImageResource:@"STTBToggleSidebar"];
+            STTBToggleSidebarIcon=[[NSImage alloc]initWithContentsOfFile:imgPath];
+            [STTBToggleSidebarIcon setTemplate:YES];
+        }
+        result=[(STSToolbarModule*)[STCSafariStandCore mi:@"STSToolbarModule"]simpleToolBarItem:STSidebarTBItemIdentifier
+                label:@"Stand:Toggle Sidebar" action:@selector(STToggleSidebar:) iconImage:STTBToggleSidebarIcon];
+
+    }
+    return result;
 }
 
 

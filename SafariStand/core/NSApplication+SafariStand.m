@@ -13,8 +13,9 @@
 #import "STStandSearchWinCtl.h"
 
 #import "HTWebClipwinCtl.h"
-
 #import "STQuickSearchModule.h"
+#import "STSidebarModule.h"
+
 
 @implementation NSApplication (NSApplication_SafariStand)
 #ifdef DEBUG
@@ -186,7 +187,11 @@
     [HTWebClipwinCtl showWindowForCurrentWKView];
 }
 
+-(void)STToggleSidebar:(id)sender
+{
+    [(STSidebarModule*)[STCSafariStandCore mi:@"STSidebarModule"]toggleSidebar:nil];
 
+}
 
 
 @end
