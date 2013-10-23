@@ -93,6 +93,7 @@
 		AAD79B5513E2BC2E004CE895 /* STSearchItLaterWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAD79B5B13E2D2ED004CE895 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */; };
 		AAD974891817618F004D955A /* STPrefSidebar.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AAD974881817618F004D955A /* STPrefSidebar.tiff */; };
+		AAD9748C1817EA3D004D955A /* SquashContextMenuItems61.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAD9748A1817EA3D004D955A /* SquashContextMenuItems61.plist */; };
 		AADBCB5015C119070069E262 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AADBCB4F15C119070069E262 /* ApplicationServices.framework */; };
 		AAEC852018026D38007A5DD4 /* HTWebClipWin.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */; };
 		AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -255,6 +256,8 @@
 		AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSearchItLaterWinCtl.m; sourceTree = "<group>"; };
 		AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		AAD974881817618F004D955A /* STPrefSidebar.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = STPrefSidebar.tiff; sourceTree = "<group>"; };
+		AAD9748B1817EA3D004D955A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/SquashContextMenuItems61.plist; sourceTree = "<group>"; };
+		AAD9748D1817EA46004D955A /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ja; path = ja.lproj/SquashContextMenuItems61.plist; sourceTree = "<group>"; };
 		AADBCB4F15C119070069E262 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HTWebClipWin.xib; sourceTree = "<group>"; };
 		AAF8702413E55E4E00AC67A1 /* STSDownloadModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSDownloadModule.h; sourceTree = "<group>"; };
@@ -578,6 +581,7 @@
 				AA6FCF3B15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.h */,
 				AA6FCF3C15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m */,
 				AA6FCF3D15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib */,
+				AAD9748A1817EA3D004D955A /* SquashContextMenuItems61.plist */,
 				AA6FCF4415D3F271008AE5AB /* SquashContextMenuItems.plist */,
 			);
 			path = SquashContextMenu;
@@ -693,6 +697,7 @@
 				AAD974891817618F004D955A /* STPrefSidebar.tiff in Resources */,
 				AA92216C13C04DB1006E898F /* HTQuerySeedEditViewCtl.xib in Resources */,
 				AACAD26F13E15BF100170193 /* STPrefSearch.png in Resources */,
+				AAD9748C1817EA3D004D955A /* SquashContextMenuItems61.plist in Resources */,
 				AAD79B5213E2BC09004CE895 /* STSearchItLaterWinCtl.xib in Resources */,
 				AA0881AA13E4284B003B70DF /* Localizable.strings in Resources */,
 				AA780DA613F1C0F40042A253 /* STClassifyDownloadAdvSheet.xib in Resources */,
@@ -816,6 +821,15 @@
 				AA6FCF4515D3F287008AE5AB /* ja */,
 			);
 			name = SquashContextMenuItems.plist;
+			sourceTree = "<group>";
+		};
+		AAD9748A1817EA3D004D955A /* SquashContextMenuItems61.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AAD9748B1817EA3D004D955A /* en */,
+				AAD9748D1817EA46004D955A /* ja */,
+			);
+			name = SquashContextMenuItems61.plist;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -56,7 +56,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
 
     for (NSMenuItem* itm in [menu itemArray]) {
         if ([itm tag] && [itm title]) {
-            NSNumber *tagNum=[NSNumber numberWithInt:[itm tag]];
+            NSNumber *tagNum=[NSNumber numberWithInteger:[itm tag]];
             if (![tagdic objectForKey:tagNum]) {
                 [tagary addObject:[NSDictionary dictionaryWithObjectsAndKeys:tagNum, @"tag", [itm title], @"title",nil]];
                 [tagdic setObject:[itm title] forKey:tagNum];
@@ -69,9 +69,15 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
 
 #endif
     
-    //STSDownloadModule
+    //STSDownloadModule  replace Save Image to “Downloads”
 	if([[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
-        NSMenuItem* itm=[menu itemWithTag:10009];
+        NSInteger tag;
+        if ([STCSafariStandCore si].safariShortVersion>=60100) {
+            tag=10010;
+        }else{
+            tag=10009;
+        }
+        NSMenuItem* itm=[menu itemWithTag:tag];
         id dlModule=[STCSafariStandCore mi:@"STSDownloadModule"];
         if (itm && dlModule) {
             [itm setAction:@selector(actCopyImageToDownloadFolderMenu:)];

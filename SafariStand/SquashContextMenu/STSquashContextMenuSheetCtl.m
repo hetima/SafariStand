@@ -61,7 +61,11 @@
 {
     [super windowDidLoad];
     //load pref
-    NSString* defFile=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForResource:@"SquashContextMenuItems" ofType:@"plist"];
+    NSString* plistName=@"SquashContextMenuItems";
+    if ([STCSafariStandCore si].safariShortVersion>=60100) {
+        plistName=@"SquashContextMenuItems61";
+    }
+    NSString* defFile=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForResource:plistName ofType:@"plist"];
 
     NSArray* disabledItems=[[NSUserDefaults standardUserDefaults]arrayForKey:kpSquashContextMenuItemTags];
     
