@@ -9,6 +9,13 @@
 
 @interface STCSafariStandCore : NSObject
 
+/**
+ Safari Version
+ 
+ @discussion e.g. 7.0=70000; 6.1.2=60102; 6.0.1000=60099;
+ */
+@property (nonatomic,readonly)NSInteger safariShortVersion;
+
 @property(nonatomic,readonly)NSMenu *standMenu;
 
 @property(nonatomic,retain)NSString* revision;

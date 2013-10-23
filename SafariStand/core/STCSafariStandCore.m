@@ -107,13 +107,26 @@ static STCSafariStandCore *sharedInstance;
     NSString* vstr=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
     self.currentVersionString=vstr;
     self.latestVersionString=@"-";
+    
+    //Safari のバージョンナンバー 6.1.0 などを 60100 みたいな数値に変換
+    NSString* shortVersionString=[[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSArray* shortVersionArray=[shortVersionString componentsSeparatedByString:@"."];
+    NSInteger vers[3];
+    NSInteger i,cnt=[shortVersionArray count];
+    for (i=0; i<3; i++) {
+        if (i<cnt)   vers[i]=[shortVersionArray[i] integerValue];
+        else vers[i]=0;
+        if (vers[i]>99) vers[i]=99;
+    }
+    _safariShortVersion=vers[0]*10000+vers[1]*100+vers[2]*1;
+
 
     NSString* revision=@"10.8-6";
     if(floor(NSAppKitVersionNumber)==NSAppKitVersionNumber10_7){
         revision=@"10.7-6";
     }
     self.revision=revision;
-    LOG(@"Startup.... %@", self.revision);
+    LOG(@"Startup.... %@(%ld)", shortVersionArray, (long)self.safariShortVersion);
     
     NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
                        [NSNumber numberWithBool:YES], kpQuickSearchMenuEnabled,
