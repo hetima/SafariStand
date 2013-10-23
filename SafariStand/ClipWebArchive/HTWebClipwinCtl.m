@@ -14,7 +14,7 @@
 #import "HTDOMElementHierarchyMenuItem.h"
 #import "HTWebKit2Adapter.h"
 #import "HTWindowControllerRetainer.h"
-
+#import "NSFileManager+SafariStand.h"
 
 /*
 info=NSDictionary
@@ -231,7 +231,7 @@ title=>title
     fileName=(NSString*)objc_msgSend(fileName, @selector(_web_filenameByFixingIllegalCharacters));
     if([fileName length]>0 && dirPath){
         filePath=[[dirPath stringByAppendingPathComponent:fileName]stringByAppendingPathExtension:@"webarchive"];
-        filePath=objc_msgSend([NSFileManager defaultManager],@selector(_web_pathWithUniqueFilenameForPath:), filePath);
+        filePath=[[NSFileManager defaultManager]stand_pathWithUniqueFilenameForPath:filePath];
         if([self writeToFile:filePath]){
             [self setFilePath:filePath];
         }

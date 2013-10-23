@@ -10,10 +10,12 @@
 #import "STSDownloadModule.h"
 #import "HTWebKit2Adapter.h"
 #import "STClassifyDownloadAdvSheetCtl.h"
+#import "NSFileManager+SafariStand.h"
 
 
 @implementation STSDownloadModule {
     STClassifyDownloadAdvSheetCtl* _advSheetCtl;
+    SEL _nameForPathSelector;
 }
 
 /*
@@ -93,9 +95,12 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
         _advSheetCtl=nil;
         [self loadFromStorage];
 
-        orig_pathWithUniqueFilenameForPath = (id(*)(id, SEL, ...))RMF(NSClassFromString(@"NSFileManager"),
-                                @selector(_webkit_pathWithUniqueFilenameForPath:), ST_pathWithUniqueFilenameForPath);
-    
+        SEL nameForPathSelector=[[NSFileManager defaultManager]stand_selectorForPathWithUniqueFilenameForPath];
+
+        if (nameForPathSelector) {
+            orig_pathWithUniqueFilenameForPath = (id(*)(id, SEL, ...))RMF([NSFileManager class],
+                                nameForPathSelector, ST_pathWithUniqueFilenameForPath);
+        }
 
     }
     return self;
@@ -115,10 +120,6 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 //no need check pref, already checked
 - (void)actCopyImageToDownloadFolderMenu:(id)sender
 {
-    if (![[NSFileManager defaultManager]respondsToSelector:@selector(_webkit_pathWithUniqueFilenameForPath:)]) {
-        return;
-    }
-    
     id webUserDataWrapper=[sender representedObject];
     void* apiObject=[webUserDataWrapper userData]; //struct APIObject
     uint32_t type=WKGetTypeID(apiObject);
@@ -165,7 +166,6 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
     if (!self.basicExp) {
         self.basicExp=@"%Y-%m-%d";
     }
-
     
     //searchItLaterStrings
     NSArray* savedArray=[[STCSafariStandCore si]objectForKey:kpClassifyDownloadFolderAdvancedRules];

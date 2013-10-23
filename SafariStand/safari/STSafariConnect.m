@@ -8,6 +8,7 @@
 
 #import "SafariStand.h"
 #import "STSafariConnect.h"
+#import "NSFileManager+SafariStand.h"
 
 #import <Carbon/Carbon.h>
 
@@ -83,15 +84,11 @@ void STSafariGoToRequestWithPolicy(NSURLRequest* req, int policy)
 
 NSString* STSafariDownloadDestinationWithFileName(NSString* fileName)
 {
-    NSFileManager* fm=[NSFileManager defaultManager];
-    if (![fm respondsToSelector:@selector(_webkit_pathWithUniqueFilenameForPath:)])return nil;
-
     NSString* outDir=[[NSUserDefaults standardUserDefaults]stringForKey:@"DownloadsPath"];
     outDir=[outDir stringByStandardizingPath];
     outDir=[outDir stringByAppendingPathComponent:fileName];
-    outDir=objc_msgSend(fm, @selector(_webkit_pathWithUniqueFilenameForPath:), outDir);
-
-
+    outDir=[[NSFileManager defaultManager]stand_pathWithUniqueFilenameForPath:outDir];
+    
     return outDir;
 }
 
@@ -126,7 +123,7 @@ void STSafariDownloadRequestWithFileName(NSURLRequest* req, NSString* fileName)
     if(![dm respondsToSelector:@selector(startDownloadForRequest:mayOpenWhenDone:allowOverwrite:path:)])return;
 //    @selector(startDownloadForRequest:mayOpenWhenDone:allowOverwrite:path:)
     NSString* path=STSafariDownloadDestinationWithFileName(fileName);
-LOG(@"%@",path);
+
     objc_msgSend(dm, @selector(startDownloadForRequest:mayOpenWhenDone:allowOverwrite:path:), req, NO, NO, path);
     
 }
