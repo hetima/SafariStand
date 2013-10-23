@@ -44,6 +44,7 @@ void STSafariGoToRequestWithPolicy(NSURLRequest* req, int policy)
     
     struct TabPlacementHint tph={nil,nil,0};
     
+    //Safari 6
     if([sdc respondsToSelector:@selector(goToRequest:tabLabel:windowPolicy:tabPlacementHint:frameName:)]){
         //- (struct BrowserContentViewController *)goToRequest:(id)arg1 tabLabel:(id)arg2 windowPolicy:(int)arg3 tabPlacementHint:(const struct TabPlacementHint *)arg4 frameName:(id)arg5;
         //result=struct BrowserContentViewController
@@ -52,6 +53,10 @@ void STSafariGoToRequestWithPolicy(NSURLRequest* req, int policy)
         //LOG(@"%d, %d, %d",tph.m_safariBrowserWindow,tph.m_browserContentViewController,tph.m_contentViewIsAncestorTab);
         //[favoriteButton release];
         objc_msgSend(sdc, @selector(goToRequest:tabLabel:windowPolicy:tabPlacementHint:frameName:), req, nil, policy, &tph, nil);
+    
+    //Safari 7
+    }else if([sdc respondsToSelector:@selector(goToRequest:tabLabel:windowPolicy:tabPlacementHint:)]){
+        objc_msgSend(sdc, @selector(goToRequest:tabLabel:windowPolicy:tabPlacementHint:), req, nil, policy, &tph);
     }
     
     
@@ -141,17 +146,14 @@ id STSafariCreateWKViewOrWebViewAtIndexAndShow(NSWindow* win, NSInteger idx, BOO
 {
     id result=nil;
     id winCtl=[win windowController];
-	if(![winCtl respondsToSelector:@selector(usesWebKit2)] ||
-       ![winCtl respondsToSelector:@selector(browserDocument)] ||
-       ![winCtl respondsToSelector:@selector(_createTabWithView:atIndex:andShow:)] 
-       ){
+	if(![winCtl respondsToSelector:@selector(browserDocument)]){
         return nil;
     }
 
     id doc=objc_msgSend(winCtl, @selector(browserDocument));
     id webView=nil;
     
-	if(objc_msgSend(winCtl, @selector(usesWebKit2))){
+	if(STSafariUsesWebKit2(winCtl)){
         if([doc respondsToSelector:@selector(createWKView)]){
             webView=objc_msgSend(doc, @selector(createWKView));
         }
@@ -162,7 +164,13 @@ id STSafariCreateWKViewOrWebViewAtIndexAndShow(NSWindow* win, NSInteger idx, BOO
     }
     
     if (webView) {
-        result=objc_msgSend(winCtl, @selector(_createTabWithView:atIndex:andShow:), webView, idx, show);
+        //Safari 6
+        if([winCtl respondsToSelector:@selector(_createTabWithView:atIndex:andShow:)]){
+            result=objc_msgSend(winCtl, @selector(_createTabWithView:atIndex:andShow:), webView, idx, show);
+        //Safari 7
+        }else if([winCtl respondsToSelector:@selector(_createTabWithView:atIndex:andSelect:)]){
+            result=objc_msgSend(winCtl, @selector(_createTabWithView:atIndex:andSelect:), webView, idx, show);
+        }
     }
     return result;
 }
@@ -277,8 +285,12 @@ id STSafariWKViewForTabViewItem(id tabViewItem)
 id STSafariTabViewItemForWKView(id wkView)
 {
     id winCtl=STSafariBrowserWindowControllerForWKView(wkView);
+    //Safari 6
     if([winCtl respondsToSelector:@selector(tabViewItemForWebView:)]){
         return objc_msgSend(winCtl, @selector(tabViewItemForWebView:), wkView);
+    //Safari 7
+    }else if([winCtl respondsToSelector:@selector(tabViewItemForWKView:)]){
+        return objc_msgSend(winCtl, @selector(tabViewItemForWKView:), wkView);
     }
     return nil;
 }
@@ -333,10 +345,14 @@ void STSafariMoveTabToOtherWindow(NSTabViewItem* itemToMove, NSWindow* destWindo
 {
     id winCtl=[destWindow windowController];
 
-    if (winCtl && itemToMove && destIndex >= 0 && [winCtl respondsToSelector:@selector(moveTabFromOtherWindow:toIndex:andShow:)]) {
+    if (winCtl && itemToMove && destIndex >= 0) {
         NSDisableScreenUpdates();
 
-        objc_msgSend(winCtl, @selector(moveTabFromOtherWindow:toIndex:andShow:), itemToMove, destIndex, show);
+        if ([winCtl respondsToSelector:@selector(moveTabFromOtherWindow:toIndex:andShow:)]) {
+            objc_msgSend(winCtl, @selector(moveTabFromOtherWindow:toIndex:andShow:), itemToMove, destIndex, show);
+        }else if ([winCtl respondsToSelector:@selector(moveTabFromOtherWindow:toIndex:andSelect:)]) {
+            objc_msgSend(winCtl, @selector(moveTabFromOtherWindow:toIndex:andSelect:), itemToMove, destIndex, show);
+        }
 
 //like _moveTabToNewWindow:
  /*       id sdc=[NSDocumentController sharedDocumentController];
@@ -377,6 +393,14 @@ id STSafariBrowserWindowControllerForWKView(id wkView)
         return objc_msgSend(wkView, @selector(browserWindowControllerMac));
     }
     return nil;    
+}
+
+BOOL STSafariUsesWebKit2(id anyObject)
+{
+    if([anyObject respondsToSelector:@selector(usesWebKit2)]){
+        return (BOOL)objc_msgSend(anyObject, @selector(usesWebKit2));
+    }
+    return YES;
 }
 
 /*
@@ -445,6 +469,7 @@ NSString* STSafariThumbnailForURLString(NSString* URLString, NSString* ext)
 
 void STSafariAddSearchStringHistory(NSString* str)
 {
+    //obsolate
     id webSearchFieldCell=NSClassFromString(@"WebSearchFieldCell");
     if([webSearchFieldCell respondsToSelector:@selector(addSearchString:)]){
         objc_msgSend(webSearchFieldCell, @selector(addSearchString:), str);

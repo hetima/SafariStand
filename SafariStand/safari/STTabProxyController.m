@@ -82,6 +82,17 @@ static id ST_initWithTabBarView(id self, SEL _cmd, id tabBarView, BOOL useWebKit
     return result;
 }
 
+//- (id)initWithTabBarView:(id)arg1 withBrowserTab:(struct BrowserTab *)arg2 andIdentifier:(unsigned long long)arg3;
+static id (*orig_initWithTabBarView2)(id, SEL, ...);
+static id ST_initWithTabBarView2(id self, SEL _cmd, id tabBarView, void* browserTab, unsigned long long identifier)
+{
+    id result=orig_initWithTabBarView2(self, _cmd, tabBarView, browserTab, identifier);
+    
+    id proxy __unused=[[STTabProxy alloc]initWithTabViewItem:result];
+
+    return result;
+}
+
 //未使用
 //tabViewItem が取り除かれるとき STTabProxyリストから除外
 /*
@@ -139,7 +150,7 @@ static void ST_setLabel(id self, SEL _cmd, NSString* label)
            && [winCtl respondsToSelector:@selector(orderedTabViewItems)]){
             NSArray* tabs=objc_msgSend(winCtl, @selector(orderedTabViewItems));
             for (id tabViewItem in tabs) {
-                //if ([tabViewItem respondsToSelector:@selector(usesWebKit2)] && objc_msgSend(tabViewItem, @selector(usesWebKit2))) {
+                //if (STSafariUsesWebKit2(tabViewItem)) {
                 STTabProxy* proxy =[[STTabProxy alloc]initWithTabViewItem:tabViewItem];
                 if ([[tabViewItem tabView]selectedTabViewItem]==tabViewItem) {
                     proxy.isSelected=YES;
@@ -153,9 +164,21 @@ static void ST_setLabel(id self, SEL _cmd, NSString* label)
     
 
     //tabViewItem を生成するとき STTabProxy を付ける
-    orig_initWithTabBarView = (id(*)(id, SEL, ...))RMF(NSClassFromString(@"BrowserTabViewItem"),
+    //Safari 6
+    Class cls=NSClassFromString(@"BrowserTabViewItem");
+    if ([cls instancesRespondToSelector:@selector(initWithTabBarView:useWebKit2:withBrowserTab:)]) {
+        orig_initWithTabBarView = (id(*)(id, SEL, ...))RMF(cls,
                                 @selector(initWithTabBarView:useWebKit2:withBrowserTab:), ST_initWithTabBarView);
+    //Safari 7
+    }else if ([cls instancesRespondToSelector:@selector(initWithTabBarView:withBrowserTab:andIdentifier:)]) {
+        orig_initWithTabBarView2 = (id(*)(id, SEL, ...))RMF(cls,
+                                @selector(initWithTabBarView:withBrowserTab:andIdentifier:), ST_initWithTabBarView2);
+    }
 
+    
+    
+    
+    
     //tabの数変更を監視するため
     orig_tabViewDidChangeNum = (void(*)(id, SEL, ...))RMF(NSClassFromString(@"TabBarView"),
                                 @selector(tabViewDidChangeNumberOfTabViewItems:), ST_tabViewDidChangeNum);
@@ -196,7 +219,7 @@ static void ST_setLabel(id self, SEL _cmd, NSString* label)
     NSArray* tabs=[tabView tabViewItems];
     ary=[NSMutableArray arrayWithCapacity:[tabs count]];
     for (id tabViewItem in tabs) {
-        if ([tabViewItem respondsToSelector:@selector(usesWebKit2)] && objc_msgSend(tabViewItem, @selector(usesWebKit2))) {
+        if (STSafariUsesWebKit2(tabViewItem)) {
             id proxy=[STTabProxy tabProxyForTabViewItem:tabViewItem];
             if (proxy) {
                 [ary addObject:proxy];
@@ -217,7 +240,7 @@ static void ST_setLabel(id self, SEL _cmd, NSString* label)
         
         ary=[NSMutableArray arrayWithCapacity:[tabs count]];
         for (id tabViewItem in tabs) {
-            if ([tabViewItem respondsToSelector:@selector(usesWebKit2)] && objc_msgSend(tabViewItem, @selector(usesWebKit2))) {
+            if (STSafariUsesWebKit2(tabViewItem)) {
                 id proxy=[STTabProxy tabProxyForTabViewItem:tabViewItem];
                 if (proxy) {
                     [ary addObject:proxy];

@@ -155,9 +155,14 @@
     if([_tabViewItem tabState]==NSSelectedTab)return;
     
     id ctl=STSafariBrowserWindowControllerForWKView([self wkView]);
+    //Safari 6
     if ([ctl respondsToSelector:@selector(_showTab:)]) {
         objc_msgSend(ctl, @selector(_showTab:), _tabViewItem);
+    //Safari 7
+    }else if ([ctl respondsToSelector:@selector(_selectTab:)]) {
+        objc_msgSend(ctl, @selector(_selectTab:), _tabViewItem);
     }
+    
     //[[tabViewItem tabView]selectTabViewItem:tabViewItem];
 }
 
