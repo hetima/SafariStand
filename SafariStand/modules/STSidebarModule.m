@@ -72,11 +72,11 @@ static void ST_showWindow(id self, SEL _cmd, id sender)
         NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Sidebar" action:@selector(toggleSidebar:) keyEquivalent:@""];
         [itm setTarget:self];
         [core addItemToStandMenu:itm];
-        
+/*
         itm=[[NSMenuItem alloc]initWithTitle:@"SidebarLR" action:@selector(toggleSidebarLR:) keyEquivalent:@""];
         [itm setTarget:self];
         [core addItemToStandMenu:itm];
-
+*/
         [core registerToolbarIdentifier:STSidebarTBItemIdentifier module:self];
 
     }

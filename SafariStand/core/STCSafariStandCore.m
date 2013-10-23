@@ -80,7 +80,6 @@ static STCSafariStandCore *sharedInstance;
     registerAndAddOrder(@"STActionMessageModule");
 
     registerAndAddOrder(@"STSTabBarModule");
-    registerAndAddOrder(@"STKeyHandlerModule");
 
     registerAndAddOrder(@"STSTitleBarModule");
     registerAndAddOrder(@"STSDownloadModule");
@@ -88,6 +87,7 @@ static STCSafariStandCore *sharedInstance;
     
     registerAndAddOrder(@"STActionMenuModule"); //must after STSToolbarModule
     registerAndAddOrder(@"STSidebarModule");
+    registerAndAddOrder(@"STKeyHandlerModule");
     
 #undef registerAndAddOrder
     

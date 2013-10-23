@@ -149,6 +149,8 @@
 
     //tab will created in frontmost window
     itm=[menu addItemWithTitle:@"New Tab" action:@selector(newTab:) keyEquivalent:@""];
+    itm=[menu addItemWithTitle:@"Move Sidebar To Far Side" action:@selector(STToggleSidebarLR:) keyEquivalent:@""];
+    
     separator=[NSMenuItem separatorItem];
     
     //goToClipboard
@@ -226,7 +228,15 @@
         }
         itm=[menu addItemWithTitle:@"Reload Tab" action:@selector(actReload:) keyEquivalent:@""];
         [itm setTarget:tabProxy];
+        
+        separator=[NSMenuItem separatorItem];
     }
+    
+    if (separator) {
+        [menu addItem:separator];
+        separator=nil;
+    }
+    itm=[menu addItemWithTitle:@"Move Sidebar To Far Side" action:@selector(STToggleSidebarLR:) keyEquivalent:@""];
     
     return menu;
 }
