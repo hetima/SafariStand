@@ -20,6 +20,7 @@
 @implementation STTabProxy
 {
     BOOL invalid;
+    void* _pageRef;
 }
 
 - (void)goToURL:(NSURL*)urlToGo
@@ -77,6 +78,14 @@
 - (id)wkView
 {
     return STSafariWKViewForTabViewItem(_tabViewItem);
+}
+
+- (void*)pageRef
+{
+    if (!_pageRef) {
+        _pageRef=(void*)htWKPageRefForWKView([self wkView]);
+    }
+    return _pageRef;
 }
 
 -(BOOL)canClose

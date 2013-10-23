@@ -68,5 +68,7 @@
 
 - (IBAction)actMoveTabToNewWindow:(id)sender;
 
+- (void*)pageRef;
+
 @end
 

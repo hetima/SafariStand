@@ -6,7 +6,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class STPreviewImageManager;
+@class STPreviewImageManager, STTabProxy;
 
 @interface STTabProxyController : NSObject
 
@@ -19,6 +19,9 @@
 -(void)setup;
 -(void)addTabProxy:(id)tabProxy;
 -(void)removeTabProxy:(id)tabProxy;
+
+- (STTabProxy*)tabProxyForPageRef:(void*)pageRef;
+
 -(void)maintainTabSelectionOrder:(id)tabProxy;
 
 -(NSTabViewItem*)lastSelectedTabViewItemForwindow:(NSWindow*)win;

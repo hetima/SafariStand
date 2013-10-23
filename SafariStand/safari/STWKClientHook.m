@@ -6,13 +6,15 @@
 #import "SafariStand.h"
 #import "STWKClientHook.h"
 #import "STTabProxy.h"
+#import "STTabProxyController.h"
 #import "HTWebKit2Adapter.h"
 #import "HTSymbolHook.h"
 
 // WKPageRef から WKView を取得
 // client 関数内から WKView が欲しい場合これを使う
 // 内部構造あまり把握できてないけど、とりあえずこれで取得できた
-static void* STWK_WKPageRefGetWKView(WKPageRef page)
+/*
+ static void* STWK_WKPageRefGetWKView(WKPageRef page)
 {
     // PageClientImpl(だと思う) を取得
     void* pageClient = *(void **)((void **)page + 3);
@@ -20,6 +22,7 @@ static void* STWK_WKPageRefGetWKView(WKPageRef page)
     void* wkView= *(void **)((void **)pageClient + 1);
     return wkView;
 }
+*/
 
 //typedef void (*WKPageCallback)(WKPageRef page, const void* clientInfo);
 
@@ -30,8 +33,7 @@ void STWK_didStartProgress(WKPageRef page, const void* clientInfo)
 {
     orig_didStartProgress(page, clientInfo);
     
-    void* wkView=STWK_WKPageRefGetWKView(page);
-    STTabProxy* proxy=[STTabProxy tabProxyForWKView:(__bridge id)wkView];
+    STTabProxy* proxy=[[STTabProxyController si]tabProxyForPageRef:(void*)page];
     [proxy didStartProgress];
 }
 
@@ -42,8 +44,7 @@ void STWK_didFinishProgress(WKPageRef page, const void* clientInfo)
 {
     orig_didFinishProgress(page, clientInfo);
 
-    void* wkView=STWK_WKPageRefGetWKView(page);
-    STTabProxy* proxy=[STTabProxy tabProxyForWKView:(__bridge id)wkView];
+    STTabProxy* proxy=[[STTabProxyController si]tabProxyForPageRef:(void*)page];
     [proxy didFinishProgress];
 }
 
@@ -54,11 +55,10 @@ void STWK_showPage(WKPageRef page, const void* clientInfo)
 {
     //JavaScriptで開いたウインドウにはサイドバーを自動表示しないようにする
     if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault]) {
-        
-        void* wkView=STWK_WKPageRefGetWKView(page);
-        id winCtl=STSafariBrowserWindowControllerForWKView((__bridge id)(wkView));
-        id tabView=STSafariTabViewForWindow([winCtl window]);
+        STTabProxy* proxy=[[STTabProxyController si]tabProxyForPageRef:(void*)page];
+        NSTabView* tabView=[proxy tabView];
         if ([tabView numberOfTabViewItems]<=1){
+            id winCtl=[[tabView window]windowController];
             [winCtl htaoSetValue:@YES forKey:kAOValueNotShowSidebarAuto];
         }
     }

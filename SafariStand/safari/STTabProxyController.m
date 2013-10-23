@@ -102,9 +102,6 @@ static void ST_tabViewItem_dealloc(__unsafe_unretained id self, SEL _cmd)
 {
     id proxy=[STTabProxy tabProxyForTabViewItem:self];
     if(proxy){
-        [NSObject cancelPreviousPerformRequestsWithTarget:proxy
-                                                 selector:@selector(updateImage) object:nil];
-        
         [[STTabProxyController si]removeTabProxy:proxy];
     }
     orig_tabViewItem_dealloc(self, _cmd);
@@ -233,6 +230,16 @@ static void ST_setLabel(id self, SEL _cmd, NSString* label)
         
     }
     return self;
+}
+
+- (STTabProxy*)tabProxyForPageRef:(void*)pageRef
+{
+    for (STTabProxy* tabProxy in _allTabProxy) {
+        if ([tabProxy pageRef]==pageRef) {
+            return tabProxy;
+        }
+    }
+    return nil;
 }
 
 -(void)addTabProxy:(id)tabProxy
