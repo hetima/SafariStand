@@ -12,8 +12,9 @@
 
 
 @implementation STQuickSearchModule (STQuickSearchModule_Completion)
-//LocationTextField
 
+//primeval impliments
+//LocationTextField textDidChange:
 static void (*orig_textDidChange)(id, SEL, ...);
 static void ST_textDidChange(id self, SEL _cmd, id obj)
 {
@@ -52,7 +53,8 @@ BOOL isLikeURLString(NSString* inStr)
     return NO;
 }
 
-
+//primeval impliments
+//kSafariBrowserWindowController goToToolbarLocation:
 static void (*orig_goToToolbarLocation)(id, SEL, ...);
 void ST_goToToolbarLocation(id self, SEL _cmd, id obj)
 {
@@ -83,12 +85,14 @@ void ST_goToToolbarLocation(id self, SEL _cmd, id obj)
 
 -(void)setupCompletionCtl
 {
-    orig_textDidChange = (void(*)(id, SEL, ...))
-        RMF(NSClassFromString(@"LocationTextField"), @selector(textDidChange:), ST_textDidChange);
-    orig_goToToolbarLocation = (void(*)(id, SEL, ...))
-        RMF(NSClassFromString(kSafariBrowserWindowController),
-        @selector(goToLocationFieldURL:), ST_goToToolbarLocation);//was goToToolbarLocation:
-
+    //primeval impliments
+    if ([NSClassFromString(kSafariBrowserWindowController) instancesRespondToSelector:@selector(goToToolbarLocation:)]) {
+        orig_textDidChange = (void(*)(id, SEL, ...))
+            RMF(NSClassFromString(@"LocationTextField"), @selector(textDidChange:), ST_textDidChange);
+        orig_goToToolbarLocation = (void(*)(id, SEL, ...))
+            RMF(NSClassFromString(kSafariBrowserWindowController),
+            @selector(goToToolbarLocation:), ST_goToToolbarLocation);//was goToToolbarLocation:
+    }
 }
 
 
