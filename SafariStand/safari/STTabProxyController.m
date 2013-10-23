@@ -60,10 +60,14 @@ static void (*orig_replaceTabView)(id, SEL, ...);
 static void ST_replaceTabView(id self, SEL _cmd, id/*NSTabView*/ tabView)
 {
     orig_replaceTabView(self, _cmd, tabView);
-    [[STTabProxyController si]maintainTabSelectionOrder:[STTabProxy tabProxyForTabViewItem:tabView]];
+    //[[STTabProxyController si]maintainTabSelectionOrder:[STTabProxy tabProxyForTabViewItem:tabView]];
+    //proxy.isSelected がセットされてないことがある
+    NSTabViewItem* selectedTabViewItem=[tabView selectedTabViewItem];
+    STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:selectedTabViewItem];
+    proxy.isSelected=YES;
     
 	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView]; //重要：こっちが先
-	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
+	//[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
     
 }
 

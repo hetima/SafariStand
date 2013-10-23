@@ -19,7 +19,7 @@
 - (void)uninstallFromTabView;
 
 - (IBAction)actTableViewClicked:(id)sender;
-
+- (void)tabViewUpdated:(NSNotification*)note;
 @end
 
 

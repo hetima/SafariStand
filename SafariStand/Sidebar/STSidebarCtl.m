@@ -56,8 +56,10 @@
 
 - (void)installToTabView:(NSTabView*)tabView sidebarWidth:(CGFloat)width rightSide:(BOOL)rightSide
 {
+    BOOL firstInstall=YES;
     if (self.targetView) {
         [self uninstallFromTabView];
+        firstInstall=NO;
     }
     
     self.targetView=tabView;
@@ -72,7 +74,7 @@
     [tabView addSubview:self.view];
     
     //adjust splitView
-    [self collapseSecondaryView];
+    if(firstInstall)[self collapseSecondaryView];
     
     //layout
     [self layout:rightSide];
@@ -104,6 +106,8 @@
     STSidebarCtl* ctl=[tabView.window htaoValueForKey:@"sidebarCtl"];
     if (self==ctl) {
         [self installToTabView:tabView sidebarWidth:NSWidth(self.view.frame) rightSide:[self rightSide]];
+        //後でリファクタリングする
+        [self.tabListCtl tabViewUpdated:note];
     }
 }
 

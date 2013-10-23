@@ -56,14 +56,15 @@
 - (void)setupWithTabView:(NSTabView*)tabView
 {
     if(tabView)[self updateTabs:tabView];
+    //[[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewUpdatedZ:) name:STTabViewDidReplaceNote object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewUpdated:) name:STTabViewDidChangeNote object:nil];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewItemSelected:) name:STTabViewDidSelectItemNote object:nil];
     
 }
 
 - (void)uninstallFromTabView
 {
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
     [self.tabs makeObjectsPerformSelector:@selector(uninstalledFromSidebar:) withObject:self];
 }
 
