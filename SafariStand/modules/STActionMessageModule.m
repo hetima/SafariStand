@@ -54,12 +54,9 @@ static void ST_FavoriteButton_goToBookmark(id self, SEL _cmd)
     self = [super initWithStand:core];
     if (self) {
         actionMessageModule=self;
-        Class bookmarksControllerClass=NSClassFromString(@"BookmarksControllerObjC");
-        if (!bookmarksControllerClass) {
-            bookmarksControllerClass=NSClassFromString(@"BookmarksController");
-        }
+
         origAM_addMenuItemForBookmark = (id(*)(id, SEL, ...))RMF(
-                                    bookmarksControllerClass,
+                                    STSafariBookmarksControllerClass(),
                                     @selector(addMenuItemForBookmark:withTabPlacementHint:toMenu:),
                                     STAM_addMenuItemForBookmark_with);
 

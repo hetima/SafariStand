@@ -51,7 +51,7 @@ static id ST_addBookmarkFolder_toMenu(id self, SEL _cmd, id bookmark, id menu)
     self = [super initWithStand:core];
     if (self) {
         Class tmpClas;
-        tmpClas=NSClassFromString(@"BookmarksControllerObjC");
+        tmpClas=STSafariBookmarksControllerClass();
         if(tmpClas){
             //gSeparatorIcon=[[NSImage alloc]initWithSize:NSMakeSize(1,16)];
             origBS_addMenuItemForBookmark_with = (id(*)(id, SEL, ...))RMF(

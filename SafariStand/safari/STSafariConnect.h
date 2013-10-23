@@ -81,6 +81,7 @@ NSImage* STSafariBundleReadinglistmage();
 
 void STSafariAddSearchStringHistory(NSString* str);
 
+Class STSafariBookmarksControllerClass();
 int STSafariWebBookmarkType(id webBookmark);
 NSString* STSafariWebBookmarkURLString(id webBookmark);
 NSString* STSafariWebBookmarkTitle(id webBookmark);

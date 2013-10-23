@@ -485,7 +485,23 @@ void STSafariAddSearchStringHistory(NSString* str)
 }
 
 
-
+Class STSafariBookmarksControllerClass()
+{
+    static Class bookmarksControllerClass=nil;
+    if (bookmarksControllerClass==nil) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            //Safari 6
+            bookmarksControllerClass=NSClassFromString(@"BookmarksControllerObjC");
+            if (!bookmarksControllerClass) {
+                //Safari 7
+                bookmarksControllerClass=NSClassFromString(@"BookmarksController");
+            }
+      });
+    }
+    
+    return bookmarksControllerClass;
+}
 
 int STSafariWebBookmarkType(id webBookmark)
 {
