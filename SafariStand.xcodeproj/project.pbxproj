@@ -92,6 +92,7 @@
 		AAD79B5213E2BC09004CE895 /* STSearchItLaterWinCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAD79B5113E2BC09004CE895 /* STSearchItLaterWinCtl.xib */; };
 		AAD79B5513E2BC2E004CE895 /* STSearchItLaterWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAD79B5B13E2D2ED004CE895 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */; };
+		AAD974891817618F004D955A /* STPrefSidebar.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AAD974881817618F004D955A /* STPrefSidebar.tiff */; };
 		AADBCB5015C119070069E262 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AADBCB4F15C119070069E262 /* ApplicationServices.framework */; };
 		AAEC852018026D38007A5DD4 /* HTWebClipWin.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */; };
 		AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -253,6 +254,7 @@
 		AAD79B5313E2BC2E004CE895 /* STSearchItLaterWinCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSearchItLaterWinCtl.h; sourceTree = "<group>"; };
 		AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSearchItLaterWinCtl.m; sourceTree = "<group>"; };
 		AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		AAD974881817618F004D955A /* STPrefSidebar.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = STPrefSidebar.tiff; sourceTree = "<group>"; };
 		AADBCB4F15C119070069E262 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HTWebClipWin.xib; sourceTree = "<group>"; };
 		AAF8702413E55E4E00AC67A1 /* STSDownloadModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSDownloadModule.h; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 			children = (
 				AACAD26E13E15BF000170193 /* STPrefSearch.png */,
 				AA718AA713BAD39D00327606 /* STPrefGeneral.tiff */,
+				AAD974881817618F004D955A /* STPrefSidebar.tiff */,
 				AA0B390615C5044F00A025FF /* STTBActionMenu.tiff */,
 				AA0B390B15C54ED000A025FF /* STTBActionMenuDisabled.tiff */,
 				AAA1E4831813EF2B00970FAD /* STTBToggleSidebar.pdf */,
@@ -687,6 +690,7 @@
 				AA12DA8813B73EFA0082EBB3 /* InfoPlist.strings in Resources */,
 				AA92216E13C04DE6006E898F /* STCPrefWin.xib in Resources */,
 				AA718AA813BAD39D00327606 /* STPrefGeneral.tiff in Resources */,
+				AAD974891817618F004D955A /* STPrefSidebar.tiff in Resources */,
 				AA92216C13C04DB1006E898F /* HTQuerySeedEditViewCtl.xib in Resources */,
 				AACAD26F13E15BF100170193 /* STPrefSearch.png in Resources */,
 				AAD79B5213E2BC09004CE895 /* STSearchItLaterWinCtl.xib in Resources */,
