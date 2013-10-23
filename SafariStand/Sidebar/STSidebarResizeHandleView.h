@@ -8,7 +8,7 @@
 
 @interface STSidebarResizeHandleView : NSView
 
-@property (weak) IBOutlet id <STSidebarResizeHandleViewDelegate> delegate;
+@property (nonatomic, unsafe_unretained) IBOutlet id <STSidebarResizeHandleViewDelegate> delegate;
 
 @property (nonatomic,assign) NSView* leftView;
 @property (nonatomic,assign) NSView* rightView;

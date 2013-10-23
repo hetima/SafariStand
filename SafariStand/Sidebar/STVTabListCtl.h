@@ -26,7 +26,7 @@
 
 @interface STVTabListTableView : NSTableView
 
-@property (weak) IBOutlet STVTabListCtl *oTabListCtl;
+@property (nonatomic, unsafe_unretained) IBOutlet STVTabListCtl *oTabListCtl;
 
 @end
 

@@ -142,7 +142,7 @@
     });
 
     //DMTabBar の Block にキャプチャされると循環参照するので __weak
-    STSidebarCtl* __weak weakSelf=self;
+    STSidebarCtl* __unsafe_unretained weakSelf=self;
     
     [self.oPrimaryTabbar handleTabBarItemSelection:^(DMTabBarItemSelectionType selectionType, DMTabBarItem *targetTabBarItem, NSUInteger targetTabBarItemIndex) {
         if (selectionType == DMTabBarItemSelectionType_WillSelect) {
