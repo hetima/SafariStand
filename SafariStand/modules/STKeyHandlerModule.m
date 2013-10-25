@@ -114,6 +114,8 @@
 
 -(void)setupGoBackForwardMenuItem:(BOOL)enabled
 {
+    return; //do nothing
+    
     NSMenuItem* m;
     NSString* key;
     
