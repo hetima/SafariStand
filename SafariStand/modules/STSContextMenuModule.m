@@ -72,7 +72,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
     //STSDownloadModule  replace Save Image to “Downloads”
 	if([[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
         NSInteger tag;
-        if ([STCSafariStandCore si].safariShortVersion>=60100) {
+        if ([STCSafariStandCore si].isSafari61) {
             tag=10010;
         }else{
             tag=10009;
@@ -82,6 +82,9 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
         if (itm && dlModule) {
             [itm setAction:@selector(actCopyImageToDownloadFolderMenu:)];
             [itm setTarget:dlModule];
+#ifdef DEBUG
+            [itm setTitle:@"actCopyImageToDownloadFolderMenu:"];
+#endif
         }
     }
     
