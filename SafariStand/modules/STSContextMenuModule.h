@@ -9,9 +9,9 @@
 
 @interface STSContextMenuModule : STCModule
 
-@property (nonatomic,retain)STSquashContextMenuSheetCtl* squashSheetCtl;
+@property (nonatomic, strong) STSquashContextMenuSheetCtl* squashSheetCtl;
 
--(NSWindow*)advancedSquashSettingSheet;
+- (NSWindow*)advancedSquashSettingSheet;
 
 @end
 

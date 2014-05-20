@@ -52,15 +52,7 @@ STQuickSearchModule* quickSearchModule;
 
 
 
-static id (*orig_bestURLStringForUserTypedString)(id, SEL, ...);
 
-static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
-{
-	if([self hasPrefix:@"ttp://"]){
-		return [NSURL URLWithString:[@"h" stringByAppendingString:self]];
-	}
-    return orig_bestURLStringForUserTypedString(self, _cmd);
-}
 
 - (id)initWithStand:(id)core
 {
@@ -74,9 +66,20 @@ static NSString* ST_bestURLStringForUserTypedString(id self, SEL _cmd)
 
 
         // ttp
-        orig_bestURLStringForUserTypedString = RMF([NSString class],
-                                            @selector(bestURLForUserTypedString), ST_bestURLStringForUserTypedString);
-        //if(orig_bestURLStringForUserTypedString)LOG(@"ok");
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "NSString", "bestURLForUserTypedString",
+         KZRMethodInspection, call, sel,
+         ^id (id slf)
+        {
+             if([slf hasPrefix:@"ttp://"]){
+                 return [NSURL URLWithString:[@"h" stringByAppendingString:slf]];
+             }
+             id result=call.as_id(slf, sel);
+             return result;
+         });
+
+        
         NSDictionary* dict=[NSDictionary dictionaryWithObjectsAndKeys:
                             @"Google",@"title",
                             @"http://www.google.com/search?client=safari&rls=en&q=%s&ie=UTF-8&oe=UTF-8",@"baseUrl",

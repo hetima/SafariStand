@@ -27,6 +27,7 @@ enum webbookmarktype {
 };
 
 #define kSafariBrowserWindowController @"BrowserWindowControllerMac"
+#define kSafariBrowserWindowControllerCstr "BrowserWindowControllerMac"
 
 NSString* STSafariWebpagePreviewsPath();
 NSString* STSafariThumbnailForURLString(NSString* URLString, NSString* ext);
@@ -81,7 +82,7 @@ NSImage* STSafariBundleReadinglistmage();
 
 void STSafariAddSearchStringHistory(NSString* str);
 
-Class STSafariBookmarksControllerClass();
+const char* STSafariBookmarksControllerClass();
 int STSafariWebBookmarkType(id webBookmark);
 NSString* STSafariWebBookmarkURLString(id webBookmark);
 NSString* STSafariWebBookmarkTitle(id webBookmark);

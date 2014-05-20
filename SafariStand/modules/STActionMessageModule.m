@@ -18,51 +18,49 @@
 static STActionMessageModule* actionMessageModule;
 
 
-static id (*origAM_addMenuItemForBookmark)(id, SEL, ...);
-static id STAM_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, void* tabLocation, id menu)
-{
-	id returnValue=nil;
-
-    returnValue=[actionMessageModule menuItemForBookmarkLeaf:bookmark];
-    if(returnValue){
-        [menu addItem:returnValue];
-        return returnValue;
-    }
-    
-	return origAM_addMenuItemForBookmark(self, _cmd, bookmark, tabLocation, menu);
-}
-
-//BookmarkBarをクリックしたとき
-static void (*orig_goToBookmark)(id, SEL);
-static void ST_FavoriteButton_goToBookmark(id self, SEL _cmd)
-{
-	BOOL	hackHandled=NO;
-	if([[NSUserDefaults standardUserDefaults]boolForKey:kpActionMessageEnabled] && [self respondsToSelector:@selector(bookmark)]){
-		id	bookmark=objc_msgSend(self,@selector(bookmark));
-		if(bookmark){
-			NSString	*url=STSafariWebBookmarkURLString(bookmark);
-			hackHandled=[actionMessageModule handleBookmakBarAction:url];
-		}
-	}
-	//横取りしてなかったら元を呼ぶ
-	if(!hackHandled)
-		orig_goToBookmark(self,_cmd);
-}
-
 -(id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
     if (self) {
         actionMessageModule=self;
 
-        origAM_addMenuItemForBookmark = (id(*)(id, SEL, ...))RMF(
-                                    STSafariBookmarksControllerClass(),
-                                    @selector(addMenuItemForBookmark:withTabPlacementHint:toMenu:),
-                                    STAM_addMenuItemForBookmark_with);
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (STSafariBookmarksControllerClass(),
+         "addMenuItemForBookmark:withTabPlacementHint:toMenu:",
+         KZRMethodInspection, call, sel,
+         ^id(id slf, id bookmark, void* tabLocation, id menu)
+        {
+             id returnValue=nil;
+             
+             returnValue=[actionMessageModule menuItemForBookmarkLeaf:bookmark];
+             if(returnValue){
+                 [menu addItem:returnValue];
+                 return returnValue;
+             }
+             returnValue=call.as_id(slf, sel, bookmark, tabLocation, menu);
+             return returnValue;
 
-        orig_goToBookmark = (void (*)(id, SEL))RMF(NSClassFromString(@"FavoriteButton"),
-                                    @selector(_goToBookmark), ST_FavoriteButton_goToBookmark);
+         });
+        
+        //BookmarkBarをクリックしたとき
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "FavoriteButton", "_goToBookmark",
+         KZRMethodInspection, call, sel,
+         ^(id slf){
+             BOOL	hackHandled=NO;
+             if([[NSUserDefaults standardUserDefaults]boolForKey:kpActionMessageEnabled] && [slf respondsToSelector:@selector(bookmark)]){
+                 id	bookmark=objc_msgSend(slf, @selector(bookmark));
+                 if(bookmark){
+                     NSString	*url=STSafariWebBookmarkURLString(bookmark);
+                     hackHandled=[actionMessageModule handleBookmakBarAction:url];
+                 }
+             }
+             //横取りしてなかったら元を呼ぶ
+             if(!hackHandled)
+                 call.as_void(slf, sel);
 
+         });
     }
     return self;
 }

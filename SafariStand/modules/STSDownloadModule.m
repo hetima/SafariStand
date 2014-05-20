@@ -18,55 +18,10 @@
     SEL _nameForPathSelector;
 }
 
-/*
- 1: DownloadsPath/file.name.download
- 2: DownloadsPath/modPath/file.name
- 
- */
-static id (*orig_pathWithUniqueFilenameForPath)(id, SEL, ...);
-id ST_pathWithUniqueFilenameForPath(id self, SEL _cmd, NSString *inStr)
-{
-	if(![[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
-        return orig_pathWithUniqueFilenameForPath(self, _cmd, inStr);
-    }
-    
-    STSDownloadModule* dlModule=[STCSafariStandCore mi:@"STSDownloadModule"];
-    
-	NSString*   outputDir=inStr;
-    NSString*   rootDir=[inStr stringByDeletingLastPathComponent];
-    NSString*   defaultDir=[[[NSUserDefaults standardUserDefaults]stringForKey:@"DownloadsPath"]stringByStandardizingPath];
-    if([defaultDir isEqualToString:rootDir]){
-        NSString* fileName=[inStr lastPathComponent];
-        
-        NSString* filteredExpression=[dlModule filteredExpressionForFileName:fileName url:nil];
-
-        rootDir=[rootDir stringByAppendingPathComponent:filteredExpression];
-        
-        //フォルダ作成
-        BOOL	isDirectory;
-        if(![[NSFileManager defaultManager] fileExistsAtPath:rootDir isDirectory:&isDirectory]){
-            isDirectory=[[NSFileManager defaultManager]createDirectoryAtPath:rootDir withIntermediateDirectories:YES attributes:nil error:nil];
-        }
-        
-        if(isDirectory)
-            outputDir=[rootDir stringByAppendingPathComponent:fileName];
-        else
-            outputDir=inStr;
-        
-    }
-
-    
-    NSString *result=orig_pathWithUniqueFilenameForPath(self, _cmd, outputDir);
-	return result;
-}
 
 //info is retained
 void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef info)
 {
-    
-    
-    
-    //NSAutoreleasePool* arp=[[NSAutoreleasePool alloc]init];
     @autoreleasepool {
         NSDictionary* dic=(__bridge NSDictionary*)info;
 
@@ -81,8 +36,6 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
             }
         }
     }
-    //[arp drain];
-    //[info release];
     CFRelease(info);
 }
 
@@ -96,13 +49,48 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
         [self loadFromStorage];
 
         SEL nameForPathSelector=[[NSFileManager defaultManager]stand_selectorForPathWithUniqueFilenameForPath];
-
-        if (nameForPathSelector) {
-            orig_pathWithUniqueFilenameForPath = (id(*)(id, SEL, ...))RMF([NSFileManager class],
-                                nameForPathSelector, ST_pathWithUniqueFilenameForPath);
-        }
+        if (!nameForPathSelector)nameForPathSelector=@selector(stand_pathWithUniqueFilenameForPath:);
+        /*
+         1: DownloadsPath/file.name.download
+         2: DownloadsPath/modPath/file.name
+         */
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "NSFileManager", sel_getName(nameForPathSelector),
+         KZRMethodInspection, call, sel,
+         ^id (id slf, NSString *inStr){
+             if(![[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
+                 return call.as_id(slf, sel, inStr);
+             }
+             
+             NSString* outputDir=inStr;
+             NSString* rootDir=[inStr stringByDeletingLastPathComponent];
+             NSString* defaultDir=[[[NSUserDefaults standardUserDefaults]stringForKey:@"DownloadsPath"]stringByStandardizingPath];
+             if([defaultDir isEqualToString:rootDir]){
+                 NSString* fileName=[inStr lastPathComponent];
+                 NSString* filteredExpression=[self filteredExpressionForFileName:fileName url:nil];
+                 
+                 rootDir=[rootDir stringByAppendingPathComponent:filteredExpression];
+                 
+                 //フォルダ作成
+                 BOOL isDirectory;
+                 if(![[NSFileManager defaultManager] fileExistsAtPath:rootDir isDirectory:&isDirectory]){
+                     isDirectory=[[NSFileManager defaultManager]createDirectoryAtPath:rootDir withIntermediateDirectories:YES attributes:nil error:nil];
+                 }
+                 
+                 if(isDirectory){
+                     outputDir=[rootDir stringByAppendingPathComponent:fileName];
+                 }else{
+                     outputDir=inStr;
+                 }
+             }
+             
+             NSString *result=call.as_id(slf, sel, outputDir);
+             return result;
+         });
 
     }
+    
     return self;
 }
 

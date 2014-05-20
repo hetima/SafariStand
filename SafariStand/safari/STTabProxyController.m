@@ -24,75 +24,6 @@
 
 static STTabProxyController *sharedInstance;
 
-//tabの数変更を監視する
-//順番入れ替えのときは2回呼ばれる(remove->insert)
-static void (*orig_tabViewDidChangeNum)(id, SEL, ...); //TabBarView tabViewDidChangeNumberOfTabViewItems:
-static void ST_tabViewDidChangeNum(id self, SEL _cmd, id /*NSTabView*/ tabView)
-{
-	orig_tabViewDidChangeNum(self,_cmd, tabView);
-	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
-}
-
-//tabの選択を監視する
-static void (*orig_tabViewDidSelectItem)(id, SEL, ...); //TabBarView tabView:didSelectTabViewItem:
-static void ST_tabViewDidSelectItem(id self, SEL _cmd, id tabView, id item)
-{
-    orig_tabViewDidSelectItem(self,_cmd, tabView, item);
-    
-    NSArray* tabViewItems=[tabView tabViewItems];
-    for (NSTabViewItem* eachItem in tabViewItems) {
-        STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:eachItem];
-        if (eachItem==item) {
-            proxy.isUnread=NO;
-            proxy.isSelected=YES;
-        }else if (proxy.isSelected){
-            proxy.isSelected=NO;
-        }
-    }
-    
-	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidSelectItemNote object:tabView];
-}
-
-//TabBarView - (void)replaceTabView:(id)arg1;
-//tabView入れ替わりを監視
-//bookmarks bar の「すべてをタブで開く」などで呼ばれる。NSTabView ごと入れ替わる
-static void (*orig_replaceTabView)(id, SEL, ...);
-static void ST_replaceTabView(id self, SEL _cmd, id/*NSTabView*/ tabView)
-{
-    orig_replaceTabView(self, _cmd, tabView);
-    //[[STTabProxyController si]maintainTabSelectionOrder:[STTabProxy tabProxyForTabViewItem:tabView]];
-    //proxy.isSelected がセットされてないことがある
-    NSTabViewItem* selectedTabViewItem=[tabView selectedTabViewItem];
-    STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:selectedTabViewItem];
-    proxy.isSelected=YES;
-    
-	[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView]; //重要：こっちが先
-	//[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
-    
-}
-
-//tabViewItem を生成するとき STTabProxy を付ける
-static id (*orig_initWithTabBarView)(id, SEL, ...);
-static id ST_initWithTabBarView(id self, SEL _cmd, id tabBarView, BOOL useWebKit2, void* tab)
-{
-    id result=orig_initWithTabBarView(self, _cmd, tabBarView, useWebKit2, tab);
-    if(useWebKit2){
-        id proxy __unused=[[STTabProxy alloc]initWithTabViewItem:result];
-    }
-    return result;
-}
-
-//- (id)initWithTabBarView:(id)arg1 withBrowserTab:(struct BrowserTab *)arg2 andIdentifier:(unsigned long long)arg3;
-static id (*orig_initWithTabBarView2)(id, SEL, ...);
-static id ST_initWithTabBarView2(id self, SEL _cmd, id tabBarView, void* browserTab, unsigned long long identifier)
-{
-    id result=orig_initWithTabBarView2(self, _cmd, tabBarView, browserTab, identifier);
-    
-    id proxy __unused=[[STTabProxy alloc]initWithTabViewItem:result];
-
-    return result;
-}
-
 //未使用
 //tabViewItem が取り除かれるとき STTabProxyリストから除外
 /*
@@ -109,30 +40,6 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     orig_removeTabViewItem(self, _cmd, tabViewItem);
 }
 */
-
-//tabViewItem がdealloc、 STTabProxyリストから除外
-static void (*orig_tabViewItem_dealloc)(id, SEL);
-//重要：dealloc 中 retain されないように self は __unsafe_unretained
-static void ST_tabViewItem_dealloc(__unsafe_unretained id self, SEL _cmd)
-{
-    id proxy=[STTabProxy tabProxyForTabViewItem:self];
-    if(proxy){
-        [[STTabProxyController si]removeTabProxy:proxy];
-    }
-    orig_tabViewItem_dealloc(self, _cmd);
-}
-
-
-
-//STTabProxy の title を更新
-static void (*orig_setLabel)(id, SEL, ...);
-static void ST_setLabel(id self, SEL _cmd, NSString* label)
-{
-    orig_setLabel(self, _cmd, label);
-
-    STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:self];
-    proxy.title=label;
-}
 
 
 - (void)setup
@@ -167,40 +74,130 @@ static void ST_setLabel(id self, SEL _cmd, NSString* label)
     //Safari 6
     Class cls=NSClassFromString(@"BrowserTabViewItem");
     if ([cls instancesRespondToSelector:@selector(initWithTabBarView:useWebKit2:withBrowserTab:)]) {
-        orig_initWithTabBarView = (id(*)(id, SEL, ...))RMF(cls,
-                                @selector(initWithTabBarView:useWebKit2:withBrowserTab:), ST_initWithTabBarView);
+
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "BrowserTabViewItem",
+         "initWithTabBarView:useWebKit2:withBrowserTab:",
+         KZRMethodInspection, call, sel,
+         ^id (id slf, id tabBarView, BOOL useWebKit2, void* tab)
+        {
+             id result=call.as_id(slf, sel, tabBarView, useWebKit2, tab);
+             if(useWebKit2){
+                 id proxy __unused=[[STTabProxy alloc]initWithTabViewItem:result];
+             }
+             return result;
+         });
+
     //Safari 7
     }else if ([cls instancesRespondToSelector:@selector(initWithTabBarView:withBrowserTab:andIdentifier:)]) {
-        orig_initWithTabBarView2 = (id(*)(id, SEL, ...))RMF(cls,
-                                @selector(initWithTabBarView:withBrowserTab:andIdentifier:), ST_initWithTabBarView2);
+        //- (id)initWithTabBarView:(id)arg1 withBrowserTab:(struct BrowserTab *)arg2 andIdentifier:(unsigned long long)arg3;
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "BrowserTabViewItem",
+         "initWithTabBarView:withBrowserTab:andIdentifier:",
+         KZRMethodInspection, call, sel,
+         ^id (id slf, id tabBarView, void* browserTab, unsigned long long identifier)
+        {
+             id result=call.as_id(slf, sel, tabBarView, browserTab, identifier);
+             id proxy __unused=[[STTabProxy alloc]initWithTabViewItem:result];
+             return result;
+
+         });
     }
 
     
-    
-    
-    
     //tabの数変更を監視するため
-    orig_tabViewDidChangeNum = (void(*)(id, SEL, ...))RMF(NSClassFromString(@"TabBarView"),
-                                @selector(tabViewDidChangeNumberOfTabViewItems:), ST_tabViewDidChangeNum);
+    //順番入れ替えのときは2回呼ばれる(remove->insert)
+    KZRMETHOD_SWIZZLING_WITHBLOCK
+    (
+     "TabBarView", "tabViewDidChangeNumberOfTabViewItems:",
+     KZRMethodInspection, call, sel,
+     ^(id slf, id /*NSTabView*/ tabView)
+    {
+         call.as_void(slf, sel, tabView);
+         [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidChangeNote object:tabView];
+     });
+
+
     //tabの選択を監視するため
-    orig_tabViewDidSelectItem = (void(*)(id, SEL, ...))RMF(NSClassFromString(@"TabBarView"),
-                                @selector(tabView:didSelectTabViewItem:), ST_tabViewDidSelectItem);
+    KZRMETHOD_SWIZZLING_WITHBLOCK
+    (
+     "TabBarView", "tabView:didSelectTabViewItem:",
+     KZRMethodInspection, call, sel,
+     ^(id slf, id tabView, id item)
+    {
+         call.as_void(slf, sel, tabView, item);
+         
+         NSArray* tabViewItems=[tabView tabViewItems];
+         for (NSTabViewItem* eachItem in tabViewItems) {
+             STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:eachItem];
+             if (eachItem==item) {
+                 proxy.isUnread=NO;
+                 proxy.isSelected=YES;
+             }else if (proxy.isSelected){
+                 proxy.isSelected=NO;
+             }
+         }
+         
+         [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidSelectItemNote object:tabView];
+
+     });
+
 
     //tabView入れ替わりを監視するため
-    orig_replaceTabView = (void(*)(id, SEL, ...))RMF(NSClassFromString(@"TabBarView"),
-                                @selector(replaceTabView:), ST_replaceTabView);
+    //bookmarks bar の「すべてをタブで開く」などで呼ばれる。NSTabView ごと入れ替わる
+    KZRMETHOD_SWIZZLING_WITHBLOCK
+    (
+     "TabBarView", "replaceTabView:",
+     KZRMethodInspection, call, sel,
+     ^(id slf, id/*NSTabView*/ tabView)
+    {
+         call.as_void(slf, sel, tabView);
+         //[[STTabProxyController si]maintainTabSelectionOrder:[STTabProxy tabProxyForTabViewItem:tabView]];
+         //proxy.isSelected がセットされてないことがある
+         NSTabViewItem* selectedTabViewItem=[tabView selectedTabViewItem];
+         STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:selectedTabViewItem];
+         proxy.isSelected=YES;
+         
+         [[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView]; //重要：こっちが先
+         //[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
+     });
 
-    
+
     //STTabProxy の title を更新するため
-    orig_setLabel = (void(*)(id, SEL, ...))RMF(NSClassFromString(@"BrowserTabViewItem"),
-                                @selector(setLabel:), ST_setLabel);
-    
+    KZRMETHOD_SWIZZLING_WITHBLOCK
+    (
+     "BrowserTabViewItem", "setLabel:",
+     KZRMethodInspection, call, sel,
+     ^(id slf, NSString* label)
+    {
+        call.as_void(slf, sel, label);
+
+        STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:slf];
+        proxy.title=label;
+     });
+
+
     //STTabProxyをリストから除外するため
 //    orig_removeTabViewItem = RMF(NSClassFromString(kSafariBrowserWindowController),
 //                              @selector(_removeTabViewItem:), ST_removeTabViewItem);
-    orig_tabViewItem_dealloc = (void(*)(id, SEL))RMF(NSClassFromString(@"BrowserTabViewItem"),
-                                NSSelectorFromString(@"dealloc"), ST_tabViewItem_dealloc);
-
+    
+    //tabViewItem がdealloc、 STTabProxyリストから除外
+    //重要：dealloc 中 retain されないように self は __unsafe_unretained
+    KZRMETHOD_SWIZZLING_WITHBLOCK
+    (
+     "BrowserTabViewItem", "dealloc",
+     KZRMethodInspection, call, sel,
+     ^(__unsafe_unretained id slf){
+         
+         id proxy=[STTabProxy tabProxyForTabViewItem:slf];
+         if(proxy){
+             [[STTabProxyController si]removeTabProxy:proxy];
+         }
+         call.as_void(slf, sel);
+     });
+    
 }
 
 + (STTabProxyController *)si

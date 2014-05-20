@@ -12,28 +12,8 @@
 #import "STSafariConnect.h"
 
 @implementation STSTitleBarModule
-
-BOOL showingPathPopUpMenu;
-
-static void (*orig_showPathPopUpMenu)(id, SEL);
-void ST_showPathPopUpMenu(id self, SEL _cmd)
 {
-    showingPathPopUpMenu=YES;
-    orig_showPathPopUpMenu(self, _cmd);
-    showingPathPopUpMenu=NO;
-}
-
-
-static void (*orig_popUpContextMenu)(id, SEL, ...);
-void ST_popUpContextMenu(id self, SEL _cmd, NSMenu* menu, NSPoint pt, double width, NSView* view, long long selection, id font,
-                         unsigned long long arg7, id arg8)
-{
-    
-    if(showingPathPopUpMenu && [[NSUserDefaults standardUserDefaults]boolForKey:kpImprovePathPopupMenu]){
-        [[STCSafariStandCore mi:@"STSTitleBarModule"]alterPathPopUpMenu:menu];
-
-    }
-    orig_popUpContextMenu(self, _cmd, menu, pt, width, view, selection, font, arg7, arg8);
+    BOOL _showingPathPopUpMenu;
 }
 
 - (id)initWithStand:(id)core
@@ -41,11 +21,33 @@ void ST_popUpContextMenu(id self, SEL _cmd, NSMenu* menu, NSPoint pt, double wid
     self = [super initWithStand:core];
     if (self) {
 
-        showingPathPopUpMenu=NO;
-        orig_showPathPopUpMenu = (void (*)(id, SEL))RMF(NSClassFromString(@"TitleBarButton"),
-                                    @selector(showPathPopUpMenu), ST_showPathPopUpMenu);
-        orig_popUpContextMenu = (void (*)(id, SEL,...))RMF(NSClassFromString(@"NSCarbonMenuImpl"),
-                                @selector(popUpMenu:atLocation:width:forView:withSelectedItem:withFont:withFlags:withOptions:), ST_popUpContextMenu);
+        _showingPathPopUpMenu=NO;
+        
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "TitleBarButton", "showPathPopUpMenu",
+         KZRMethodInspection, call, sel,
+         ^(id slf){
+             _showingPathPopUpMenu=YES;
+             call.as_void(slf, sel);
+             _showingPathPopUpMenu=NO;
+         });
+        
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "NSCarbonMenuImpl",
+         "popUpMenu:atLocation:width:forView:withSelectedItem:withFont:withFlags:withOptions:",
+         KZRMethodInspection, call, sel,
+         ^(id slf, NSMenu* menu, NSPoint pt, double width, NSView* view, long long selection, id font,
+                  unsigned long long arg7, id arg8)
+        {
+             if(_showingPathPopUpMenu && [[NSUserDefaults standardUserDefaults]boolForKey:kpImprovePathPopupMenu]){
+                 //[[STCSafariStandCore mi:@"STSTitleBarModule"]alterPathPopUpMenu:menu];
+                 [self alterPathPopUpMenu:menu];
+             }
+             call.as_void(slf, sel, menu, pt, width, view, selection, font, arg7, arg8);
+         });
+
     }
     return self;
 }
