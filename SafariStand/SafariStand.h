@@ -1,6 +1,5 @@
 
 
-#import <objc/message.h>
 #import "STCModule.h"
 #import "STCSafariStandCore.h"
 #import "NSObject+HTAssociatedObject.h"

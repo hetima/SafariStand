@@ -13,30 +13,7 @@
 
 @implementation STQuickSearchModule (STQuickSearchModule_Completion)
 
-//primeval impliments
-//LocationTextField textDidChange:
-static void (*orig_textDidChange)(id, SEL, ...);
-static void ST_textDidChange(id self, SEL _cmd, id obj)
-{
-	//NSConcreteNotification name = NSTextDidChangeNotification; object = LocationFieldEditor
-    HTQuerySeed* seed=[quickSearchModule seedForLocationText:[self stringValue]];
-    if(seed){
-        //LOG(@"%@", seed.title);
-        //objc_msgSend(self, @selector(setShowsPageTitle:), YES);
-        //objc_msgSend(self, @selector(setPageTitle:), seed.title);
-        //objc_msgSend(self, @selector(setDetailString:), [NSString stringWithFormat:@"QuickSearch : ",seed.title]);
-        
-    }else{
-        //if prev set
-        objc_msgSend(self, @selector(setDetailString:), nil);
-    }
-    orig_textDidChange(self, _cmd, obj);
-    if(seed){
-        objc_msgSend(self, @selector(setDetailString:), [NSString stringWithFormat:@"QuickSearch : %@",seed.title]);
-    }
-    
-    //seedForLocationText:
-}
+
 
 
 BOOL isLikeURLString(NSString* inStr)
@@ -53,45 +30,73 @@ BOOL isLikeURLString(NSString* inStr)
     return NO;
 }
 
-//primeval impliments
-//kSafariBrowserWindowController goToToolbarLocation:
-static void (*orig_goToToolbarLocation)(id, SEL, ...);
-void ST_goToToolbarLocation(id self, SEL _cmd, id obj)
-{
-    NSString* locationString=[obj stringValue];
-    HTQuerySeed* seed=[quickSearchModule seedForLocationText:locationString];
-    if(seed){
-        NSURLRequest* req=[seed requestWithLocationString:locationString];
-        if(req){
-            //rangeOfString+1 は直前のrequestWithLocationString:で保証済み
-            NSString* searchStr=[locationString substringFromIndex:[locationString rangeOfString:@" "].location+1];
-            STSafariAddSearchStringHistory(searchStr);
-            STSafariGoToRequestWithPolicy(req, STSafariWindowPolicyFromCurrentEvent());
-        }
-        // FIXME: shortcut のみを打ち込むとreq==nilになってどこへも飛ばない
-    }else{
-        if([locationString hasPrefix:@"ttp://"]){
-            [obj setStringValue:[@"h" stringByAppendingString:locationString]];
-        }else if(!isLikeURLString(locationString)){
-            //search engine
-            [quickSearchModule sendDefaultQuerySeedWithSearchString:locationString  policy:STSafariWindowPolicyFromCurrentEvent()];
-            return;
-        }
-        orig_goToToolbarLocation(self, _cmd, obj);
-    }
-    
-}
 
 
 -(void)setupCompletionCtl
 {
     //primeval impliments
     if ([NSClassFromString(kSafariBrowserWindowController) instancesRespondToSelector:@selector(goToToolbarLocation:)]) {
-        orig_textDidChange = (void(*)(id, SEL, ...))
-            RMF(NSClassFromString(@"LocationTextField"), @selector(textDidChange:), ST_textDidChange);
-        orig_goToToolbarLocation = (void(*)(id, SEL, ...))
-            RMF(NSClassFromString(kSafariBrowserWindowController),
-            @selector(goToToolbarLocation:), ST_goToToolbarLocation);//was goToToolbarLocation:
+        
+        //LocationTextField textDidChange:
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "LocationTextField",
+         "textDidChange:",
+         KZRMethodInspection, call, sel,
+         ^ (id slf, id obj)
+        {
+             //NSConcreteNotification name = NSTextDidChangeNotification; object = LocationFieldEditor
+             HTQuerySeed* seed=[quickSearchModule seedForLocationText:[slf stringValue]];
+             if(seed){
+                 //LOG(@"%@", seed.title);
+                 //objc_msgSend(slf, @selector(setShowsPageTitle:), YES);
+                 //objc_msgSend(slf, @selector(setPageTitle:), seed.title);
+                 //objc_msgSend(slf, @selector(setDetailString:), [NSString stringWithFormat:@"QuickSearch : ",seed.title]);
+                 
+             }else{
+                 //if prev set
+                 objc_msgSend(slf, @selector(setDetailString:), nil);
+             }
+             call.as_void(slf, sel, obj);
+             if(seed){
+                 objc_msgSend(slf, @selector(setDetailString:), [NSString stringWithFormat:@"QuickSearch : %@",seed.title]);
+             }
+             
+             //seedForLocationText:
+         });
+        
+        //kSafariBrowserWindowController goToToolbarLocation:
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         kSafariBrowserWindowControllerCstr,
+         "goToToolbarLocation:",
+         KZRMethodInspection, call, sel,
+         ^ (id slf, id obj)
+        {
+            NSString* locationString=[obj stringValue];
+            HTQuerySeed* seed=[quickSearchModule seedForLocationText:locationString];
+            if(seed){
+                NSURLRequest* req=[seed requestWithLocationString:locationString];
+                if(req){
+                    //rangeOfString+1 は直前のrequestWithLocationString:で保証済み
+                    NSString* searchStr=[locationString substringFromIndex:[locationString rangeOfString:@" "].location+1];
+                    STSafariAddSearchStringHistory(searchStr);
+                    STSafariGoToRequestWithPolicy(req, STSafariWindowPolicyFromCurrentEvent());
+                }
+                // FIXME: shortcut のみを打ち込むとreq==nilになってどこへも飛ばない
+            }else{
+                if([locationString hasPrefix:@"ttp://"]){
+                    [obj setStringValue:[@"h" stringByAppendingString:locationString]];
+                }else if(!isLikeURLString(locationString)){
+                    //search engine
+                    [quickSearchModule sendDefaultQuerySeedWithSearchString:locationString  policy:STSafariWindowPolicyFromCurrentEvent()];
+                    return;
+                }
+                call.as_void(slf, sel, obj);
+            }
+            
+         });
+
     }
 }
 

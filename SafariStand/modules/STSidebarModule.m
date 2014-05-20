@@ -14,59 +14,57 @@
 
 @implementation STSidebarModule
 
-//NSTabView - (NSRect)contentRect
-static NSRect (*orig_NSTabViewContentRect)(id, SEL);
-static NSRect ST_NSTabViewContentRect(id self, SEL sel)
-{
-    
-    NSArray* subviews=[self subviews];
-    for (NSView* subview in subviews) {
-        if ([subview isKindOfClass:[STSidebarFrameView class]]) {
-            NSRect origRect=orig_NSTabViewContentRect(self, sel);
-            NSRect sidebarRect=[subview frame];
-            BOOL rightside=[(STSidebarFrameView*)subview rightSide];
-            
-            origRect.size.width-=sidebarRect.size.width;
-            if (!rightside) {
-                origRect.origin.x+=sidebarRect.size.width;
-            }
-            return origRect;
-        }
-    }
-    
-    return orig_NSTabViewContentRect(self, sel);
-}
-
-
-//kpSidebarShowsDefault
-static void (*orig_showWindow)(id, SEL, id);
-static void ST_showWindow(id self, SEL _cmd, id sender)
-{
-    orig_showWindow(self, _cmd, sender);
-    if ( ![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault] ||
-        [self htaoValueForKey:kAOValueNotShowSidebarAuto] ) {
-        return;
-    }
-    
-    [self htaoSetValue:@YES forKey:kAOValueNotShowSidebarAuto];
-    NSSize winSize=[[self window]frame].size;
-    if(winSize.width>640 && winSize.height>600){
-        [[STCSafariStandCore mi:@"STSidebarModule"]installSidebarToWindow:[self window]];
-    }
-    
-    
-}
 
 
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
     if (self) {
-        orig_NSTabViewContentRect = (NSRect (*)(id, SEL))RMF(NSClassFromString(@"NSTabView"),
-                                                   @selector(contentRect), ST_NSTabViewContentRect);
+        
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "NSTabView", "contentRect",
+         KZRMethodInspection, call, sel,
+         ^NSRect(id slf)
+        {
+            NSArray* subviews=[slf subviews];
+            for (NSView* subview in subviews) {
+                if ([subview isKindOfClass:[STSidebarFrameView class]]) {
+                    NSRect origRect=call.as_rect(slf, sel);
+                    NSRect sidebarRect=[subview frame];
+                    BOOL rightside=[(STSidebarFrameView*)subview rightSide];
+                    
+                    origRect.size.width-=sidebarRect.size.width;
+                    if (!rightside) {
+                        origRect.origin.x+=sidebarRect.size.width;
+                    }
+                    return origRect;
+                }
+            }
+            
+            return call.as_rect(slf, sel);
+         });
 
         //kpSidebarShowsDefault
-        orig_showWindow = (void (*)(id, SEL, id))RMF(NSClassFromString(kSafariBrowserWindowController),  @selector(showWindow:), ST_showWindow);
+        
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         kSafariBrowserWindowControllerCstr, "showWindow:",
+         KZRMethodInspection, call, sel,
+         ^(id slf, id sender)
+        {
+            call.as_void(slf, sel, sender);
+            if ( ![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault] ||
+                [slf htaoValueForKey:kAOValueNotShowSidebarAuto] ) {
+                return;
+            }
+            
+            [slf htaoSetValue:@YES forKey:kAOValueNotShowSidebarAuto];
+            NSSize winSize=[[slf window]frame].size;
+            if(winSize.width>640 && winSize.height>600){
+                [self installSidebarToWindow:[slf window]];
+            }
+         });
 
 
         NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Sidebar" action:@selector(toggleSidebar:) keyEquivalent:@""];

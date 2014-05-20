@@ -485,17 +485,21 @@ void STSafariAddSearchStringHistory(NSString* str)
 }
 
 
-Class STSafariBookmarksControllerClass()
+const char* STSafariBookmarksControllerClass()
 {
-    static Class bookmarksControllerClass=nil;
+    static const char* bookmarksControllerClass=nil;
     if (bookmarksControllerClass==nil) {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
+            Class aClass;
             //Safari 6
-            bookmarksControllerClass=NSClassFromString(@"BookmarksControllerObjC");
-            if (!bookmarksControllerClass) {
+            aClass=NSClassFromString(@"BookmarksControllerObjC");
+            if (aClass) {
+                bookmarksControllerClass="BookmarksControllerObjC";
+            }else{
                 //Safari 7
-                bookmarksControllerClass=NSClassFromString(@"BookmarksController");
+                //aClass=NSClassFromString(@"BookmarksController");
+                bookmarksControllerClass="BookmarksController";
             }
       });
     }

@@ -15,59 +15,49 @@
 
 @implementation STBookmarkSeparator
 
-static id (*origBS_addMenuItemForBookmark_with)(id, SEL, ...);
-static id STBS_addMenuItemForBookmark_with(id self, SEL _cmd, id bookmark, void* tabLocation, id menu)
-{
-	id returnValue=nil;
-    static STBookmarkSeparator* bookmarkSeparator;
-    if(!bookmarkSeparator)bookmarkSeparator=[STCSafariStandCore mi:@"STBookmarkSeparator"];
-
-    returnValue=[bookmarkSeparator menuItemForBookmarkLeaf:bookmark];
-    if(returnValue){
-        [menu addItem:returnValue];
-        return returnValue;
-    }
-
-	returnValue=origBS_addMenuItemForBookmark_with(self, _cmd, bookmark, tabLocation, menu);
-    
-	return returnValue;
-}
-
-//bookmark追加ポップアップメニューに区切り線フォルダを表示しない
-//-(id)[NewBookmarksController _addBookmarkFolder:toMenu:]
-static id (*orig_addBookmarkFolder_toMenu)(id, SEL, ...);
-static id ST_addBookmarkFolder_toMenu(id self, SEL _cmd, id bookmark, id menu)
-{
-    NSString* title=STSafariWebBookmarkTitle(bookmark);
-    if ([title hasPrefix:kSeparatorStr]) {
-        return nil;
-    }
-
-    return orig_addBookmarkFolder_toMenu(self, _cmd, bookmark, menu);
-}
 
 -(id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
     if (self) {
-        Class tmpClas;
-        tmpClas=STSafariBookmarksControllerClass();
-        if(tmpClas){
-            //gSeparatorIcon=[[NSImage alloc]initWithSize:NSMakeSize(1,16)];
-            origBS_addMenuItemForBookmark_with = (id(*)(id, SEL, ...))RMF(
-                        tmpClas,
-                        @selector(addMenuItemForBookmark:withTabPlacementHint:toMenu:),
-                        STBS_addMenuItemForBookmark_with);
-        }
+        
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (STSafariBookmarksControllerClass(),
+         "addMenuItemForBookmark:withTabPlacementHint:toMenu:",
+         KZRMethodInspection, call, sel,
+         ^id (id slf, id bookmark, void* tabLocation, id menu)
+        {
+             id returnValue=nil;
+             static STBookmarkSeparator* bookmarkSeparator;
+             if(!bookmarkSeparator)bookmarkSeparator=[STCSafariStandCore mi:@"STBookmarkSeparator"];
+             
+             returnValue=[bookmarkSeparator menuItemForBookmarkLeaf:bookmark];
+             if(returnValue){
+                 [menu addItem:returnValue];
+                 return returnValue;
+             }
+             
+             returnValue=call.as_id(slf, sel, bookmark, tabLocation, menu);
+             
+             return returnValue;
+         });
 
-        tmpClas=NSClassFromString(@"NewBookmarksController");
-        if(tmpClas){
-            //bookmark追加ポップアップメニューに区切り線フォルダを表示しない
-            orig_addBookmarkFolder_toMenu = (id(*)(id, SEL, ...))RMF(
-                        tmpClas,
-                        @selector(_addBookmarkFolder:toMenu:),
-                        ST_addBookmarkFolder_toMenu);
-        }    
+        //bookmark追加ポップアップメニューに区切り線フォルダを表示しない
+        //-(id)[NewBookmarksController _addBookmarkFolder:toMenu:]
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        ("NewBookmarksController", "_addBookmarkFolder:toMenu:",
+         KZRMethodInspection, call, sel,
+         ^id (id slf, id bookmark, id menu)
+        {
+             NSString* title=STSafariWebBookmarkTitle(bookmark);
+             if ([title hasPrefix:kSeparatorStr]) {
+                 return nil;
+             }
+             
+             id result=call.as_id(slf, sel, bookmark, menu);
+             return result;
+         });
+  
     }
     
     return self;

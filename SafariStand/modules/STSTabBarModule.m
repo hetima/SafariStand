@@ -12,52 +12,8 @@
 
 
 @implementation STSTabBarModule
-//typedef double (*msg64)(id, SEL,...);
 
 
-//タブバー幅変更
-static void (*orig_getButtonWidth)(id, SEL, ...);
-static void ST_getButtonWidth(id self, SEL _cmd, double *w, unsigned long long* leftover, char *isClipping, unsigned long long forTabCount)
-{
-    orig_getButtonWidth(self, _cmd, w, leftover, isClipping, forTabCount);
-    
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
-        double minX=0.0;
-
-        /*
-        BOOL closeClicked=[[self htaoValueForKey:@"STSTabBarModuleLastCloseClicked"]boolValue];
-        BOOL mouseIsIn=NO;
-
-        //LOG(@"%@",NSStringFromPoint(pt));
-        //mouse is in
-        if(closeClicked){
-            NSPoint pt=[[self window]mouseLocationOutsideOfEventStream];
-            pt=[self convertPoint:pt fromView:nil];
-            mouseIsIn=[self mouse:pt inRect:[self frame]];
-            //保存してる値があればそっちを優先
-            if (mouseIsIn) {
-                minX=[[self htaoValueForKey:@"STSTabBarModuleLastValue"]doubleValue];
-            }
-        }
-        //mous is not in なのでクリック判定を消す
-        if (!mouseIsIn && closeClicked) {
-            [self htaoSetValue:[NSNumber numberWithBool:NO] forKey:@"STSTabBarModuleLastCloseClicked"];
-        }
-        */
-        if (minX>100.0) {
-            *w=minX;
-        }else{
-            //保存してる値を使わないので初期設定から取る
-            minX=floor([[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue]);
-            //if (minX<140 || minX>480) minX=240;
-            if (*w>minX) {
-                *w=minX;
-            }
-//            [self htaoSetValue:[NSNumber numberWithDouble:*w] forKey:@"STSTabBarModuleLastValue"];
-        }
-    }
-    
-}
 
 //閉じてるとき幅固定 未実装
 /*
@@ -121,10 +77,52 @@ static void ST_closeTabBtn(id self, SEL _cmd, id sender)
         }
 
         //タブバー幅変更
-        orig_getButtonWidth = (void(*)(id, SEL,...))
-        RMF(NSClassFromString(@"TabBarView"),
-                              @selector(getButtonWidth:leftover:isClipping:forTabCount:), ST_getButtonWidth);
-        
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "TabBarView", "getButtonWidth:leftover:isClipping:forTabCount:",
+         KZRMethodInspection, call, sel,
+         ^(id slf, double *w, unsigned long long* leftover, char *isClipping, unsigned long long forTabCount)
+        {
+            call.as_void(slf, sel, w, leftover, isClipping, forTabCount);
+            
+            if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
+                double minX=0.0;
+                
+                /*
+                 BOOL closeClicked=[[slf htaoValueForKey:@"STSTabBarModuleLastCloseClicked"]boolValue];
+                 BOOL mouseIsIn=NO;
+                 
+                 //LOG(@"%@",NSStringFromPoint(pt));
+                 //mouse is in
+                 if(closeClicked){
+                     NSPoint pt=[[slf window]mouseLocationOutsideOfEventStream];
+                     pt=[slf convertPoint:pt fromView:nil];
+                     mouseIsIn=[slf mouse:pt inRect:[slf frame]];
+                     //保存してる値があればそっちを優先
+                     if (mouseIsIn) {
+                        minX=[[slf htaoValueForKey:@"STSTabBarModuleLastValue"]doubleValue];
+                     }
+                 }
+                 //mous is not in なのでクリック判定を消す
+                 if (!mouseIsIn && closeClicked) {
+                     [slf htaoSetValue:[NSNumber numberWithBool:NO] forKey:@"STSTabBarModuleLastCloseClicked"];
+                 }
+                 */
+                if (minX>100.0) {
+                    *w=minX;
+                }else{
+                    //保存してる値を使わないので初期設定から取る
+                    minX=floor([[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue]);
+                    //if (minX<140 || minX>480) minX=240;
+                    if (*w>minX) {
+                        *w=minX;
+                    }
+//                  [slf htaoSetValue:[NSNumber numberWithDouble:*w] forKey:@"STSTabBarModuleLastValue"];
+                }
+            }
+         });
+
+
         //close時固定 未実装
         //orig_closeTabBtn = (void (*)(id, SEL, ...))RMF(NSClassFromString(@"TabButton"),  @selector(closeTab:), ST_closeTabBtn);
 

@@ -16,37 +16,6 @@ static STSToolbarModule* toolbarModule;
     NSMutableArray* _toolbarIdentifiers;
 }
 
-
-//- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
-
-static id (*orig_TBitemForItemIdentifier)(id, SEL, ...);
-static id ST_TBitemForItemIdentifier(id self, SEL _cmd, id toolbar, NSString *itemIdentifier, BOOL real)
-{
-    
-	if([[toolbarModule toolbarIdentifiers]containsObject:itemIdentifier]){
-		//return [HTActionButtonController toolBarItemForIdentifier:itemIdentifier];
-        return [toolbarModule _toolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:real];
-        
-	}else{
-		return orig_TBitemForItemIdentifier(self, _cmd, toolbar, itemIdentifier, real);
-	}
-	return nil;
-}
-
-//- (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
-static id (*orig_TBallowedItemIdentifiers)(id, SEL, ...);
-static id ST_TBallowedItemIdentifiers(id self, SEL _cmd, id toolbar)
-{
-	NSArray* result=orig_TBallowedItemIdentifiers(self, _cmd, toolbar);
-    
-    NSArray* myArray=[toolbarModule toolbarIdentifiers];
-    if([myArray count]>0)result= [result arrayByAddingObjectsFromArray:myArray];
-
-	return result;
-}
-
-
-
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
@@ -56,14 +25,38 @@ static id ST_TBallowedItemIdentifiers(id self, SEL _cmd, id toolbar)
         _toolbarItemClasses=[[NSMutableDictionary alloc]initWithCapacity:8];
         _toolbarIdentifiers=[[NSMutableArray alloc]initWithCapacity:8];
 
-        id tmpClas=NSClassFromString(@"ToolbarController");
-        if(tmpClas){
-            orig_TBitemForItemIdentifier=(id(*)(id, SEL, ...))RMF(tmpClas,
-                            @selector(toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:), ST_TBitemForItemIdentifier);
-            
-            orig_TBallowedItemIdentifiers=(id(*)(id, SEL, ...))RMF(tmpClas,
-                            @selector(toolbarAllowedItemIdentifiers:), ST_TBallowedItemIdentifiers);
-        }
+        
+        //- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "ToolbarController",
+         "toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:",
+         KZRMethodInspection, call, sel,
+         ^id (id slf, id toolbar, NSString *itemIdentifier, BOOL real){
+             if([[toolbarModule toolbarIdentifiers]containsObject:itemIdentifier]){
+                 //return [HTActionButtonController toolBarItemForIdentifier:itemIdentifier];
+                 return [toolbarModule _toolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:real];
+                 
+             }else{
+                 return call.as_id(slf, sel, toolbar, itemIdentifier, real);
+             }
+             return nil;
+         });
+        
+        //- (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "ToolbarController",
+         "toolbarAllowedItemIdentifiers:",
+         KZRMethodInspection, call, sel,
+         ^id (id slf, id toolbar){
+             NSArray* result=call.as_id(slf, sel, toolbar);
+             
+             NSArray* myArray=[toolbarModule toolbarIdentifiers];
+             if([myArray count]>0)result= [result arrayByAddingObjectsFromArray:myArray];
+             
+             return result;
+         });
 
     }
     return self;

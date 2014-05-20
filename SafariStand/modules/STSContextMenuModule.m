@@ -15,22 +15,12 @@
 
 #import "STSquashContextMenuSheetCtl.h"
 
-
 //#define DEBUG_MENUDUMP 0
 
 @implementation STSContextMenuModule
-@synthesize squashSheetCtl=_squashSheetCtl;
 
-static STSContextMenuModule* contextMenuModule;
-
-
-
-static void (*orig_setMenuProxy)(id, SEL, ...);
-// オリジナルの setMenuProxy: と差し替えるメソッド
-void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
+- (void)injectToContextMenuProxy:(void*)menuProxy
 {
-    // オリジナルのメソッドを呼んでやる
-    orig_setMenuProxy(self, _cmd, menuProxy);
     
     // menuProxy は WebContextMenuProxyMac クラスのポインタ
     // 16バイト目に NSPopUpButtonCell * へのポインタが格納されている
@@ -112,7 +102,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
         NSMenuItem* itm;
         itm=[[NSMenuItem alloc]initWithTitle:@"Clip Web Archive with Selection"
                                       action:@selector(actWebArchiveSelectionMenu:) keyEquivalent:@""];
-        [itm setTarget:contextMenuModule];
+        [itm setTarget:self];
         [itm setRepresentedObject:wkview];
         [menu addItem:itm];
 //        [itm release];
@@ -139,7 +129,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
                     itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag") 
                                                   action:@selector(actCopyLinkTagMenu:) keyEquivalent:@""];
                 }
-                [itm setTarget:contextMenuModule];
+                [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
 //                [itm release];
@@ -151,7 +141,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
                     itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag (_blank)") 
                                                   action:@selector(actCopyLinkTagBlankMenu:) keyEquivalent:@""];
                 }
-                [itm setTarget:contextMenuModule];
+                [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
                 [itm setAlternate:YES];
@@ -162,7 +152,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
             
             if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowCopyLinkTitleContextMenu]){
                 itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Title") action:@selector(actCopyLinkTitleMenu:) keyEquivalent:@""];
-                [itm setTarget:contextMenuModule];
+                [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
 //                [itm release];
@@ -170,13 +160,13 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
             }
             if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowCopyLinkAndTitleContextMenu]){
                 itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link and Title") action:@selector(actCopyLinkAndTitleMenu:) keyEquivalent:@""];
-                [itm setTarget:contextMenuModule];
+                [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
 //                [itm release];
                 
                 itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link (space) Title") action:@selector(actCopyLinkAndTitleSpaceMenu:) keyEquivalent:@""];
-                [itm setTarget:contextMenuModule];
+                [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
                 [itm setAlternate:YES];
@@ -195,7 +185,7 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
         if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowGoogleImageSearchContextMenu]){
             NSInteger idx=[menu indexOfItem:copyImageItem];
             itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Google Image Search") action:@selector(actImageSearchMenu:) keyEquivalent:@""];
-            [itm setTarget:contextMenuModule];
+            [itm setTarget:self];
             [itm setRepresentedObject:[copyImageItem representedObject]];
             [menu insertItem:itm atIndex:++idx];
 //            [itm release];
@@ -229,8 +219,8 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
 }
 
 
-
--(void)actImageSearchMenu:(id)sender{
+-(void)actImageSearchMenu:(id)sender
+{
     id webUserDataWrapper=[sender representedObject];
     void* apiObject=[webUserDataWrapper userData]; //struct APIObject
     uint32_t type=WKGetTypeID(apiObject);
@@ -241,7 +231,9 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
     }
 }
 
--(void)actCopyLinkTagMenu:(id)sender{
+
+-(void)actCopyLinkTagMenu:(id)sender
+{
     id webUserDataWrapper=[sender representedObject];
     void* apiObject=[webUserDataWrapper userData]; //struct APIObject
     uint32_t type=WKGetTypeID(apiObject);
@@ -259,7 +251,10 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
         [pb setString:result forType:NSStringPboardType];
     }
 }
--(void)actCopyLinkTagBlankMenu:(id)sender{
+
+
+-(void)actCopyLinkTagBlankMenu:(id)sender
+{
     id webUserDataWrapper=[sender representedObject];
     void* apiObject=[webUserDataWrapper userData]; //struct APIObject
     uint32_t type=WKGetTypeID(apiObject);
@@ -278,7 +273,9 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
     }
 }
 
--(void)actCopyLinkTitleMenu:(id)sender{
+
+-(void)actCopyLinkTitleMenu:(id)sender
+{
     id webUserDataWrapper=[sender representedObject];
     void* apiObject=[webUserDataWrapper userData]; //struct APIObject
     uint32_t type=WKGetTypeID(apiObject);
@@ -293,7 +290,9 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
     }
 }
 
--(void)actCopyLinkAndTitleMenu:(id)sender separator:(NSString*)sep{
+
+-(void)actCopyLinkAndTitleMenu:(id)sender separator:(NSString*)sep
+{
     id webUserDataWrapper=[sender representedObject];
     void* apiObject=[webUserDataWrapper userData]; //struct APIObject
     uint32_t type=WKGetTypeID(apiObject);
@@ -310,16 +309,17 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
     }
 }
 
+
 -(void)actCopyLinkAndTitleMenu:(id)sender
 {
     [self actCopyLinkAndTitleMenu:sender separator:@"\n"];
 }
 
+
 -(void)actCopyLinkAndTitleSpaceMenu:(id)sender
 {
     [self actCopyLinkAndTitleMenu:sender separator:@" "];
 }
-
 
 
 -(void)actWebArchiveSelectionMenu:(id)sender
@@ -366,10 +366,16 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
 {
     self = [super initWithStand:core];
     if (self) {
-        contextMenuModule=self;
 
-        orig_setMenuProxy = (void(*)(id, SEL, ...))
-            RMF(NSClassFromString(@"WKMenuTarget"), @selector(setMenuProxy:), ST_setMenuProxy);
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "WKMenuTarget", "setMenuProxy:",
+         KZRMethodInspection, call, sel,
+         ^(id slf, void *menuProxy)
+        {
+            call.as_void(slf, sel, menuProxy);
+            [self injectToContextMenuProxy:menuProxy];
+         });
 
     }
     return self;
@@ -381,10 +387,12 @@ void ST_setMenuProxy(id self, SEL _cmd, void *menuProxy)
 //    [super dealloc];
 }
 
+
 - (void)prefValue:(NSString*)key changed:(id)value
 {
     //if([key isEqualToString:])
 }
+
 
 -(NSWindow*)advancedSquashSettingSheet
 {
