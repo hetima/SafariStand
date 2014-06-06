@@ -97,15 +97,22 @@ void STSafariDownloadURL(NSURL* url)
     NSURLRequest *req=[NSURLRequest requestWithURL:url];
     STSafariDownloadRequest(req);
 }
+
 void STSafariDownloadRequest(NSURLRequest* req)
 {
     Class dmClass=NSClassFromString(@"DownloadMonitorOld");
     if (![dmClass respondsToSelector:@selector(sharedDownloadMonitor)])return;
 
     id dm=objc_msgSend(dmClass, @selector(sharedDownloadMonitor));
-    if(![dm respondsToSelector:@selector(startDownloadForRequest:mayOpenWhenDone:)])return;
     
-    objc_msgSend(dm, @selector(startDownloadForRequest:mayOpenWhenDone:),req,NO);
+    if([dm respondsToSelector:@selector(startDownloadForRequest:mayOpenWhenDone:removeEntryWhenDone:)]){ //Safari 8
+        objc_msgSend(dm, @selector(startDownloadForRequest:mayOpenWhenDone:removeEntryWhenDone:), req, NO, YES);
+        
+    }else if([dm respondsToSelector:@selector(startDownloadForRequest:mayOpenWhenDone:)]){ //Safari 7
+        objc_msgSend(dm, @selector(startDownloadForRequest:mayOpenWhenDone:) ,req, NO);
+    }
+
+    
 }
 
 void STSafariDownloadURLWithFileName(NSURL* url, NSString* fileName)
@@ -119,12 +126,18 @@ void STSafariDownloadRequestWithFileName(NSURLRequest* req, NSString* fileName)
     Class dmClass=NSClassFromString(@"DownloadMonitorOld");
     if (![dmClass respondsToSelector:@selector(sharedDownloadMonitor)])return;
     
-    id dm=objc_msgSend(dmClass, @selector(sharedDownloadMonitor));
-    if(![dm respondsToSelector:@selector(startDownloadForRequest:mayOpenWhenDone:allowOverwrite:path:)])return;
-//    @selector(startDownloadForRequest:mayOpenWhenDone:allowOverwrite:path:)
     NSString* path=STSafariDownloadDestinationWithFileName(fileName);
-
-    objc_msgSend(dm, @selector(startDownloadForRequest:mayOpenWhenDone:allowOverwrite:path:), req, NO, NO, path);
+    
+    id dm=objc_msgSend(dmClass, @selector(sharedDownloadMonitor));
+    
+    //Safari 8
+    if([dm respondsToSelector:@selector(startDownloadForRequest:mayOpenWhenDone:allowOverwrite:removeEntryWhenDone:path:tags:)]){
+        objc_msgSend(dm, @selector(startDownloadForRequest:mayOpenWhenDone:allowOverwrite:removeEntryWhenDone:path:tags:), req, NO, NO, YES, path, nil);
+    
+    //Safari 7
+    }else if(![dm respondsToSelector:@selector(startDownloadForRequest:mayOpenWhenDone:allowOverwrite:path:)]){
+        objc_msgSend(dm, @selector(startDownloadForRequest:mayOpenWhenDone:allowOverwrite:path:), req, NO, NO, path);
+    }
     
 }
 
