@@ -29,6 +29,8 @@ enum webbookmarktype {
 #define kSafariBrowserWindowController @"BrowserWindowControllerMac"
 #define kSafariBrowserWindowControllerCstr "BrowserWindowControllerMac"
 
+#define kSafariURLWindowPolicyDecider @"URLWindowPolicyDecider" //Safari 8
+
 NSString* STSafariWebpagePreviewsPath();
 NSString* STSafariThumbnailForURLString(NSString* URLString, NSString* ext);
 

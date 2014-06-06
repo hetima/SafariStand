@@ -206,7 +206,8 @@ int STSafariWindowPolicyNewTabRespectingCurrentEvent(){
     return policy;
 }
 
-int STSafariWindowPolicyFromCurrentEvent(){
+int STSafariWindowPolicyFromCurrentEvent()
+{
     /*
      BrowserWindowControllerMac : WindowController
      + (int)windowPolicyFromEventModifierFlags:(unsigned int)arg1 isMiddleMouseButton:(BOOL)arg2 requireCommandKey:(BOOL)arg3;
@@ -218,10 +219,23 @@ int STSafariWindowPolicyFromCurrentEvent(){
      + (int)windowPolicyFromNavigationAction:(const struct SWebNavigationAction *)arg1;
      
      */
-    int policy=(int)objc_msgSend(NSClassFromString(kSafariBrowserWindowController),
-                //@selector(windowPolicyFromCurrentEventRespectingKeyEquivalents:), YES);
-                @selector(windowPolicyFromCurrentEventRequireCommandKey:), YES);
-    return policy;
+    
+    Class policyDecider=NSClassFromString(kSafariURLWindowPolicyDecider);
+    if ([policyDecider respondsToSelector:@selector(windowPolicyFromCurrentEventRequireCommandKey:)]) {
+        int policy=(int)objc_msgSend(policyDecider,
+                                     @selector(windowPolicyFromCurrentEventRequireCommandKey:), YES);
+        return policy;
+    }
+    
+    
+    policyDecider=NSClassFromString(kSafariBrowserWindowController);
+    if ([policyDecider respondsToSelector:@selector(windowPolicyFromCurrentEventRequireCommandKey:)]) {
+        int policy=(int)objc_msgSend(policyDecider,
+                                     @selector(windowPolicyFromCurrentEventRequireCommandKey:), YES);
+        return policy;
+    }
+
+    return 0;
 }
 
 #pragma mark -
