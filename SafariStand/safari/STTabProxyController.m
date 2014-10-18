@@ -71,47 +71,31 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     
 
     //tabViewItem を生成するとき STTabProxy を付ける
-    //Safari 6
     Class cls=NSClassFromString(@"BrowserTabViewItem");
-    if ([cls instancesRespondToSelector:@selector(initWithTabBarView:useWebKit2:withBrowserTab:)]) {
 
+    //Safari 8
+    if ([cls instancesRespondToSelector:@selector(initWithScrollableTabBarView:browserTab:)]) {
+        //- (id)initWithScrollableTabBarView:(id)arg1 browserTab:(struct BrowserTab *)arg2;
         KZRMETHOD_SWIZZLING_WITHBLOCK
         (
          "BrowserTabViewItem",
-         "initWithTabBarView:useWebKit2:withBrowserTab:",
+         "initWithScrollableTabBarView:browserTab:",
          KZRMethodInspection, call, sel,
-         ^id (id slf, id tabBarView, BOOL useWebKit2, void* tab)
-        {
-             id result=call.as_id(slf, sel, tabBarView, useWebKit2, tab);
-             if(useWebKit2){
-                 id proxy __unused=[[STTabProxy alloc]initWithTabViewItem:result];
-             }
-             return result;
-         });
-
-    //Safari 7
-    }else if ([cls instancesRespondToSelector:@selector(initWithTabBarView:withBrowserTab:andIdentifier:)]) {
-        //- (id)initWithTabBarView:(id)arg1 withBrowserTab:(struct BrowserTab *)arg2 andIdentifier:(unsigned long long)arg3;
-        KZRMETHOD_SWIZZLING_WITHBLOCK
-        (
-         "BrowserTabViewItem",
-         "initWithTabBarView:withBrowserTab:andIdentifier:",
-         KZRMethodInspection, call, sel,
-         ^id (id slf, id tabBarView, void* browserTab, unsigned long long identifier)
-        {
-             id result=call.as_id(slf, sel, tabBarView, browserTab, identifier);
+         ^id (id slf, id tabBarView, void* browserTab)
+         {
+             id result=call.as_id(slf, sel, tabBarView, browserTab);
              id proxy __unused=[[STTabProxy alloc]initWithTabViewItem:result];
              return result;
-
+             
          });
     }
 
-    
+
     //tabの数変更を監視するため
     //順番入れ替えのときは2回呼ばれる(remove->insert)
     KZRMETHOD_SWIZZLING_WITHBLOCK
     (
-     "TabBarView", "tabViewDidChangeNumberOfTabViewItems:",
+     "ScrollableTabBarView", "tabViewDidChangeNumberOfTabViewItems:",
      KZRMethodInspection, call, sel,
      ^(id slf, id /*NSTabView*/ tabView)
     {
@@ -123,7 +107,7 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     //tabの選択を監視するため
     KZRMETHOD_SWIZZLING_WITHBLOCK
     (
-     "TabBarView", "tabView:didSelectTabViewItem:",
+     "ScrollableTabBarView", "tabView:didSelectTabViewItem:",
      KZRMethodInspection, call, sel,
      ^(id slf, id tabView, id item)
     {
@@ -145,6 +129,7 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
      });
 
 
+    //not work in Safari 8
     //tabView入れ替わりを監視するため
     //bookmarks bar の「すべてをタブで開く」などで呼ばれる。NSTabView ごと入れ替わる
     KZRMETHOD_SWIZZLING_WITHBLOCK
