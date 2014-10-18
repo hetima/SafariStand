@@ -42,19 +42,19 @@ title=>title
 
 void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef error, void* info)
 {
-        if (archiveData) {
-                NSDictionary* dic=(__bridge NSDictionary*)info;
-                NSData* data=htNSDataFromWKData(archiveData);
-                WebArchive* arc=[[WebArchive alloc]initWithData:data];
+    if (archiveData) {
+        NSDictionary* dic=(__bridge NSDictionary*)info;
+        NSData* data=htNSDataFromWKData(archiveData);
+        WebArchive* arc=[[WebArchive alloc]initWithData:data];
 
-                [HTWebClipwinCtl showWindowForWebArchive:arc webFrame:nil info:dic];
+        [HTWebClipwinCtl showWindowForWebArchive:arc webFrame:nil info:dic];
 
-                //WKRelease(archiveData);
-            }
-        if (info) {
-                CFRelease(info);
-            }
+        //WKRelease(archiveData);
     }
+    if (info) {
+        CFRelease(info);
+    }
+}
 
 + (void)showUntitledWindow
 {
