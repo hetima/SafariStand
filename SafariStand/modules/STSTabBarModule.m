@@ -11,7 +11,10 @@
 #import "STSTabBarModule.h"
 
 
-@implementation STSTabBarModule
+@implementation STSTabBarModule {
+    uint64_t _nextTime;
+    uint64_t _duration;
+}
 
 
 -(void)layoutTabBarForExistingWindow
@@ -39,25 +42,42 @@
 {
     self = [super initWithStand:core];
     if (self) {
-        Class tmpClas=objc_msgSend(objc_getClass("BarBackground"), @selector(class));
-        if(tmpClas){
-            
-            mach_timebase_info_data_t timebaseInfo;
-            mach_timebase_info(&timebaseInfo);
-            duration = ((1000000000 * timebaseInfo.denom) / 3) / timebaseInfo.numer; //1/3sec
-            nextTime=mach_absolute_time();
 
-            
-            Method tmpMethod;
-            struct objc_method_description *md;
-            
-            tmpMethod=class_getInstanceMethod([STSTabBarModule class], @selector(scrollWheel:));
-            if(tmpMethod){
-                md=method_getDescription(tmpMethod);
-                IMP tmpImp=method_getImplementation(tmpMethod);
-                if(tmpImp)class_addMethod(tmpClas, md->name, tmpImp, md->types);
-            }
-        }
+        //SwitchTabWithWheel
+        mach_timebase_info_data_t timebaseInfo;
+        mach_timebase_info(&timebaseInfo);
+        _duration = ((1000000000 * timebaseInfo.denom) / 3) / timebaseInfo.numer; //1/3sec
+        _nextTime=mach_absolute_time();
+        
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "ScrollableTabBarView", "scrollWheel:",
+         KZRMethodInspection, call, sel,
+         ^void (id slf, NSEvent* event){
+             if([[NSUserDefaults standardUserDefaults]boolForKey:kpSwitchTabWithWheelEnabled]){
+                 id window=objc_msgSend(slf, @selector(window));
+                 if([[[window windowController]className]isEqualToString:kSafariBrowserWindowController]){
+                     if ([self canAction]) {
+                         SEL action=nil;
+                         //[theEvent deltaY] が+なら上、-なら下
+                         CGFloat deltaY=[event deltaY];
+                         if(deltaY>0){
+                             action=@selector(selectPreviousTab:);
+                         }else if(deltaY<0){
+                             action=@selector(selectNextTab:);
+                         }
+                         if(action){
+                             [NSApp sendAction:action to:nil from:self];
+                             return;
+                         }
+                     }
+                 }
+             }
+             
+             call.as_void(slf, sel, event);
+
+         });
+
 
         //タブバー幅変更
         KZRMETHOD_SWIZZLING_WITHBLOCK
@@ -118,54 +138,11 @@
 - (BOOL)canAction
 {
     uint64_t now=mach_absolute_time();
-    if (now>nextTime) {
-        nextTime=now+duration;
+    if (now>_nextTime) {
+        _nextTime=now+_duration;
         return YES;
     }
     return NO;
-}
-
-//addMethod to BarBackground
-- (void)scrollWheel:(NSEvent *)theEvent
-{
-    if(![[NSUserDefaults standardUserDefaults]boolForKey:kpSwitchTabWithWheelEnabled]) return;
-    id window=objc_msgSend(self, @selector(window));
-	
-    LOG(@"%@",[self className]);
-	if(![[self className]isEqualToString:@"TabBarView"] && ![[self className]isEqualToString:@"FavoritesBarView"]) return;
-    if([[[window windowController]className]isEqualToString:kSafariBrowserWindowController]){
-        if ([[STCSafariStandCore mi:@"STSTabBarModule"]canAction]) {
-
-            SEL action=nil;
-            //[theEvent deltaY] が+なら上、-なら下
-            CGFloat deltaY=[theEvent deltaY];
-            if(deltaY>0){
-                action=@selector(selectPreviousTab:);
-            }else if(deltaY<0){
-                action=@selector(selectNextTab:);
-            }
-            if(action){
-                [NSApp sendAction:action to:nil from:self];
-            }
-        }
-    }
-    
-}
-
-- (void)mouseEntered:(NSEvent *)theEvent
-{
-
-}
-
-- (void)mouseExited:(NSEvent *)theEvent
-{
-    //ここでTabBarViewが欲しいのだが
-    NSTrackingRectTag t=[[[theEvent window]htaoValueForKey:@"STSTabBarModuleLastCloseClicked"]integerValue];
-    if (t) {
-
-    }
-    
-    
 }
 
 @end
