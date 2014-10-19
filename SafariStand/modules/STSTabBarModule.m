@@ -11,25 +11,11 @@
 #import "STSTabBarModule.h"
 
 
-@implementation STSTabBarModule
-
-
-
-//閉じてるとき幅固定 未実装
-/*
- static void (*orig_closeTabBtn)(id, SEL, ...);
-static void ST_closeTabBtn(id self, SEL _cmd, id sender)
-{
-    [[self superview] htaoSetValue:[NSNumber numberWithBool:YES] forKey:@"STSTabBarModuleLastCloseClicked"];
-    
-    id tbm=[STCSafariStandCore mi:@"STSTabBarModule"];
-    NSTrackingRectTag t=[[self superview]addTrackingRect:[[self superview]frame] owner:tbm userData:nil assumeInside:NO];
-    [[[self superview]window]htaoSetValue:[NSNumber numberWithInteger:t] forKey:@"STSTabBarModuleLastCloseClicked"];
-    
-    LOG(@"%@,%@",[[self superview]className],NSStringFromRect([self frame]));
-    orig_closeTabBtn(self, _cmd, sender);
+@implementation STSTabBarModule {
+    uint64_t _nextTime;
+    uint64_t _duration;
 }
-*/
+
 
 -(void)layoutTabBarForExistingWindow
 {
@@ -39,13 +25,13 @@ static void ST_closeTabBtn(id self, SEL _cmd, id sender)
         id winCtl=[win windowController];
         if([win isVisible] && [[winCtl className]isEqualToString:kSafariBrowserWindowController]
             && [winCtl respondsToSelector:@selector(isTabBarVisible)]
-            && [winCtl respondsToSelector:@selector(tabBarView)]
+            && [winCtl respondsToSelector:@selector(scrollableTabBarView)]
            ){
             
             if (objc_msgSend(winCtl, @selector(isTabBarVisible))) {
-                id tabBarView = objc_msgSend(winCtl, @selector(tabBarView));
-                if([tabBarView respondsToSelector:@selector(_layOutButtons)]){
-                    objc_msgSend(tabBarView, @selector(_layOutButtons));
+                id tabBarView = objc_msgSend(winCtl, @selector(scrollableTabBarView));
+                if([tabBarView respondsToSelector:@selector(_updateButtonsAndLayOutAnimated:)]){
+                    objc_msgSend(tabBarView, @selector(_updateButtonsAndLayOutAnimated:), YES);
                 }
             }
         }
@@ -56,75 +42,73 @@ static void ST_closeTabBtn(id self, SEL _cmd, id sender)
 {
     self = [super initWithStand:core];
     if (self) {
-        Class tmpClas=objc_msgSend(objc_getClass("BarBackground"), @selector(class));
-        if(tmpClas){
-            
-            mach_timebase_info_data_t timebaseInfo;
-            mach_timebase_info(&timebaseInfo);
-            duration = ((1000000000 * timebaseInfo.denom) / 3) / timebaseInfo.numer; //1/3sec
-            nextTime=mach_absolute_time();
 
-            
-            Method tmpMethod;
-            struct objc_method_description *md;
-            
-            tmpMethod=class_getInstanceMethod([STSTabBarModule class], @selector(scrollWheel:));
-            if(tmpMethod){
-                md=method_getDescription(tmpMethod);
-                IMP tmpImp=method_getImplementation(tmpMethod);
-                if(tmpImp)class_addMethod(tmpClas, md->name, tmpImp, md->types);
-            }
-        }
+        //SwitchTabWithWheel
+        mach_timebase_info_data_t timebaseInfo;
+        mach_timebase_info(&timebaseInfo);
+        _duration = ((1000000000 * timebaseInfo.denom) / 3) / timebaseInfo.numer; //1/3sec
+        _nextTime=mach_absolute_time();
+        
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "ScrollableTabBarView", "scrollWheel:",
+         KZRMethodInspection, call, sel,
+         ^void (id slf, NSEvent* event){
+             if([[NSUserDefaults standardUserDefaults]boolForKey:kpSwitchTabWithWheelEnabled]){
+                 id window=objc_msgSend(slf, @selector(window));
+                 if([[[window windowController]className]isEqualToString:kSafariBrowserWindowController]){
+                     if ([self canAction]) {
+                         SEL action=nil;
+                         //[theEvent deltaY] が+なら上、-なら下
+                         CGFloat deltaY=[event deltaY];
+                         if(deltaY>0){
+                             action=@selector(selectPreviousTab:);
+                         }else if(deltaY<0){
+                             action=@selector(selectNextTab:);
+                         }
+                         if(action){
+                             [NSApp sendAction:action to:nil from:self];
+                             return;
+                         }
+                     }
+                 }
+             }
+             
+             call.as_void(slf, sel, event);
+
+         });
+
 
         //タブバー幅変更
         KZRMETHOD_SWIZZLING_WITHBLOCK
         (
-         "TabBarView", "getButtonWidth:leftover:isClipping:forTabCount:",
+         "ScrollableTabBarView", "_buttonWidthForNumberOfButtons:inWidth:remainderWidth:",
          KZRMethodInspection, call, sel,
-         ^(id slf, double *w, unsigned long long* leftover, char *isClipping, unsigned long long forTabCount)
-        {
-            call.as_void(slf, sel, w, leftover, isClipping, forTabCount);
-            
-            if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
-                double minX=0.0;
-                
-                /*
-                 BOOL closeClicked=[[slf htaoValueForKey:@"STSTabBarModuleLastCloseClicked"]boolValue];
-                 BOOL mouseIsIn=NO;
-                 
-                 //LOG(@"%@",NSStringFromPoint(pt));
-                 //mouse is in
-                 if(closeClicked){
-                     NSPoint pt=[[slf window]mouseLocationOutsideOfEventStream];
-                     pt=[slf convertPoint:pt fromView:nil];
-                     mouseIsIn=[slf mouse:pt inRect:[slf frame]];
-                     //保存してる値があればそっちを優先
-                     if (mouseIsIn) {
-                        minX=[[slf htaoValueForKey:@"STSTabBarModuleLastValue"]doubleValue];
-                     }
+         ^double (id slf, unsigned long long buttonNum, double inWidth, double* remainderWidth){
+             double result=call.as_double(slf, sel, buttonNum, inWidth, remainderWidth);
+             if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
+                 double maxWidth=floor([[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue]);
+                 if (result>maxWidth) {
+                     //double diff=result-maxWidth;
+                     //*remainderWidth=diff+*remainderWidth;
+                     return maxWidth;
                  }
-                 //mous is not in なのでクリック判定を消す
-                 if (!mouseIsIn && closeClicked) {
-                     [slf htaoSetValue:[NSNumber numberWithBool:NO] forKey:@"STSTabBarModuleLastCloseClicked"];
-                 }
-                 */
-                if (minX>100.0) {
-                    *w=minX;
-                }else{
-                    //保存してる値を使わないので初期設定から取る
-                    minX=floor([[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue]);
-                    //if (minX<140 || minX>480) minX=240;
-                    if (*w>minX) {
-                        *w=minX;
-                    }
-//                  [slf htaoSetValue:[NSNumber numberWithDouble:*w] forKey:@"STSTabBarModuleLastValue"];
-                }
-            }
+             }
+             return result;
          });
-
-
-        //close時固定 未実装
-        //orig_closeTabBtn = (void (*)(id, SEL, ...))RMF(NSClassFromString(@"TabButton"),  @selector(closeTab:), ST_closeTabBtn);
+        
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "ScrollableTabBarView", "_shouldLayOutButtonsToAlignWithWindowCenter",
+         KZRMethodInspection, call, sel,
+         ^BOOL (id slf){
+             if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
+                 return NO;
+             }
+             
+             BOOL result=call.as_char(slf, sel);
+             return result;
+         });
 
     
         double minX=[[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue];
@@ -154,54 +138,11 @@ static void ST_closeTabBtn(id self, SEL _cmd, id sender)
 - (BOOL)canAction
 {
     uint64_t now=mach_absolute_time();
-    if (now>nextTime) {
-        nextTime=now+duration;
+    if (now>_nextTime) {
+        _nextTime=now+_duration;
         return YES;
     }
     return NO;
-}
-
-//addMethod to BarBackground
-- (void)scrollWheel:(NSEvent *)theEvent
-{
-    if(![[NSUserDefaults standardUserDefaults]boolForKey:kpSwitchTabWithWheelEnabled]) return;
-    id window=objc_msgSend(self, @selector(window));
-	
-    
-	if(![[self className]isEqualToString:@"TabBarView"] && ![[self className]isEqualToString:@"FavoritesBarView"]) return;
-    if([[[window windowController]className]isEqualToString:kSafariBrowserWindowController]){
-        if ([[STCSafariStandCore mi:@"STSTabBarModule"]canAction]) {
-
-            SEL action=nil;
-            //[theEvent deltaY] が+なら上、-なら下
-            CGFloat deltaY=[theEvent deltaY];
-            if(deltaY>0){
-                action=@selector(selectPreviousTab:);
-            }else if(deltaY<0){
-                action=@selector(selectNextTab:);
-            }
-            if(action){
-                [NSApp sendAction:action to:nil from:self];
-            }
-        }
-    }
-    
-}
-
-- (void)mouseEntered:(NSEvent *)theEvent
-{
-
-}
-
-- (void)mouseExited:(NSEvent *)theEvent
-{
-    //ここでTabBarViewが欲しいのだが
-    NSTrackingRectTag t=[[[theEvent window]htaoValueForKey:@"STSTabBarModuleLastCloseClicked"]integerValue];
-    if (t) {
-
-    }
-    
-    
 }
 
 @end

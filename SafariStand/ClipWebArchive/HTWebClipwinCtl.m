@@ -40,6 +40,21 @@ title=>title
     NSString* _filePath;
 }
 
+void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef error, void* info)
+{
+    if (archiveData) {
+        NSDictionary* dic=(__bridge NSDictionary*)info;
+        NSData* data=htNSDataFromWKData(archiveData);
+        WebArchive* arc=[[WebArchive alloc]initWithData:data];
+
+        [HTWebClipwinCtl showWindowForWebArchive:arc webFrame:nil info:dic];
+
+        //WKRelease(archiveData);
+    }
+    if (info) {
+        CFRelease(info);
+    }
+}
 
 + (void)showUntitledWindow
 {
@@ -71,18 +86,8 @@ title=>title
     WKPageRef pageRef=htWKPageRefForWKView(wkView);
     if (pageRef) {
         WKFrameRef frameRef=WKPageGetMainFrame(pageRef);
-        
-        WKFrameGetWebArchive_b(frameRef, ^(WKDataRef archiveData, WKErrorRef error){
-            if (archiveData) {
-                NSDictionary* dic=info;
-                NSData* data=htNSDataFromWKData(archiveData);
-                WebArchive* arc=[[WebArchive alloc]initWithData:data];
-                
-                [HTWebClipwinCtl showWindowForWebArchive:arc webFrame:nil info:dic];
-                
-                //WKRelease(archiveData);
-            }
-        });
+        WKFrameGetWebArchive(frameRef, showWindowForFrontmostWKViewGetWebArchive, (void*)CFBridgingRetain(info));
+
     }
 }
 

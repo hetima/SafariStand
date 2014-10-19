@@ -62,11 +62,10 @@
     //STSDownloadModule  replace Save Image to “Downloads”
 	if([[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
         NSInteger tag;
-        if ([STCSafariStandCore si].isSafari61) {
-            tag=10010;
-        }else{
-            tag=10009;
-        }
+        
+        //Safari 8
+        tag=10011;
+
         NSMenuItem* itm=[menu itemWithTag:tag];
         id dlModule=[STCSafariStandCore mi:@"STSDownloadModule"];
         if (itm && dlModule) {
@@ -77,35 +76,50 @@
 #endif
         }
     }
-    
+    NSMenuItem* copyTextItem=[menu itemWithTag:8]; //8 == copy text
+
     // 選択文字列を調べる
-    // WKView を取得。menuProxy の 24バイト目
+    // WKView を取得。
+    //Safari 7 menuProxy の 24バイト目
     void* wkviewPtr= *((void **)menuProxy + 3);
     id wkview = (__bridge id)(wkviewPtr);
-    //id wkview = *(id *)((void **)menuProxy + 3);
 
-    // 適当な名前で NSPasteboard 作成
-    NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
-    [pb clearContents];
-    // 書き込ませる
-    [wkview writeSelectionToPasteboard:pb types:[NSArray arrayWithObject:NSStringPboardType]];
-    NSString* selectedText=[[pb stringForType:NSStringPboardType]htModeratedStringWithin:0];
-    NSUInteger len=[selectedText length];
-    if(len>0 && len<1024){//あんまり長いのは除外
-        //LOG(@"%@",[pb stringForType:NSStringPboardType]);
-        [[STQuickSearchModule si]setupContextMenu:menu];
+    //Safari 8
+    if (!wkview && copyTextItem) {
+        id copyTextItemTarget=[copyTextItem target];
+        if (copyTextItemTarget) { //WKMenuTarget
+            void* menuTarget=(__bridge void*)objc_msgSend(copyTextItemTarget, @selector(menuProxy));
+            void* wkviewPtr= *((void **)menuTarget + 4);
+            wkview = (__bridge id)(wkviewPtr);
+        }
     }
     
-    //Clip Web Archive
-    
-    if(len>0 && [[NSUserDefaults standardUserDefaults]boolForKey:kpShowClipWebArchiveContextMenu]){
-        NSMenuItem* itm;
-        itm=[[NSMenuItem alloc]initWithTitle:@"Clip Web Archive with Selection"
-                                      action:@selector(actWebArchiveSelectionMenu:) keyEquivalent:@""];
-        [itm setTarget:self];
-        [itm setRepresentedObject:wkview];
-        [menu addItem:itm];
-//        [itm release];
+    if (wkview) {
+        // 適当な名前で NSPasteboard 作成
+        NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
+        [pb clearContents];
+        
+        // 書き込ませる
+        //NSStringPboardType is deprecated but WKView doesn't handle NSPasteboardTypeString.
+        [wkview writeSelectionToPasteboard:pb types:[NSArray arrayWithObject:NSStringPboardType]];
+        NSString* selectedText=[[pb stringForType:NSStringPboardType]htModeratedStringWithin:0];
+
+        NSUInteger len=[selectedText length];
+        if(len>0 && len<1024){//あんまり長いのは除外
+            //LOG(@"%@",[pb stringForType:NSPasteboardTypeString]);
+            [[STQuickSearchModule si]setupContextMenu:menu];
+        }
+        
+        //Clip Web Archive
+        
+        if(len>0 && [[NSUserDefaults standardUserDefaults]boolForKey:kpShowClipWebArchiveContextMenu]){
+            NSMenuItem* itm;
+            itm=[[NSMenuItem alloc]initWithTitle:@"Clip Web Archive with Selection"
+                                          action:@selector(actWebArchiveSelectionMenu:) keyEquivalent:@""];
+            [itm setTarget:self];
+            [itm setRepresentedObject:wkview];
+            [menu addItem:itm];
+        }
     }
 
     
@@ -248,7 +262,7 @@
         
         NSPasteboard*pb=[NSPasteboard generalPasteboard];
         [pb clearContents];
-        [pb setString:result forType:NSStringPboardType];
+        [pb setString:result forType:NSPasteboardTypeString];
     }
 }
 
@@ -269,7 +283,7 @@
         
         NSPasteboard*pb=[NSPasteboard generalPasteboard];
         [pb clearContents];
-        [pb setString:result forType:NSStringPboardType];
+        [pb setString:result forType:NSPasteboardTypeString];
     }
 }
 
@@ -286,7 +300,7 @@
         
         NSPasteboard*pb=[NSPasteboard generalPasteboard];
         [pb clearContents];
-        [pb setString:titleStr forType:NSStringPboardType];
+        [pb setString:titleStr forType:NSPasteboardTypeString];
     }
 }
 
@@ -305,7 +319,7 @@
         
         NSPasteboard*pb=[NSPasteboard generalPasteboard];
         [pb clearContents];
-        [pb setString:result forType:NSStringPboardType];
+        [pb setString:result forType:NSPasteboardTypeString];
     }
 }
 

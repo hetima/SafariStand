@@ -120,8 +120,6 @@ extern void WKFrameGetResourceData(WKFrameRef frame, WKURLRef resourceURL, WKFra
 
 typedef void (*WKFrameGetWebArchiveFunction)(WKDataRef archiveData, WKErrorRef error, void* functionContext);
 extern void WKFrameGetWebArchive(WKFrameRef frame, WKFrameGetWebArchiveFunction function, void* functionContext);
-typedef void (^WKFrameGetWebArchiveBlock)(WKDataRef archiveData, WKErrorRef error);
-extern void WKFrameGetWebArchive_b(WKFrameRef frame, WKFrameGetWebArchiveBlock block);
 
 extern WKFrameRef WKPageGetMainFrame(WKPageRef page);
 
