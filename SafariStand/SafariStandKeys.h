@@ -79,4 +79,7 @@
 
 #define kAOValueNotShowSidebarAuto @"STSMShouldNotShowSidebarAuto"
 
+#define kpBrowserToolbarConfigurationBackup @"Stand_BrowserToolbarConfigurationBackup"
+
+
 #endif

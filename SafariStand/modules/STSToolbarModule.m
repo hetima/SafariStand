@@ -9,6 +9,9 @@
 #import "SafariStand.h"
 #import "STSToolbarModule.h"
 
+#define kpBrowserToolbarIdentifier @"NSToolbar Configuration BrowserToolbarIdentifier-v2"
+
+
 static STSToolbarModule* toolbarModule;
 
 @implementation STSToolbarModule {
@@ -70,14 +73,18 @@ static STSToolbarModule* toolbarModule;
 
 - (void)prefValue:(NSString*)key changed:(id)value
 {
-    //if([key isEqualToString:])
+    if([key isEqualToString:kpBrowserToolbarIdentifier]){
+        if(value)[[STCSafariStandCore si]setObject:value forKey:kpBrowserToolbarConfigurationBackup];
+        [[STCSafariStandCore si]synchronize];
+    }
 }
 
 -(void)modulesDidFinishLoading:(id)core
 {
-    //check exists window
-    NSDictionary* toolbarConfig=[[NSUserDefaults standardUserDefaults]dictionaryForKey:@"NSToolbar Configuration BrowserToolbarIdentifier"];
+    NSDictionary* toolbarConfig=[[NSUserDefaults standardUserDefaults]dictionaryForKey:kpBrowserToolbarIdentifier];
+    toolbarConfig=[[STCSafariStandCore si]objectForKey:kpBrowserToolbarConfigurationBackup];
     NSArray* identifiers=[toolbarConfig objectForKey:@"TB Item Identifiers"];
+    
     BOOL shouldReload=NO;
     for (NSString* identifier in identifiers) {
         if ([identifier hasPrefix:@"com.hetima."]) {
@@ -85,22 +92,22 @@ static STSToolbarModule* toolbarModule;
             break;
         }
     }
-    if (!shouldReload) {
-        return;
-    }
     
-    NSArray *windows=[NSApp windows];
-    for (NSWindow* win in windows) {
-        id winCtl=[win windowController];
-        if([win isVisible] && [[winCtl className]isEqualToString:kSafariBrowserWindowController])
-        {
-            NSToolbar* tb=[win toolbar];
-            if ([tb isVisible])
-            {
-                [tb setConfigurationFromDictionary:toolbarConfig];
+    if (shouldReload) {
+        NSArray *windows=[NSApp windows];
+        for (NSWindow* win in windows) {
+            id winCtl=[win windowController];
+            if ([win isVisible] && [[winCtl className]isEqualToString:kSafariBrowserWindowController]) {
+                NSToolbar* tb=[win toolbar];
+                if (tb) {
+                    [tb setConfigurationFromDictionary:toolbarConfig];
+                    break;
+                }
             }
         }
     }
+
+    [self observePrefValue:kpBrowserToolbarIdentifier];
 }
 
 
