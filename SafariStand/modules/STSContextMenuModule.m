@@ -62,11 +62,10 @@
     //STSDownloadModule  replace Save Image to “Downloads”
 	if([[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
         NSInteger tag;
-        if ([STCSafariStandCore si].isSafari61) {
-            tag=10010;
-        }else{
-            tag=10009;
-        }
+        
+        //Safari 8
+        tag=10011;
+
         NSMenuItem* itm=[menu itemWithTag:tag];
         id dlModule=[STCSafariStandCore mi:@"STSDownloadModule"];
         if (itm && dlModule) {

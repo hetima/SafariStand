@@ -4,7 +4,7 @@
 <array>
 	<dict>
 		<key>tag</key>
-		<integer>10034</integer>
+		<real>10038</real>
 		<key>title</key>
 		<string>Open in Dashboard…</string>
 		<key>group</key>
@@ -12,19 +12,19 @@
 	</dict>
 	<dict>
 		<key>tag</key>
-		<integer>10022</integer>
+		<real>10026</real>
 		<key>title</key>
 		<string>Show Page Source</string>
 	</dict>
 	<dict>
 		<key>tag</key>
-		<integer>10024</integer>
+		<real>10028</real>
 		<key>title</key>
 		<string>Save Page As…</string>
 	</dict>
 	<dict>
 		<key>tag</key>
-		<integer>10028</integer>
+		<real>10032</real>
 		<key>title</key>
 		<string>Print Page…</string>
 	</dict>
@@ -44,7 +44,7 @@
 	</dict>
 	<dict>
 		<key>tag</key>
-		<integer>10019</integer>
+		<real>10023</real>
 		<key>title</key>
 		<string>Search with Google</string>
 	</dict>
@@ -58,25 +58,25 @@
 	</dict>
 	<dict>
 		<key>tag</key>
-		<integer>10006</integer>
+		<real>10007</real>
 		<key>title</key>
 		<string>Download Linked File As…</string>
 	</dict>
 	<dict>
 		<key>tag</key>
-		<integer>10007</integer>
+		<real>10009</real>
 		<key>title</key>
 		<string>Add Link to Bookmarks…</string>
 	</dict>
 	<dict>
 		<key>tag</key>
-		<integer>10035</integer>
+		<real>10039</real>
 		<key>title</key>
 		<string>Add Link to Reading List</string>
 	</dict>
 	<dict>
 		<key>tag</key>
-		<integer>10009</integer>
+		<real>10011</real>
 		<key>group</key>
 		<string>Image : </string>
 		<key>title</key>
@@ -84,19 +84,19 @@
 	</dict>
 	<dict>
 		<key>tag</key>
-		<integer>10010</integer>
+		<real>10012</real>
 		<key>title</key>
 		<string>Save Image As…</string>
 	</dict>
 	<dict>
 		<key>tag</key>
-		<integer>10016</integer>
+		<real>10020</real>
 		<key>title</key>
 		<string>Add Image to iPhoto Library</string>
 	</dict>
 	<dict>
 		<key>tag</key>
-		<integer>10017</integer>
+		<real>10021</real>
 		<key>title</key>
 		<string>Use Image as Desktop Picture</string>
 	</dict>
