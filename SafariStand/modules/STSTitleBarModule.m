@@ -22,7 +22,7 @@
     if (self) {
 
         _showingPathPopUpMenu=NO;
-        
+/*
         KZRMETHOD_SWIZZLING_WITHBLOCK
         (
          "TitleBarButton", "showPathPopUpMenu",
@@ -47,7 +47,7 @@
              }
              call.as_void(slf, sel, menu, pt, width, view, selection, font, arg7, arg8);
          });
-
+*/
     }
     return self;
 }
