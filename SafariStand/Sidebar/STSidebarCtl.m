@@ -327,7 +327,7 @@
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
 {
-#define kSplitViewTopMinHeight 25
+#define kSplitViewTopMinHeight 160
 
     if (proposedMin<kSplitViewTopMinHeight) {
         return kSplitViewTopMinHeight;

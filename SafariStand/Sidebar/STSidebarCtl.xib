@@ -22,7 +22,7 @@
             <rect key="frame" x="0.0" y="0.0" width="340" height="580"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView focusRingType="none" id="11" customClass="DMTabBar">
+                <customView hidden="YES" focusRingType="none" id="11" customClass="DMTabBar">
                     <rect key="frame" x="1" y="555" width="338" height="25"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                 </customView>
