@@ -231,6 +231,7 @@ STQuickSearchModule* quickSearchModule;
         return 0;
     }
     
+    BOOL grouping=[[NSUserDefaults standardUserDefaults]boolForKey:kpQuickSearchMenuGroupingEnabled];
     NSInteger idx, insertedCount=0;
     if(onTop)idx=0;
     else idx=[menu numberOfItems];
@@ -243,11 +244,34 @@ STQuickSearchModule* quickSearchModule;
             [itm setKeyEquivalentModifierMask:0];
             [itm setTarget:target];
             [itm setRepresentedObject:one];
-            [menu insertItem:itm atIndex:idx];
-            ++idx;
-            ++insertedCount;
+
+            if (grouping) {
+                NSArray* dividedTitle=[one.title componentsSeparatedByString:@"#"];
+                if ([dividedTitle count]==2 && [[dividedTitle firstObject]length]>0 && [[dividedTitle lastObject]length]>0) {
+                    [itm setTitle:[dividedTitle firstObject]];
+                    NSString* group=[dividedTitle lastObject];
+                    NSMenu* groupMenu=[[menu itemWithTitle:group]submenu];
+                    if (!groupMenu) {
+                        NSMenuItem* groupMenuItem=[[NSMenuItem alloc]initWithTitle:group action:nil keyEquivalent:@""];
+                        groupMenu=[[NSMenu alloc]initWithTitle:group];
+                        [groupMenuItem setSubmenu:groupMenu];
+                        [menu insertItem:groupMenuItem atIndex:idx];
+                        ++idx;
+                        ++insertedCount;
+                    }
+                    [groupMenu addItem:itm];
+                    itm=nil;
+                }
+            }
+
+            if (itm) {
+                [menu insertItem:itm atIndex:idx];
+                ++idx;
+                ++insertedCount;
+            }
         }
     }
+    
     if(insertedCount==0){
         HTQuerySeed* one=_googleQuerySeed;
         NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:one.title action:sel keyEquivalent:@""];

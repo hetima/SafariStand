@@ -28,6 +28,7 @@
 #define kQuickSearchTabPolicyRely 0
 #define kQuickSearchTabPolicyFront 1
 #define kQuickSearchTabPolicyBack 2
+#define kpQuickSearchMenuGroupingEnabled @"Stand_QuickSearchMenuGroupingEnabled"
 
 #define kpSwitchTabWithWheelEnabled @"Stand_SwitchTabWithWheelEnabled"
 #define kpSwitchTabWithOneKeyEnabled @"Stand_SwitchTabWithOneKeyEnabled"
