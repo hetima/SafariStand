@@ -92,8 +92,7 @@
     
     // 選択文字列を調べる
     BOOL hasSelectedText=NO;
-
-    if (copyTextItem) {
+    if (copyTextItem || copyLinkItem) {
         hasSelectedText=YES;
     }
     
