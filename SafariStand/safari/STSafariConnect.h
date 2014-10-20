@@ -24,9 +24,10 @@ enum safariWindowPolicy {
     poNormal=0, //000
     poNormal_back=1, //001
     poNewWindow=2, //010
-    poNewWindow_back=3, //011
-    poNewTab=4, //100
-    poNewTab_back=5 //101
+    poNewWindow_back=4, //011
+    poNewTab=5, //100
+    poNewTab_back=6, //101
+    poNewPrivateWindow=3
 };
 
 enum webbookmarktype {
