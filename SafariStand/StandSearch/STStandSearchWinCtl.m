@@ -57,9 +57,8 @@ STStandSearchWinCtl* sharedStandSearchWinCtl;
     
     [[super window] makeFirstResponder:self.viewCtl.searchField];
 
-    [[self window] setAutorecalculatesContentBorderThickness:YES forEdge:NSMinYEdge];
-    
-    [[self window] setContentBorderThickness:30.5 forEdge:NSMinYEdge];
+    //[[self window] setAutorecalculatesContentBorderThickness:YES forEdge:NSMinYEdge];
+    //[[self window] setContentBorderThickness:30.5 forEdge:NSMinYEdge];
 
 }
 
