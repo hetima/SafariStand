@@ -34,7 +34,7 @@
 -(void)STTest:(id)sender
 {
     NSView* v= STSafariCurrentWKView();
-    [self STTestDumpView:[[v window]contentView] indent:@""];
+    [self STTestDumpView:[[[v window]contentView]superview] indent:@""];
 
 }
 #endif
