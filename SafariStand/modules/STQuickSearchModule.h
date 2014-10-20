@@ -29,9 +29,9 @@
 -(void)sendGoogleImageQuerySeedWithoutAddHistoryWithSearchString:(NSString*)inStr  policy:(int)policy;
 -(void)sendDefaultQuerySeedWithSearchString:(NSString*)inStr  policy:(int)policy;
 
--(void)setupContextMenu:(NSMenu*)menu;
+-(void)setupContextMenu:(NSMenu*)menu forceBottom:(BOOL)forceBottom;
 -(NSMenu*)standardQuickSearchMenuWithSearchString:(NSString*)searchString;
--(NSMenu*)insertQuickSearchMenuItemsToMenu:(NSMenu*)menu withSelector:(SEL)sel target:(id)target;
+-(NSInteger)insertQuickSearchMenuItemsToMenu:(NSMenu*)menu withSelector:(SEL)sel target:(id)target onTop:(BOOL)onTop;
 @end
 
 

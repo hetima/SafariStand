@@ -32,7 +32,6 @@ STQuickSearchModule* quickSearchModule;
 }
 
 
-
 +(int)tabPolicy{
     NSInteger setting=[[NSUserDefaults standardUserDefaults]integerForKey:kpQuickSearchTabPolicy];
     
@@ -49,9 +48,6 @@ STQuickSearchModule* quickSearchModule;
             break;
     }
 }
-
-
-
 
 
 - (id)initWithStand:(id)core
@@ -122,10 +118,12 @@ STQuickSearchModule* quickSearchModule;
     return self;
 }
 
+
 - (void)modulesDidFinishLoading:(id)core
 {
     
 }
+
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
 {
@@ -138,23 +136,25 @@ STQuickSearchModule* quickSearchModule;
 }
 
 
-
 - (void)dealloc
 {
 
 }
 
--(void)applicationWillTerminate:(STCSafariStandCore*)core
+
+- (void)applicationWillTerminate:(STCSafariStandCore*)core
 {
     [self saveToStorage];
 }
+
 
 - (void)prefValue:(NSString*)key changed:(id)value
 {
     //if([key isEqualToString:])
 }
 
--(void)stMessagePrefWindowLoaded:(STPrefWindowModule*)sender
+
+- (void)stMessagePrefWindowLoaded:(STPrefWindowModule*)sender
 {
     _querySeedEditViewCtl=[[HTQuerySeedEditViewCtl alloc]initWithNibName:@"HTQuerySeedEditViewCtl"
                             bundle:[NSBundle bundleWithIdentifier:kSafariStandBundleID]];
@@ -171,12 +171,14 @@ STQuickSearchModule* quickSearchModule;
 
 }
 
--(void)stMessagePrefWindowWillClose:(id)prefWindowCtl
+
+- (void)stMessagePrefWindowWillClose:(id)prefWindowCtl
 {
     [self saveToStorage];
 }
 
--(void)addQuerySeed:(HTQuerySeed*)qs
+
+- (void)addQuerySeed:(HTQuerySeed*)qs
 {
     [self.querySeeds addObject:qs];
 }
@@ -185,7 +187,7 @@ STQuickSearchModule* quickSearchModule;
 
 
 //botu
--(void)showSearchComplViewForLocationFieldEditor:(id)textView
+- (void)showSearchComplViewForLocationFieldEditor:(id)textView
 {
 
 }
@@ -193,7 +195,7 @@ STQuickSearchModule* quickSearchModule;
 #pragma mark -
 #pragma mark action
 
--(void)actQuickSearchMenu:(id)sender
+- (void)actQuickSearchMenu:(id)sender
 {
     HTQuerySeed* seed=[sender representedObject];
     NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
@@ -214,20 +216,24 @@ STQuickSearchModule* quickSearchModule;
         [qspb clearContents];
         [qspb setString:searchString forType:NSStringPboardType];
         
-        
-        return [self insertQuickSearchMenuItemsToMenu:nil withSelector:@selector(actQuickSearchMenu:) target:self];
+        NSMenu* menu=[[NSMenu alloc]initWithTitle:@""];
+        [self insertQuickSearchMenuItemsToMenu:menu withSelector:@selector(actQuickSearchMenu:) target:self onTop:YES];
+        return menu;
     }
     
     return nil;
 }
 
--(NSMenu*)insertQuickSearchMenuItemsToMenu:(NSMenu*)menu withSelector:(SEL)sel target:(id)target
+- (NSInteger)insertQuickSearchMenuItemsToMenu:(NSMenu*)menu withSelector:(SEL)sel target:(id)target onTop:(BOOL)onTop
 {
 
-    NSInteger idx=0;
     if (!menu) {
-        menu=[[NSMenu alloc]initWithTitle:@""];
+        return 0;
     }
+    
+    NSInteger idx, insertedCount=0;
+    if(onTop)idx=0;
+    else idx=[menu numberOfItems];
 
     for (HTQuerySeed* one in self.querySeeds) {
         if([one.use boolValue] && [one.title length]>0){
@@ -239,21 +245,24 @@ STQuickSearchModule* quickSearchModule;
             [itm setRepresentedObject:one];
             [menu insertItem:itm atIndex:idx];
             ++idx;
+            ++insertedCount;
         }
     }
-    if(idx==0){
+    if(insertedCount==0){
         HTQuerySeed* one=_googleQuerySeed;
         NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:one.title action:sel keyEquivalent:@""];
         [itm setKeyEquivalentModifierMask:0];
         [itm setTarget:target];
         [itm setRepresentedObject:one];
         [menu insertItem:itm atIndex:idx];
+        ++insertedCount;
     }
     
-    return menu;
+    return insertedCount;
 }
 
--(void)setupContextMenu:(NSMenu*)menu
+
+- (void)setupContextMenu:(NSMenu*)menu forceBottom:(BOOL)forceBottom
 {
     BOOL flat=NO;
     BOOL onTop=YES;
@@ -266,11 +275,18 @@ STQuickSearchModule* quickSearchModule;
     if([[NSUserDefaults standardUserDefaults]integerForKey:kpQuickSearchMenuPlace]>0)onTop=NO;
     if([[NSUserDefaults standardUserDefaults]integerForKey:kpQuickSearchMenuIsFlat]>0)flat=YES;
     
-    if(onTop)idx=0;
-    else idx=[menu numberOfItems];
-    [menu insertItem:[NSMenuItem separatorItem] atIndex:idx];
-    if(!onTop)++idx;
+    if (forceBottom) {
+        onTop=NO;
+    }
     
+    if(onTop){
+        idx=0;
+    }else{
+        idx=[menu numberOfItems];
+        [menu insertItem:[NSMenuItem separatorItem] atIndex:idx];
+        ++idx;
+    }
+
     if(!flat){
         NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Quick Search" action:nil keyEquivalent:@""];
         NSMenu* subMenu=[[NSMenu alloc]initWithTitle:@"Quick Search"];
@@ -281,21 +297,11 @@ STQuickSearchModule* quickSearchModule;
         menu=subMenu;
     }
     
-    for (HTQuerySeed* one in self.querySeeds) {
-        if([one.use boolValue] && [one.title length]>0){
-            NSString* keyEq=one.shortcut;
-            if(!keyEq||[keyEq length]!=1)keyEq=@"";
-            NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:one.title action:@selector(actQuickSearchMenu:) keyEquivalent:keyEq];
-            [itm setKeyEquivalentModifierMask:0];
-            [itm setTarget:self];
-            [itm setRepresentedObject:one];
-            [menu insertItem:itm atIndex:idx];
-            ++idx;
-        }
-    }
+    NSInteger insertedCount=[self insertQuickSearchMenuItemsToMenu:menu withSelector:@selector(actQuickSearchMenu:) target:self onTop:onTop];
+    idx+=insertedCount;
     
     //search it later
-    if([self.querySeeds count]){
+    if(insertedCount>0){
         [menu insertItem:[NSMenuItem separatorItem] atIndex:idx];
         ++idx;
     }
@@ -306,7 +312,8 @@ STQuickSearchModule* quickSearchModule;
 
 }
 
--(HTQuerySeed*)querySeedForShortcut:(NSString*)inStr
+
+- (HTQuerySeed*)querySeedForShortcut:(NSString*)inStr
 {    
     for (HTQuerySeed* seed in self.querySeeds) {
         NSString* key=seed.shortcut;
@@ -315,7 +322,8 @@ STQuickSearchModule* quickSearchModule;
     return nil;
 }
 
--(HTQuerySeed*)querySeedForUUID:(NSString*)uuid
+
+- (HTQuerySeed*)querySeedForUUID:(NSString*)uuid
 {
     for (HTQuerySeed* seed in self.querySeeds) {
         if([seed.uuid isEqualToString:uuid])return seed;
@@ -323,33 +331,37 @@ STQuickSearchModule* quickSearchModule;
     return nil;
 }
 
--(void)sendQuerySeed:(HTQuerySeed*)inSeed withSearchString:(NSString*)inStr  policy:(int)policy
+
+- (void)sendQuerySeed:(HTQuerySeed*)inSeed withSearchString:(NSString*)inStr  policy:(int)policy
 {
     NSURLRequest* req=[inSeed requestWithSearchString:inStr];
     STSafariAddSearchStringHistory(inStr);
     STSafariGoToRequestWithPolicy(req, policy);
 }
 
--(void)sendQuerySeedUUID:(NSString*)uuid withSearchString:(NSString*)inStr  policy:(int)policy
+
+- (void)sendQuerySeedUUID:(NSString*)uuid withSearchString:(NSString*)inStr  policy:(int)policy
 {
     HTQuerySeed* inSeed=[self querySeedForUUID:uuid];
     [self sendQuerySeed:inSeed withSearchString:inStr policy:policy];
 }
 
--(void)sendGoogleQuerySeedWithSearchString:(NSString*)inStr  policy:(int)policy
+- (void)sendGoogleQuerySeedWithSearchString:(NSString*)inStr  policy:(int)policy
 {
     NSURLRequest* req=[_googleQuerySeed requestWithSearchString:inStr];
     STSafariAddSearchStringHistory(inStr);
     STSafariGoToRequestWithPolicy(req, policy);
 }
 
--(void)sendGoogleQuerySeedWithoutAddHistoryWithSearchString:(NSString*)inStr  policy:(int)policy
+
+- (void)sendGoogleQuerySeedWithoutAddHistoryWithSearchString:(NSString*)inStr  policy:(int)policy
 {
     NSURLRequest* req=[_googleQuerySeed requestWithSearchString:inStr];
     STSafariGoToRequestWithPolicy(req, policy);
 }
 
--(void)sendGoogleImageQuerySeedWithoutAddHistoryWithSearchString:(NSString*)inStr  policy:(int)policy
+
+- (void)sendGoogleImageQuerySeedWithoutAddHistoryWithSearchString:(NSString*)inStr  policy:(int)policy
 {
     if (![inStr hasPrefix:@"http"]) {
         return;
@@ -359,7 +371,7 @@ STQuickSearchModule* quickSearchModule;
 }
 
 
--(void)sendDefaultQuerySeedWithSearchString:(NSString*)inStr  policy:(int)policy
+- (void)sendDefaultQuerySeedWithSearchString:(NSString*)inStr  policy:(int)policy
 {
     HTQuerySeed* defaultSeed=[self querySeedForShortcut:kDefaultSeedShortcut];
     if (!defaultSeed) {
@@ -374,13 +386,14 @@ STQuickSearchModule* quickSearchModule;
 
 
 @implementation STQuickSearchModule (DataIo)
--(NSArray*)enabledQuerySeeds
+
+- (NSArray*)enabledQuerySeeds
 {
     return [self.querySeeds filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"use=true"]];
 }
 
 
--(void)loadFromStorage
+- (void)loadFromStorage
 {
     //querySeeds
     id data=[[STCSafariStandCore si]objectForKey:kpQuerySeeds];
@@ -399,7 +412,7 @@ STQuickSearchModule* quickSearchModule;
 }
 
 
--(void)saveToStorage
+- (void)saveToStorage
 {
     id data=[self querySeedsRawData];
     if(data)[[STCSafariStandCore si]setObject:data forKey:kpQuerySeeds];
@@ -410,7 +423,7 @@ STQuickSearchModule* quickSearchModule;
     [[STCSafariStandCore si]synchronize];
 }
 
--(id)querySeedsRawData
+- (id)querySeedsRawData
 {
     NSMutableArray* ary=[NSMutableArray arrayWithCapacity:[self.querySeeds count]];
     for (HTQuerySeed* qs in self.querySeeds) {
@@ -422,7 +435,7 @@ STQuickSearchModule* quickSearchModule;
     return ary;
 }
 
--(void)loadSearchItLaterStringDictionaries:(NSArray*)ary
+- (void)loadSearchItLaterStringDictionaries:(NSArray*)ary
 {
     NSMutableArray* sil=[[NSMutableArray alloc]initWithCapacity:[ary count]+4];
     for (NSDictionary* data in ary) {
@@ -436,7 +449,7 @@ STQuickSearchModule* quickSearchModule;
 }
 
 
--(void)loadQuerySeedDictionaries:(NSArray*)ary
+- (void)loadQuerySeedDictionaries:(NSArray*)ary
 {
     NSMutableArray* qss=[[NSMutableArray alloc]initWithCapacity:[ary count]+4];
     for (NSDictionary* data in ary) {
@@ -449,7 +462,8 @@ STQuickSearchModule* quickSearchModule;
 
 }
 
--(void)importOldSetting
+
+- (void)importOldSetting
 {
     if([[STCSafariStandCore si]boolForKey:kpQuickSearchOldSettingImported]) return;
     
@@ -493,7 +507,8 @@ STQuickSearchModule* quickSearchModule;
     
 }
 
--(void)importDefaultSetting
+
+- (void)importDefaultSetting
 {
     NSBundle* b=[NSBundle bundleForClass:[self class]];
     NSString* plst=[b pathForResource:@"quicksearch_defaults" ofType:@"plist"];

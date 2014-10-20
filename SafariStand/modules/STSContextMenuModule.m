@@ -109,7 +109,7 @@
         NSUInteger len=[selectedText length];
         if(len>0 && len<1024){//あんまり長いのは除外
             //LOG(@"%@",[pb stringForType:NSPasteboardTypeString]);
-            [[STQuickSearchModule si]setupContextMenu:menu];
+            [[STQuickSearchModule si]setupContextMenu:menu forceBottom:(copyLinkItem ? YES:NO)];
         }
         
         //Clip Web Archive
