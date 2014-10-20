@@ -28,12 +28,24 @@
     // 16バイト目に NSPopUpButtonCell * へのポインタが格納されている
     void* cellPtr=*((void **)menuProxy + 2);
     NSPopUpButtonCell *cell = (__bridge NSPopUpButtonCell *)(cellPtr);
-    //NSPopUpButtonCell *cell = *(NSPopUpButtonCell **)((void **)menuProxy + 2);
+
+    // WKView を取得。
+    //Safari 7 menuProxy の 24バイト目
+    //void* wkviewPtr= *((void **)menuProxy + 3);
+    //Safari 8 menuProxy の 32バイト目
+    void* wkviewPtr= *((void **)menuProxy + 4);
+    id wkview = (__bridge id)(wkviewPtr);
     
     // cell から menu を取得
     // プラグインや機能拡張によって追加されたメニュー項目も含む、画面に表示する直前の状態のメニューが取り出せる
     NSMenu *menu = [cell menu];
     NSMenuItem* itm;
+    
+    // 既存のメニュー項目をいくつか取得
+    NSMenuItem* copyTextItem=[menu itemWithTag:8]; //8 == copy text
+    NSMenuItem* copyLinkItem=[menu itemWithTag:3]; //3 == copy link
+    NSMenuItem* copyImageItem=[menu itemWithTag:6]; //6 == copy link
+    
 
 #ifdef DEBUG_MENUDUMP
     static NSMutableDictionary* tagdic=nil;
@@ -76,25 +88,16 @@
 #endif
         }
     }
-    NSMenuItem* copyTextItem=[menu itemWithTag:8]; //8 == copy text
-
+    
+    
     // 選択文字列を調べる
-    // WKView を取得。
-    //Safari 7 menuProxy の 24バイト目
-    void* wkviewPtr= *((void **)menuProxy + 3);
-    id wkview = (__bridge id)(wkviewPtr);
+    BOOL hasSelectedText=NO;
 
-    //Safari 8
-    if (!wkview && copyTextItem) {
-        id copyTextItemTarget=[copyTextItem target];
-        if (copyTextItemTarget) { //WKMenuTarget
-            void* menuTarget=(__bridge void*)objc_msgSend(copyTextItemTarget, @selector(menuProxy));
-            void* wkviewPtr= *((void **)menuTarget + 4);
-            wkview = (__bridge id)(wkviewPtr);
-        }
+    if (copyTextItem) {
+        hasSelectedText=YES;
     }
     
-    if (wkview) {
+    if (wkview && hasSelectedText) {
         // 適当な名前で NSPasteboard 作成
         NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
         [pb clearContents];
@@ -111,7 +114,6 @@
         }
         
         //Clip Web Archive
-        
         if(len>0 && [[NSUserDefaults standardUserDefaults]boolForKey:kpShowClipWebArchiveContextMenu]){
             NSMenuItem* itm;
             itm=[[NSMenuItem alloc]initWithTitle:@"Clip Web Archive with Selection"
@@ -123,7 +125,6 @@
     }
 
     
-    NSMenuItem* copyLinkItem=[menu itemWithTag:3]; //3 == copy link
     if(copyLinkItem){
         id webUserDataWrapper=[copyLinkItem representedObject];
         void* apiObject=[webUserDataWrapper userData]; //struct APIObject
@@ -146,7 +147,6 @@
                 [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
-//                [itm release];
 
                 if([[NSUserDefaults standardUserDefaults]boolForKey:kpCopyLinkTagAddTargetBlank]){
                     itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag") 
@@ -160,7 +160,6 @@
                 [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
                 [itm setAlternate:YES];
                 [menu insertItem:itm atIndex:++idx];
-            
             }
             
             if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowCopyLinkTitleContextMenu]){
@@ -170,6 +169,7 @@
                 [menu insertItem:itm atIndex:++idx];
                 
             }
+            
             if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowCopyLinkAndTitleContextMenu]){
                 itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link and Title") action:@selector(actCopyLinkAndTitleMenu:) keyEquivalent:@""];
                 [itm setTarget:self];
@@ -182,7 +182,6 @@
                 [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
                 [itm setAlternate:YES];
                 [menu insertItem:itm atIndex:++idx];
-                
             }
 
 #ifdef DEBUG_MENUDUMP
@@ -198,7 +197,6 @@
     } //if(copyLinkItem)
     
     
-    NSMenuItem* copyImageItem=[menu itemWithTag:6]; //6 == copy link
     if(copyImageItem){
         if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowGoogleImageSearchContextMenu]){
             NSInteger idx=[menu indexOfItem:copyImageItem];
