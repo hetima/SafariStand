@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment version="1070" defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment version="1070" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="STSidebarCtl">
             <connections>
                 <outlet property="oPrimaryTabView" destination="30" id="35"/>
                 <outlet property="oPrimaryTabbar" destination="11" id="37"/>
-                <outlet property="oResizeHandle" destination="13" id="14"/>
+                <outlet property="oResizeHandle" destination="XYX-CM-5jV" id="xHy-bN-nRh"/>
                 <outlet property="oSecondaryTabView" destination="20" id="36"/>
                 <outlet property="oSecondaryTabbar" destination="19" id="38"/>
                 <outlet property="oSplitView" destination="16" id="d1Q-kK-WEj"/>
@@ -25,15 +25,6 @@
                 <customView focusRingType="none" id="11" customClass="DMTabBar">
                     <rect key="frame" x="1" y="555" width="338" height="25"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <subviews>
-                        <customView focusRingType="none" id="13" customClass="STSidebarResizeHandleView">
-                            <rect key="frame" x="0.0" y="1" width="24" height="24"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <connections>
-                                <outlet property="delegate" destination="-2" id="15"/>
-                            </connections>
-                        </customView>
-                    </subviews>
                 </customView>
                 <splitView focusRingType="none" dividerStyle="thin" id="16">
                     <rect key="frame" x="1" y="0.0" width="338" height="555"/>
@@ -65,6 +56,15 @@
                                 <customView focusRingType="none" id="19" customClass="DMTabBar">
                                     <rect key="frame" x="0.0" y="273" width="338" height="25"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                    <subviews>
+                                        <customView focusRingType="none" id="XYX-CM-5jV" customClass="STSidebarResizeHandleView">
+                                            <rect key="frame" x="0.0" y="1" width="24" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="fjm-4m-xYY"/>
+                                            </connections>
+                                        </customView>
+                                    </subviews>
                                 </customView>
                                 <tabView focusRingType="none" drawsBackground="NO" type="noTabsNoBorder" id="20">
                                     <rect key="frame" x="0.0" y="0.0" width="338" height="273"/>
