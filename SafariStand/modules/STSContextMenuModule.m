@@ -15,7 +15,9 @@
 
 #import "STSquashContextMenuSheetCtl.h"
 
+#ifdef DEBUG
 //#define DEBUG_MENUDUMP 0
+#endif
 
 @implementation STSContextMenuModule
 
@@ -32,7 +34,6 @@
     // プラグインや機能拡張によって追加されたメニュー項目も含む、画面に表示する直前の状態のメニューが取り出せる
     NSMenu *menu = [cell menu];
     NSMenuItem* itm;
-#ifdef DEBUG  
 
 #ifdef DEBUG_MENUDUMP
     static NSMutableDictionary* tagdic=nil;
@@ -57,7 +58,6 @@
     }
 #endif
 
-#endif
     
     //STSDownloadModule  replace Save Image to “Downloads”
 	if([[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
@@ -71,7 +71,7 @@
         if (itm && dlModule) {
             [itm setAction:@selector(actCopyImageToDownloadFolderMenu:)];
             [itm setTarget:dlModule];
-#ifdef DEBUG
+#ifdef DEBUG_MENUDUMP
             [itm setTitle:@"actCopyImageToDownloadFolderMenu:"];
 #endif
         }
@@ -160,7 +160,6 @@
                 [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
                 [itm setAlternate:YES];
                 [menu insertItem:itm atIndex:++idx];
-//                [itm release];
             
             }
             
@@ -169,7 +168,6 @@
                 [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
-//                [itm release];
                 
             }
             if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowCopyLinkAndTitleContextMenu]){
@@ -177,7 +175,6 @@
                 [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
-//                [itm release];
                 
                 itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link (space) Title") action:@selector(actCopyLinkAndTitleSpaceMenu:) keyEquivalent:@""];
                 [itm setTarget:self];
@@ -185,9 +182,16 @@
                 [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
                 [itm setAlternate:YES];
                 [menu insertItem:itm atIndex:++idx];
-//                [itm release];
                 
             }
+
+#ifdef DEBUG_MENUDUMP
+            // WindowPolicy checker
+            NSMenu* windowPolicyTestMenu=[self safariWindowPolicyTestMenuWithUserDataWrapper:webUserDataWrapper];
+            itm=[[NSMenuItem alloc]initWithTitle:@"WindowPolicyTest" action:nil keyEquivalent:@""];
+            [itm setSubmenu:windowPolicyTestMenu];
+            [menu insertItem:itm atIndex:++idx];
+#endif
         }
         
         //LOG(@"%ud, %ud, %@,%@",type,WKDataGetTypeID(),[copyLinkItem title], NSStringFromSelector([copyLinkItem action]));
@@ -202,7 +206,6 @@
             [itm setTarget:self];
             [itm setRepresentedObject:[copyImageItem representedObject]];
             [menu insertItem:itm atIndex:++idx];
-//            [itm release];
         }
     }
     
@@ -419,5 +422,37 @@
     return [self.squashSheetCtl window];
 }
 
+
+#ifdef DEBUG_MENUDUMP
+
+// WindowPolicy checker
+- (NSMenu*)safariWindowPolicyTestMenuWithUserDataWrapper:(id)webUserDataWrapper
+{
+    NSInteger i;
+    NSMenu* menu=[[NSMenu alloc]initWithTitle:@"WindowPolicyTest"];
+    for (i=0; i<11; i++) {
+        NSString* title=[NSString stringWithFormat:@"WindowPolicy %ld", (long)i];
+        NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:title action:@selector(actWindowPolicyTest:) keyEquivalent:@""];
+        [itm setTarget:self];
+        [itm setTag:i];
+        [itm setRepresentedObject:webUserDataWrapper];
+        [menu addItem:itm];
+    }
+    return menu;
+}
+
+- (void)actWindowPolicyTest:(id)sender
+{
+    id webUserDataWrapper=[sender representedObject];
+    void* apiObject=[webUserDataWrapper userData]; //struct APIObject
+    uint32_t type=WKGetTypeID(apiObject);
+    if(type==WKDictionaryGetTypeID()){ //8==TypeDictionary
+        NSString* linkStr=htWKDictionaryStringForKey(apiObject, @"LinkURL");
+        NSURL* url=[NSURL URLWithString:linkStr];
+        if(url) STSafariGoToURLWithPolicy(url, (int)[sender tag]);
+    }
+}
+
+#endif
 
 @end
