@@ -64,7 +64,7 @@
 
 @interface STQuickSearchModule (STQuickSearchModule_Completion)
 -(void)setupCompletionCtl;
--(HTQuerySeed*)seedForLocationText:(NSString*)inStr;
+- (NSDictionary*)seedInfoForLocationText:(NSString*)inStr;
 @end
 
 

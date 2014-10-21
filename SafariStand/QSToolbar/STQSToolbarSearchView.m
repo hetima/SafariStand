@@ -219,12 +219,14 @@
         return;
     }
     
-    NSRange aRange=[inStr rangeOfString:@" "];
-    if(aRange.length>0 && [inStr length]>aRange.location){
-        searchStr=[inStr substringFromIndex:aRange.location+1];
-    }
 
-    HTQuerySeed* seed=[quickSearchModule seedForLocationText:inStr];
+    HTQuerySeed* seed=nil;
+    NSDictionary* seedInfo=[quickSearchModule seedInfoForLocationText:inStr];
+    if (seedInfo) {
+        seed=seedInfo[@"seed"];
+        searchStr=seedInfo[@"searchStr"];
+    }
+    
     //LOG(@"%@/%@", [self stringValue], seed.title);
     if(seed){
         if (!searchStr) {

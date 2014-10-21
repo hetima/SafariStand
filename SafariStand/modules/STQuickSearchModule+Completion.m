@@ -10,10 +10,42 @@
 #import "STQuickSearchModule.h"
 #import "STSafariConnect.h"
 
+@interface STFakeURLCompletionMatch : NSObject
+
+@property(nonatomic, strong) NSString* userVisibleURLString;
+@property(nonatomic, strong) NSString* title;
+@property(nonatomic, strong) NSString* originalURLString;
+//@property(nonatomic, strong) id data;
+
+@end
+
+
+@implementation STFakeURLCompletionMatch
+
+- (id)matchingStringWithUserTypedPrefix:(id)arg1
+{
+    return @"";
+}
+
+- (long long)matchLocation
+{
+    return NSNotFound;
+}
+
+- (id)parsecDomainIdentifier
+{
+    return @"tophit";
+}
+
+- (BOOL)isTopHit
+{
+    return YES;
+}
+
+@end
+
 
 @implementation STQuickSearchModule (STQuickSearchModule_Completion)
-
-
 
 
 BOOL isLikeURLString(NSString* inStr)
@@ -31,87 +63,69 @@ BOOL isLikeURLString(NSString* inStr)
 }
 
 
-
 -(void)setupCompletionCtl
 {
-    //primeval impliments
-    if ([NSClassFromString(kSafariBrowserWindowController) instancesRespondToSelector:@selector(goToToolbarLocation:)]) {
-        
-        //LocationTextField textDidChange:
-        KZRMETHOD_SWIZZLING_WITHBLOCK
-        (
-         "LocationTextField",
-         "textDidChange:",
-         KZRMethodInspection, call, sel,
-         ^ (id slf, id obj)
-        {
-             //NSConcreteNotification name = NSTextDidChangeNotification; object = LocationFieldEditor
-             HTQuerySeed* seed=[quickSearchModule seedForLocationText:[slf stringValue]];
-             if(seed){
-                 //LOG(@"%@", seed.title);
-                 //objc_msgSend(slf, @selector(setShowsPageTitle:), YES);
-                 //objc_msgSend(slf, @selector(setPageTitle:), seed.title);
-                 //objc_msgSend(slf, @selector(setDetailString:), [NSString stringWithFormat:@"QuickSearch : ",seed.title]);
-                 
-             }else{
-                 //if prev set
-                 objc_msgSend(slf, @selector(setDetailString:), nil);
-             }
-             call.as_void(slf, sel, obj);
-             if(seed){
-                 objc_msgSend(slf, @selector(setDetailString:), [NSString stringWithFormat:@"QuickSearch : %@",seed.title]);
-             }
-             
-             //seedForLocationText:
-         });
-        
-        //kSafariBrowserWindowController goToToolbarLocation:
-        KZRMETHOD_SWIZZLING_WITHBLOCK
-        (
-         kSafariBrowserWindowControllerCstr,
-         "goToToolbarLocation:",
-         KZRMethodInspection, call, sel,
-         ^ (id slf, id obj)
-        {
-            NSString* locationString=[obj stringValue];
-            HTQuerySeed* seed=[quickSearchModule seedForLocationText:locationString];
-            if(seed){
-                NSURLRequest* req=[seed requestWithLocationString:locationString];
-                if(req){
-                    //rangeOfString+1 は直前のrequestWithLocationString:で保証済み
-                    NSString* searchStr=[locationString substringFromIndex:[locationString rangeOfString:@" "].location+1];
-                    STSafariAddSearchStringHistory(searchStr);
-                    STSafariGoToRequestWithPolicy(req, STSafariWindowPolicyFromCurrentEvent());
-                }
-                // FIXME: shortcut のみを打ち込むとreq==nilになってどこへも飛ばない
-            }else{
-                if([locationString hasPrefix:@"ttp://"]){
-                    [obj setStringValue:[@"h" stringByAppendingString:locationString]];
-                }else if(!isLikeURLString(locationString)){
-                    //search engine
-                    [quickSearchModule sendDefaultQuerySeedWithSearchString:locationString  policy:STSafariWindowPolicyFromCurrentEvent()];
-                    return;
-                }
-                call.as_void(slf, sel, obj);
-            }
-            
-         });
 
-    }
+    KZRMETHOD_SWIZZLING_
+    (
+     "WBSURLCompletionDatabase",
+     "getBestMatchesForTypedString:topHits:matches:limit:",
+     KZRMethodInspection, call, sel)
+    ^void (id slf, id str, id *topHits, id *matches, unsigned long long limit){
+        call.as_void(slf, sel, str, topHits, matches, limit);
+        
+        NSDictionary* seedInfo=[quickSearchModule seedInfoForLocationText:str];
+        NSString* searchStr=seedInfo[@"searchStr"];
+        if ([searchStr length]>0) {
+            HTQuerySeed* seed=seedInfo[@"seed"];
+            if ([seed.method isEqualToString:@"GET"]) {
+                NSURLRequest* req=[seed requestWithSearchString:searchStr];
+                NSString* urlString=[[req URL]absoluteString];
+                STFakeURLCompletionMatch* cmplMatch=[[STFakeURLCompletionMatch alloc]init];
+                cmplMatch.userVisibleURLString=urlString;
+                cmplMatch.originalURLString=urlString;
+                NSString* title=[NSString stringWithFormat:@"🔍 %@: %@", seed.title, searchStr];
+                cmplMatch.title=title;
+                
+                //seems no need
+                //id fakeData=objc_msgSend(slf, @selector(fakeBookmarkMatchDataWithURLString:title:), urlString, title);
+                //cmplMatch.data=fakeData;
+                
+                //array of WBSTopHitCompletionMatch
+                NSMutableArray* ary=[[NSMutableArray alloc]init];
+                [ary addObject:cmplMatch];
+
+                if ([*topHits count]) {
+                    [ary addObjectsFromArray:*topHits];
+                }
+                *topHits=ary;
+            }
+        }
+        
+    }_WITHBLOCK;
+    
 }
 
 
--(HTQuerySeed*)seedForLocationText:(NSString*)inStr
+- (NSDictionary*)seedInfoForLocationText:(NSString*)inStr
 {
+    
     NSRange aRange=[inStr rangeOfString:@" "];
-    if(aRange.length<=0)return nil;
+    if (aRange.length<=0) return nil;
     
     NSString* kwd=[inStr substringToIndex:aRange.location];
-    //defaultはここでは除外
-    if ([kwd isEqualToString:kDefaultSeedShortcut]) {
-        return nil;
-    }
-    return [self querySeedForShortcut:kwd];
+    //defaultは除外
+    if ([kwd isEqualToString:kDefaultSeedShortcut]) return nil;
+    
+    HTQuerySeed* seed=[self querySeedForShortcut:kwd];
+    if (!seed) return nil;
+    
+    NSString* searchStr=[inStr substringFromIndex:aRange.location+1];
+    if (!searchStr) searchStr=@"";
+    
+    NSDictionary* result=@{@"seed":seed, @"searchStr":searchStr};
+    
+    return result;
 }
 
 
