@@ -161,8 +161,10 @@
 
 -(void)STGoogleSiteSearchMenuItemAction:(id)sender
 {
-    NSURL* aURL=[sender representedObject];
-    NSString* aStr=[aURL absoluteString];
+    id aStr=[sender representedObject];
+    if([aStr isKindOfClass:[NSURL class]]){
+        aStr=[aStr absoluteString];
+    }
     
     NSRange range=[aStr rangeOfString:@"://"];
     NSInteger idx=range.location+range.length;

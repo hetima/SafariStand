@@ -45,14 +45,93 @@
 }
 
 
-#pragma mark -
+#pragma mark - path popup
 
+
+
+-(NSMenu*)pathMenuForWebURL:(NSString*)urlString
+{
+    NSMenuItem* itm;
+    NSMenu* menu=[[NSMenu alloc]initWithTitle:@"Path Navigation"];
+    NSURL* url=[NSURL URLWithString:urlString];
+    NSArray* paths=[url pathComponents];
+    NSString* structuralString;
+    
+    NSString* host=[NSString stringWithFormat:@"%@://%@", [url scheme], [url host]];
+    if ([urlString hasPrefix:[host stringByAppendingString:@":"]]) {
+        host=[NSString stringWithFormat:@"%@:%@", host, [url port]];
+    }
+
+    structuralString=host;
+    NSString* latItem=[paths lastObject];
+    for (NSString* path in paths) {
+        // first item is @"/"
+        structuralString=[structuralString stringByAppendingString:path];
+        if (path != latItem && ![path isEqualToString:@"/"]) {
+            structuralString=[structuralString stringByAppendingString:@"/"];
+        }
+
+        itm=[menu addItemWithTitle:[NSString stringWithFormat:@"➡️ %@", structuralString] action:@selector(actGoToPath:) keyEquivalent:@""];
+        [itm setRepresentedObject:structuralString];
+        [itm setTarget:self];
+        
+        itm=[menu addItemWithTitle:[NSString stringWithFormat:@"📋 %@", structuralString] action:@selector(actCopyPath:) keyEquivalent:@""];
+        [itm setRepresentedObject:structuralString];
+        [itm setTarget:self];
+        [itm setAlternate:YES];
+        [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
+        
+        itm=[menu addItemWithTitle:[NSString stringWithFormat:@"🔍 %@", structuralString] action:@selector(STGoogleSiteSearchMenuItemAction:) keyEquivalent:@""];
+        [itm setRepresentedObject:structuralString];
+        [itm setAlternate:YES];
+        [itm setKeyEquivalentModifierMask:NSShiftKeyMask];
+    }
+    
+    if ([[url query]length]>0) {
+        itm=[[NSMenuItem alloc]initWithTitle:[NSString stringWithFormat:@"📋 ?%@",[url query]] action:@selector(actCopyPath:) keyEquivalent:@""];
+        [itm setRepresentedObject:[url query]];
+        [itm setTarget:self];
+        [menu addItem:itm];
+    }
+    
+    if ([[url fragment]length]>0) {
+        itm=[[NSMenuItem alloc]initWithTitle:[NSString stringWithFormat:@"📋 #%@",[url fragment]] action:@selector(actCopyPath:) keyEquivalent:@""];
+        [itm setRepresentedObject:[url fragment]];
+        [itm setTarget:self];
+        [menu addItem:itm];
+    }
+    
+    return menu;
+}
+
+
+- (void)actGoToPath:(NSMenuItem*)sender
+{
+    NSString* urlStr=[sender representedObject];
+    if([urlStr length]>0){
+        NSURL* url=[NSURL URLWithString:urlStr];
+        if(url) STSafariGoToURLWithPolicy(url, poNewTab);
+    }
+}
+
+
+- (void)actCopyPath:(NSMenuItem*)sender
+{
+    NSString* urlStr=[sender representedObject];
+    if([urlStr length]>0){
+        NSPasteboard* pb=[NSPasteboard generalPasteboard];
+        [pb clearContents];
+        [pb setString:urlStr forType:NSPasteboardTypeString];
+    }
+}
+
+#pragma mark -
 
 -(NSMenu*)actionPopupMenuForURL:(NSString*)currentURLString webView:(NSView*)currentWebView
 {
     NSMenu* actMenu=[[NSMenu alloc]initWithTitle:@"act"];
     
-    BOOL    needSeparator=NO;
+    //BOOL needSeparator=NO;
     
     //copy item"Copy Link URL"
     NSMenuItem* itm;
@@ -89,20 +168,33 @@
     [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
     [itm setAlternate:YES];
     
-    needSeparator=YES;
+    [actMenu addItem:[NSMenuItem separatorItem]];
     
     if(currentURLString && currentWebView){
         //http header
         if([currentURLString hasPrefix:@"http"]){
             //needSeparator=YES;
+            NSMenu* pathMenu=[self pathMenuForWebURL:currentURLString];
+            if (pathMenu) {
+                itm=[actMenu addItemWithTitle:@"Path Navigation" action:nil keyEquivalent:@""];
+                [itm setSubmenu:pathMenu];
+                [actMenu addItem:[NSMenuItem separatorItem]];
+            }
         }
-        needSeparator=YES;
     }
+    
+    
     /*
     if (needSeparator) {
         [actMenu addItem:[NSMenuItem separatorItem]];
     }
     */
+    
+    
+    NSMenuItem* lastItem=[actMenu itemAtIndex:[actMenu numberOfItems]-1];
+    if ([lastItem isSeparatorItem]) {
+        [actMenu removeItemAtIndex:[actMenu numberOfItems]-1];
+    }
 
     return actMenu;
 }
