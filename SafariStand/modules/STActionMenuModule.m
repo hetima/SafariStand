@@ -47,6 +47,43 @@
 
 #pragma mark - path popup
 
+-(NSMenu*)pathMenuForFileURL:(NSString*)urlString
+{
+    NSMenuItem* itm;
+    NSMenu* menu=[[NSMenu alloc]initWithTitle:@"Path Navigation"];
+    NSURL* url=[NSURL URLWithString:urlString];
+    NSString* fullPath=[url path];
+    NSString* pathToSelect=fullPath;
+    if (![[NSFileManager defaultManager]fileExistsAtPath:fullPath]) {
+        return nil;
+    }
+    while ([fullPath length]>1) {
+        NSString* name=[fullPath lastPathComponent];
+        itm=[menu addItemWithTitle:name action:@selector(actRevealFilePath:) keyEquivalent:@""];
+        [itm setRepresentedObject:pathToSelect];
+        [itm setTarget:self];
+        NSImage* icon=[[NSWorkspace sharedWorkspace]iconForFile:fullPath];
+        [icon setSize:NSMakeSize(16.0,16.0)];
+        [itm setImage:icon];
+        
+        pathToSelect=fullPath;
+        fullPath=[fullPath stringByDeletingLastPathComponent];
+        if ([pathToSelect isEqualToString:fullPath]) {
+            break;
+        }
+    }
+    
+    return menu;
+}
+
+
+- (void)actRevealFilePath:(NSMenuItem*)sender
+{
+    NSString* path=[sender representedObject];
+    if([[NSFileManager defaultManager]fileExistsAtPath:path]){
+        [[NSWorkspace sharedWorkspace]selectFile:path inFileViewerRootedAtPath:nil];
+    }
+}
 
 
 -(NSMenu*)pathMenuForWebURL:(NSString*)urlString
@@ -171,15 +208,17 @@
     [actMenu addItem:[NSMenuItem separatorItem]];
     
     if(currentURLString && currentWebView){
-        //http header
+        NSMenu* pathMenu=nil;
         if([currentURLString hasPrefix:@"http"]){
-            //needSeparator=YES;
-            NSMenu* pathMenu=[self pathMenuForWebURL:currentURLString];
-            if (pathMenu) {
-                itm=[actMenu addItemWithTitle:@"Path Navigation" action:nil keyEquivalent:@""];
-                [itm setSubmenu:pathMenu];
-                [actMenu addItem:[NSMenuItem separatorItem]];
-            }
+            pathMenu=[self pathMenuForWebURL:currentURLString];
+        }else if ([currentURLString hasPrefix:@"file://"]){
+            pathMenu=[self pathMenuForFileURL:currentURLString];
+        }
+        
+        if (pathMenu) {
+            itm=[actMenu addItemWithTitle:@"Path Navigation" action:nil keyEquivalent:@""];
+            [itm setSubmenu:pathMenu];
+            [actMenu addItem:[NSMenuItem separatorItem]];
         }
     }
     
