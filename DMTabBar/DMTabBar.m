@@ -11,12 +11,12 @@
 
 // Gradient applied to the background of the tabBar
 // (Colors and gradient from Stephan Michels Softwareentwicklung und Beratung - SMTabBar)
-#define kDMTabBarGradientColor_Start                        [NSColor colorWithCalibratedRed:0.851f green:0.851f blue:0.851f alpha:1.0f]
+#define kDMTabBarGradientColor_Start                        [NSColor colorWithCalibratedRed:0.88f green:0.88f blue:0.88f alpha:1.0f]
 #define kDMTabBarGradientColor_End                          [NSColor colorWithCalibratedRed:0.700f green:0.700f blue:0.700f alpha:1.0f]
 #define KDMTabBarGradient                                   
 
 // Border color of the bar
-#define kDMTabBarBorderColor                                [NSColor colorWithDeviceWhite:0.2 alpha:1.0f]
+#define kDMTabBarBorderColor                                [NSColor colorWithDeviceWhite:0.6 alpha:1.0f]
 
 // Default tabBar item width
 #define kDMTabBarItemWidth                                  32.0f
@@ -69,10 +69,10 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
     
-    // Draw bar gradient if its color is set
-    if (_gradientColorStart && _gradientColorEnd)
+    if (_gradientColorStart)
     {
-        [[[NSGradient alloc] initWithStartingColor:self.gradientColorStart endingColor:self.gradientColorEnd] drawInRect:self.bounds angle:90.0];
+        [_gradientColorStart setFill];
+        [NSBezierPath fillRect:self.bounds];
     }
     
     // Draw drak gray bottom border
