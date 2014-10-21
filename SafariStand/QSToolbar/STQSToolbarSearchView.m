@@ -122,7 +122,7 @@
 
 +(void)load
 {
-    [self setCellClass:[STQSToolbarSearchCell class]];
+//    [self setCellClass:[STQSToolbarSearchCell class]];
 }
 
 - (id)initWithFrame:(NSRect)frame
@@ -145,7 +145,7 @@
         
         
         [[self cell]setScrollable:YES];
-        [self setFont:[NSFont systemFontOfSize:12.0]];
+        //[self setFont:[NSFont systemFontOfSize:12.0]];
         
         //reset title
         [self setCurrentSeed:nil];
@@ -175,8 +175,8 @@
     [[[self cell]searchButtonCell]setTitle:cellTitle];
     //[self layoutCurrentEditor];
     
-    [[self window]makeFirstResponder:nil];
-    [[self window]makeFirstResponder:self];
+    //[[self window]makeFirstResponder:nil];
+    //[[self window]makeFirstResponder:self];
     
 }
 
@@ -193,7 +193,7 @@
         [quickSearchModule sendDefaultQuerySeedWithSearchString:searchText  policy:STSafariWindowPolicyFromCurrentEvent()];
     }
 
-    [[self window]makeFirstResponder:nil];
+    //[[self window]makeFirstResponder:nil];
     
 }
 
