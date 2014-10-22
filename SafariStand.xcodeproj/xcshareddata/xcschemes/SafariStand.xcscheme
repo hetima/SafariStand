@@ -78,6 +78,15 @@
       <PathRunnable
          FilePath = "/Applications/Safari.app">
       </PathRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "AA12DA7913B73EFA0082EBB3"
+            BuildableName = "SafariStand.bundle"
+            BlueprintName = "SafariStand"
+            ReferencedContainer = "container:SafariStand.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

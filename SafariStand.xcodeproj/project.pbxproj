@@ -97,6 +97,8 @@
 		AAD974901817FCCB004D955A /* NSFileManager+SafariStand.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD9748F1817FCCB004D955A /* NSFileManager+SafariStand.m */; };
 		AADBCB5015C119070069E262 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AADBCB4F15C119070069E262 /* ApplicationServices.framework */; };
 		AAEC852018026D38007A5DD4 /* HTWebClipWin.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */; };
+		AAF4985119F74EF50064BD35 /* STConsolePanelModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF4985019F74EF50064BD35 /* STConsolePanelModule.m */; };
+		AAF4985319F7508C0064BD35 /* STConsolePanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAF4985219F7508C0064BD35 /* STConsolePanel.xib */; };
 		AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAF9D293147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D28D147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAF9D296147E1E210018C949 /* HTWebClipwinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D292147E1E210018C949 /* HTWebClipwinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -263,6 +265,9 @@
 		AAD9748F1817FCCB004D955A /* NSFileManager+SafariStand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+SafariStand.m"; sourceTree = "<group>"; };
 		AADBCB4F15C119070069E262 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HTWebClipWin.xib; sourceTree = "<group>"; };
+		AAF4984F19F74EF50064BD35 /* STConsolePanelModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConsolePanelModule.h; sourceTree = "<group>"; };
+		AAF4985019F74EF50064BD35 /* STConsolePanelModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConsolePanelModule.m; sourceTree = "<group>"; };
+		AAF4985219F7508C0064BD35 /* STConsolePanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STConsolePanel.xib; sourceTree = "<group>"; };
 		AAF8702413E55E4E00AC67A1 /* STSDownloadModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSDownloadModule.h; sourceTree = "<group>"; };
 		AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSDownloadModule.m; sourceTree = "<group>"; };
 		AAF9D28C147E1E210018C949 /* HTDOMElementHierarchyMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTDOMElementHierarchyMenuItem.h; sourceTree = "<group>"; };
@@ -424,6 +429,7 @@
 				AA0B390B15C54ED000A025FF /* STTBActionMenuDisabled.tiff */,
 				AAA1E4831813EF2B00970FAD /* STTBToggleSidebar.pdf */,
 				AA92216F13C04DE6006E898F /* STCPrefWin.xib */,
+				AAF4985219F7508C0064BD35 /* STConsolePanel.xib */,
 				AA0881AC13E4284B003B70DF /* Localizable.strings */,
 			);
 			path = Resources;
@@ -490,6 +496,8 @@
 				AA718A9C13B9D8DA00327606 /* STActionMessageModule.m */,
 				AA718AA413BA00DE00327606 /* STPrefWindowModule.h */,
 				AA718AA513BA00DE00327606 /* STPrefWindowModule.m */,
+				AAF4984F19F74EF50064BD35 /* STConsolePanelModule.h */,
+				AAF4985019F74EF50064BD35 /* STConsolePanelModule.m */,
 				AA718AB813BB524C00327606 /* STSToolbarModule.h */,
 				AA718AB913BB524C00327606 /* STSToolbarModule.m */,
 				AA5B3AAA13BC7667001453C0 /* STSContextMenuModule.h */,
@@ -703,6 +711,7 @@
 				AA92216C13C04DB1006E898F /* HTQuerySeedEditViewCtl.xib in Resources */,
 				AACAD26F13E15BF100170193 /* STPrefSearch.png in Resources */,
 				AAD9748C1817EA3D004D955A /* SquashContextMenuItems61.plist in Resources */,
+				AAF4985319F7508C0064BD35 /* STConsolePanel.xib in Resources */,
 				AAD79B5213E2BC09004CE895 /* STSearchItLaterWinCtl.xib in Resources */,
 				AA0881AA13E4284B003B70DF /* Localizable.strings in Resources */,
 				AA780DA613F1C0F40042A253 /* STClassifyDownloadAdvSheet.xib in Resources */,
@@ -738,6 +747,7 @@
 				AA04F85013B8867700A8C548 /* STCSimblLorder.m in Sources */,
 				AA04F85313B88BF800A8C548 /* STSafariConnect.m in Sources */,
 				AA21447A17EEBF5400EDE661 /* STCSafariStandCore.m in Sources */,
+				AAF4985119F74EF50064BD35 /* STConsolePanelModule.m in Sources */,
 				AA47D5DB13B9AC3100C9A19E /* STCModule.m in Sources */,
 				AA47D5DF13B9AE3A00C9A19E /* STBookmarkSeparator.m in Sources */,
 				AA47D5E213B9AFD400C9A19E /* HTObjectHook.m in Sources */,

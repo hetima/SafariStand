@@ -73,6 +73,7 @@ static STCSafariStandCore *sharedInstance;
     NSMutableArray* orderedModule=[[NSMutableArray alloc]initWithCapacity:16];
     registerAndAddOrder(@"STSToolbarModule");
     registerAndAddOrder(@"STPrefWindowModule");
+    registerAndAddOrder(@"STConsolePanelModule");
 
     registerAndAddOrder(@"STSContextMenuModule"); //STQuickSearchModule
     registerAndAddOrder(@"STQuickSearchModule"); //STPrefWindowModule
