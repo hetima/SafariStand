@@ -55,7 +55,8 @@
 {
     if(!_winCtl){
         _winCtl=[[STConsolePanelCtl alloc]initWithWindowNibName:@"STConsolePanel"];
-        _winCtl.window.titleVisibility=NSWindowTitleHidden;;
+        _winCtl.window.titleVisibility=NSWindowTitleHidden;
+        _winCtl.window.titlebarAppearsTransparent=YES;
         [[STCSafariStandCore si]sendMessage:@selector(stMessageConsolePanelLoaded:) toAllModule:self];
     }
     NSInteger tabToSelect=NSNotFound;
