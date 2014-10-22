@@ -19,7 +19,7 @@
 
 @implementation STQuickSearchModule (STQuickSearchModule_SearchItLater)
 
--(void)instaalSearchItLaterViewToConsolePanel:(STConsolePanelModule*)consolePanelModule
+-(void)installSearchItLaterViewToConsolePanel:(STConsolePanelModule*)consolePanelModule
 {
     NSViewController* viewCtl=[STSearchItLaterViewCtl viewCtl];
     //NSView* view=viewCtl.view;

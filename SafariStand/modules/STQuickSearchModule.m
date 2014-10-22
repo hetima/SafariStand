@@ -177,7 +177,7 @@ STQuickSearchModule* quickSearchModule;
 
 - (void)stMessageConsolePanelLoaded:(STConsolePanelModule*)sender
 {
-    [self instaalSearchItLaterViewToConsolePanel:sender];
+    [self installSearchItLaterViewToConsolePanel:sender];
 }
 
 

@@ -54,7 +54,7 @@
 
 -(NSMutableDictionary*)addSearchItLaterString:(NSString*)inStr;
 -(void)removeSearchItLaterString:(NSString*)inStr;
--(void)instaalSearchItLaterViewToConsolePanel:(STConsolePanelModule*)consolePanelModule;
+-(void)installSearchItLaterViewToConsolePanel:(STConsolePanelModule*)consolePanelModule;
 @end
 
 
