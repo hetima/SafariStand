@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="STConsolePanelCtl">
             <connections>
+                <outlet property="oTabView" destination="IXq-5F-bP0" id="QsG-aS-3a5"/>
                 <outlet property="oToolbar" destination="z64-po-Fmu" id="9d3-cS-ABB"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="f2Y-Ly-rYZ"/>
             </connections>
@@ -47,6 +48,9 @@
                     <toolbarItem reference="Bbk-eO-dLl"/>
                     <toolbarItem reference="Bbk-eO-dLl"/>
                 </defaultToolbarItems>
+                <connections>
+                    <outlet property="delegate" destination="-2" id="Bz9-Ki-usr"/>
+                </connections>
             </toolbar>
             <connections>
                 <outlet property="delegate" destination="-2" id="DjD-H6-Tp2"/>

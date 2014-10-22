@@ -89,8 +89,6 @@
 		AACAD26D13E126D700170193 /* HTWebKit2Adapter.m in Sources */ = {isa = PBXBuildFile; fileRef = AACAD26C13E126D700170193 /* HTWebKit2Adapter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AACAD26F13E15BF100170193 /* STPrefSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = AACAD26E13E15BF000170193 /* STPrefSearch.png */; };
 		AAD79B4E13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B4D13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		AAD79B5213E2BC09004CE895 /* STSearchItLaterWinCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAD79B5113E2BC09004CE895 /* STSearchItLaterWinCtl.xib */; };
-		AAD79B5513E2BC2E004CE895 /* STSearchItLaterWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAD79B5B13E2D2ED004CE895 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */; };
 		AAD974891817618F004D955A /* STPrefSidebar.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AAD974881817618F004D955A /* STPrefSidebar.tiff */; };
 		AAD9748C1817EA3D004D955A /* SquashContextMenuItems61.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAD9748A1817EA3D004D955A /* SquashContextMenuItems61.plist */; };
@@ -99,6 +97,8 @@
 		AAEC852018026D38007A5DD4 /* HTWebClipWin.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */; };
 		AAF4985119F74EF50064BD35 /* STConsolePanelModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF4985019F74EF50064BD35 /* STConsolePanelModule.m */; };
 		AAF4985319F7508C0064BD35 /* STConsolePanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAF4985219F7508C0064BD35 /* STConsolePanel.xib */; };
+		AAF4985719F7622A0064BD35 /* STSearchItLaterViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF4985519F7622A0064BD35 /* STSearchItLaterViewCtl.m */; };
+		AAF4985819F7622A0064BD35 /* STSearchItLaterViewCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAF4985619F7622A0064BD35 /* STSearchItLaterViewCtl.xib */; };
 		AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAF9D293147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D28D147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAF9D296147E1E210018C949 /* HTWebClipwinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D292147E1E210018C949 /* HTWebClipwinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -254,9 +254,6 @@
 		AACAD26C13E126D700170193 /* HTWebKit2Adapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTWebKit2Adapter.m; sourceTree = "<group>"; };
 		AACAD26E13E15BF000170193 /* STPrefSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = STPrefSearch.png; sourceTree = "<group>"; };
 		AAD79B4D13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "STQuickSearchModule+SearchItLater.m"; sourceTree = "<group>"; };
-		AAD79B5113E2BC09004CE895 /* STSearchItLaterWinCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STSearchItLaterWinCtl.xib; sourceTree = "<group>"; };
-		AAD79B5313E2BC2E004CE895 /* STSearchItLaterWinCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSearchItLaterWinCtl.h; sourceTree = "<group>"; };
-		AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSearchItLaterWinCtl.m; sourceTree = "<group>"; };
 		AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		AAD974881817618F004D955A /* STPrefSidebar.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = STPrefSidebar.tiff; sourceTree = "<group>"; };
 		AAD9748B1817EA3D004D955A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/SquashContextMenuItems61.plist; sourceTree = "<group>"; };
@@ -268,6 +265,9 @@
 		AAF4984F19F74EF50064BD35 /* STConsolePanelModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConsolePanelModule.h; sourceTree = "<group>"; };
 		AAF4985019F74EF50064BD35 /* STConsolePanelModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConsolePanelModule.m; sourceTree = "<group>"; };
 		AAF4985219F7508C0064BD35 /* STConsolePanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STConsolePanel.xib; sourceTree = "<group>"; };
+		AAF4985419F7622A0064BD35 /* STSearchItLaterViewCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSearchItLaterViewCtl.h; sourceTree = "<group>"; };
+		AAF4985519F7622A0064BD35 /* STSearchItLaterViewCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSearchItLaterViewCtl.m; sourceTree = "<group>"; };
+		AAF4985619F7622A0064BD35 /* STSearchItLaterViewCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STSearchItLaterViewCtl.xib; sourceTree = "<group>"; };
 		AAF8702413E55E4E00AC67A1 /* STSDownloadModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSDownloadModule.h; sourceTree = "<group>"; };
 		AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSDownloadModule.m; sourceTree = "<group>"; };
 		AAF9D28C147E1E210018C949 /* HTDOMElementHierarchyMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTDOMElementHierarchyMenuItem.h; sourceTree = "<group>"; };
@@ -626,9 +626,9 @@
 		AAD79B5013E2BBDC004CE895 /* SearchItLater */ = {
 			isa = PBXGroup;
 			children = (
-				AAD79B5113E2BC09004CE895 /* STSearchItLaterWinCtl.xib */,
-				AAD79B5313E2BC2E004CE895 /* STSearchItLaterWinCtl.h */,
-				AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */,
+				AAF4985419F7622A0064BD35 /* STSearchItLaterViewCtl.h */,
+				AAF4985519F7622A0064BD35 /* STSearchItLaterViewCtl.m */,
+				AAF4985619F7622A0064BD35 /* STSearchItLaterViewCtl.xib */,
 			);
 			path = SearchItLater;
 			sourceTree = "<group>";
@@ -712,7 +712,6 @@
 				AACAD26F13E15BF100170193 /* STPrefSearch.png in Resources */,
 				AAD9748C1817EA3D004D955A /* SquashContextMenuItems61.plist in Resources */,
 				AAF4985319F7508C0064BD35 /* STConsolePanel.xib in Resources */,
-				AAD79B5213E2BC09004CE895 /* STSearchItLaterWinCtl.xib in Resources */,
 				AA0881AA13E4284B003B70DF /* Localizable.strings in Resources */,
 				AA780DA613F1C0F40042A253 /* STClassifyDownloadAdvSheet.xib in Resources */,
 				AAEC852018026D38007A5DD4 /* HTWebClipWin.xib in Resources */,
@@ -728,6 +727,7 @@
 				AA0B390715C5044F00A025FF /* STTBActionMenu.tiff in Resources */,
 				AA0B390C15C54ED000A025FF /* STTBActionMenuDisabled.tiff in Resources */,
 				AA6FCF3F15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib in Resources */,
+				AAF4985819F7622A0064BD35 /* STSearchItLaterViewCtl.xib in Resources */,
 				AA6FCF4215D3F271008AE5AB /* SquashContextMenuItems.plist in Resources */,
 				AA21448717F027D800EDE661 /* STSidebarCtl.xib in Resources */,
 				AA671A7E17F205B3000A470C /* STVTabListCtl.xib in Resources */,
@@ -771,7 +771,6 @@
 				AA09B1F213DE866100389D8B /* STKeyHandlerModule.m in Sources */,
 				AACAD26D13E126D700170193 /* HTWebKit2Adapter.m in Sources */,
 				AAD79B4E13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m in Sources */,
-				AAD79B5513E2BC2E004CE895 /* STSearchItLaterWinCtl.m in Sources */,
 				AA0881B013E51287003B70DF /* STSTitleBarModule.m in Sources */,
 				AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */,
 				AA780DA313F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.m in Sources */,
@@ -779,6 +778,7 @@
 				AA396EFF13F61B1E00EF5806 /* STStandSearchViewCtl.m in Sources */,
 				AA396F0313F61ED800EF5806 /* STMetadataQueryCtl.m in Sources */,
 				AA396F0613F638C100EF5806 /* STStandSearchWinCtl.m in Sources */,
+				AAF4985719F7622A0064BD35 /* STSearchItLaterViewCtl.m in Sources */,
 				AAF9D293147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m in Sources */,
 				AAF9D296147E1E210018C949 /* HTWebClipwinCtl.m in Sources */,
 				AA21447E17EEEB0500EDE661 /* HTFilePresetPopUpButton.m in Sources */,

@@ -69,6 +69,8 @@
 
 #define kMenuItemTagSafariStandSetting 9001
 #define kMenuItemTagOneKeyNavigation 9002
+#define kMenuItemTagConsolePanel 9003
+
 #define kMenuItemTagSelectPreviousTab 9050
 #define kMenuItemTagSelectNextTab 9051
 #define kMenuItemTagGoBack 9052

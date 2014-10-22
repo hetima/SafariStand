@@ -52,6 +52,7 @@
     NSString* label=[tab label];
 
     NSToolbarItem*	result=[[NSToolbarItem alloc] initWithItemIdentifier:itemIdentifier];
+    [result setToolTip:label];
     [result setImage:image];
     [result setLabel:label];
     [result setPaletteLabel:label];

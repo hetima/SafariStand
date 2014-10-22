@@ -9,7 +9,6 @@
 #import "SafariStand.h"
 #import "NSApplication+SafariStand.h"
 #import "STSafariConnect.h"
-#import "STSearchItLaterWinCtl.h"
 #import "STStandSearchWinCtl.h"
 
 #import "HTWebClipwinCtl.h"
@@ -41,7 +40,7 @@
 
 -(void)showSearchItLaterWindow:(id)sender
 {
-    [STSearchItLaterWinCtl showSearchItLaterWindow];
+
 }
 
 -(void)showStandSearchWindow:(id)sender

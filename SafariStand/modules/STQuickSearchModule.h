@@ -8,6 +8,7 @@
 #define kDefaultSeedShortcut @"default"
 #define STQSToolbarIdentifier @"com.hetima.SafariStand.QSToolbar"
 
+@class STConsolePanelModule;
 
 @interface STQuickSearchModule : STCModule <HTQuerySeedsBinder>
 
@@ -53,6 +54,7 @@
 
 -(NSMutableDictionary*)addSearchItLaterString:(NSString*)inStr;
 -(void)removeSearchItLaterString:(NSString*)inStr;
+-(void)instaalSearchItLaterViewToConsolePanel:(STConsolePanelModule*)consolePanelModule;
 @end
 
 

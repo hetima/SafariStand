@@ -14,9 +14,22 @@
 #import "STSafariConnect.h"
 #import "STQuickSearchModule.h"
 
-
+#import "STConsolePanelModule.h"
+#import "STSearchItLaterViewCtl.h"
 
 @implementation STQuickSearchModule (STQuickSearchModule_SearchItLater)
+
+-(void)instaalSearchItLaterViewToConsolePanel:(STConsolePanelModule*)consolePanelModule
+{
+    NSViewController* viewCtl=[STSearchItLaterViewCtl viewCtl];
+    //NSView* view=viewCtl.view;
+
+    NSString* imgPath=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForImageResource:@"STPrefSearch"];
+    NSImage* img=[[NSImage alloc]initWithContentsOfFile:imgPath];
+    [consolePanelModule addViewController:viewCtl withIdentifier:@"SearchItLater" title:@"Search It Later" icon:img];
+    
+}
+
 
 -(NSMutableDictionary*)existingSearchItLaterForString:(NSString*)str
 {

@@ -14,6 +14,7 @@ defaults delete com.apple.Safari Stand_QuerySeeds
 #import "STSafariConnect.h"
 #import "STQuickSearchModule.h"
 #import "STPrefWindowModule.h"
+#import "STConsolePanelModule.h"
 #import "HTQuerySeedEditViewCtl.h"
 
 
@@ -108,10 +109,6 @@ STQuickSearchModule* quickSearchModule;
         NSMenuItem* silMenuItem=[[NSMenuItem alloc]initWithTitle:@"Stand Search" action:@selector(showStandSearchWindow:) keyEquivalent:@""];
         [core addItemToStandMenu:silMenuItem];
 
-        //Search It Later Menu
-        silMenuItem=[[NSMenuItem alloc]initWithTitle:@"Search It Later" action:@selector(showSearchItLaterWindow:) keyEquivalent:@""];
-        [core addItemToStandMenu:silMenuItem];
-
         [core registerToolbarIdentifier:STQSToolbarIdentifier module:self];
 
     }
@@ -175,6 +172,12 @@ STQuickSearchModule* quickSearchModule;
 - (void)stMessagePrefWindowWillClose:(id)prefWindowCtl
 {
     [self saveToStorage];
+}
+
+
+- (void)stMessageConsolePanelLoaded:(STConsolePanelModule*)sender
+{
+    [self instaalSearchItLaterViewToConsolePanel:sender];
 }
 
 

@@ -1,5 +1,5 @@
 //
-//  STSearchItLaterWinCtl.m
+//  STSearchItLaterViewCtl.m
 //  SafariStand
 
 #if !__has_feature(objc_arc)
@@ -7,32 +7,44 @@
 #endif
 
 #import "SafariStand.h"
-#import "STSearchItLaterWinCtl.h"
+#import "STSearchItLaterViewCtl.h"
 
 #import "STSafariConnect.h"
 #import "STQuickSearchModule.h"
 #import "HTArrayController.h"
-#import "HTWindowControllerRetainer.h"
 
 
-@implementation STSearchItLaterWinCtl
-STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
+@implementation STSearchItLaterViewCtl
 
-
-+ (void)showSearchItLaterWindow
++ (STSearchItLaterViewCtl*)viewCtl
 {
+    STSearchItLaterViewCtl* result;
+    result=[[STSearchItLaterViewCtl alloc]initWithNibName:@"STSearchItLaterViewCtl" bundle:
+                           [NSBundle bundleWithIdentifier:kSafariStandBundleID]];
     
-    if(!sharedSearchItLaterWinCtl){
-        sharedSearchItLaterWinCtl=[[STSearchItLaterWinCtl alloc]initWithWindowNibName:@"STSearchItLaterWinCtl"];
-        sharedSearchItLaterWinCtl.silBinder=[STQuickSearchModule si];
-        [[STQuickSearchModule si] addObserver:sharedSearchItLaterWinCtl
-                  forKeyPath:@"searchItLaterStrings" 
-                     options:(NSKeyValueObservingOptionNew)
-                     context:NULL];
-    }
-    [sharedSearchItLaterWinCtl showWindow:nil];
+    return result;
 }
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        LOG(@"STSearchItLaterViewCtl init");
+        self.silBinder=[STQuickSearchModule si];
+        [[STQuickSearchModule si] addObserver:self
+                                   forKeyPath:@"searchItLaterStrings"
+                                      options:(NSKeyValueObservingOptionNew)
+                                      context:NULL];
+    }
+    return self;
+}
+
+
+- (void)viewDidLoad
+{
+    LOG(@"STSearchItLaterView load");
+    
+}
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object 
@@ -50,51 +62,24 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
     }
 }
 
-- (id)initWithWindow:(NSWindow *)window
-{
-    self = [super initWithWindow:window];
-    if (self) {
-        // Initialization code here.
-    }
-    
-    return self;
-}
 
 - (void)dealloc
 {
-    LOG(@"STSearchItLaterWinCtl dealloc");
-}
-
-- (void)windowDidLoad
-{
-    [[HTWindowControllerRetainer si]addWindowController:self];
-    [super windowDidLoad];
-    [[self window] setContentBorderThickness:21 forEdge:NSMinYEdge];
-
+    [[STQuickSearchModule si] removeObserver:self forKeyPath:@"searchItLaterStrings"];
+    LOG(@"STSearchItLaterViewCtl dealloc");
 }
 
 
-- (void)windowWillClose:(NSNotification *)aNotification
-{
-    if(sharedSearchItLaterWinCtl==self){
-        [[STQuickSearchModule si] removeObserver:self forKeyPath:@"searchItLaterStrings"];
-        sharedSearchItLaterWinCtl=nil;
-    }
-    //[self autorelease];
-}
-
-
--(void)setSearchItLaterStrings:(NSMutableArray *)sil
+- (void)setSearchItLaterStrings:(NSMutableArray *)sil
 {
     [self.silBinder setSearchItLaterStrings:sil];
 }
 
--(NSMutableArray*)searchItLaterStrings
+
+- (NSMutableArray*)searchItLaterStrings
 {
     return [self.silBinder searchItLaterStrings];
 }
-
-
 
 
 -(NSMenu*)menuForTableView:(NSTableView*)tableView index:(NSInteger)row
@@ -111,7 +96,6 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
             [actMenu insertItem:m atIndex:0];
             [actMenu addItem:[NSMenuItem separatorItem]];
         }
-
         
         m=[actMenu addItemWithTitle:LOCALIZE(@"Copy") action:@selector(copy:) keyEquivalent:@""];
         [m setTarget:tableView];
@@ -124,10 +108,11 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
     return nil;
 }
 
+
 - (IBAction)actQuickSearchMenuItem:(id)sender
 {
     id seed=[sender representedObject];
-    NSMutableDictionary* itm=[self safeArrangedObjectAtIndex:[silArrayCtl selectionIndex]];
+    NSMutableDictionary* itm=[self safeArrangedObjectAtIndex:[self.silArrayCtl selectionIndex]];
     if(itm){
         NSString* selectedText=[itm objectForKey:@"val"];
         if([selectedText length]){
@@ -136,6 +121,7 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
         }
     }
 }
+
 
 - (void)copy:(NSTableView*)sender
 {
@@ -148,15 +134,17 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
 
 }
 
+
 - (IBAction)delete:(id)sender
 {
     NSInteger idx=[sender selectedRow];
     NSMutableDictionary* itm=[self safeArrangedObjectAtIndex:idx];
     if(itm){
-        [silArrayCtl removeObjectAtArrangedObjectIndex:idx];
+        [self.silArrayCtl removeObjectAtArrangedObjectIndex:idx];
     }
     //[oTreeController remove:sender];
 }
+
 
 - (IBAction)paste:(id)sender
 {
@@ -165,18 +153,17 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
 
     if([str length]){
         id dic=[[STQuickSearchModule si]searchItLaterForString:str];
-        [silArrayCtl setSelectedObjects:[NSArray arrayWithObject:dic]];
+        [self.silArrayCtl setSelectedObjects:[NSArray arrayWithObject:dic]];
     }
 }
 
--(id)safeArrangedObjectAtIndex:(NSInteger)idx
+
+- (id)safeArrangedObjectAtIndex:(NSInteger)idx
 {
-    NSArray* arrangedObjects=[silArrayCtl arrangedObjects];
+    NSArray* arrangedObjects=[self.silArrayCtl arrangedObjects];
     if(idx<0||[arrangedObjects count]<=idx)return nil;
     
     return[arrangedObjects objectAtIndex:idx];
-    
-    
 }
 
 @end
@@ -194,18 +181,21 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
 
 - (IBAction)copy:(id)sender
 {
-    [(STSearchItLaterWinCtl*)[self delegate]copy:self];
+    [(STSearchItLaterViewCtl*)[self delegate]copy:self];
 }
+
 
 - (IBAction)delete:(id)sender
 {
-    [(STSearchItLaterWinCtl*)[self delegate]delete:self];
+    [(STSearchItLaterViewCtl*)[self delegate]delete:self];
 }
+
 
 - (IBAction)paste:(id)sender
 {
-    [(STSearchItLaterWinCtl*)[self delegate]paste:self];
+    [(STSearchItLaterViewCtl*)[self delegate]paste:self];
 }
+
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
@@ -227,18 +217,18 @@ STSearchItLaterWinCtl* sharedSearchItLaterWinCtl;
     return  YES;
 }
 
+
 - (NSMenu *)menuForEvent:(NSEvent *)theEvent
 {
 	NSInteger row = [self rowAtPoint:[self convertPoint:[theEvent locationInWindow] fromView:nil]];
 
-	NSMenu* menu=[(STSearchItLaterWinCtl*)[self delegate]menuForTableView:self index:row];
+	NSMenu* menu=[(STSearchItLaterViewCtl*)[self delegate]menuForTableView:self index:row];
     if(menu){
         
         [self selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
     }
     return menu;
 }
-
 
 
 @end
