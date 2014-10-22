@@ -28,14 +28,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="300" height="420"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <font key="font" metaFont="system"/>
-                        <tabViewItems>
-                            <tabViewItem label="Item 0" identifier="" id="pIO-hd-o3i" userLabel="Item 1">
-                                <view key="view" id="kvb-DO-W95">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="420"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                            </tabViewItem>
-                        </tabViewItems>
+                        <tabViewItems/>
                     </tabView>
                 </subviews>
             </view>

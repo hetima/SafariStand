@@ -70,7 +70,7 @@
         identifier=[[_winCtl.oTabView selectedTabViewItem]identifier];
         
         if ([identifier length]<=0){
-            [_winCtl.oTabView selectLastTabViewItem:nil];
+            [_winCtl.oTabView selectFirstTabViewItem:nil];
             identifier=[[_winCtl.oTabView selectedTabViewItem]identifier];
         }
 
