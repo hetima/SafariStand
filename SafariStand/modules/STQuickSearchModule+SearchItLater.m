@@ -22,12 +22,9 @@
 -(void)installSearchItLaterViewToConsolePanel:(STConsolePanelModule*)consolePanelModule
 {
     NSViewController* viewCtl=[STSearchItLaterViewCtl viewCtl];
-    //NSView* view=viewCtl.view;
 
-    NSString* imgPath=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForImageResource:@"STPrefSearch"];
-    NSImage* img=[[NSImage alloc]initWithContentsOfFile:imgPath];
+    NSImage* img=[NSImage imageNamed:NSImageNameRevealFreestandingTemplate];
     [consolePanelModule addViewController:viewCtl withIdentifier:@"SearchItLater" title:@"Search It Later" icon:img];
-    
 }
 
 
