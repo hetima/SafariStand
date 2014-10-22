@@ -67,6 +67,9 @@
 #define kpSuppressTabBarWidthEnabled @"Stand_SuppressTabBarWidthEnabled"
 #define kpSuppressTabBarWidthValue @"Stand_SuppressTabBarWidthValue"
 
+#define kpExpandAddressBarWidthEnabled @"Stand_ExpandAddressBarWidthEnabled"
+#define kpExpandAddressBarWidthValue @"Stand_ExpandAddressBarWidthValue"
+
 #define kMenuItemTagSafariStandSetting 9001
 #define kMenuItemTagOneKeyNavigation 9002
 #define kMenuItemTagConsolePanel 9003

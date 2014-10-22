@@ -30,21 +30,24 @@ static STSToolbarModule* toolbarModule;
 
         
         //- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "ToolbarController",
          "toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:",
-         KZRMethodInspection, call, sel,
+         KZRMethodInspection, call, sel)
          ^id (id slf, id toolbar, NSString *itemIdentifier, BOOL real){
              if([[toolbarModule toolbarIdentifiers]containsObject:itemIdentifier]){
-                 //return [HTActionButtonController toolBarItemForIdentifier:itemIdentifier];
                  return [toolbarModule _toolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:real];
-                 
              }else{
-                 return call.as_id(slf, sel, toolbar, itemIdentifier, real);
+                 id result=call.as_id(slf, sel, toolbar, itemIdentifier, real);
+                 if ([[NSUserDefaults standardUserDefaults]boolForKey:kpExpandAddressBarWidthEnabled]
+                     && [itemIdentifier isEqualToString:@"InputFieldsToolbarIdentifier"]) {
+                     [self expandInputFieldsToolbar:result];
+                 }
+                 return result;
              }
              return nil;
-         });
+         }_WITHBLOCK;
         
         //- (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
         KZRMETHOD_SWIZZLING_WITHBLOCK
@@ -56,14 +59,18 @@ static STSToolbarModule* toolbarModule;
              NSArray* result=call.as_id(slf, sel, toolbar);
              
              NSArray* myArray=[toolbarModule toolbarIdentifiers];
-             if([myArray count]>0)result= [result arrayByAddingObjectsFromArray:myArray];
+             if([myArray count]>0)result=[[result arrayByAddingObjectsFromArray:myArray]arrayByAddingObject:NSToolbarSpaceItemIdentifier];
              
              return result;
          });
+        
+        [self observePrefValue:kpExpandAddressBarWidthEnabled];
+        [self observePrefValue:kpExpandAddressBarWidthValue];
 
     }
     return self;
 }
+
 
 - (void)dealloc
 {
@@ -76,7 +83,10 @@ static STSToolbarModule* toolbarModule;
     if([key isEqualToString:kpBrowserToolbarIdentifier]){
         if(value)[[STCSafariStandCore si]setObject:value forKey:kpBrowserToolbarConfigurationBackup];
         [[STCSafariStandCore si]synchronize];
+    }else if([key isEqualToString:kpExpandAddressBarWidthEnabled]||[key isEqualToString:kpExpandAddressBarWidthValue]){
+        [self layoutAddressBarForExistingWindow];
     }
+
 }
 
 -(void)modulesDidFinishLoading:(id)core
@@ -105,6 +115,10 @@ static STSToolbarModule* toolbarModule;
                 }
             }
         }
+    }
+    
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpExpandAddressBarWidthEnabled]){
+        [self layoutAddressBarForExistingWindow];
     }
 
     [self observePrefValue:kpBrowserToolbarIdentifier];
@@ -166,6 +180,54 @@ static STSToolbarModule* toolbarModule;
 	[result setPaletteLabel:label];
 	
 	return result;
+}
+
+#pragma mark - ExpandAddressBarWidth
+
+#define kPreferredWidthRatioDefault 0.41
+- (void)expandInputFieldsToolbar:(NSToolbarItem*)item
+{
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpExpandAddressBarWidthEnabled]){
+        CGFloat factor=[[NSUserDefaults standardUserDefaults]floatForKey:kpExpandAddressBarWidthValue];
+        if (factor<kPreferredWidthRatioDefault) {
+            factor=kPreferredWidthRatioDefault;
+        }else if (factor>1.0){
+            factor=1.0;
+        }
+        [self expandInputFieldsToolbar:item factor:factor];
+    }else{
+        //reset
+        [self expandInputFieldsToolbar:item factor:kPreferredWidthRatioDefault];
+    }
+}
+
+
+- (void)expandInputFieldsToolbar:(NSToolbarItem*)item factor:(CGFloat)factor
+{
+    if ([item respondsToSelector:@selector(setPreferredWidthRatio:)]) {
+        objc_msgSend(item, @selector(setPreferredWidthRatio:), factor);
+    }
+}
+
+
+-(void)layoutAddressBarForExistingWindow
+{
+    //check exists window
+    NSArray *windows=[NSApp windows];
+    for (NSWindow* win in windows) {
+        id winCtl=[win windowController];
+        if([win isVisible] && [[winCtl className]isEqualToString:kSafariBrowserWindowController]){
+            NSToolbar* tb=[win toolbar];
+            if (tb) {
+                NSArray* items=[tb items];
+                for (NSToolbarItem* itm in items) {
+                    if([[itm itemIdentifier]isEqualToString:@"InputFieldsToolbarIdentifier"]){
+                        [self expandInputFieldsToolbar:itm];
+                    }
+                }
+            }
+        }
+    }
 }
 
 @end
