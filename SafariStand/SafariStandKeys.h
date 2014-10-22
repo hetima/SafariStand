@@ -63,6 +63,7 @@
 #define kpClassifyDownloadFolderAdvancedRules @"Stand_ClassifyDownloadFolderAdvancedRules"
 #define kDownloadFolderRuleExtension 1
 #define kDownloadFolderRuleDomain 2
+#define kpDownloadMonitorMovesToConsolePanel @"Stand_DownloadMonitorMovesToConsolePanel"
 
 #define kpSuppressTabBarWidthEnabled @"Stand_SuppressTabBarWidthEnabled"
 #define kpSuppressTabBarWidthValue @"Stand_SuppressTabBarWidthValue"

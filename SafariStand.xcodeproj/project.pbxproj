@@ -99,6 +99,7 @@
 		AAF4985319F7508C0064BD35 /* STConsolePanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAF4985219F7508C0064BD35 /* STConsolePanel.xib */; };
 		AAF4985719F7622A0064BD35 /* STSearchItLaterViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF4985519F7622A0064BD35 /* STSearchItLaterViewCtl.m */; };
 		AAF4985819F7622A0064BD35 /* STSearchItLaterViewCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAF4985619F7622A0064BD35 /* STSearchItLaterViewCtl.xib */; };
+		AAF4986019F7FE7C0064BD35 /* STTBDownload.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AAF4985F19F7FE7C0064BD35 /* STTBDownload.pdf */; };
 		AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAF9D293147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D28D147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAF9D296147E1E210018C949 /* HTWebClipwinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D292147E1E210018C949 /* HTWebClipwinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -268,6 +269,7 @@
 		AAF4985419F7622A0064BD35 /* STSearchItLaterViewCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSearchItLaterViewCtl.h; sourceTree = "<group>"; };
 		AAF4985519F7622A0064BD35 /* STSearchItLaterViewCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSearchItLaterViewCtl.m; sourceTree = "<group>"; };
 		AAF4985619F7622A0064BD35 /* STSearchItLaterViewCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STSearchItLaterViewCtl.xib; sourceTree = "<group>"; };
+		AAF4985F19F7FE7C0064BD35 /* STTBDownload.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = STTBDownload.pdf; sourceTree = "<group>"; };
 		AAF8702413E55E4E00AC67A1 /* STSDownloadModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSDownloadModule.h; sourceTree = "<group>"; };
 		AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSDownloadModule.m; sourceTree = "<group>"; };
 		AAF9D28C147E1E210018C949 /* HTDOMElementHierarchyMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTDOMElementHierarchyMenuItem.h; sourceTree = "<group>"; };
@@ -428,6 +430,7 @@
 				AA0B390615C5044F00A025FF /* STTBActionMenu.tiff */,
 				AA0B390B15C54ED000A025FF /* STTBActionMenuDisabled.tiff */,
 				AAA1E4831813EF2B00970FAD /* STTBToggleSidebar.pdf */,
+				AAF4985F19F7FE7C0064BD35 /* STTBDownload.pdf */,
 				AA92216F13C04DE6006E898F /* STCPrefWin.xib */,
 				AAF4985219F7508C0064BD35 /* STConsolePanel.xib */,
 				AA0881AC13E4284B003B70DF /* Localizable.strings */,
@@ -726,6 +729,7 @@
 				AA0B390215C28CEA00A025FF /* quicksearch_defaults.plist in Resources */,
 				AA0B390715C5044F00A025FF /* STTBActionMenu.tiff in Resources */,
 				AA0B390C15C54ED000A025FF /* STTBActionMenuDisabled.tiff in Resources */,
+				AAF4986019F7FE7C0064BD35 /* STTBDownload.pdf in Resources */,
 				AA6FCF3F15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib in Resources */,
 				AAF4985819F7622A0064BD35 /* STSearchItLaterViewCtl.xib in Resources */,
 				AA6FCF4215D3F271008AE5AB /* SquashContextMenuItems.plist in Resources */,

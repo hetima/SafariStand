@@ -12,6 +12,7 @@
 #import "STClassifyDownloadAdvSheetCtl.h"
 #import "NSFileManager+SafariStand.h"
 
+#import "STConsolePanelModule.h"
 
 @implementation STSDownloadModule {
     STClassifyDownloadAdvSheetCtl* _advSheetCtl;
@@ -39,6 +40,19 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
     CFRelease(info);
 }
 
+
++ (NSPopover*)sharedSafariDownloadPopover
+{
+    Class safariDownloadsPopoverViewControllerClass=NSClassFromString(@"DownloadsPopoverViewController");
+    if ([safariDownloadsPopoverViewControllerClass respondsToSelector:NSSelectorFromString(@"sharedController")]) {
+        id viewCtl=objc_msgSend(safariDownloadsPopoverViewControllerClass, NSSelectorFromString(@"sharedController"));
+        if ([viewCtl respondsToSelector:NSSelectorFromString(@"popover")]) {
+            return objc_msgSend(viewCtl, NSSelectorFromString(@"popover"));
+        }
+    }
+    return nil;
+    
+}
 
 
 - (id)initWithStand:(id)core
@@ -88,6 +102,9 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
              NSString *result=call.as_id(slf, sel, outputDir);
              return result;
          });
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpDownloadMonitorMovesToConsolePanel]) {
+            [self prepareMoveDownloadMonitor];
+        }
 
     }
     
@@ -103,6 +120,16 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 {
     //if([key isEqualToString:])
 }
+
+
+
+- (void)stMessageConsolePanelLoaded:(STConsolePanelModule*)sender
+{
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpDownloadMonitorMovesToConsolePanel]) {
+        [self installDownloadMonitorViewToConsolePanel:sender];
+    }
+}
+
 
 //from context menu
 //no need check pref, already checked
@@ -228,6 +255,55 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
     if(data)[[STCSafariStandCore si]setObject:data forKey:kpClassifyDownloadFolderAdvancedRules];
     
     [[STCSafariStandCore si]synchronize];
+}
+
+
+#pragma mark - DownloadMonitor
+
+- (void)installDownloadMonitorViewToConsolePanel:(STConsolePanelModule*)consolePanelModule
+{
+    NSPopover* popover=[STSDownloadModule sharedSafariDownloadPopover];
+    if (popover.shown) {
+        [popover performClose:nil];
+    }
+    NSViewController* viewCtl=[popover contentViewController];
+    
+    if (!viewCtl) {
+        return;
+    }
+
+    
+    NSString* imgPath=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForImageResource:@"STTBDownload"];
+    NSImage* img=[[NSImage alloc]initWithContentsOfFile:imgPath];
+    [img setTemplate:YES];
+    //NSImage* img=STSafariBundleImageNamed(@"ToolbarDownloadsArrowTemplate");
+    [consolePanelModule addViewController:viewCtl withIdentifier:@"DownloadMonitor" title:@"Download Monitor" icon:img];
+    
+}
+
+
+- (void)prepareMoveDownloadMonitor
+{
+    KZRMETHOD_SWIZZLING_WITHBLOCK
+    (
+     "AppController",
+     "showDownloads:",
+     KZRMethodInspection, call, sel,
+     ^void (id slf, id sender){
+         STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
+         [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
+     });
+    
+    KZRMETHOD_SWIZZLING_WITHBLOCK
+    (
+     kSafariBrowserWindowControllerCstr,
+     "toggleDownloadsPopover:",
+     KZRMethodInspection, call, sel,
+     ^void (id slf, id sender){
+         STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
+         [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
+     });
+
 }
 
 @end

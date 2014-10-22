@@ -12,6 +12,8 @@
 -(void)addViewController:(NSViewController*)viewCtl withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon;
 -(void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon;
 
+- (void)showConsolePanelAndSelectTab:(NSString*)identifier;
+
 @end
 
 

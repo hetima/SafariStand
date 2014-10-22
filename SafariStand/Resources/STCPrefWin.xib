@@ -229,6 +229,31 @@
                                                 <binding destination="6" name="value" keyPath="values.Stand_ExpandAddressBarWidthValue" id="eCv-RY-o18"/>
                                             </connections>
                                         </slider>
+                                        <button id="O4h-dn-5D1">
+                                            <rect key="frame" x="327" y="294" width="295" height="23"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Download Monitor Moves to Console Panel" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="tOQ-uo-CyQ">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="6" name="value" keyPath="values.Stand_DownloadMonitorMovesToConsolePanel" id="haF-XF-Grs">
+                                                    <dictionary key="options">
+                                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                        <integer key="NSNullPlaceholder" value="0"/>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
+                                        </button>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="9Ac-DY-KiH">
+                                            <rect key="frame" x="517" y="280" width="99" height="14"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="(Needs Restart)" id="NnN-bg-Zzr">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
                                     </subviews>
                                 </view>
                             </tabViewItem>
