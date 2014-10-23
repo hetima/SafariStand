@@ -24,7 +24,7 @@
     NSViewController* viewCtl=[STSearchItLaterViewCtl viewCtl];
 
     NSImage* img=[NSImage imageNamed:NSImageNameRevealFreestandingTemplate];
-    [consolePanelModule addViewController:viewCtl withIdentifier:@"SearchItLater" title:@"Search It Later" icon:img];
+    [consolePanelModule addViewController:viewCtl withIdentifier:@"SearchItLater" title:@"Search It Later" icon:img weight:9999];
 }
 
 

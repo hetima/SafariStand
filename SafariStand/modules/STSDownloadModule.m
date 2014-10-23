@@ -277,7 +277,7 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
     NSImage* img=[[NSImage alloc]initWithContentsOfFile:imgPath];
     [img setTemplate:YES];
     //NSImage* img=STSafariBundleImageNamed(@"ToolbarDownloadsArrowTemplate");
-    [consolePanelModule addViewController:viewCtl withIdentifier:@"DownloadMonitor" title:@"Download Monitor" icon:img];
+    [consolePanelModule addViewController:viewCtl withIdentifier:@"DownloadMonitor" title:@"Download Monitor" icon:img weight:10];
     
 }
 

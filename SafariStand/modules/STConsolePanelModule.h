@@ -9,8 +9,8 @@
 
 @interface STConsolePanelModule : STCModule
 
--(void)addViewController:(NSViewController*)viewCtl withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon;
--(void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon;
+-(void)addViewController:(NSViewController*)viewCtl withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight;
+-(void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight;
 
 - (void)showConsolePanelAndSelectTab:(NSString*)identifier;
 
@@ -18,9 +18,9 @@
 
 
 @interface STConsolePanelCtl : STCTabWithToolbarWinCtl
-    
 
 @property (nonatomic,retain)id otherDefaults;
 
+- (void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight;
 
 @end

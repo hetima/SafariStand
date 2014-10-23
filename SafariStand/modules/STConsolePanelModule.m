@@ -83,17 +83,17 @@
 }
 
 
-- (void)addViewController:(NSViewController*)viewCtl withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon
+- (void)addViewController:(NSViewController*)viewCtl withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight
 {
     [_viewCtlPool addObject:viewCtl];
     NSView *view=viewCtl.view;
-    [self addPane:view withIdentifier:identifier title:title icon:icon];
+    [self addPane:view withIdentifier:identifier title:title icon:icon  weight:(NSInteger)weight];
 }
 
 
-- (void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon
+- (void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight
 {
-    [_winCtl addPane:view withIdentifier:identifier title:title icon:icon];
+    [_winCtl addPane:view withIdentifier:identifier title:title icon:icon  weight:weight];
 }
 
 
@@ -113,20 +113,45 @@
 }
 
 
-- (void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon
+- (void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight
 {
     [self window];
     [self addIdentifier:identifier];
     NSTabView* tabView=[self oTabView];
     NSToolbar* toolbar=[self oToolbar];
     
-    NSTabViewItem* item=[[NSTabViewItem alloc]initWithIdentifier:identifier];
-    [item setView:view];
-    [item setLabel:title];
-    if(icon)[item htaoSetValue:icon forKey:@"image"];
-    [tabView addTabViewItem:item];
+    NSTabViewItem* tabViewItem=[[NSTabViewItem alloc]initWithIdentifier:identifier];
+    [tabViewItem setView:view];
+    [tabViewItem setLabel:title];
+    if(icon)[tabViewItem htaoSetValue:icon forKey:@"image"];
+    [tabView addTabViewItem:tabViewItem];
     
-    [toolbar insertItemWithItemIdentifier:identifier atIndex:[[toolbar items]count]-1];
+    NSArray* items=[toolbar items];
+    NSInteger toolbaritemCount=[items count];
+    NSInteger atIndex=-1;
+    if (toolbaritemCount<=2) {
+        atIndex=toolbaritemCount-1;
+    }else{
+        NSInteger i=1;
+        for (i=1; i<toolbaritemCount-1; i++) {
+            NSToolbarItem* itm=[items objectAtIndex:i];
+            NSInteger tag=itm.tag;
+            if (tag>weight) {
+                atIndex=i;
+                break;
+            }
+        }
+        atIndex=i;
+    }
+    
+    if (atIndex<0) {
+        atIndex=0;
+    }
+    
+    [toolbar insertItemWithItemIdentifier:identifier atIndex:atIndex];
+    
+    NSToolbarItem* insertedItem=[[toolbar items]objectAtIndex:atIndex];
+    insertedItem.tag=weight;
     
 }
 
