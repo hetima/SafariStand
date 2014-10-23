@@ -290,8 +290,10 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
      "showDownloads:",
      KZRMethodInspection, call, sel,
      ^void (id slf, id sender){
-         STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
-         [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
+         dispatch_async(dispatch_get_main_queue(), ^{
+             STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
+             [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
+         });
      });
     
     KZRMETHOD_SWIZZLING_WITHBLOCK
@@ -300,8 +302,10 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
      "toggleDownloadsPopover:",
      KZRMethodInspection, call, sel,
      ^void (id slf, id sender){
-         STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
-         [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
+         dispatch_async(dispatch_get_main_queue(), ^{
+             STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
+             [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
+         });
      });
 
 }
