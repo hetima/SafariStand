@@ -235,6 +235,9 @@ NSImage* htWKIconImageForWKView(id wkView, CGFloat maxSize)
     WKPageRef pageRef=htWKPageRefForWKView(wkView);
     WKFrameRef frameRef=WKPageGetMainFrame(pageRef);
     WKURLRef urlRef=WKFrameCopyURL(frameRef);
+    if (!urlRef) {
+        return nil;
+    }
     
     WKContextRef context=WKPageGetContext(pageRef);
     WKIconDatabaseRef iconDatabaseRef=WKContextGetIconDatabase(context);

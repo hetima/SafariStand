@@ -10,7 +10,6 @@
 #import "SafariStand.h"
 #import "STTabProxy.h"
 #import "STTabProxyController.h"
-#import "STPreviewImageManager.h"
 
 //#import <WebKit2/WKImage.h>
 //#import <WebKit2/WKImageCG.h>
@@ -44,7 +43,6 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
 
 - (void)setup
 {
-    _previewImageManager=[[STPreviewImageManager alloc]init];
 
     NSMutableArray* ary=[[NSMutableArray alloc]initWithCapacity:32];
     self.allTabProxy=ary;

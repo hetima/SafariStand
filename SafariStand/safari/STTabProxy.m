@@ -15,11 +15,10 @@
 
 #import "HTWebKit2Adapter.h"
 #import "STFakeJSCommand.h"
-#import "STPreviewImageManager.h"
 
 @implementation STTabProxy
 {
-    BOOL invalid;
+    BOOL _invalid;
     void* _pageRef;
 }
 
@@ -47,13 +46,14 @@
 
         // Initialization code here.
         [item htao_setValue:self forKey:@"STTabProxy"];
-        self.tabViewItem=item;
-        self.cachedImage=nil;
-        self.isLoading=NO;
-        self.wantsImage=NO;
-        self.isMarked=NO;
-        self.isUnread=NO;
-        invalid=NO;
+        _tabViewItem=item;
+        _cachedImage=nil;
+        _isLoading=NO;
+        _wantsImage=YES; //test
+        _isMarked=NO;
+        _isUnread=NO;
+        _isInAnyWidget=NO;
+        _invalid=NO;
 
         [[STTabProxyController si]addTabProxy:self];
         self.title=[item title];
@@ -66,6 +66,7 @@
 
 - (void)dealloc
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchIconImage) object:nil];
     LOG(@"STTabProxy dealloc");
 }
 
@@ -108,31 +109,17 @@
 }
 
 
-
-
 - (NSString*)URLString
 {
     return [_tabViewItem URLString];
 }
+
 
 -(NSString*)imagePathForExt:(NSString*)ext
 {
     return STSafariThumbnailForURLString([self URLString], ext);
 
 }
-
-- (void)previewImageDelivered:(STPreviewImageDelivery*)delivery
-{
-    NSImage* image=delivery.image;
-    if (!image) {
-        NSString* imagePath=delivery.path;
-        image=[[NSImage alloc]initByReferencingFile:imagePath];
-    }
-    [self willChangeValueForKey:@"image"];
-    self.cachedImage=image;
-    [self didChangeValueForKey:@"image"];
-}
-
 
 
 -(NSImage*)image
@@ -172,6 +159,8 @@
 -(void)didStartProgress
 {
     LOG(@"didStartProgress");
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchIconImage) object:nil];
     //[self willChangeValueForKey:@"isLoading"];
     self.isLoading=YES;
     //[self didChangeValueForKey:@"isLoading"];
@@ -196,33 +185,58 @@
     self.title=[self.tabViewItem title];
     self.domain=[[NSURL URLWithString:[self URLString]] host];
 
-    if (self.wantsImage && [self.domain length]>0) {
-        [[[STTabProxyController si]previewImageManager]requestPreviewImage:self instantDelivery:NO];
+    if ((self.wantsImage || self.isInAnyWidget) && [self.domain length]>0) {
+        if (![self fetchIconImage]) {
+            [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:1.0];
+            [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:3.0];
+            [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:6.0];
+        }
     }
 }
 
 -(void)installedToSidebar:(id)ctl
 {
+    self.isInAnyWidget=YES;
     if (!self.wantsImage) {
-        self.wantsImage=YES;
-        [[[STTabProxyController si]previewImageManager]requestPreviewImage:self instantDelivery:YES];
+        [self fetchIconImage];
     }
 }
 
 //This method may be called after target tab has closed.
 -(void)uninstalledFromSidebar:(id)ctl
 {
-    if (self.wantsImage) {
-        self.wantsImage=NO;
+    self.isInAnyWidget=NO;
+    if (!self.wantsImage) {
         self.cachedImage=nil;
     }
+}
+
+-(BOOL)fetchIconImage
+{
+    if (!self.domain) {
+        return NO;
+    }
+    
+    id wkView=self.wkView;
+    if (wkView) {
+        NSImage* icon=htWKIconImageForWKView(wkView, 32.0);
+        if (icon) {
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchIconImage) object:nil];
+            [self willChangeValueForKey:@"image"];
+            self.cachedImage=icon;
+            [self didChangeValueForKey:@"image"];
+            return YES;
+        }
+    }
+    LOG(@"fail fetchIconImage");
+    return NO;
 }
 
 #pragma mark - IBAction
 
 - (IBAction)actClose:(id)sender
 {
-    if (invalid) return; //連続呼び出し対策
+    if (_invalid) return; //連続呼び出し対策
     
     id winCtl=STSafariBrowserWindowControllerForWKView([self wkView]);
     if (![self canClose]) {
@@ -230,7 +244,7 @@
     }else{
         //BrowserWindowControllerMac - (void)tryToCloseTabWhenReady:(NSTabViewItem*)arg1;
         if ([winCtl respondsToSelector:@selector(tryToCloseTabWhenReady:)]) {
-            invalid=YES;
+            _invalid=YES;
             objc_msgSend(winCtl, @selector(tryToCloseTabWhenReady:), _tabViewItem);
         }
     }
@@ -239,7 +253,7 @@
 
 - (IBAction)actCloseOther:(id)sender
 {
-    if (![self isThereOtherTab]||invalid) return;
+    if (![self isThereOtherTab]||_invalid) return;
     
     
     //BrowserWindowControllerMac - (void)tryToCloseOtherTabsWhenReady:(NSTabViewItem*)arg1;
@@ -256,7 +270,7 @@
 
 - (IBAction)actMoveTabToNewWindow:(id)sender
 {
-    if (![self isThereOtherTab]||invalid) return;
+    if (![self isThereOtherTab]||_invalid) return;
     STSafariMoveTabToNewWindow(self.tabViewItem);
 }
 

@@ -6,12 +6,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class STPreviewImageManager, STTabProxy;
+@class STTabProxy;
 
 @interface STTabProxyController : NSObject
 
 @property(nonatomic, strong)NSMutableArray* allTabProxy;
-@property(nonatomic, strong, readonly)STPreviewImageManager* previewImageManager;
 
 + (STTabProxyController *)si;
 + (NSMutableArray *)tabProxiesForTabView:(NSTabView*)tabView;

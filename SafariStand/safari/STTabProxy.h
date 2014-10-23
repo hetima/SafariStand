@@ -20,6 +20,7 @@
 @property(nonatomic, readonly)uintptr_t ownRef;
 
 @property(nonatomic, assign)BOOL wantsImage;
+@property(nonatomic, assign)BOOL isInAnyWidget;
 @property(nonatomic, assign)BOOL isMarked;
 
 
@@ -49,7 +50,6 @@
 - (NSString*)imagePathForExt:(NSString*)ext;
 - (NSImage*)image;
 - (NSImage*)icon;
-- (void)previewImageDelivered:(STPreviewImageDelivery*)delivery;
 
 - (NSTabView *)tabView;
 - (void)selectTab;
