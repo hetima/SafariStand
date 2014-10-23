@@ -6,7 +6,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface STCTabWithToolbarWinCtl : NSWindowController
+@interface STCTabWithToolbarWinCtl : NSWindowController <NSToolbarDelegate>
 
 @property (nonatomic, weak) IBOutlet NSToolbar* oToolbar;
 @property (nonatomic, weak) IBOutlet NSTabView* oTabView;

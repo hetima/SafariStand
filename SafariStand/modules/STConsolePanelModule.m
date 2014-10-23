@@ -76,7 +76,7 @@
 
     }
     
-    [_winCtl.oToolbar setSelectedItemIdentifier:identifier];
+    [_winCtl highlighteToolbarItemIdentifier:identifier];
     
     [_winCtl showWindow:self];
     
@@ -110,6 +110,64 @@
         
     }
     return self;
+}
+
+
+- (void)highlighteToolbarItemIdentifier:(NSString *)itemIdentifier
+{
+    NSArray* items=[self.oToolbar items];
+    for (NSToolbarItem* itm in items) {
+        NSString* itmIdn=itm.itemIdentifier;
+        if ([itmIdn length]<=0) {
+            continue;
+        }
+        NSButton* btn=(NSButton*)[itm view];
+        if ([itemIdentifier isEqualToString:itmIdn]) {
+            if (btn.state != NSOnState) {
+                btn.state=NSOnState;
+            }
+        }else{
+            if (btn.state != NSOffState) {
+                btn.state=NSOffState;
+            }
+        }
+    }
+}
+
+
+- (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar
+{
+    return nil;
+}
+
+
+- (IBAction)actToolbarClick:(id)sender
+{
+    NSString* idn=[sender title];
+    [self.oTabView selectTabViewItemWithIdentifier:idn];
+    [self highlighteToolbarItemIdentifier:idn];
+}
+
+
+- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
+{
+    NSToolbarItem* item=[super toolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:flag];
+    if (flag) {
+        NSButton* btn=[[NSButton alloc]initWithFrame:NSMakeRect(0, 0, 20, 20)];
+        btn.target=self;
+        btn.action=@selector(actToolbarClick:);
+        btn.title=itemIdentifier;
+
+        btn.imagePosition=NSImageOnly;
+        btn.image=item.image;
+        btn.bordered=NO;
+        NSButtonCell* cell=btn.cell;
+        cell.imageScaling=NSImageScaleProportionallyUpOrDown;
+        [btn setButtonType:NSToggleButton];
+        
+        [item setView:btn];
+    }
+    return item;
 }
 
 

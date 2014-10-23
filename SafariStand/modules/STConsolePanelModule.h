@@ -21,6 +21,7 @@
 
 @property (nonatomic,retain)id otherDefaults;
 
+- (void)highlighteToolbarItemIdentifier:(NSString *)itemIdentifier;
 - (void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight;
 
 @end
