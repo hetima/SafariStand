@@ -13,7 +13,7 @@
 - (NSString*)htModeratedStringWithin:(NSInteger)max;
 + (NSString *)htFileSizeStringFromSize:(uint64_t)siz;
 + (NSString *)htVerboseFileSizeStringFromSize:(uint64_t)siz;
-
+- (NSURL*)stand_httpOrFileURL;
 @end
 
 @interface HTFileSizeStringTransformer : NSValueTransformer

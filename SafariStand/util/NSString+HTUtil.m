@@ -101,6 +101,17 @@
     return result;
 }
 
+- (NSURL*)stand_httpOrFileURL
+{
+    NSURL* result=[NSURL URLWithString:self];
+    NSString* scheme=[result scheme];
+    if ([scheme isEqualToString:@"http"]||[scheme isEqualToString:@"https"]||[scheme isEqualToString:@"file"]) {
+        return result;
+    }
+    
+    return nil;
+}
+
 @end
 
 
