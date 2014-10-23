@@ -19,9 +19,14 @@
 
 @interface STConsolePanelCtl : STCTabWithToolbarWinCtl
 
-@property (nonatomic,retain)id otherDefaults;
-
+- (void)commonConsolePanelCtlInit;
 - (void)highlighteToolbarItemIdentifier:(NSString *)itemIdentifier;
+-(void)addViewController:(NSViewController*)viewCtl withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight;
 - (void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight;
+
+@end
+
+
+@interface STConsolePanelWindow : NSWindow
 
 @end

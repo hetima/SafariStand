@@ -10,7 +10,6 @@
 @implementation STConsolePanelModule {
     
     STConsolePanelCtl* _winCtl;
-    NSMutableArray* _viewCtlPool;
 }
 
 
@@ -20,7 +19,6 @@
     if (self) {
         //[self observePrefValue:];
         _winCtl=nil;
-        _viewCtlPool=[[NSMutableArray alloc]initWithCapacity:8];
         
         NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Console Panel" action:@selector(actShowConsolePanel:) keyEquivalent:@"k"];
         [itm setKeyEquivalentModifierMask:NSCommandKeyMask|NSAlternateKeyMask];
@@ -55,8 +53,7 @@
 {
     if(!_winCtl){
         _winCtl=[[STConsolePanelCtl alloc]initWithWindowNibName:@"STConsolePanel"];
-        _winCtl.window.titleVisibility=NSWindowTitleHidden;
-        _winCtl.window.titlebarAppearsTransparent=YES;
+        [_winCtl commonConsolePanelCtlInit];
         [[STCSafariStandCore si]sendMessage:@selector(stMessageConsolePanelLoaded:) toAllModule:self];
     }
     NSInteger tabToSelect=NSNotFound;
@@ -85,9 +82,7 @@
 
 - (void)addViewController:(NSViewController*)viewCtl withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight
 {
-    [_viewCtlPool addObject:viewCtl];
-    NSView *view=viewCtl.view;
-    [self addPane:view withIdentifier:identifier title:title icon:icon  weight:(NSInteger)weight];
+    [_winCtl addViewController:viewCtl withIdentifier:identifier title:title icon:icon  weight:(NSInteger)weight];
 }
 
 
@@ -100,7 +95,9 @@
 @end
 
 
-@implementation STConsolePanelCtl
+@implementation STConsolePanelCtl{
+    NSMutableArray* _viewCtlPool;
+}
 
 
 - (id)initWithWindow:(NSWindow *)window
@@ -112,6 +109,16 @@
     return self;
 }
 
+
+- (void)commonConsolePanelCtlInit
+{
+    _viewCtlPool=[[NSMutableArray alloc]initWithCapacity:8];
+    self.window.titleVisibility=NSWindowTitleHidden;
+    self.window.titlebarAppearsTransparent=YES;
+    
+    [self addSafariBookmarksView];
+
+}
 
 - (void)highlighteToolbarItemIdentifier:(NSString *)itemIdentifier
 {
@@ -170,6 +177,13 @@
     return item;
 }
 
+- (void)addViewController:(NSViewController*)viewCtl withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight
+{
+    [_viewCtlPool addObject:viewCtl];
+    NSView *view=viewCtl.view;
+    [self addPane:view withIdentifier:identifier title:title icon:icon  weight:(NSInteger)weight];
+}
+
 
 - (void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight
 {
@@ -211,6 +225,111 @@
     NSToolbarItem* insertedItem=[[toolbar items]objectAtIndex:atIndex];
     insertedItem.tag=weight;
     
+}
+
+#pragma mark - Bookmarks
+
++ (NSURL*)selectedURLOnSafariBookmarksView:(id)bookmarksSidebarViewController
+{
+    if (![bookmarksSidebarViewController respondsToSelector:@selector(_selectedBookmarks)]) {
+        return nil;
+    }
+    id bookmarkLeaf=[objc_msgSend(bookmarksSidebarViewController, @selector(_selectedBookmarks)) firstObject];
+    
+    NSString* str=STSafariWebBookmarkURLString(bookmarkLeaf);
+    if ([str length]<=0) {
+        return nil;
+    }
+
+    return [str stand_httpOrFileURL];
+}
+
+- (void)addSafariBookmarksView
+{
+    id bookmarksViewController=objc_msgSend([NSClassFromString(@"BookmarksSidebarViewController") alloc], @selector(initWithNibName:bundle:), nil, nil);
+    [bookmarksViewController view];
+    NSImage* img=STSafariBundleImageNamed(@"SB_ModernTabIconBookmarks");
+    [img setTemplate:YES];
+    [self addViewController:bookmarksViewController withIdentifier:@"Bookmarks" title:@"Bookmarks" icon:img weight:1];
+    
+    //click
+    KZRMETHOD_SWIZZLING_
+    (
+     "BookmarksSidebarViewController",
+     "_openBookmarkAndGiveFocusToWebContent:", //BookmarkLeaf
+     KZRMethodInspection, call, sel)
+    ^void (id slf, id bookmarkLeaf){
+        if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
+            NSURL* url=[STSafariWebBookmarkURLString(bookmarkLeaf) stand_httpOrFileURL];
+            if(url)STSafariGoToURLWithPolicy(url, poNormal);
+        }else{
+            call.as_void(slf, sel, bookmarkLeaf);
+        }
+        
+    }_WITHBLOCK;
+    
+    //context menu
+    KZRMETHOD_SWIZZLING_
+    (
+     "BookmarksSidebarViewController",
+     "_openInCurrentTab:",
+     KZRMethodInspection, call, sel)
+    ^void (id slf, id obj){
+        if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
+            NSURL* url=[STConsolePanelCtl selectedURLOnSafariBookmarksView:slf];
+            if(url)STSafariGoToURLWithPolicy(url, poNormal);
+        }else{
+            call.as_void(slf, sel, obj);
+        }
+        
+    }_WITHBLOCK;
+    
+    KZRMETHOD_SWIZZLING_
+    (
+     "BookmarksSidebarViewController",
+     "_openInNewTab:",
+     KZRMethodInspection, call, sel)
+    ^void (id slf, id obj){
+        if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
+            NSURL* url=[STConsolePanelCtl selectedURLOnSafariBookmarksView:slf];
+            if(url)STSafariGoToURLWithPolicy(url, poNewTab);
+        }else{
+            call.as_void(slf, sel, obj);
+        }
+        
+    }_WITHBLOCK;
+    
+    KZRMETHOD_SWIZZLING_
+    (
+     "BookmarksSidebarViewController",
+     "_openInNewWindow:",
+     KZRMethodInspection, call, sel)
+    ^void (id slf, id obj){
+        if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
+            NSURL* url=[STConsolePanelCtl selectedURLOnSafariBookmarksView:slf];
+            if(url)STSafariGoToURLWithPolicy(url, poNewWindow);
+        }else{
+            call.as_void(slf, sel, obj);
+        }
+        
+    }_WITHBLOCK;
+
+}
+
+@end
+
+
+@implementation STConsolePanelWindow {
+    id _bookmarksUndoController;
+}
+
+- (id)bookmarksUndoController
+{
+    if (!_bookmarksUndoController) {
+        NSUndoManager* um=[self undoManager];
+        _bookmarksUndoController=objc_msgSend([NSClassFromString(@"BookmarksUndoController") alloc], @selector(initWithUndoManager:), um);
+    }
+    return _bookmarksUndoController;
 }
 
 @end
