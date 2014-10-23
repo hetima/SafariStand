@@ -205,7 +205,7 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
     NSString* ext=[fileName pathExtension];
     if ([[rule objectForKey:@"type"]isEqualToString:@"ext"] && [ext length]>0){
         
-        NSArray* extAry=[[rule objectForKey:@"pattern"]htArrayWithStandardSeparation];
+        NSArray* extAry=[[rule objectForKey:@"pattern"]stand_arrayWithStandardSeparation];
         if ([extAry containsObject:ext]) {
             result=[rule objectForKey:@"exp"];
         }

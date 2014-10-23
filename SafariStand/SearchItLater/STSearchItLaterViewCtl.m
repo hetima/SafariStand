@@ -149,7 +149,7 @@
 - (IBAction)paste:(id)sender
 {
     NSPasteboard*pb=[NSPasteboard generalPasteboard];
-    NSString* str=[[pb stringForType:NSStringPboardType]htModeratedStringWithin:1024];
+    NSString* str=[[pb stringForType:NSStringPboardType]stand_moderatedStringWithin:1024];
 
     if([str length]){
         id dic=[[STQuickSearchModule si]searchItLaterForString:str];

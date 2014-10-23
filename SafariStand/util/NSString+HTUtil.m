@@ -12,7 +12,7 @@
 
 @implementation NSString (NSString_HTUtil)
 
-+(NSString*)HTUUIDStringWithFormat:(NSString*)ptn
++(NSString*)stand_UUIDStringWithFormat:(NSString*)ptn
 {
     // Create CFUUID
     CFUUIDRef   uuid=CFUUIDCreate(NULL);
@@ -27,7 +27,7 @@
     
 }
 
--(NSString*)htEscapeWithEncoding:(NSStringEncoding)enco
+-(NSString*)stand_scapeWithEncoding:(NSStringEncoding)enco
 {
     CFStringRef cfString=CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                             (CFStringRef)self,
@@ -39,7 +39,7 @@
 }
 
 
--(NSArray*)htArrayWithStandardSeparation
+-(NSArray*)stand_arrayWithStandardSeparation
 {
     if ([self length]==0)return nil;
     NSArray* ary=[self componentsSeparatedByString:@","];
@@ -55,7 +55,7 @@
     return result;
 }
 
--(NSString*)htModeratedStringWithin:(NSInteger)max
+-(NSString*)stand_moderatedStringWithin:(NSInteger)max
 {
     NSString* result=nil;
     if ([self length]<1024*8) {
@@ -72,7 +72,7 @@
     return result;
 }
 
-+ (NSString *)htFileSizeStringFromSize:(uint64_t)siz
++ (NSString *)stand_fileSizeStringFromSize:(uint64_t)siz
 {
     double floatSize = siz;
     if (siz<1023)
@@ -88,9 +88,9 @@
     return([NSString stringWithFormat:@"%1.1f GB",floatSize]);
 }
 
-+ (NSString *)htVerboseFileSizeStringFromSize:(uint64_t)siz
++ (NSString *)stand_verboseFileSizeStringFromSize:(uint64_t)siz
 {
-    NSString* shortStr=[NSString htFileSizeStringFromSize:siz];
+    NSString* shortStr=[NSString stand_fileSizeStringFromSize:siz];
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [formatter setGroupingSeparator:@","];
@@ -122,7 +122,7 @@
 - (id)transformedValue:(id)value
 {
     uint64_t size=[value unsignedLongLongValue];
-    NSString *result=[NSString htFileSizeStringFromSize:size];
+    NSString *result=[NSString stand_fileSizeStringFromSize:size];
     return result;
 }
 
@@ -135,7 +135,7 @@
 - (id)transformedValue:(id)value
 {
     uint64_t size=[value unsignedLongLongValue];
-    NSString *result=[NSString htVerboseFileSizeStringFromSize:size];
+    NSString *result=[NSString stand_verboseFileSizeStringFromSize:size];
     return result;
 }
 

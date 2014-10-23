@@ -48,7 +48,7 @@
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
 {
     NSTabViewItem* tab=[self.oTabView tabViewItemAtIndex:[self.oTabView indexOfTabViewItemWithIdentifier:itemIdentifier]];
-    NSImage* image=[tab htaoValueForKey:@"image"];
+    NSImage* image=[tab htao_valueForKey:@"image"];
     NSString* label=[tab label];
 
     NSToolbarItem*	result=[[NSToolbarItem alloc] initWithItemIdentifier:itemIdentifier];
@@ -78,7 +78,7 @@
     NSTabViewItem* item=[[NSTabViewItem alloc]initWithIdentifier:identifier];
     [item setView:view];
     [item setLabel:title];
-    if(icon)[item htaoSetValue:icon forKey:@"image"];
+    if(icon)[item htao_setValue:icon forKey:@"image"];
     [tabView addTabViewItem:item];
 
     [toolbar insertItemWithItemIdentifier:identifier atIndex:[[toolbar items]count]];

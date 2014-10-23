@@ -20,7 +20,7 @@
 
 - (void)awakeFromNib
 {
-    _pasteboardType=[NSString HTUUIDStringWithFormat:@"%@_pbType"];
+    _pasteboardType=[NSString stand_UUIDStringWithFormat:@"%@_pbType"];
     
 	if([_pasteboardType length]>0){
 		[oTableView registerForDraggedTypes:[NSArray arrayWithObjects:_pasteboardType, nil]];

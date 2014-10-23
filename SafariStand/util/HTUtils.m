@@ -157,7 +157,7 @@ NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance)
         
 	}else if([type isEqualToString:NSStringPboardType]){
 		NSString* urlString=[pb stringForType:NSStringPboardType];
-        urlString=[urlString htModeratedStringWithin:0];
+        urlString=[urlString stand_moderatedStringWithin:0];
         if ([urlString hasPrefix:@"ttp://"]) {
             urlString=[@"h" stringByAppendingString:urlString];
         }

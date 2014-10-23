@@ -176,7 +176,7 @@
     //search Clipboard
     }else{
         NSPasteboard* pb=[NSPasteboard generalPasteboard];
-        NSString* searchString=[[pb stringForType:NSStringPboardType]htModeratedStringWithin:255];
+        NSString* searchString=[[pb stringForType:NSStringPboardType]stand_moderatedStringWithin:255];
         NSMenu* qsMenu=nil;
         if([searchString length]){
             qsMenu=[[STQuickSearchModule si]standardQuickSearchMenuWithSearchString:searchString];

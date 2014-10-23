@@ -50,7 +50,7 @@
 -(void)actAddSearchItLaterMenu:(id)sender
 {
     NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
-    NSString* selectedText=[[pb stringForType:NSStringPboardType]htModeratedStringWithin:0];
+    NSString* selectedText=[[pb stringForType:NSStringPboardType]stand_moderatedStringWithin:0];
     
     if(selectedText)[self searchItLaterForString:selectedText];
 }
@@ -58,7 +58,7 @@
 -(void)actAddSearchItLaterWithFlagMenu:(id)sender
 {
     NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
-    NSString* selectedText=[[pb stringForType:NSStringPboardType]htModeratedStringWithin:0];
+    NSString* selectedText=[[pb stringForType:NSStringPboardType]stand_moderatedStringWithin:0];
     
     if(selectedText){
         NSMutableDictionary* sil=[self searchItLaterForString:selectedText];

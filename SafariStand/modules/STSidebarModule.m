@@ -55,11 +55,11 @@
         {
             call.as_void(slf, sel, sender);
             if ( ![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault] ||
-                [slf htaoValueForKey:kAOValueNotShowSidebarAuto] ) {
+                [slf htao_valueForKey:kAOValueNotShowSidebarAuto] ) {
                 return;
             }
             
-            [slf htaoSetValue:@YES forKey:kAOValueNotShowSidebarAuto];
+            [slf htao_setValue:@YES forKey:kAOValueNotShowSidebarAuto];
             NSSize winSize=[[slf window]frame].size;
             if(winSize.width>640 && winSize.height>600){
                 [self installSidebarToWindow:[slf window]];
@@ -184,7 +184,7 @@
     STSidebarCtl* ctl=[STSidebarCtl viewCtl];
     [ctl installToTabView:tabView sidebarWidth:width rightSide:rightSide];
 
-    [win htaoSetValue:ctl forKey:@"sidebarCtl"];
+    [win htao_setValue:ctl forKey:@"sidebarCtl"];
 
 }
 
@@ -192,14 +192,14 @@
 {
     [ctl uninstallFromTabView];
     
-    [win htaoSetValue:nil forKey:@"sidebarCtl"];
+    [win htao_setValue:nil forKey:@"sidebarCtl"];
 }
 
 
 
 -(STSidebarCtl*)sidebarCtlForWindow:(NSWindow*)win
 {
-    STSidebarCtl* ctl=[win htaoValueForKey:@"sidebarCtl"];
+    STSidebarCtl* ctl=[win htao_valueForKey:@"sidebarCtl"];
     return ctl;
 }
 

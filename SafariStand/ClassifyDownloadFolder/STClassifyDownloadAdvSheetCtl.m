@@ -18,7 +18,7 @@
 {
     return [NSMutableDictionary dictionaryWithObjectsAndKeys:
             [NSNumber numberWithBool:YES], @"use", @"ext",@"type",@"@/images",@"exp",@"jpg, jpeg, gif, png",@"pattern",
-            [NSString HTUUIDStringWithFormat:@"%@"],@"uuid", nil];
+            [NSString stand_UUIDStringWithFormat:@"%@"],@"uuid", nil];
 
 }
 

@@ -6,13 +6,13 @@
 #import <Foundation/Foundation.h>
 
 
-@interface NSString (NSString_HTUtil)
-+ (NSString*)HTUUIDStringWithFormat:(NSString*)ptn;
-- (NSString*)htEscapeWithEncoding:(NSStringEncoding)enco;
-- (NSArray*)htArrayWithStandardSeparation;
-- (NSString*)htModeratedStringWithin:(NSInteger)max;
-+ (NSString *)htFileSizeStringFromSize:(uint64_t)siz;
-+ (NSString *)htVerboseFileSizeStringFromSize:(uint64_t)siz;
+@interface NSString (SafariStand_HTUtil)
++ (NSString*)stand_UUIDStringWithFormat:(NSString*)ptn;
+- (NSString*)stand_scapeWithEncoding:(NSStringEncoding)enco;
+- (NSArray*)stand_arrayWithStandardSeparation;
+- (NSString*)stand_moderatedStringWithin:(NSInteger)max;
++ (NSString*)stand_fileSizeStringFromSize:(uint64_t)siz;
++ (NSString*)stand_verboseFileSizeStringFromSize:(uint64_t)siz;
 - (NSURL*)stand_httpOrFileURL;
 @end
 

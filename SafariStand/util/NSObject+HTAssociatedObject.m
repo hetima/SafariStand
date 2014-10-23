@@ -15,20 +15,20 @@ static char htaokey;
 @implementation NSObject (HTAssociatedObject)
 
 
-- (NSMutableDictionary*)htaoDictionary
+- (NSMutableDictionary*)htao_dictionary
 {   
 
     return objc_getAssociatedObject(self, &htaokey);
 }
 
 //value==nil なら remove
-- (void)htaoSetValue:(id)value forKey:(id)key
+- (void)htao_setValue:(id)value forKey:(id)key
 {
     if (!key) {
         return;
     }
     
-    NSMutableDictionary* dic=[self htaoDictionary];
+    NSMutableDictionary* dic=[self htao_dictionary];
     if(!dic){
         if (value) {
             dic=[NSMutableDictionary dictionaryWithObject:value forKey:key];
@@ -43,9 +43,9 @@ static char htaokey;
     }
 }
 
-- (id)htaoValueForKey:(id)key
+- (id)htao_valueForKey:(id)key
 {
-    NSDictionary* dic=[self htaoDictionary];
+    NSDictionary* dic=[self htao_dictionary];
     return [dic objectForKey:key];
 }
 

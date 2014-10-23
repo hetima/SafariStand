@@ -84,7 +84,7 @@ STQuickSearchModule* quickSearchModule;
                             @"GET",@"method",
                             //[NSNumber numberWithBool:NO],@"use",
                             [NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding],@"encoding",
-                            //[NSString HTUUIDStringWithFormat:@"%@"],@"uuid",
+                            //[NSString stand_UUIDStringWithFormat:@"%@"],@"uuid",
                             nil];
         _googleQuerySeed=[[HTQuerySeed alloc]initWithDict:dict];
         
@@ -95,7 +95,7 @@ STQuickSearchModule* quickSearchModule;
                             @"GET",@"method",
                             //[NSNumber numberWithBool:NO],@"use",
                             [NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding],@"encoding",
-                            //[NSString HTUUIDStringWithFormat:@"%@"],@"uuid",
+                            //[NSString stand_UUIDStringWithFormat:@"%@"],@"uuid",
                             nil];
         _googleImageQuerySeed=[[HTQuerySeed alloc]initWithDict:dict];
         
@@ -518,7 +518,7 @@ STQuickSearchModule* quickSearchModule;
                                 use,@"use",
                                 encoding,@"encoding",
                                 
-                                [NSString HTUUIDStringWithFormat:@"%@"],@"uuid",
+                                [NSString stand_UUIDStringWithFormat:@"%@"],@"uuid",
                                 nil];
             
             HTQuerySeed* qs=[[HTQuerySeed alloc]initWithDict:dict];

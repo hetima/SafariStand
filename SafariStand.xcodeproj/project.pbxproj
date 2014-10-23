@@ -229,11 +229,11 @@
 		AA718AB913BB524C00327606 /* STSToolbarModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSToolbarModule.m; sourceTree = "<group>"; };
 		AA775EF113DA7470001B0461 /* STSTabBarModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSTabBarModule.h; sourceTree = "<group>"; };
 		AA775EF213DA7470001B0461 /* STSTabBarModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSTabBarModule.m; sourceTree = "<group>"; };
-		AA775EF513DA9603001B0461 /* NSString+HTUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTUtil.h"; sourceTree = "<group>"; };
-		AA775EF613DA9603001B0461 /* NSString+HTUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTUtil.m"; sourceTree = "<group>"; };
+		AA775EF513DA9603001B0461 /* NSString+HTUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSString+HTUtil.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		AA775EF613DA9603001B0461 /* NSString+HTUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSString+HTUtil.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		AA775EF913DB9182001B0461 /* STQuickSearchModule+Completion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "STQuickSearchModule+Completion.m"; sourceTree = "<group>"; };
 		AA780DA013F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STClassifyDownloadAdvSheetCtl.h; sourceTree = "<group>"; };
-		AA780DA113F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STClassifyDownloadAdvSheetCtl.m; sourceTree = "<group>"; };
+		AA780DA113F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STClassifyDownloadAdvSheetCtl.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		AA780DA513F1C0F40042A253 /* STClassifyDownloadAdvSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STClassifyDownloadAdvSheet.xib; sourceTree = "<group>"; };
 		AA780DA713F1C5DF0042A253 /* HTUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTUtils.h; sourceTree = "<group>"; };
 		AA780DA813F1C5DF0042A253 /* HTUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTUtils.m; sourceTree = "<group>"; };
@@ -246,11 +246,11 @@
 		AAAC1AA413BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTQuerySeedEditViewCtl.h; sourceTree = "<group>"; };
 		AAAC1AA513BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTQuerySeedEditViewCtl.m; sourceTree = "<group>"; };
 		AAAC1AAA13BE163700FB13A2 /* STQuickSearchModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STQuickSearchModule.h; sourceTree = "<group>"; };
-		AAAC1AAB13BE163700FB13A2 /* STQuickSearchModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STQuickSearchModule.m; sourceTree = "<group>"; };
+		AAAC1AAB13BE163700FB13A2 /* STQuickSearchModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STQuickSearchModule.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		AAAC1AAD13BE2BEA00FB13A2 /* HTQuerySeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTQuerySeed.h; sourceTree = "<group>"; };
-		AAAC1AAE13BE2BEA00FB13A2 /* HTQuerySeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTQuerySeed.m; sourceTree = "<group>"; };
+		AAAC1AAE13BE2BEA00FB13A2 /* HTQuerySeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = HTQuerySeed.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		AAAC1AB013BE3E0500FB13A2 /* HTArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTArrayController.h; sourceTree = "<group>"; };
-		AAAC1AB113BE3E0500FB13A2 /* HTArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTArrayController.m; sourceTree = "<group>"; };
+		AAAC1AB113BE3E0500FB13A2 /* HTArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = HTArrayController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		AACAD26B13E126D700170193 /* HTWebKit2Adapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTWebKit2Adapter.h; sourceTree = "<group>"; };
 		AACAD26C13E126D700170193 /* HTWebKit2Adapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTWebKit2Adapter.m; sourceTree = "<group>"; };
 		AACAD26E13E15BF000170193 /* STPrefSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = STPrefSearch.png; sourceTree = "<group>"; };
@@ -271,7 +271,7 @@
 		AAF4985619F7622A0064BD35 /* STSearchItLaterViewCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STSearchItLaterViewCtl.xib; sourceTree = "<group>"; };
 		AAF4985F19F7FE7C0064BD35 /* STTBDownload.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = STTBDownload.pdf; sourceTree = "<group>"; };
 		AAF8702413E55E4E00AC67A1 /* STSDownloadModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSDownloadModule.h; sourceTree = "<group>"; };
-		AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSDownloadModule.m; sourceTree = "<group>"; };
+		AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = STSDownloadModule.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		AAF9D28C147E1E210018C949 /* HTDOMElementHierarchyMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTDOMElementHierarchyMenuItem.h; sourceTree = "<group>"; };
 		AAF9D28D147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTDOMElementHierarchyMenuItem.m; sourceTree = "<group>"; };
 		AAF9D28E147E1E210018C949 /* HTFilePresetPopUpButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTFilePresetPopUpButton.h; sourceTree = "<group>"; };

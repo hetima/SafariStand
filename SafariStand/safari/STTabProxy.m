@@ -30,12 +30,12 @@
 
 +(STTabProxy*)tabProxyForWKView:(id)wkView
 {
-    return [STSafariTabViewItemForWKView(wkView) htaoValueForKey:@"STTabProxy"];
+    return [STSafariTabViewItemForWKView(wkView) htao_valueForKey:@"STTabProxy"];
 }
 
 +(STTabProxy*)tabProxyForTabViewItem:(id)item
 {
-    return [item htaoValueForKey:@"STTabProxy"];
+    return [item htao_valueForKey:@"STTabProxy"];
 }
 
 
@@ -46,7 +46,7 @@
         _ownRef=(uintptr_t)(self);
 
         // Initialization code here.
-        [item htaoSetValue:self forKey:@"STTabProxy"];
+        [item htao_setValue:self forKey:@"STTabProxy"];
         self.tabViewItem=item;
         self.cachedImage=nil;
         self.isLoading=NO;

@@ -195,7 +195,7 @@
     NSTabViewItem* tabViewItem=[[NSTabViewItem alloc]initWithIdentifier:identifier];
     [tabViewItem setView:view];
     [tabViewItem setLabel:title];
-    if(icon)[tabViewItem htaoSetValue:icon forKey:@"image"];
+    if(icon)[tabViewItem htao_setValue:icon forKey:@"image"];
     [tabView addTabViewItem:tabViewItem];
     
     NSArray* items=[toolbar items];

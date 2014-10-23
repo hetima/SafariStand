@@ -104,7 +104,7 @@
         // 書き込ませる
         //NSStringPboardType is deprecated but WKView doesn't handle NSPasteboardTypeString.
         [wkview writeSelectionToPasteboard:pb types:[NSArray arrayWithObject:NSStringPboardType]];
-        NSString* selectedText=[[pb stringForType:NSStringPboardType]htModeratedStringWithin:0];
+        NSString* selectedText=[[pb stringForType:NSStringPboardType]stand_moderatedStringWithin:0];
 
         NSUInteger len=[selectedText length];
         if(len>0 && len<1024){//あんまり長いのは除外

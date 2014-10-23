@@ -7,7 +7,7 @@
 
 
 @interface NSObject (HTAssociatedObject)
-- (void)htaoSetValue:(id)value forKey:(id)key;
-- (id)htaoValueForKey:(id)key;
-- (NSMutableDictionary*)htaoDictionary;
+- (void)htao_setValue:(id)value forKey:(id)key;
+- (id)htao_valueForKey:(id)key;
+- (NSMutableDictionary*)htao_dictionary;
 @end

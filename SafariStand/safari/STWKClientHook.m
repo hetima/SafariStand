@@ -59,7 +59,7 @@ void STWK_showPage(WKPageRef page, const void* clientInfo)
         NSTabView* tabView=[proxy tabView];
         if ([tabView numberOfTabViewItems]<=1){
             id winCtl=[[tabView window]windowController];
-            [winCtl htaoSetValue:@YES forKey:kAOValueNotShowSidebarAuto];
+            [winCtl htao_setValue:@YES forKey:kAOValueNotShowSidebarAuto];
         }
     }
     

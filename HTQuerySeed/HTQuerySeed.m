@@ -21,7 +21,7 @@
                         [NSNumber numberWithBool:YES],@"use",
                         [NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding],@"encoding",
                         
-                        [NSString HTUUIDStringWithFormat:@"%@"],@"uuid",
+                        [NSString stand_UUIDStringWithFormat:@"%@"],@"uuid",
                         nil];
     
     HTQuerySeed* qs=[[HTQuerySeed alloc]initWithDict:dict];
@@ -41,7 +41,7 @@
         self.method=[dic objectForKey:@"method"]; if(!_method)self.method=@"GET";
         self.posts=[[dic objectForKey:@"posts"]mutableCopy]; if(!_posts)self.posts=[NSMutableArray array];
         self.use=[dic objectForKey:@"use"]; if(!_use)self.use=[NSNumber numberWithBool:YES];
-        self.uuid=[dic objectForKey:@"uuid"]; if(!_uuid)self.uuid=[NSString HTUUIDStringWithFormat:@"%@"];
+        self.uuid=[dic objectForKey:@"uuid"]; if(!_uuid)self.uuid=[NSString stand_UUIDStringWithFormat:@"%@"];
         self.referrer=[dic objectForKey:@"referrer"]; if(!_referrer)self.referrer=@"";
     }
     
@@ -58,7 +58,7 @@
     if(!_posts)self.posts=[NSMutableArray array];
     if(!_use)self.use=[NSNumber numberWithBool:YES];
     if(!_referrer)self.referrer=@"";
-    if(!_uuid)self.uuid=[NSString HTUUIDStringWithFormat:@"%@"];
+    if(!_uuid)self.uuid=[NSString stand_UUIDStringWithFormat:@"%@"];
     NSDictionary* result=[NSDictionary dictionaryWithObjectsAndKeys:
                           _title, @"title",
                           _baseUrl, @"baseUrl",
@@ -102,11 +102,11 @@
     NSStringEncoding enco=[self.encoding integerValue];
     inStr=[inStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     inStr=[inStr stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
-    //inStr=[inStr htEscapeWithEncoding:enco];
+    //inStr=[inStr stand_scapeWithEncoding:enco];
     
     NSString* inStrEscaped;
     if([self.baseUrl length]>6 && [self.baseUrl rangeOfString:@":/"].location!=NSNotFound){
-        inStrEscaped=[inStr htEscapeWithEncoding:enco];
+        inStrEscaped=[inStr stand_scapeWithEncoding:enco];
     }else{
         inStrEscaped=inStr;
     }
@@ -130,7 +130,7 @@
             [bodyStr appendString:k];
             [bodyStr appendString:@"="];
             if(v){
-                v=[[v stringByReplacingOccurrencesOfString:@"%s" withString:inStr]htEscapeWithEncoding:enco];
+                v=[[v stringByReplacingOccurrencesOfString:@"%s" withString:inStr]stand_scapeWithEncoding:enco];
                 if(v)[bodyStr appendString:v];
             }
             [bodyStr appendString:@"&"];

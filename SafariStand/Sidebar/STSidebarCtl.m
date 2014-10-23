@@ -103,7 +103,7 @@
 {
     //古い tabView は既に window から取り除かれているので self.view.window==nil
     NSTabView* tabView=[note object];
-    STSidebarCtl* ctl=[tabView.window htaoValueForKey:@"sidebarCtl"];
+    STSidebarCtl* ctl=[tabView.window htao_valueForKey:@"sidebarCtl"];
     if (self==ctl) {
         [self installToTabView:tabView sidebarWidth:NSWidth(self.view.frame) rightSide:[self rightSide]];
         //後でリファクタリングする
