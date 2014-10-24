@@ -187,9 +187,8 @@
 
     if ((self.wantsImage || self.isInAnyWidget) && [self.domain length]>0) {
         if (![self fetchIconImage]) {
-            [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:1.0];
-            [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:3.0];
-            [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:6.0];
+            [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:2.5];
+            [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:7.0];
         }
     }
 }
