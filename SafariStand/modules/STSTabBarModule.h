@@ -13,3 +13,8 @@
 @interface STSTabBarModule : STCModule
 
 @end
+
+
+@interface STTabIconLayer : CALayer
+
+@end

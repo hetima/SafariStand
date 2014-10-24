@@ -67,6 +67,7 @@
 
 #define kpSuppressTabBarWidthEnabled @"Stand_SuppressTabBarWidthEnabled"
 #define kpSuppressTabBarWidthValue @"Stand_SuppressTabBarWidthValue"
+#define kpShowIconOnTabBarEnabled @"Stand_ShowIconOnTabBarEnabled"
 
 #define kpExpandAddressBarWidthEnabled @"Stand_ExpandAddressBarWidthEnabled"
 #define kpExpandAddressBarWidthValue @"Stand_ExpandAddressBarWidthValue"

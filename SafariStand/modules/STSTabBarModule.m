@@ -9,7 +9,7 @@
 #import <mach/mach_time.h>
 #import "SafariStand.h"
 #import "STSTabBarModule.h"
-
+#import "STTabProxy.h"
 
 @implementation STSTabBarModule {
     uint64_t _nextTime;
@@ -119,6 +119,36 @@
         [self observePrefValue:kpSuppressTabBarWidthEnabled];
         [self observePrefValue:kpSuppressTabBarWidthValue];
         
+        
+        //test
+        KZRMETHOD_SWIZZLING_
+        (
+         "ScrollableTabButton",
+         "initWithFrame:tabViewItem:",
+         KZRMethodInspection, call, sel)
+        ^id (id slf, NSRect frame, id obj){
+            NSView* result=call.as_id(slf, sel, frame, obj);
+            NSView* closeButton=objc_msgSend(result, @selector(closeButton));
+
+            NSImage* img=[NSImage imageNamed:NSImageNameFolder];
+            //[view setImage:img];
+            CALayer* layer=[STTabIconLayer layer];
+            NSRect layerFrame=NSMakeRect(4, 4, 16, 16);
+            layer.frame=layerFrame;
+            layer.contents=img;
+            [result.layer addSublayer:layer];
+            //[layer bind:NSHiddenBinding toObject:result withKeyPath:@"showingCloseButton" options:nil];
+            [layer bind:NSHiddenBinding toObject:closeButton withKeyPath:NSHiddenBinding options:@{ NSValueTransformerNameBindingOption : NSNegateBooleanTransformerName }];
+            id tabViewItem=objc_msgSend(result, @selector(tabViewItem));
+            STTabProxy* tp=[STTabProxy tabProxyForTabViewItem:tabViewItem];
+            if (tp) {
+                [layer bind:@"contents" toObject:tp withKeyPath:@"image" options:nil];
+            }
+            return result;
+        }_WITHBLOCK;
+        
+        [self observePrefValue:kpShowIconOnTabBarEnabled];
+
     }
     return self;
 }
@@ -132,6 +162,8 @@
 {
     if([key isEqualToString:kpSuppressTabBarWidthEnabled]||[key isEqualToString:kpSuppressTabBarWidthValue]){
         [self layoutTabBarForExistingWindow];
+    }else if([key isEqualToString:kpShowIconOnTabBarEnabled]){
+        
     }
 }
 
@@ -143,6 +175,19 @@
         return YES;
     }
     return NO;
+}
+
+@end
+
+
+
+@implementation STTabIconLayer
+
+- (void)dealloc
+{
+    [self unbind:NSHiddenBinding];
+    [self unbind:@"contents"];
+    LOG(@"layer d");
 }
 
 @end
