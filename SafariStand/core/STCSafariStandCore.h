@@ -10,8 +10,6 @@
 @interface STCSafariStandCore : NSObject
 
 
-@property (nonatomic, readonly)BOOL isSafari61;
-
 @property(nonatomic,readonly)NSMenu *standMenu;
 
 @property(nonatomic, strong, readonly)NSString* revision;

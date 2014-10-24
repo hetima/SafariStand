@@ -111,19 +111,15 @@ static STCSafariStandCore *sharedInstance;
     
     NSString* shortVersionString=[[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     NSString* revision;
-    if ([@"6.1" compare:shortVersionString options:NSNumericSearch]==NSOrderedDescending) {
-        _isSafari61=NO;
-        revision=@"6.0";
+    if ([@"8.1" compare:shortVersionString options:NSNumericSearch]==NSOrderedDescending) {
+        revision=@"8.0";
     }else{
-        _isSafari61=YES;
-        revision=@"6.1";
+        revision=@"8.1";
     }
     
-    NSString* systemVersion=@"10.9";
-    if(floor(NSAppKitVersionNumber)==NSAppKitVersionNumber10_8){
-        systemVersion=@"10.8";
-    }if(floor(NSAppKitVersionNumber)==NSAppKitVersionNumber10_7){
-        systemVersion=@"10.7";
+    NSString* systemVersion=@"10.10";
+    if(floor(NSAppKitVersionNumber)==NSAppKitVersionNumber10_9){
+        systemVersion=@"10.9";
     }
     _revision=revision;
     LOG(@"Startup.... %@ - %@", revision, systemVersion);
