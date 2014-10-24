@@ -34,6 +34,24 @@ void STSafariEnumerateBrowserWindow( void(^blk)(NSWindow* window, NSWindowContro
     }
 }
 
+
+void STSafariEnumerateBrowserTabViewItem( void(^blk)(NSTabViewItem* tabViewItem, BOOL* stop) )
+{
+    STSafariEnumerateBrowserWindow(^(NSWindow* win, NSWindowController* winCtl, BOOL* stopSuper){
+        if([winCtl respondsToSelector:@selector(orderedTabViewItems)]){
+            NSArray* tabs=objc_msgSend(winCtl, @selector(orderedTabViewItems));
+            for (id tabViewItem in tabs) {
+                BOOL stop=NO;
+                blk(tabViewItem, &stop);
+                if (stop) {
+                    *stopSuper=YES;
+                    break;
+                }
+            }
+        }
+    });
+}
+
 #pragma mark navigation
 
 void STSafariGoToURL(NSURL* url){

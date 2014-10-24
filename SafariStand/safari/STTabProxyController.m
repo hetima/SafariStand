@@ -48,23 +48,16 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     self.allTabProxy=ary;
 
     //既存のものにパッチ
-    STSafariEnumerateBrowserWindow(^(NSWindow* win, NSWindowController* winCtl, BOOL* stop){
-        if([winCtl respondsToSelector:@selector(orderedTabViewItems)]){
-            NSArray* tabs=objc_msgSend(winCtl, @selector(orderedTabViewItems));
-            for (id tabViewItem in tabs) {
-                //if (STSafariUsesWebKit2(tabViewItem)) {
-                STTabProxy* proxy =[[STTabProxy alloc]initWithTabViewItem:tabViewItem];
-                if ([[tabViewItem tabView]selectedTabViewItem]==tabViewItem) {
-                    proxy.isSelected=YES;
-                }else{
-                    proxy.isSelected=NO;
-                }
-                //}
-            }
+    STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem* tabViewItem, BOOL* stop){
+        //if (STSafariUsesWebKit2(tabViewItem)) {
+        STTabProxy* proxy =[[STTabProxy alloc]initWithTabViewItem:tabViewItem];
+        if ([[tabViewItem tabView]selectedTabViewItem]==tabViewItem) {
+            proxy.isSelected=YES;
+        }else{
+            proxy.isSelected=NO;
         }
+        //}
     });
-
-    
 
     //tabViewItem を生成するとき STTabProxy を付ける
     Class cls=NSClassFromString(@"BrowserTabViewItem");

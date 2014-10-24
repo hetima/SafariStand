@@ -50,6 +50,17 @@ STSafariEnumerateBrowserWindow(^(NSWindow* win, NSWindowController* winCtl, BOOL
  */
 void STSafariEnumerateBrowserWindow( void(^blk)(NSWindow* window, NSWindowController* winCtl, BOOL* stop) );
 
+/*
+
+STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem* tabViewItem, BOOL* stop){
+    *stop=YES;
+});
+ 
+ */
+void STSafariEnumerateBrowserTabViewItem( void(^blk)(NSTabViewItem* tabViewItem, BOOL* stop) );
+
+
+
 NSString* STSafariWebpagePreviewsPath();
 NSString* STSafariThumbnailForURLString(NSString* URLString, NSString* ext);
 
