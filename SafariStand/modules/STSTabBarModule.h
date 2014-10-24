@@ -17,4 +17,6 @@
 
 @interface STTabIconLayer : CALayer
 
++ (id)installedIconLayerInView:(NSView*)view;
+
 @end

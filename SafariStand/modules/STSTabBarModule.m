@@ -123,7 +123,11 @@
          "initWithFrame:tabViewItem:",
          KZRMethodInspection, call, sel)
         ^id (id slf, NSRect frame, id obj){
-            NSView* result=call.as_id(slf, sel, frame, obj);
+            NSButton* result=call.as_id(slf, sel, frame, obj);
+            if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnTabBarEnabled]) {
+                [self _installIconToTabButton:result ofTabViewItem:obj];
+            }
+            /*
             NSView* closeButton=objc_msgSend(result, @selector(closeButton));
 
             NSImage* img=[NSImage imageNamed:NSImageNameFolder];
@@ -139,10 +143,13 @@
             STTabProxy* tp=[STTabProxy tabProxyForTabViewItem:tabViewItem];
             if (tp) {
                 [layer bind:@"contents" toObject:tp withKeyPath:@"image" options:nil];
-            }
+            }*/
             return result;
         }_WITHBLOCK;
         
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnTabBarEnabled]) {
+            [self installIconToExistingWindows];
+        }
         [self observePrefValue:kpShowIconOnTabBarEnabled];
 
     }
@@ -159,7 +166,11 @@
     if([key isEqualToString:kpSuppressTabBarWidthEnabled]||[key isEqualToString:kpSuppressTabBarWidthValue]){
         [self layoutTabBarForExistingWindow];
     }else if([key isEqualToString:kpShowIconOnTabBarEnabled]){
-        
+        if ([value boolValue]) {
+            [self installIconToExistingWindows];
+        }else{
+            [self removeIconFromExistingWindows];
+        }
     }
 }
 
@@ -173,11 +184,87 @@
     return NO;
 }
 
+#pragma mark -
+
+-(void)_installIconToTabButton:(NSButton*)tabButton ofTabViewItem:(NSTabViewItem*)tabViewItem
+{
+
+    if([STTabIconLayer installedIconLayerInView:tabButton] != nil) {
+        return;
+    }
+    
+    if (![tabButton respondsToSelector:@selector(closeButton)]) {
+        return;
+    }
+    NSView* closeButton=objc_msgSend(tabButton, @selector(closeButton));
+    
+    CALayer* layer=[STTabIconLayer layer];
+    layer.frame=NSMakeRect(4, 4, 16, 16);
+    layer.contents=nil;
+    [tabButton.layer addSublayer:layer];
+
+    [layer bind:NSHiddenBinding toObject:closeButton withKeyPath:NSHiddenBinding options:@{ NSValueTransformerNameBindingOption : NSNegateBooleanTransformerName }];
+    STTabProxy* tp=[STTabProxy tabProxyForTabViewItem:tabViewItem];
+    if (tp) {
+        [layer bind:@"contents" toObject:tp withKeyPath:@"image" options:nil];
+    }
+
+}
+
+-(void)installIconToExistingWindows
+{
+    STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem* tabViewItem, BOOL* stop){
+        if (![tabViewItem respondsToSelector:@selector(scrollableTabButton)]) {
+            return;
+        }
+        NSButton* tabBtn=objc_msgSend(tabViewItem, @selector(scrollableTabButton));
+        if (!tabBtn) {
+            return;
+        }
+        [self _installIconToTabButton:tabBtn ofTabViewItem:tabViewItem];
+
+    });
+}
+
+
+-(void)_removeIconFromTabButton:(NSButton*)tabButton ofTabViewItem:(NSTabViewItem*)tabViewItem
+{
+    CALayer* layer=[STTabIconLayer installedIconLayerInView:tabButton];
+    if(layer)[layer removeFromSuperlayer];
+}
+
+
+-(void)removeIconFromExistingWindows
+{
+    STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem* tabViewItem, BOOL* stop){
+        if (![tabViewItem respondsToSelector:@selector(scrollableTabButton)]) {
+            return;
+        }
+        NSButton* tabBtn=objc_msgSend(tabViewItem, @selector(scrollableTabButton));
+        if (!tabBtn) {
+            return;
+        }
+        [self _removeIconFromTabButton:tabBtn ofTabViewItem:tabViewItem];
+
+    });
+}
+
 @end
 
 
 
 @implementation STTabIconLayer
+
++ (id)installedIconLayerInView:(NSView*)view
+{
+    NSArray* sublayers=view.layer.sublayers;
+    for (CALayer* layer in sublayers) {
+        if ([layer isKindOfClass:[self class]]) {
+            return layer;
+        }
+    }
+    return nil;
+}
 
 - (void)dealloc
 {
