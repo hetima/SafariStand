@@ -104,17 +104,15 @@ static STSToolbarModule* toolbarModule;
     }
     
     if (shouldReload) {
-        NSArray *windows=[NSApp windows];
-        for (NSWindow* win in windows) {
-            id winCtl=[win windowController];
-            if ([win isVisible] && [[winCtl className]isEqualToString:kSafariBrowserWindowController]) {
+        STSafariEnumerateBrowserWindow(^(NSWindow* win, NSWindowController* winCtl, BOOL* stop){
+            if ([win isVisible]) {
                 NSToolbar* tb=[win toolbar];
                 if (tb) {
                     [tb setConfigurationFromDictionary:toolbarConfig];
-                    break;
+                    *stop=YES;
                 }
             }
-        }
+        });
     }
     
     if ([[NSUserDefaults standardUserDefaults]boolForKey:kpExpandAddressBarWidthEnabled]){
@@ -213,10 +211,8 @@ static STSToolbarModule* toolbarModule;
 -(void)layoutAddressBarForExistingWindow
 {
     //check exists window
-    NSArray *windows=[NSApp windows];
-    for (NSWindow* win in windows) {
-        id winCtl=[win windowController];
-        if([win isVisible] && [[winCtl className]isEqualToString:kSafariBrowserWindowController]){
+    STSafariEnumerateBrowserWindow(^(NSWindow* win, NSWindowController* winCtl, BOOL* stop){
+        if([win isVisible]){
             NSToolbar* tb=[win toolbar];
             if (tb) {
                 NSArray* items=[tb items];
@@ -227,7 +223,7 @@ static STSToolbarModule* toolbarModule;
                 }
             }
         }
-    }
+    });
 }
 
 @end

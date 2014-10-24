@@ -48,11 +48,8 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     self.allTabProxy=ary;
 
     //既存のものにパッチ
-    NSArray* windows=[NSApp windows];
-    for (NSWindow* win in windows) {
-        id winCtl=[win windowController];
-        if([[winCtl className]isEqualToString:kSafariBrowserWindowController]
-           && [winCtl respondsToSelector:@selector(orderedTabViewItems)]){
+    STSafariEnumerateBrowserWindow(^(NSWindow* win, NSWindowController* winCtl, BOOL* stop){
+        if([winCtl respondsToSelector:@selector(orderedTabViewItems)]){
             NSArray* tabs=objc_msgSend(winCtl, @selector(orderedTabViewItems));
             for (id tabViewItem in tabs) {
                 //if (STSafariUsesWebKit2(tabViewItem)) {
@@ -65,7 +62,8 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
                 //}
             }
         }
-    }
+    });
+
     
 
     //tabViewItem を生成するとき STTabProxy を付ける

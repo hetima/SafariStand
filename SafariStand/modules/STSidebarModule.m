@@ -123,14 +123,12 @@
     }
     
     //check exists window
-    NSArray *windows=[NSApp windows];
-    for (NSWindow* win in windows) {
-        id winCtl=[win windowController];
-        if([win isVisible] && [[winCtl className]isEqualToString:kSafariBrowserWindowController]){
+    STSafariEnumerateBrowserWindow(^(NSWindow* win, NSWindowController* winCtl, BOOL* stop){
+        if([win isVisible]){
             //install
             [self installSidebarToWindow:win];
         }
-    }
+    });
 }
 
 

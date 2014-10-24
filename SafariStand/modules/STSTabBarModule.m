@@ -20,14 +20,10 @@
 -(void)layoutTabBarForExistingWindow
 {
     //check exists window
-    NSArray *windows=[NSApp windows];
-    for (NSWindow* win in windows) {
-        id winCtl=[win windowController];
-        if([win isVisible] && [[winCtl className]isEqualToString:kSafariBrowserWindowController]
-            && [winCtl respondsToSelector:@selector(isTabBarVisible)]
-            && [winCtl respondsToSelector:@selector(scrollableTabBarView)]
+    STSafariEnumerateBrowserWindow(^(NSWindow* win, NSWindowController* winCtl, BOOL* stop){
+        if([win isVisible] && [winCtl respondsToSelector:@selector(isTabBarVisible)]
+           && [winCtl respondsToSelector:@selector(scrollableTabBarView)]
            ){
-            
             if (objc_msgSend(winCtl, @selector(isTabBarVisible))) {
                 id tabBarView = objc_msgSend(winCtl, @selector(scrollableTabBarView));
                 if([tabBarView respondsToSelector:@selector(_updateButtonsAndLayOutAnimated:)]){
@@ -35,7 +31,7 @@
                 }
             }
         }
-    }
+    });
 }
 
 - (id)initWithStand:(id)core

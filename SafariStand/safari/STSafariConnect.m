@@ -19,6 +19,20 @@ struct TabPlacementHint {
 };
 
 
+void STSafariEnumerateBrowserWindow( void(^blk)(NSWindow* window, NSWindowController* winCtl, BOOL* stop) )
+{
+    NSArray *windows=[NSApp windows];
+    for (NSWindow* win in windows) {
+        id winCtl=[win windowController];
+        if([[winCtl className]isEqualToString:kSafariBrowserWindowController]){
+            BOOL stop=NO;
+            blk(win, winCtl, &stop);
+            if (stop) {
+                break;
+            }
+        }
+    }
+}
 
 #pragma mark navigation
 
