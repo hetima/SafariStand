@@ -10,6 +10,7 @@
 
 @property (nonatomic, weak) IBOutlet NSToolbar* oToolbar;
 @property (nonatomic, weak) IBOutlet NSTabView* oTabView;
+@property (nonatomic, strong)NSMutableArray* identifiers;
 
 -(void)addIdentifier:(NSString*)identifier;
 

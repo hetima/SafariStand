@@ -19,12 +19,15 @@
 
 @implementation STQuickSearchModule (STQuickSearchModule_SearchItLater)
 
--(void)installSearchItLaterViewToConsolePanel:(STConsolePanelModule*)consolePanelModule
+-(void)installSearchItLaterViewToConsolePanel
 {
-    NSViewController* viewCtl=[STSearchItLaterViewCtl viewCtl];
-
+    STConsolePanelModule* consolePanelModule=[STCSafariStandCore mi:@"STConsolePanelModule"];
     NSImage* img=[NSImage imageNamed:NSImageNameRevealFreestandingTemplate];
-    [consolePanelModule addViewController:viewCtl withIdentifier:@"SearchItLater" title:@"Search It Later" icon:img weight:9999];
+
+    [consolePanelModule addPanelWithIdentifier:@"SearchItLater" title:@"Search It Later" icon:img weight:1000 loadHandler:^id{
+        NSViewController* viewCtl=[STSearchItLaterViewCtl viewCtl];
+        return viewCtl;
+    }];
 }
 
 

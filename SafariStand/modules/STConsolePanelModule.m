@@ -8,7 +8,6 @@
 
 
 @implementation STConsolePanelModule {
-    
     STConsolePanelCtl* _winCtl;
 }
 
@@ -19,7 +18,8 @@
     if (self) {
         //[self observePrefValue:];
         _winCtl=nil;
-        
+        _panels=[[NSMutableDictionary alloc]initWithCapacity:8];
+
         NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Console Panel" action:@selector(actShowConsolePanel:) keyEquivalent:@"k"];
         [itm setKeyEquivalentModifierMask:NSCommandKeyMask|NSAlternateKeyMask];
         [itm setTarget:self];
@@ -27,6 +27,12 @@
         [core addItemToStandMenu:itm];
     }
     return self;
+}
+
+
+- (void)modulesDidFinishLoading:(id)core
+{
+    [self addSafariBookmarksView];
 }
 
 
@@ -48,47 +54,127 @@
 }
 
 
-
 - (void)showConsolePanelAndSelectTab:(NSString*)identifier
 {
     if(!_winCtl){
         _winCtl=[[STConsolePanelCtl alloc]initWithWindowNibName:@"STConsolePanel"];
-        [_winCtl commonConsolePanelCtlInit];
-        [[STCSafariStandCore si]sendMessage:@selector(stMessageConsolePanelLoaded:) toAllModule:self];
-    }
-    NSInteger tabToSelect=NSNotFound;
-    if ([identifier length]>0) {
-        tabToSelect=[_winCtl.oTabView indexOfTabViewItemWithIdentifier:identifier];
+        [_winCtl commonConsolePanelCtlInitWithModule:self];
     }
 
-    if (tabToSelect!=NSNotFound) {
-        [_winCtl.oTabView selectTabViewItemAtIndex:tabToSelect];
-    }else{
-        identifier=[[_winCtl.oTabView selectedTabViewItem]identifier];
-        
-        if ([identifier length]<=0){
-            [_winCtl.oTabView selectFirstTabViewItem:nil];
-            identifier=[[_winCtl.oTabView selectedTabViewItem]identifier];
-        }
-
-    }
-    
-    [_winCtl highlighteToolbarItemIdentifier:identifier];
-    
+    [_winCtl selectTab:identifier];
     [_winCtl showWindow:self];
     
 }
 
 
-- (void)addViewController:(NSViewController*)viewCtl withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight
+- (void)addPanelWithIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight loadHandler:(id(^)())loadHandler
 {
-    [_winCtl addViewController:viewCtl withIdentifier:identifier title:title icon:icon  weight:(NSInteger)weight];
+    NSDictionary* panel=@{@"identifier":identifier, @"title":title, @"icon":icon,  @"weight":@(weight), @"loadHandler":loadHandler};
+    _panels[identifier]=panel;
 }
 
 
-- (void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight
+- (NSDictionary*)panelInfoForIdentifier:(NSString*)identifier
 {
-    [_winCtl addPane:view withIdentifier:identifier title:title icon:icon  weight:weight];
+    return _panels[identifier];
+}
+
+
+
+#pragma mark - Bookmarks
+
++ (NSURL*)selectedURLOnSafariBookmarksView:(id)bookmarksSidebarViewController
+{
+    if (![bookmarksSidebarViewController respondsToSelector:@selector(_selectedBookmarks)]) {
+        return nil;
+    }
+    id bookmarkLeaf=[objc_msgSend(bookmarksSidebarViewController, @selector(_selectedBookmarks)) firstObject];
+    
+    NSString* str=STSafariWebBookmarkURLString(bookmarkLeaf);
+    if ([str length]<=0) {
+        return nil;
+    }
+    
+    return [str stand_httpOrFileURL];
+}
+
+
+- (void)addSafariBookmarksView
+{
+    NSImage* img=STSafariBundleImageNamed(@"SB_ModernTabIconBookmarks");
+    [img setTemplate:YES];
+    [self addPanelWithIdentifier:@"Bookmarks" title:@"Bookmarks" icon:img weight:2 loadHandler:^id{
+        id bookmarksViewController=objc_msgSend([NSClassFromString(@"BookmarksSidebarViewController") alloc], @selector(initWithNibName:bundle:), nil, nil);
+        return bookmarksViewController;
+    }];
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        //click
+        KZRMETHOD_SWIZZLING_
+        (
+         "BookmarksSidebarViewController",
+         "_openBookmarkAndGiveFocusToWebContent:", //BookmarkLeaf
+         KZRMethodInspection, call, sel)
+        ^void (id slf, id bookmarkLeaf){
+            if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
+                NSURL* url=[STSafariWebBookmarkURLString(bookmarkLeaf) stand_httpOrFileURL];
+                if(url)STSafariGoToURLWithPolicy(url, poNormal);
+            }else{
+                call.as_void(slf, sel, bookmarkLeaf);
+            }
+            
+        }_WITHBLOCK;
+        
+        //context menu
+        KZRMETHOD_SWIZZLING_
+        (
+         "BookmarksSidebarViewController",
+         "_openInCurrentTab:",
+         KZRMethodInspection, call, sel)
+        ^void (id slf, id obj){
+            if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
+                NSURL* url=[STConsolePanelModule selectedURLOnSafariBookmarksView:slf];
+                if(url)STSafariGoToURLWithPolicy(url, poNormal);
+            }else{
+                call.as_void(slf, sel, obj);
+            }
+            
+        }_WITHBLOCK;
+        
+        KZRMETHOD_SWIZZLING_
+        (
+         "BookmarksSidebarViewController",
+         "_openInNewTab:",
+         KZRMethodInspection, call, sel)
+        ^void (id slf, id obj){
+            if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
+                NSURL* url=[STConsolePanelModule selectedURLOnSafariBookmarksView:slf];
+                if(url)STSafariGoToURLWithPolicy(url, poNewTab);
+            }else{
+                call.as_void(slf, sel, obj);
+            }
+            
+        }_WITHBLOCK;
+        
+        KZRMETHOD_SWIZZLING_
+        (
+         "BookmarksSidebarViewController",
+         "_openInNewWindow:",
+         KZRMethodInspection, call, sel)
+        ^void (id slf, id obj){
+            if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
+                NSURL* url=[STConsolePanelModule selectedURLOnSafariBookmarksView:slf];
+                if(url)STSafariGoToURLWithPolicy(url, poNewWindow);
+            }else{
+                call.as_void(slf, sel, obj);
+            }
+            
+        }_WITHBLOCK;
+        
+    });
+    
 }
 
 
@@ -97,6 +183,8 @@
 
 @implementation STConsolePanelCtl{
     NSMutableArray* _viewCtlPool;
+    NSString* _landingItemIdentifier;
+    NSArray* _defaultItemIdentifiers;
 }
 
 
@@ -110,15 +198,62 @@
 }
 
 
-- (void)commonConsolePanelCtlInit
+- (void)commonConsolePanelCtlInitWithModule:(STConsolePanelModule*)consolePanelModule
 {
+    _landingItemIdentifier=nil;
     _viewCtlPool=[[NSMutableArray alloc]initWithCapacity:8];
-    self.window.titleVisibility=NSWindowTitleHidden;
-    self.window.titlebarAppearsTransparent=YES;
+    self.consolePanelModule=consolePanelModule;
     
-    [self addSafariBookmarksView];
+    NSDictionary* panelInfo=consolePanelModule.panels;
+    [self.identifiers addObjectsFromArray:[panelInfo allKeys]];
+
+    
+    //construct default items
+    NSMutableArray* defaultItemsInfo=[[NSMutableArray alloc]initWithCapacity:[panelInfo count]];
+    [panelInfo enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if([obj[@"weight"] integerValue]>0){
+            [defaultItemsInfo addObject:obj];
+        }
+    }];
+    [defaultItemsInfo sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSNumber* n1=obj1[@"weight"];
+        NSNumber* n2=obj2[@"weight"];
+        return [n1 compare:n2];
+    }];
+    NSMutableArray* defaultItems=[[NSMutableArray alloc]initWithCapacity:[defaultItemsInfo count]+2];
+    for (NSDictionary* info in defaultItemsInfo) {
+        [defaultItems addObject:info[@"identifier"]];
+    }
+    _landingItemIdentifier=[defaultItems firstObject];
+    [defaultItems addObject:NSToolbarFlexibleSpaceItemIdentifier];
+    [defaultItems insertObject:NSToolbarFlexibleSpaceItemIdentifier atIndex:0];
+    _defaultItemIdentifiers=defaultItems;
+    
+    
+    //load window
+    self.window.titleVisibility=NSWindowTitleHidden;
+    //self.window.titlebarAppearsTransparent=YES;
+    self.oToolbar.allowsUserCustomization=YES;
 
 }
+
+
+- (NSView*)loadPanelViewForIdentifier:(NSString*)identifier
+{
+    NSDictionary* panelInfo=[self.consolePanelModule panelInfoForIdentifier:identifier];
+    id(^loadHandler)()=panelInfo[@"loadHandler"];
+    if(loadHandler){
+        id viewOrCtl=loadHandler();
+        if ([viewOrCtl isKindOfClass:[NSView class]]) {
+            return viewOrCtl;
+        }else if ([viewOrCtl isKindOfClass:[NSViewController class]]) {
+            [_viewCtlPool addObject:viewOrCtl];
+            return [viewOrCtl view];
+        }
+    }
+    return nil;
+}
+
 
 - (void)highlighteToolbarItemIdentifier:(NSString *)itemIdentifier
 {
@@ -142,6 +277,49 @@
 }
 
 
+- (void)selectTab:(NSString*)identifier
+{
+    NSInteger tabToSelect=NSNotFound;
+    if ([identifier length]<=0) {
+        if ([[[self.oTabView selectedTabViewItem]identifier]length]>0) {
+            return;
+        }
+        identifier=_landingItemIdentifier;
+        if ([identifier length]<=0) return;
+    }
+    
+    tabToSelect=[self.oTabView indexOfTabViewItemWithIdentifier:identifier];
+
+    if (tabToSelect!=NSNotFound) {
+        [self.oTabView selectTabViewItemAtIndex:tabToSelect];
+    }else{
+        NSView* panelView=[self loadPanelViewForIdentifier:identifier];
+        if (panelView) {
+            NSTabViewItem* tabViewItem=[[NSTabViewItem alloc]initWithIdentifier:identifier];
+            [tabViewItem setView:panelView];
+            [tabViewItem setLabel:@""];
+
+            [self.oTabView addTabViewItem:tabViewItem];
+            [self.oTabView selectLastTabViewItem:nil];
+        }
+    }
+    
+    [self highlighteToolbarItemIdentifier:identifier];
+}
+
+
+- (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar *)toolbar
+{
+    return _defaultItemIdentifiers;
+}
+
+
+- (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
+{
+    return self.identifiers;
+}
+
+
 - (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar
 {
     return nil;
@@ -151,14 +329,25 @@
 - (IBAction)actToolbarClick:(id)sender
 {
     NSString* idn=[sender title];
-    [self.oTabView selectTabViewItemWithIdentifier:idn];
-    [self highlighteToolbarItemIdentifier:idn];
+    [self selectTab:idn];
 }
 
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
 {
-    NSToolbarItem* item=[super toolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:flag];
+    NSDictionary* panelInfo=[self.consolePanelModule panelInfoForIdentifier:itemIdentifier];
+    
+    NSImage* image=panelInfo[@"icon"];
+    NSString* label=panelInfo[@"title"];
+    
+    NSToolbarItem*	result=[[NSToolbarItem alloc]initWithItemIdentifier:itemIdentifier];
+    [result setToolTip:label];
+    [result setImage:image];
+    [result setLabel:label];
+    [result setPaletteLabel:label];
+    [result setAction:@selector(actToolbarClick:)];
+    [result setTarget:self];
+
     if (flag) {
         NSButton* btn=[[NSButton alloc]initWithFrame:NSMakeRect(0, 0, 20, 20)];
         btn.target=self;
@@ -166,155 +355,20 @@
         btn.title=itemIdentifier;
 
         btn.imagePosition=NSImageOnly;
-        btn.image=item.image;
+        btn.image=image;
         btn.bordered=NO;
         NSButtonCell* cell=btn.cell;
         cell.imageScaling=NSImageScaleProportionallyUpOrDown;
         [btn setButtonType:NSToggleButton];
         
-        [item setView:btn];
-    }
-    return item;
-}
-
-- (void)addViewController:(NSViewController*)viewCtl withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight
-{
-    [_viewCtlPool addObject:viewCtl];
-    NSView *view=viewCtl.view;
-    [self addPane:view withIdentifier:identifier title:title icon:icon  weight:(NSInteger)weight];
-}
-
-
-- (void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight
-{
-    [self window];
-    [self addIdentifier:identifier];
-    NSTabView* tabView=[self oTabView];
-    NSToolbar* toolbar=[self oToolbar];
-    
-    NSTabViewItem* tabViewItem=[[NSTabViewItem alloc]initWithIdentifier:identifier];
-    [tabViewItem setView:view];
-    [tabViewItem setLabel:title];
-    if(icon)[tabViewItem htao_setValue:icon forKey:@"image"];
-    [tabView addTabViewItem:tabViewItem];
-    
-    NSArray* items=[toolbar items];
-    NSInteger toolbaritemCount=[items count];
-    NSInteger atIndex=-1;
-    if (toolbaritemCount<=2) {
-        atIndex=toolbaritemCount-1;
+        [result setView:btn];
     }else{
-        NSInteger i=1;
-        for (i=1; i<toolbaritemCount-1; i++) {
-            NSToolbarItem* itm=[items objectAtIndex:i];
-            NSInteger tag=itm.tag;
-            if (tag>weight) {
-                atIndex=i;
-                break;
-            }
-        }
-        atIndex=i;
+        result.minSize=NSMakeSize(20, 20);
+        result.maxSize=NSMakeSize(20, 20);
     }
-    
-    if (atIndex<0) {
-        atIndex=0;
-    }
-    
-    [toolbar insertItemWithItemIdentifier:identifier atIndex:atIndex];
-    
-    NSToolbarItem* insertedItem=[[toolbar items]objectAtIndex:atIndex];
-    insertedItem.tag=weight;
-    
+    return result;
 }
 
-#pragma mark - Bookmarks
-
-+ (NSURL*)selectedURLOnSafariBookmarksView:(id)bookmarksSidebarViewController
-{
-    if (![bookmarksSidebarViewController respondsToSelector:@selector(_selectedBookmarks)]) {
-        return nil;
-    }
-    id bookmarkLeaf=[objc_msgSend(bookmarksSidebarViewController, @selector(_selectedBookmarks)) firstObject];
-    
-    NSString* str=STSafariWebBookmarkURLString(bookmarkLeaf);
-    if ([str length]<=0) {
-        return nil;
-    }
-
-    return [str stand_httpOrFileURL];
-}
-
-- (void)addSafariBookmarksView
-{
-    id bookmarksViewController=objc_msgSend([NSClassFromString(@"BookmarksSidebarViewController") alloc], @selector(initWithNibName:bundle:), nil, nil);
-    [bookmarksViewController view];
-    NSImage* img=STSafariBundleImageNamed(@"SB_ModernTabIconBookmarks");
-    [img setTemplate:YES];
-    [self addViewController:bookmarksViewController withIdentifier:@"Bookmarks" title:@"Bookmarks" icon:img weight:1];
-    
-    //click
-    KZRMETHOD_SWIZZLING_
-    (
-     "BookmarksSidebarViewController",
-     "_openBookmarkAndGiveFocusToWebContent:", //BookmarkLeaf
-     KZRMethodInspection, call, sel)
-    ^void (id slf, id bookmarkLeaf){
-        if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
-            NSURL* url=[STSafariWebBookmarkURLString(bookmarkLeaf) stand_httpOrFileURL];
-            if(url)STSafariGoToURLWithPolicy(url, poNormal);
-        }else{
-            call.as_void(slf, sel, bookmarkLeaf);
-        }
-        
-    }_WITHBLOCK;
-    
-    //context menu
-    KZRMETHOD_SWIZZLING_
-    (
-     "BookmarksSidebarViewController",
-     "_openInCurrentTab:",
-     KZRMethodInspection, call, sel)
-    ^void (id slf, id obj){
-        if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
-            NSURL* url=[STConsolePanelCtl selectedURLOnSafariBookmarksView:slf];
-            if(url)STSafariGoToURLWithPolicy(url, poNormal);
-        }else{
-            call.as_void(slf, sel, obj);
-        }
-        
-    }_WITHBLOCK;
-    
-    KZRMETHOD_SWIZZLING_
-    (
-     "BookmarksSidebarViewController",
-     "_openInNewTab:",
-     KZRMethodInspection, call, sel)
-    ^void (id slf, id obj){
-        if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
-            NSURL* url=[STConsolePanelCtl selectedURLOnSafariBookmarksView:slf];
-            if(url)STSafariGoToURLWithPolicy(url, poNewTab);
-        }else{
-            call.as_void(slf, sel, obj);
-        }
-        
-    }_WITHBLOCK;
-    
-    KZRMETHOD_SWIZZLING_
-    (
-     "BookmarksSidebarViewController",
-     "_openInNewWindow:",
-     KZRMethodInspection, call, sel)
-    ^void (id slf, id obj){
-        if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
-            NSURL* url=[STConsolePanelCtl selectedURLOnSafariBookmarksView:slf];
-            if(url)STSafariGoToURLWithPolicy(url, poNewWindow);
-        }else{
-            call.as_void(slf, sel, obj);
-        }
-        
-    }_WITHBLOCK;
-
-}
 
 @end
 
@@ -333,3 +387,39 @@
 }
 
 @end
+
+
+@implementation STConsolePanelToolbar
+
+
+- (BOOL)_allowsShowHideToolbarContextMenuItem
+{
+    return NO;
+}
+
+
+- (BOOL)_drawsBackground
+{
+    return NO;
+}
+
+
+- (BOOL)_allowsSizeMode:(NSToolbarSizeMode)arg1
+{
+    if (arg1==NSToolbarSizeModeSmall) {
+        return YES;
+    }
+    return NO;
+}
+
+
+- (BOOL)_allowsDisplayMode:(NSToolbarDisplayMode)arg1
+{
+    if (arg1==NSToolbarDisplayModeIconOnly) {
+        return YES;
+    }
+    return NO;
+}
+
+@end
+

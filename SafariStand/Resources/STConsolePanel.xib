@@ -14,12 +14,13 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Console" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="Stand_Console" animationBehavior="default" id="QvC-M9-y7g" customClass="STConsolePanelWindow">
+        <window title="Console Panel" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="Stand_Console" animationBehavior="default" id="QvC-M9-y7g" customClass="STConsolePanelWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="158" y="611" width="300" height="420"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
             <value key="minSize" type="size" width="300" height="300"/>
+            <value key="maxSize" type="size" width="800" height="2500"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="300" height="420"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -32,15 +33,12 @@
                     </tabView>
                 </subviews>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="5BC001B7-8244-4AF3-87D4-9CC025D69AAC" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="small" id="z64-po-Fmu">
+            <toolbar key="toolbar" implicitIdentifier="5BC001B7-8244-4AF3-87D4-9CC025D69AAC" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="small" id="z64-po-Fmu" customClass="STConsolePanelToolbar">
                 <allowedToolbarItems>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="y5Z-Tb-Yaw"/>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="Bbk-eO-dLl"/>
                 </allowedToolbarItems>
-                <defaultToolbarItems>
-                    <toolbarItem reference="Bbk-eO-dLl"/>
-                    <toolbarItem reference="Bbk-eO-dLl"/>
-                </defaultToolbarItems>
+                <defaultToolbarItems/>
                 <connections>
                     <outlet property="delegate" destination="-2" id="Bz9-Ki-usr"/>
                 </connections>

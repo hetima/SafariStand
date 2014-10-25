@@ -111,6 +111,13 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
     return self;
 }
 
+- (void)modulesDidFinishLoading:(id)core
+{
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpDownloadMonitorMovesToConsolePanel]) {
+        [self installDownloadMonitorViewToConsolePanel];
+    }
+}
+
 - (void)dealloc
 {
 
@@ -121,14 +128,6 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
     //if([key isEqualToString:])
 }
 
-
-
-- (void)stMessageConsolePanelLoaded:(STConsolePanelModule*)sender
-{
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpDownloadMonitorMovesToConsolePanel]) {
-        [self installDownloadMonitorViewToConsolePanel:sender];
-    }
-}
 
 
 //from context menu
@@ -260,25 +259,23 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 
 #pragma mark - DownloadMonitor
 
-- (void)installDownloadMonitorViewToConsolePanel:(STConsolePanelModule*)consolePanelModule
+- (void)installDownloadMonitorViewToConsolePanel
 {
-    NSPopover* popover=[STSDownloadModule sharedSafariDownloadPopover];
-    if (popover.shown) {
-        [popover performClose:nil];
-    }
-    NSViewController* viewCtl=[popover contentViewController];
-    
-    if (!viewCtl) {
-        return;
-    }
-
+    STConsolePanelModule* consolePanelModule=[STCSafariStandCore mi:@"STConsolePanelModule"];
     
     NSString* imgPath=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForImageResource:@"STTBDownload"];
     NSImage* img=[[NSImage alloc]initWithContentsOfFile:imgPath];
     [img setTemplate:YES];
     //NSImage* img=STSafariBundleImageNamed(@"ToolbarDownloadsArrowTemplate");
-    [consolePanelModule addViewController:viewCtl withIdentifier:@"DownloadMonitor" title:@"Download Monitor" icon:img weight:10];
-    
+    [consolePanelModule addPanelWithIdentifier:@"DownloadMonitor" title:@"Download Monitor" icon:img weight:20 loadHandler:^id{
+        NSPopover* popover=[STSDownloadModule sharedSafariDownloadPopover];
+        if (popover.shown) {
+            [popover performClose:nil];
+        }
+        NSViewController* viewCtl=[popover contentViewController];
+        return viewCtl;
+    }];
+
 }
 
 

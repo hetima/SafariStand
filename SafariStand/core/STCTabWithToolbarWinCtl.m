@@ -10,10 +10,8 @@
 #import "STCTabWithToolbarWinCtl.h"
 
 
-@implementation STCTabWithToolbarWinCtl{
-    NSMutableArray* _identifiers;
+@implementation STCTabWithToolbarWinCtl
 
-}
 
 - (id)initWithWindow:(NSWindow *)window
 {

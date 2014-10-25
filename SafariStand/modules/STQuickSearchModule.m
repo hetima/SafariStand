@@ -118,7 +118,7 @@ STQuickSearchModule* quickSearchModule;
 
 - (void)modulesDidFinishLoading:(id)core
 {
-    
+    [self installSearchItLaterViewToConsolePanel];
 }
 
 
@@ -172,12 +172,6 @@ STQuickSearchModule* quickSearchModule;
 - (void)stMessagePrefWindowWillClose:(id)prefWindowCtl
 {
     [self saveToStorage];
-}
-
-
-- (void)stMessageConsolePanelLoaded:(STConsolePanelModule*)sender
-{
-    [self installSearchItLaterViewToConsolePanel:sender];
 }
 
 
