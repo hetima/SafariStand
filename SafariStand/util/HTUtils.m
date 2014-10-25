@@ -22,9 +22,12 @@ int HTAddXattrMDItemWhereFroms(NSString* path, NSArray* URLArray)
 //value must be a kind of NSData, NSString, NSNumber, NSDate, NSArray, or NSDictionary
 int HTAddXattr(NSString* path, const char *cName, id value)
 {
+    if (!value || !path) {
+        return -1;
+    }
     const char *cPath=[path fileSystemRepresentation];
-    NSData* data=[NSPropertyListSerialization dataFromPropertyList:value format:NSPropertyListBinaryFormat_v1_0 errorDescription:nil];
-    
+    NSData* data=[NSPropertyListSerialization dataWithPropertyList:value format:NSPropertyListBinaryFormat_v1_0 options:0 error:nil];
+
     if(data && cPath && cName){
         return setxattr(cPath, cName, [data bytes], [data length], 0, 0);
     }
@@ -196,4 +199,25 @@ void HTShowPopupMenuForButton(NSEvent* event, NSButton* view, NSMenu* aMenu)
     }
 }
 
+
+NSString* HTStringFromDateWithFormat(NSDate* date, NSString* format)
+{
+#define HTStringFromDateBufferSize 255
+    
+    NSString* result=nil;
+    
+    const char* fmt=[format UTF8String];
+    time_t time = (time_t)[date timeIntervalSince1970];
+    struct tm *t_st;
+    t_st=localtime(&time);
+    char* buf=(char*)malloc(HTStringFromDateBufferSize);
+    
+    size_t len=strftime(buf, HTStringFromDateBufferSize, fmt, t_st);
+    if (len>0) {
+        result=[[NSString alloc]initWithBytes:buf length:len encoding:NSUTF8StringEncoding];
+    }
+    free(buf);
+
+    return result;
+}
 

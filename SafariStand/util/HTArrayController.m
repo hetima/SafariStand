@@ -81,7 +81,7 @@
 
 
 
-- (NSDragOperation)validateDrop:(id <NSDraggingInfo>)draggingInfo proposedIndex:(NSInteger)proposedDropIndex dropOperation:(NSCollectionViewDropOperation)proposedDropOperation
+- (NSDragOperation)validateDrop:(id <NSDraggingInfo>)draggingInfo proposedIndex:(NSInteger)proposedDropIndex dropOperation:(NSTableViewDropOperation)proposedDropOperation
 {
     if(_pasteboardType==nil)    return NSDragOperationNone;
     
@@ -99,9 +99,10 @@
     return [self validateDrop:info proposedIndex:row dropOperation:operation];
 }
 
+
 - (NSDragOperation)collectionView:(NSCollectionView *)collectionView validateDrop:(id <NSDraggingInfo>)draggingInfo proposedIndex:(NSInteger *)proposedDropIndex dropOperation:(NSCollectionViewDropOperation *)proposedDropOperation
 {
-    return [self validateDrop:draggingInfo proposedIndex:*proposedDropIndex dropOperation:*proposedDropOperation];
+    return [self validateDrop:draggingInfo proposedIndex:*proposedDropIndex dropOperation:(NSTableViewDropOperation)*proposedDropOperation];
 }
 
 

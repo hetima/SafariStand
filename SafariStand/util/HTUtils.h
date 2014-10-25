@@ -18,3 +18,5 @@ NSImage* HTImageWithBackgroundColor(NSImage* image, NSColor* color);
 NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance);
 
 void HTShowPopupMenuForButton(NSEvent* event, NSButton* view, NSMenu* aMenu);
+
+NSString* HTStringFromDateWithFormat(NSDate* date, NSString* format);

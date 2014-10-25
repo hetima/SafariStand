@@ -345,11 +345,10 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
     
     DOMNode* head=[doc getElementById:@"safaristand-clip-header"];
     if(!head || [head isKindOfClass:[WebUndefined class]]){
-        NSCalendarDate* date=[NSCalendarDate calendarDate];
-        NSString*   dateStr=[date descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S"];
+        NSString*   dateStr=HTStringFromDateWithFormat([NSDate date], @"%Y-%m-%d %H:%M:%S");
         NSString* tmplPath=[[[NSBundle bundleForClass:[self class]]resourcePath]
                     stringByAppendingPathComponent:@"clip_header.html"];
-        //NSMutableString* headStr=[NSMutableString stringWithContentsOfFile:tmplPath];
+
         NSMutableString* headStr=[NSMutableString stringWithContentsOfFile:tmplPath encoding:NSUTF8StringEncoding error:nil];
         [headStr replaceOccurrencesOfString:@"{{{title}}}"   withString:_defaultTitle 
                     options:0 range:NSMakeRange(0, [headStr length])];

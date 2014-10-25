@@ -115,7 +115,7 @@
 -(void)setupGoBackForwardMenuItem:(BOOL)enabled
 {
     return; //do nothing
-    
+/*
     NSMenuItem* m;
     NSString* key;
     
@@ -136,7 +136,7 @@
         if (enabled) [m setKeyEquivalentModifierMask:NSControlKeyMask];
         else  [m setKeyEquivalentModifierMask:0];
     }
-}
+*/}
 
 
 

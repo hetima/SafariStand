@@ -240,7 +240,7 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
     basic=[basic stringByReplacingOccurrencesOfString:@"{exp}" withString:ext];
     
     //date
-    NSString*   filteredExpression=[[NSDate date]descriptionWithCalendarFormat:basic timeZone:nil locale:nil];
+    NSString* filteredExpression=HTStringFromDateWithFormat([NSDate date], basic);
 
     return filteredExpression;
 

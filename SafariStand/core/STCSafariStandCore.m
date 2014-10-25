@@ -212,7 +212,7 @@ static STCSafariStandCore *sharedInstance;
         if([mainMenuBar numberOfItems]<8) menuCount=[mainMenuBar numberOfItems];
         [mainMenuBar insertItem:myMenuItem atIndex:menuCount];
          
-	}
+    }
 }
 
 
@@ -239,8 +239,18 @@ static STCSafariStandCore *sharedInstance;
     NSString* info=LOCALIZE(@"Miss Match Info");
     
     messageTitle=[NSString stringWithFormat:messageTitle, self.currentVersionString];
-    NSAlert* alert=[NSAlert alertWithMessageText:messageTitle defaultButton:@"OK" alternateButton:@"Visit SafariStand web site" otherButton:nil informativeTextWithFormat:@"%@", info];
-    [alert beginSheetModalForWindow:nil modalDelegate:self didEndSelector:@selector(missMatchAlertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+    NSAlert* alert=[[NSAlert alloc]init];
+    alert.messageText=messageTitle;
+    alert.informativeText=info;
+    [alert addButtonWithTitle:@"OK"]; //1000
+    [alert addButtonWithTitle:@"Visit SafariStand web site"]; //1001
+    
+
+    NSModalResponse returnCode=[alert runModal];
+    if (returnCode==1001) {
+        [self openWebSite];
+    }
+
 }
 
 - (void) missMatchAlertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
