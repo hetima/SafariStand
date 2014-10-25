@@ -50,7 +50,6 @@
 		AA671A7D17F205B3000A470C /* STVTabListCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA671A7B17F205B3000A470C /* STVTabListCtl.m */; };
 		AA671A7E17F205B3000A470C /* STVTabListCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA671A7C17F205B3000A470C /* STVTabListCtl.xib */; };
 		AA671B2317F704FF000A470C /* HTSymbolHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA671B0D17F704FF000A470C /* HTSymbolHook.m */; };
-		AA671B2417F704FF000A470C /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = AA671B0F17F704FF000A470C /* .gitignore */; };
 		AA671B2517F704FF000A470C /* decode.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1117F704FF000A470C /* decode.c */; };
 		AA671B2617F704FF000A470C /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1417F704FF000A470C /* input.c */; };
 		AA671B2717F704FF000A470C /* itab.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1617F704FF000A470C /* itab.c */; };
@@ -59,7 +58,6 @@
 		AA671B2A17F704FF000A470C /* syn.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1A17F704FF000A470C /* syn.c */; };
 		AA671B2B17F704FF000A470C /* udis86.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1E17F704FF000A470C /* udis86.c */; };
 		AA671B2C17F704FF000A470C /* mach_override.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1F17F704FF000A470C /* mach_override.c */; };
-		AA671B2D17F704FF000A470C /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = AA671B2117F704FF000A470C /* README.markdown */; };
 		AA671B3017F71D96000A470C /* STWKClientHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA671B2F17F71D96000A470C /* STWKClientHook.m */; };
 		AA6FCF3E15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FCF3C15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA6FCF3F15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF3D15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib */; };
@@ -730,8 +728,6 @@
 				AA6FCF4215D3F271008AE5AB /* SquashContextMenuItems.plist in Resources */,
 				AA21448717F027D800EDE661 /* STSidebarCtl.xib in Resources */,
 				AA671A7E17F205B3000A470C /* STVTabListCtl.xib in Resources */,
-				AA671B2417F704FF000A470C /* .gitignore in Resources */,
-				AA671B2D17F704FF000A470C /* README.markdown in Resources */,
 				AAA1E4841813EF2B00970FAD /* STTBToggleSidebar.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
