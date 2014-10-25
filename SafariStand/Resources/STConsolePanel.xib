@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
@@ -33,7 +32,7 @@
                     </tabView>
                 </subviews>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="5BC001B7-8244-4AF3-87D4-9CC025D69AAC" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="small" id="z64-po-Fmu" customClass="STConsolePanelToolbar">
+            <toolbar key="toolbar" implicitIdentifier="5BC001B7-8244-4AF3-87D4-9CC025D69AAC" explicitIdentifier="Stand_ConsolePanelToolbar" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="small" id="z64-po-Fmu" customClass="STConsolePanelToolbar">
                 <allowedToolbarItems>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="y5Z-Tb-Yaw"/>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="Bbk-eO-dLl"/>

@@ -6,6 +6,7 @@
 #import "SafariStand.h"
 #import "STConsolePanelModule.h"
 
+#define kpConsolePanelToolbarIdentifier @"NSToolbar Configuration Stand_ConsolePanelToolbar"
 
 @implementation STConsolePanelModule {
     STConsolePanelCtl* _winCtl;
@@ -44,8 +45,10 @@
 
 - (void)prefValue:(NSString*)key changed:(id)value
 {
-    //if([key isEqualToString:])
-}
+    if([key isEqualToString:kpConsolePanelToolbarIdentifier]){
+        if(value)[[STCSafariStandCore si]setObject:value forKey:kpConsolePanelToolbarConfigurationBackup];
+        [[STCSafariStandCore si]synchronize];
+    }}
 
 
 - (IBAction)actShowConsolePanel:(id)sender
@@ -59,6 +62,7 @@
     if(!_winCtl){
         _winCtl=[[STConsolePanelCtl alloc]initWithWindowNibName:@"STConsolePanel"];
         [_winCtl commonConsolePanelCtlInitWithModule:self];
+        [self observePrefValue:kpConsolePanelToolbarIdentifier]; //after toolbar created
     }
 
     [_winCtl selectTab:identifier];
@@ -234,7 +238,31 @@
     self.window.titleVisibility=NSWindowTitleHidden;
     //self.window.titlebarAppearsTransparent=YES;
     self.oToolbar.allowsUserCustomization=YES;
+    self.oToolbar.autosavesConfiguration=YES;
+    [self loadFromStorage];
+}
 
+
+- (void)applicationWillTerminate:(id)core
+{
+    [self saveToStorage];
+}
+
+
+- (void)loadFromStorage
+{
+    NSDictionary* dic=[[STCSafariStandCore si]objectForKey:kpConsolePanelToolbarConfigurationBackup];
+    if(dic){
+        [self.oToolbar setConfigurationFromDictionary:dic];
+    }
+}
+
+
+- (void)saveToStorage
+{
+    NSDictionary* dic=[self.oToolbar configurationDictionary];
+    if(dic)[[STCSafariStandCore si]setObject:dic forKey:kpConsolePanelToolbarConfigurationBackup];
+    [[STCSafariStandCore si]synchronize];
 }
 
 
