@@ -38,6 +38,7 @@
 + (STTabProxy*)tabProxyForWKView:(id)wkView;
 + (STTabProxy*)tabProxyForTabViewItem:(id)item;
 - (id)initWithTabViewItem:(id)item;
+- (void)tabViewItemWillDealloc;
 
 - (void)goToURL:(NSURL*)url;
 

@@ -68,9 +68,15 @@
 }
 
 
+- (void)tabViewItemWillDealloc
+{
+    _invalid=YES;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchIconImage) object:nil];
+}
+
+
 - (void)dealloc
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchIconImage) object:nil];
     LOG(@"STTabProxy dealloc");
 }
 
@@ -222,6 +228,10 @@
 
 - (BOOL)fetchIconImage
 {
+    if (_invalid) {
+        return YES;
+    }
+    
     if (!self.domain) {
         return NO;
     }

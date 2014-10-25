@@ -167,8 +167,10 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
          
          id proxy=[STTabProxy tabProxyForTabViewItem:slf];
          if(proxy){
+             [proxy tabViewItemWillDealloc];
              [[STTabProxyController si]removeTabProxy:proxy];
          }
+         proxy=nil;
          call.as_void(slf, sel);
      });
     
