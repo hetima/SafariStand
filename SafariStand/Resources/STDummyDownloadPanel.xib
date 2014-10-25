@@ -21,7 +21,8 @@
                     <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" id="wTx-97-drJ">
                         <font key="font" metaFont="system"/>
                         <string key="title">Download Monitor Panel is disabled.
-To enable this panel, check "Download Monitor Moves to Console Panel" at "SafariStand Setting" and restart Safari.</string>
+To enable this panel, check "Download Monitor Moves to Console Panel" at "SafariStand Setting" and restart Safari.
+If you don't need this panel, open "Customize Toolbar" and throw away</string>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
