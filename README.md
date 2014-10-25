@@ -1,14 +1,13 @@
 # SafariStand 
 
-これは SafariStand 6.0.185 (for Safari 6.0.4 / OS X 10.7 Lion and 10.8 Mountain Lion / 64 bit only) をベースにいくつかの機能を削除したものです。機能を削った主な理由は、Safari 本体の仕様に影響を受けやすく、マイナーな変更でも動かなくなることがあり、最悪クラッシュする非常に扱い辛いコードだったためです。  
-削除した機能は以下の通りです。
+Safari を拡張する SIMBL プラグインです。バイナリは、
 
-- サイドバー（再実装中）
-- Sub Resources ウインドウ 
+http://hetima.com/safari/stand.html (日本語ページ)  
+http://hetima.com/safari/stand-e.html (英語ページ)
 
+で公開しています。
 
-Xcode 5.0.1 で開発しています。  
-ARC を使ってます。  
+Xcode 6.1 で開発しています。  
 コーディングスタイルに一貫性がありません。  
 コメントは頼りになりません。
 
