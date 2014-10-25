@@ -52,12 +52,15 @@ void STSafariEnumerateBrowserTabViewItem( void(^blk)(NSTabViewItem* tabViewItem,
     });
 }
 
-#pragma mark navigation
 
-void STSafariGoToURL(NSURL* url){
+#pragma mark - navigation
 
+
+void STSafariGoToURL(NSURL* url)
+{
     STSafariGoToURLWithPolicy(url, poNormal);
 }
+
 
 void STSafariGoToURLWithPolicy(NSURL* url, int policy)
 {
@@ -74,43 +77,12 @@ void STSafariGoToRequestWithPolicy(NSURLRequest* req, int policy)
     if(!req)return;
     
     id sdc=[NSDocumentController sharedDocumentController];
-    
     struct TabPlacementHint tph={nil,nil,0};
     
-    //Safari 6
-    if([sdc respondsToSelector:@selector(goToRequest:tabLabel:windowPolicy:tabPlacementHint:frameName:)]){
-        //- (struct BrowserContentViewController *)goToRequest:(id)arg1 tabLabel:(id)arg2 windowPolicy:(int)arg3 tabPlacementHint:(const struct TabPlacementHint *)arg4 frameName:(id)arg5;
-        //result=struct BrowserContentViewController
-        //id favoriteButton=[[NSClassFromString(@"FavoriteButton") alloc]initWithFrame:NSZeroRect];
-        //tph=[favoriteButton _tabPlacementHint];
-        //LOG(@"%d, %d, %d",tph.m_safariBrowserWindow,tph.m_browserContentViewController,tph.m_contentViewIsAncestorTab);
-        //[favoriteButton release];
-        objc_msgSend(sdc, @selector(goToRequest:tabLabel:windowPolicy:tabPlacementHint:frameName:), req, nil, policy, &tph, nil);
-    
     //Safari 7
-    }else if([sdc respondsToSelector:@selector(goToRequest:tabLabel:windowPolicy:tabPlacementHint:)]){
+    if([sdc respondsToSelector:@selector(goToRequest:tabLabel:windowPolicy:tabPlacementHint:)]){
         objc_msgSend(sdc, @selector(goToRequest:tabLabel:windowPolicy:tabPlacementHint:), req, nil, policy, &tph);
     }
-    
-    
-    //_frontmostBrowserDocumentIfAvailableUsingWindowPolicy;
-    //frontmostBrowserDocument
-    //findOrCreateFrontmostBrowserDocument
-    /*    BOOL needTab=NO;
-    id doc;
-    if(policy==poNewWindow||policy==poNewWindow_back){
-        doc=objc_msgSend(sdc, @selector(createHiddenEmptyBrowserDocument));
-    }
-
-    if(policy==poNewTab||policy==poNewTab_back)needTab=YES;
-    doc=objc_msgSend(sdc, @selector(frontmostBrowserDocument));
-    if(!doc){
-        doc=objc_msgSend(sdc, @selector(findOrCreateFrontmostBrowserDocument));
-        needTab=NO;
-    }
-    if([doc respondsToSelector:@selector(goToRequest:withTabLabel:)]){
-        objc_msgSend(doc, @selector(goToRequest:withTabLabel:), req, nil);
-    }*/
 }
 
 
@@ -124,11 +96,13 @@ NSString* STSafariDownloadDestinationWithFileName(NSString* fileName)
     return outDir;
 }
 
+
 void STSafariDownloadURL(NSURL* url)
 {
     NSURLRequest *req=[NSURLRequest requestWithURL:url];
     STSafariDownloadRequest(req);
 }
+
 
 void STSafariDownloadRequest(NSURLRequest* req)
 {
@@ -147,12 +121,15 @@ void STSafariDownloadRequest(NSURLRequest* req)
     
 }
 
+
 void STSafariDownloadURLWithFileName(NSURL* url, NSString* fileName)
 {
     NSURLRequest *req=[NSURLRequest requestWithURL:url];
     STSafariDownloadRequestWithFileName(req, fileName);
 
 }
+
+
 void STSafariDownloadRequestWithFileName(NSURLRequest* req, NSString* fileName)
 {
     Class dmClass=NSClassFromString(@"DownloadMonitorOld");
@@ -174,12 +151,11 @@ void STSafariDownloadRequestWithFileName(NSURLRequest* req, NSString* fileName)
 }
 
 
-void STSafariNewTabAction(){
-    
+void STSafariNewTabAction()
+{
     [NSApp sendAction:@selector(newTab:) to:nil from:nil];
-    
-
 }
+
 
 // -(BrowserContentViewController*)[BrowserWindowControllerMac createTabWithFrameName:atIndex:andShow:]
 // と同じようにする
@@ -206,27 +182,30 @@ id STSafariCreateWKViewOrWebViewAtIndexAndShow(NSWindow* win, NSInteger idx, BOO
     }
     
     if (webView) {
-        //Safari 6
-        if([winCtl respondsToSelector:@selector(_createTabWithView:atIndex:andShow:)]){
-            result=objc_msgSend(winCtl, @selector(_createTabWithView:atIndex:andShow:), webView, idx, show);
         //Safari 7
-        }else if([winCtl respondsToSelector:@selector(_createTabWithView:atIndex:andSelect:)]){
+        if([winCtl respondsToSelector:@selector(_createTabWithView:atIndex:andSelect:)]){
             result=objc_msgSend(winCtl, @selector(_createTabWithView:atIndex:andSelect:), webView, idx, show);
         }
     }
     return result;
 }
 
-BOOL STSafariOpenNewTabsInFront(){
+
+BOOL STSafariOpenNewTabsInFront()
+{
     return [[NSUserDefaults standardUserDefaults]boolForKey:@"OpenNewTabsInFront"];
 }
 
-int STSafariWindowPolicyNewTab(){
+
+int STSafariWindowPolicyNewTab()
+{
     if(STSafariOpenNewTabsInFront()) return poNewTab;
     else return poNewTab_back;
 }
 
-int STSafariWindowPolicyNewTabRespectingCurrentEvent(){
+
+int STSafariWindowPolicyNewTabRespectingCurrentEvent()
+{
     int policy=STSafariWindowPolicyNewTab();
 
     //とりあえずShiftキーは無視で
@@ -237,6 +216,7 @@ int STSafariWindowPolicyNewTabRespectingCurrentEvent(){
     
     return policy;
 }
+
 
 int STSafariWindowPolicyFromCurrentEvent()
 {
@@ -270,8 +250,8 @@ int STSafariWindowPolicyFromCurrentEvent()
     return 0;
 }
 
-#pragma mark -
-#pragma mark access
+#pragma mark - access
+
 id STSafariCurrentDocument()
 {
     NSDocument* doc=nil;
@@ -282,17 +262,20 @@ id STSafariCurrentDocument()
     return doc;
 }
 
+
 NSWindow* STSafariCurrentBrowserWindow()
 {
     NSView* view=STSafariCurrentWKView();
     return [view window];
 }
 
+
 id STSafariCurrentTitle()
 {
     NSDocument* doc=STSafariCurrentDocument();
     return [doc displayName];
 }
+
 
 id STSafariCurrentURLString()
 {
@@ -341,17 +324,14 @@ id STSafariWKViewForTabViewItem(id tabViewItem)
 id STSafariTabViewItemForWKView(id wkView)
 {
     id winCtl=STSafariBrowserWindowControllerForWKView(wkView);
-    //Safari 6
-    if([winCtl respondsToSelector:@selector(tabViewItemForWebView:)]){
-        return objc_msgSend(winCtl, @selector(tabViewItemForWebView:), wkView);
     //Safari 7
-    }else if([winCtl respondsToSelector:@selector(tabViewItemForWKView:)]){
+    if([winCtl respondsToSelector:@selector(tabViewItemForWKView:)]){
         return objc_msgSend(winCtl, @selector(tabViewItemForWKView:), wkView);
     }
     return nil;
 }
 
-//STTabSwitcherForWinCtl() でもいいか
+
 id/* NSTabView */ STSafariTabViewForWindow(NSWindow* win)
 {
     id result=nil;
@@ -364,6 +344,7 @@ id/* NSTabView */ STSafariTabViewForWindow(NSWindow* win)
     
     return result;
 }
+
 
 NSView* /* TabContentView */ STSafariTabContentViewForTabView(NSView* tabView)
 {
@@ -387,6 +368,7 @@ void STSafariMoveTabViewItemToIndex(id tabViewItem, NSInteger idx)
     }
 }
 
+
 void STSafariMoveTabToNewWindow(NSTabViewItem* item)
 {
     NSWindow* win=[[item tabView]window];
@@ -397,6 +379,7 @@ void STSafariMoveTabToNewWindow(NSTabViewItem* item)
     
 }
 
+
 void STSafariMoveTabToOtherWindow(NSTabViewItem* itemToMove, NSWindow* destWindow, NSInteger destIndex, BOOL show)
 {
     id winCtl=[destWindow windowController];
@@ -404,24 +387,14 @@ void STSafariMoveTabToOtherWindow(NSTabViewItem* itemToMove, NSWindow* destWindo
     if (winCtl && itemToMove && destIndex >= 0) {
         NSDisableScreenUpdates();
 
-        if ([winCtl respondsToSelector:@selector(moveTabFromOtherWindow:toIndex:andShow:)]) {
-            objc_msgSend(winCtl, @selector(moveTabFromOtherWindow:toIndex:andShow:), itemToMove, destIndex, show);
-        }else if ([winCtl respondsToSelector:@selector(moveTabFromOtherWindow:toIndex:andSelect:)]) {
+        if ([winCtl respondsToSelector:@selector(moveTabFromOtherWindow:toIndex:andSelect:)]) {
             objc_msgSend(winCtl, @selector(moveTabFromOtherWindow:toIndex:andSelect:), itemToMove, destIndex, show);
         }
 
-//like _moveTabToNewWindow:
- /*       id sdc=[NSDocumentController sharedDocumentController];
-        id tempDoc=objc_msgSend(sdc, @selector(createHiddenEmptyBrowserDocument));
-        id tempWinCtl=objc_msgSend(tempDoc, @selector(browserWindowControllerMac));
-        objc_msgSend(tempWinCtl, @selector(replaceEmptyTabWithTabs:), [NSArray arrayWithObject:];)
-        
-        
-        */
         NSEnableScreenUpdates();
     }
-    
 }
+
 
 void STSafariReloadTab(NSTabViewItem* item)
 {
@@ -430,8 +403,8 @@ void STSafariReloadTab(NSTabViewItem* item)
     if (item && [winCtl respondsToSelector:@selector(_reloadTab:)]) {
         objc_msgSend(winCtl, @selector(_reloadTab:), item);
     }
-    
 }
+
 
 BOOL STSafariCanReloadTab(NSTabViewItem* item)
 {
@@ -443,6 +416,7 @@ BOOL STSafariCanReloadTab(NSTabViewItem* item)
     return NO;
 }
 
+
 id STSafariBrowserWindowControllerForWKView(id wkView)
 {
     if ([wkView respondsToSelector:@selector(browserWindowControllerMac)]) {
@@ -450,6 +424,7 @@ id STSafariBrowserWindowControllerForWKView(id wkView)
     }
     return nil;    
 }
+
 
 BOOL STSafariUsesWebKit2(id anyObject)
 {
@@ -478,15 +453,18 @@ NSImage* STSafariBundleImageNamed(NSString* name)
     return result;
 }
 
+
 NSImage* STSafariBundleBookmarkImage()
 {
     return STSafariBundleImageNamed(@"ToolbarBookmarksTemplate");
 }
 
+
 NSImage* STSafariBundleHistoryImage()
 {
     return STSafariBundleImageNamed(@"ToolbarHistoryTemplate");
 }
+
 
 NSImage* STSafariBundleReadinglistmage()
 {
@@ -502,6 +480,7 @@ NSString* STSafariWebpagePreviewsPath()
     path=[path stringByAppendingPathComponent:@"Library/Caches/com.apple.Safari/Webpage Previews"];
     return path;
 }
+
 
 NSString* STSafariThumbnailForURLString(NSString* URLString, NSString* ext)
 {
@@ -546,25 +525,10 @@ void STSafariAddSearchStringHistory(NSString* str)
 
 const char* STSafariBookmarksControllerClass()
 {
-    static const char* bookmarksControllerClass=nil;
-    if (bookmarksControllerClass==nil) {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            Class aClass;
-            //Safari 6
-            aClass=NSClassFromString(@"BookmarksControllerObjC");
-            if (aClass) {
-                bookmarksControllerClass="BookmarksControllerObjC";
-            }else{
-                //Safari 7
-                //aClass=NSClassFromString(@"BookmarksController");
-                bookmarksControllerClass="BookmarksController";
-            }
-      });
-    }
-    
-    return bookmarksControllerClass;
+    //Safari 7
+    return "BookmarksController";
 }
+
 
 int STSafariWebBookmarkType(id webBookmark)
 {
@@ -576,6 +540,7 @@ int STSafariWebBookmarkType(id webBookmark)
     return wbInvalid;
 }
 
+
 NSString* STSafariWebBookmarkURLString(id webBookmark)
 {
     if([webBookmark respondsToSelector:@selector(URLString)]){
@@ -583,6 +548,7 @@ NSString* STSafariWebBookmarkURLString(id webBookmark)
     }
     return nil;
 }
+
 
 NSString* STSafariWebBookmarkTitle(id webBookmark)
 {

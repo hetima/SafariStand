@@ -22,17 +22,20 @@
     void* _pageRef;
 }
 
+
 - (void)goToURL:(NSURL*)urlToGo
 {
     htWKGoToURL([self wkView], urlToGo);
 }
 
-+(STTabProxy*)tabProxyForWKView:(id)wkView
+
++ (STTabProxy*)tabProxyForWKView:(id)wkView
 {
     return [STSafariTabViewItemForWKView(wkView) htao_valueForKey:@"STTabProxy"];
 }
 
-+(STTabProxy*)tabProxyForTabViewItem:(id)item
+
++ (STTabProxy*)tabProxyForTabViewItem:(id)item
 {
     return [item htao_valueForKey:@"STTabProxy"];
 }
@@ -64,11 +67,13 @@
     return self;
 }
 
+
 - (void)dealloc
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchIconImage) object:nil];
     LOG(@"STTabProxy dealloc");
 }
+
 
 - (id)window
 {
@@ -76,10 +81,12 @@
     return [winCtl window];
 }
 
+
 - (id)wkView
 {
     return STSafariWKViewForTabViewItem(_tabViewItem);
 }
+
 
 - (void*)pageRef
 {
@@ -89,7 +96,8 @@
     return _pageRef;
 }
 
--(BOOL)canClose
+
+- (BOOL)canClose
 {
     if([[_tabViewItem tabView]numberOfTabViewItems]>1)return YES;
     return NO;
@@ -101,7 +109,8 @@
      */
 }
 
--(BOOL)isThereOtherTab
+
+- (BOOL)isThereOtherTab
 {
     if([[_tabViewItem tabView]numberOfTabViewItems]>1)return YES;
     
@@ -122,31 +131,32 @@
 }
 
 
--(NSImage*)image
+- (NSImage*)image
 {
     return self.cachedImage;
 }
 
--(NSImage*)icon
+
+- (NSImage*)icon
 {
     return self.cachedImage;
 }
+
 
 - (NSTabView *)tabView
 {
     return [_tabViewItem tabView];
 }
 
--(void)selectTab
+
+- (void)selectTab
 {
     if([_tabViewItem tabState]==NSSelectedTab)return;
     
     id ctl=STSafariBrowserWindowControllerForWKView([self wkView]);
-    //Safari 6
-    if ([ctl respondsToSelector:@selector(_showTab:)]) {
-        objc_msgSend(ctl, @selector(_showTab:), _tabViewItem);
+
     //Safari 7
-    }else if ([ctl respondsToSelector:@selector(_selectTab:)]) {
+    if ([ctl respondsToSelector:@selector(_selectTab:)]) {
         objc_msgSend(ctl, @selector(_selectTab:), _tabViewItem);
     }
     
@@ -156,7 +166,7 @@
 
 #pragma mark - pageLoader
 
--(void)didStartProgress
+- (void)didStartProgress
 {
     LOG(@"didStartProgress");
     
@@ -173,7 +183,7 @@
     
 }
 
--(void)didFinishProgress
+- (void)didFinishProgress
 {
     LOG(@"didFinishProgress");
 
@@ -193,7 +203,7 @@
     }
 }
 
--(void)installedToSidebar:(id)ctl
+- (void)installedToSidebar:(id)ctl
 {
     self.isInAnyWidget=YES;
     if (!self.wantsImage) {
@@ -202,7 +212,7 @@
 }
 
 //This method may be called after target tab has closed.
--(void)uninstalledFromSidebar:(id)ctl
+- (void)uninstalledFromSidebar:(id)ctl
 {
     self.isInAnyWidget=NO;
     if (!self.wantsImage) {
@@ -210,7 +220,7 @@
     }
 }
 
--(BOOL)fetchIconImage
+- (BOOL)fetchIconImage
 {
     if (!self.domain) {
         return NO;
@@ -250,6 +260,7 @@
     
 }
 
+
 - (IBAction)actCloseOther:(id)sender
 {
     if (![self isThereOtherTab]||_invalid) return;
@@ -262,10 +273,12 @@
     }
 }
 
+
 - (IBAction)actReload:(id)sender
 {
     STSafariReloadTab(self.tabViewItem);
 }
+
 
 - (IBAction)actMoveTabToNewWindow:(id)sender
 {

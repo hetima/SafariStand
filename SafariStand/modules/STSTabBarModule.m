@@ -127,23 +127,7 @@
             if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnTabBarEnabled]) {
                 [self _installIconToTabButton:result ofTabViewItem:obj];
             }
-            /*
-            NSView* closeButton=objc_msgSend(result, @selector(closeButton));
 
-            NSImage* img=[NSImage imageNamed:NSImageNameFolder];
-            //[view setImage:img];
-            CALayer* layer=[STTabIconLayer layer];
-            NSRect layerFrame=NSMakeRect(4, 4, 16, 16);
-            layer.frame=layerFrame;
-            layer.contents=img;
-            [result.layer addSublayer:layer];
-            //[layer bind:NSHiddenBinding toObject:result withKeyPath:@"showingCloseButton" options:nil];
-            [layer bind:NSHiddenBinding toObject:closeButton withKeyPath:NSHiddenBinding options:@{ NSValueTransformerNameBindingOption : NSNegateBooleanTransformerName }];
-            id tabViewItem=objc_msgSend(result, @selector(tabViewItem));
-            STTabProxy* tp=[STTabProxy tabProxyForTabViewItem:tabViewItem];
-            if (tp) {
-                [layer bind:@"contents" toObject:tp withKeyPath:@"image" options:nil];
-            }*/
             return result;
         }_WITHBLOCK;
         
