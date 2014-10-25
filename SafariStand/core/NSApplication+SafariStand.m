@@ -14,7 +14,7 @@
 #import "HTWebClipwinCtl.h"
 #import "STQuickSearchModule.h"
 #import "STSidebarModule.h"
-
+#import "STPrefWindowModule.h"
 
 @implementation NSApplication (NSApplication_SafariStand)
 #ifdef DEBUG
@@ -202,14 +202,22 @@
     [HTWebClipwinCtl showWindowForCurrentWKView];
 }
 
+
 -(void)STToggleSidebar:(id)sender
 {
     [(STSidebarModule*)[STCSafariStandCore mi:@"STSidebarModule"]toggleSidebar:nil];
 }
 
+
 -(void)STToggleSidebarLR:(id)sender
 {
     [(STSidebarModule*)[STCSafariStandCore mi:@"STSidebarModule"]toggleSidebarLR:nil];
+}
+
+
+- (IBAction)STShowPrefWindow:(id)sender
+{
+    [(STPrefWindowModule*)[STCSafariStandCore mi:@"STPrefWindowModule"]actShowPrefWindow:nil];
 }
 
 

@@ -59,6 +59,7 @@
 		AA671B2B17F704FF000A470C /* udis86.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1E17F704FF000A470C /* udis86.c */; };
 		AA671B2C17F704FF000A470C /* mach_override.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1F17F704FF000A470C /* mach_override.c */; };
 		AA671B3017F71D96000A470C /* STWKClientHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA671B2F17F71D96000A470C /* STWKClientHook.m */; };
+		AA6D308E19FBA6670049E798 /* STDummyDownloadPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6D308D19FBA6670049E798 /* STDummyDownloadPanel.xib */; };
 		AA6FCF3E15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FCF3C15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA6FCF3F15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF3D15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib */; };
 		AA6FCF4215D3F271008AE5AB /* SquashContextMenuItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF4415D3F271008AE5AB /* SquashContextMenuItems.plist */; };
@@ -206,6 +207,7 @@
 		AA671B2217F704FF000A470C /* udis86.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = udis86.h; sourceTree = "<group>"; };
 		AA671B2E17F71D96000A470C /* STWKClientHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWKClientHook.h; sourceTree = "<group>"; };
 		AA671B2F17F71D96000A470C /* STWKClientHook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWKClientHook.m; sourceTree = "<group>"; };
+		AA6D308D19FBA6670049E798 /* STDummyDownloadPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDummyDownloadPanel.xib; sourceTree = "<group>"; };
 		AA6FCF3B15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSquashContextMenuSheetCtl.h; sourceTree = "<group>"; };
 		AA6FCF3C15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSquashContextMenuSheetCtl.m; sourceTree = "<group>"; };
 		AA6FCF3D15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STSquashContextMenuSheetCtl.xib; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 				AA92216F13C04DE6006E898F /* STCPrefWin.xib */,
 				AAF4985219F7508C0064BD35 /* STConsolePanel.xib */,
 				AA0881AC13E4284B003B70DF /* Localizable.strings */,
+				AA6D308D19FBA6670049E798 /* STDummyDownloadPanel.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -706,6 +709,7 @@
 				AAD974891817618F004D955A /* STPrefSidebar.tiff in Resources */,
 				AA92216C13C04DB1006E898F /* HTQuerySeedEditViewCtl.xib in Resources */,
 				AACAD26F13E15BF100170193 /* STPrefSearch.png in Resources */,
+				AA6D308E19FBA6670049E798 /* STDummyDownloadPanel.xib in Resources */,
 				AAD9748C1817EA3D004D955A /* SquashContextMenuItems61.plist in Resources */,
 				AAF4985319F7508C0064BD35 /* STConsolePanel.xib in Resources */,
 				AA0881AA13E4284B003B70DF /* Localizable.strings in Resources */,

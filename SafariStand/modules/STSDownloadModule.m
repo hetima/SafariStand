@@ -112,6 +112,8 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 {
     if ([[NSUserDefaults standardUserDefaults]boolForKey:kpDownloadMonitorMovesToConsolePanel]) {
         [self installDownloadMonitorViewToConsolePanel];
+    }else{
+        [self installDummyDownloadMonitorViewToConsolePanel];
     }
 }
 
@@ -255,6 +257,22 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 
 
 #pragma mark - DownloadMonitor
+
+- (void)installDummyDownloadMonitorViewToConsolePanel
+{
+    STConsolePanelModule* consolePanelModule=[STCSafariStandCore mi:@"STConsolePanelModule"];
+    NSString* imgPath=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForImageResource:@"STTBDownload"];
+    NSImage* img=[[NSImage alloc]initWithContentsOfFile:imgPath];
+    [img setTemplate:YES];
+    [consolePanelModule addPanelWithIdentifier:@"DownloadMonitor" title:@"Download Monitor" icon:img weight:20 loadHandler:^id{
+
+        NSViewController* viewCtl=[[NSViewController alloc]initWithNibName:@"STDummyDownloadPanel" bundle:
+                [NSBundle bundleWithIdentifier:kSafariStandBundleID]];
+        
+        return viewCtl;
+    }];
+    
+}
 
 - (void)installDownloadMonitorViewToConsolePanel
 {

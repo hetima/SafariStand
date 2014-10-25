@@ -13,7 +13,9 @@
 
 @interface STPrefWindowModule : STCModule
 
--(void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon;
+- (void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon;
+- (IBAction)actShowPrefWindow:(id)sender;
+
 @end
 
 
