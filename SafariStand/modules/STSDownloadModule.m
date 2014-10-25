@@ -102,9 +102,6 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
              NSString *result=call.as_id(slf, sel, outputDir);
              return result;
          });
-        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpDownloadMonitorMovesToConsolePanel]) {
-            [self prepareMoveDownloadMonitor];
-        }
 
     }
     
@@ -261,6 +258,34 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 
 - (void)installDownloadMonitorViewToConsolePanel
 {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         "AppController",
+         "showDownloads:",
+         KZRMethodInspection, call, sel,
+         ^void (id slf, id sender){
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
+                 [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
+             });
+         });
+        
+        KZRMETHOD_SWIZZLING_WITHBLOCK
+        (
+         kSafariBrowserWindowControllerCstr,
+         "toggleDownloadsPopover:",
+         KZRMethodInspection, call, sel,
+         ^void (id slf, id sender){
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
+                 [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
+             });
+         });
+    });
+    
+    
     STConsolePanelModule* consolePanelModule=[STCSafariStandCore mi:@"STConsolePanelModule"];
     
     NSString* imgPath=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForImageResource:@"STTBDownload"];
@@ -278,33 +303,5 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 
 }
 
-
-- (void)prepareMoveDownloadMonitor
-{
-    KZRMETHOD_SWIZZLING_WITHBLOCK
-    (
-     "AppController",
-     "showDownloads:",
-     KZRMethodInspection, call, sel,
-     ^void (id slf, id sender){
-         dispatch_async(dispatch_get_main_queue(), ^{
-             STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
-             [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
-         });
-     });
-    
-    KZRMETHOD_SWIZZLING_WITHBLOCK
-    (
-     kSafariBrowserWindowControllerCstr,
-     "toggleDownloadsPopover:",
-     KZRMethodInspection, call, sel,
-     ^void (id slf, id sender){
-         dispatch_async(dispatch_get_main_queue(), ^{
-             STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
-             [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
-         });
-     });
-
-}
 
 @end
