@@ -411,6 +411,25 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
 }
 
 
+- (IBAction)actExportPDF:(id)sender
+{
+    NSView* view=[[[self.oWebView mainFrame]frameView]documentView];
+    NSString* fileName=[[self.oFileNameFld stringValue]stringByAppendingPathExtension:@"pdf"];
+    
+    NSSavePanel *sp=[NSSavePanel savePanel];
+    sp.allowedFileTypes=@[@"pdf"];
+    [sp setCanSelectHiddenExtension:YES];
+    sp.nameFieldStringValue=fileName;
+    
+    [sp beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
+        if (result==NSFileHandlingPanelOKButton) {
+            NSURL* filePath=[sp URL];
+            NSData* data=[view dataWithPDFInsideRect:[view bounds]];
+            [data writeToURL:filePath atomically:YES];
+        }
+    }];
+    
+}
 
 #pragma mark - - toolbar
 
