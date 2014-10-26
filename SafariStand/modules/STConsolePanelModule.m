@@ -5,6 +5,7 @@
 
 #import "SafariStand.h"
 #import "STConsolePanelModule.h"
+#import "STCTabListViewCtl.h"
 
 #define kpConsolePanelToolbarIdentifier @"NSToolbar Configuration Stand_ConsolePanelToolbar"
 
@@ -34,6 +35,7 @@
 - (void)modulesDidFinishLoading:(id)core
 {
     [self addSafariBookmarksView];
+    [self addTabListViewView];
 }
 
 
@@ -84,7 +86,17 @@
 }
 
 
-
+- (void)addTabListViewView
+{
+    STConsolePanelModule* consolePanelModule=[STCSafariStandCore mi:@"STConsolePanelModule"];
+    NSImage* img=[NSImage imageNamed:NSImageNameStopProgressFreestandingTemplate];
+    
+    [consolePanelModule addPanelWithIdentifier:@"TabList" title:@"Tab List" icon:img weight:1 loadHandler:^id{
+        STCTabListViewCtl* viewCtl=[STCTabListViewCtl viewCtl];
+        return viewCtl;
+    }];
+    
+}
 #pragma mark - Bookmarks
 
 + (NSURL*)selectedURLOnSafariBookmarksView:(id)bookmarksSidebarViewController
