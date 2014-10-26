@@ -215,7 +215,7 @@ void showWindowForFrontmostWKViewGetWebArchive(WKDataRef archiveData, WKErrorRef
     WebArchive* arc=[[[self.oWebView windowScriptObject]evaluateWebScript:@"document"]webArchive];
     BOOL result=[[arc data]writeToFile:filePath atomically:YES];
 
-    //HTClearFileQuarantineState(filePath);
+    if(result) HTClearFileQuarantineState(filePath);
 
     [self setDocumentEdited:NO];
 

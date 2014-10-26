@@ -34,6 +34,28 @@ int HTAddXattr(NSString* path, const char *cName, id value)
     return -1;
 }
 
+
+int HTRemoveXattr(NSString* path, const char *cName)
+{
+
+    const char *cPath=[path fileSystemRepresentation];
+
+    if(cPath && cName){
+        return removexattr(cPath, cName, 0);
+    }
+    return -1;
+}
+
+
+BOOL HTClearFileQuarantineState(NSString* path)
+{
+    if(HTRemoveXattr(path, "com.apple.quarantine")==0){
+        return YES;
+    }
+    return NO;
+}
+
+
 NSString* HTMD5StringFromString(NSString* inStr)
 {
 

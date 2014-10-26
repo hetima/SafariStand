@@ -7,8 +7,11 @@
 
 
 int HTAddXattrMDItemWhereFroms(NSString* path, NSArray* URLArray);
+BOOL HTClearFileQuarantineState(NSString* path);
 
 int HTAddXattr(NSString* path, const char *cName, id value);
+int HTRemoveXattr(NSString* path, const char *cName);
+
 NSString* HTMD5StringFromString(NSString* inStr);
 NSColor* HTColorFromHTMLString(NSString *inStr);
 
