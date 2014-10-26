@@ -57,6 +57,7 @@
         _isUnread=NO;
         _isInAnyWidget=NO;
         _invalid=NO;
+        _hidden=NO;
 
         [[STTabProxyController si]addTabProxy:self];
         self.title=[item title];

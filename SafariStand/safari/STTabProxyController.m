@@ -118,24 +118,42 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
      });
 
 
-    //not work in Safari 8
     //tabView入れ替わりを監視するため
-    //bookmarks bar の「すべてをタブで開く」などで呼ばれる。NSTabView ごと入れ替わる
+    /* bookmarks bar の「すべてをタブで開く」などで呼ばれる。NSTabView ごと入れ替わる
+       このとき古い NSTabView は「戻る」できるように保持されている。
+       そこからページ遷移すると古い NSTabView は破棄され、戻ることもできなくなる。
+     */
     KZRMETHOD_SWIZZLING_WITHBLOCK
     (
-     "TabBarView", "replaceTabView:",
+     "BrowserWindowContentView", "setTabSwitcher:",
      KZRMethodInspection, call, sel,
      ^(id slf, id/*NSTabView*/ tabView)
     {
-         call.as_void(slf, sel, tabView);
-         //[[STTabProxyController si]maintainTabSelectionOrder:[STTabProxy tabProxyForTabViewItem:tabView]];
-         //proxy.isSelected がセットされてないことがある
-         NSTabViewItem* selectedTabViewItem=[tabView selectedTabViewItem];
-         STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:selectedTabViewItem];
-         proxy.isSelected=YES;
-         
-         [[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView]; //重要：こっちが先
-         //[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
+        [self willChangeValueForKey:@"allTabProxy"];
+        //
+        //leftTabs
+        NSTabView* exitTabView=objc_msgSend(slf, @selector(tabSwitcher));
+        NSArray* exitTabs=[STTabProxyController tabProxiesForTabView:exitTabView];
+        [exitTabs enumerateObjectsUsingBlock:^(STTabProxy* obj, NSUInteger idx, BOOL *stop) {
+            obj.hidden=YES;
+        }];
+
+        call.as_void(slf, sel, tabView);
+        
+        //[[STTabProxyController si]maintainTabSelectionOrder:[STTabProxy tabProxyForTabViewItem:tabView]];
+        //proxy.isSelected がセットされてないことがある
+        NSTabViewItem* selectedTabViewItem=[tabView selectedTabViewItem];
+        STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:selectedTabViewItem];
+        proxy.isSelected=YES;
+        
+        NSArray* enteredTabs=[STTabProxyController tabProxiesForTabView:tabView];
+        [enteredTabs enumerateObjectsUsingBlock:^(STTabProxy* obj, NSUInteger idx, BOOL *stop) {
+            obj.hidden=NO;
+        }];
+        
+        [self didChangeValueForKey:@"allTabProxy"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView]; //重要：こっちが先 not used now
+        //[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
      });
 
 

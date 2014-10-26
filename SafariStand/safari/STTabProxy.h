@@ -26,6 +26,7 @@
 
 @property(nonatomic, assign)BOOL isLoading;
 @property(nonatomic, assign)BOOL isSelected;
+@property(nonatomic, assign, getter=isHidden)BOOL hidden;
 @property(nonatomic, assign)BOOL isUnread;
 @property(nonatomic, assign)id tabViewItem;
 @property(nonatomic, retain)NSImage* cachedImage;
