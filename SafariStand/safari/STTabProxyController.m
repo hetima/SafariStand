@@ -244,19 +244,29 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
 
 -(void)addTabProxy:(id)tabProxy
 {
-    [self.allTabProxy addObject:tabProxy];
+    NSIndexSet *indexes = [NSIndexSet indexSetWithIndex:[_allTabProxy count]];
+    [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"allTabProxy"];
+    [_allTabProxy addObject:tabProxy];
+    [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"allTabProxy"];
 }
 
 - (void)removeTabProxy:(id)tabProxy
 {
-    NSInteger idx=[self.allTabProxy indexOfObjectIdenticalTo:tabProxy];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"tabProxyWillRemove" object:tabProxy];
-    if (idx!=NSNotFound) {
-        [self.allTabProxy removeObjectAtIndex:idx];
+    NSInteger idx=[_allTabProxy indexOfObjectIdenticalTo:tabProxy];
+    if (idx==NSNotFound) {
+        return;
     }
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"tabProxyWillRemove" object:tabProxy];
+    NSIndexSet *indexes=[NSIndexSet indexSetWithIndex:idx];
+    
+    [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:@"allTabProxy"];
+    [self.allTabProxy removeObjectAtIndex:idx];
+    [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:@"allTabProxy"];
     
 }
 
+//not use now
 -(void)maintainTabSelectionOrder:(id)tabProxy
 {
     if (tabProxy) {
