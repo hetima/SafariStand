@@ -49,6 +49,7 @@
 
         // Initialization code here.
         [item htao_setValue:self forKey:@"STTabProxy"];
+        _pageRef=nil;
         _tabViewItem=item;
         _cachedImage=nil;
         _isLoading=NO;
@@ -71,8 +72,10 @@
 
 - (void)tabViewItemWillDealloc
 {
+    LOG(@"STTabProxy will dealloc");
     _invalid=YES;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchIconImage) object:nil];
+    _tabViewItem=nil;
 }
 
 
@@ -91,12 +94,16 @@
 
 - (id)wkView
 {
+    if (_invalid) return nil;
+    
     return STSafariWKViewForTabViewItem(_tabViewItem);
 }
 
 
 - (void*)pageRef
 {
+    if (_invalid) return nil;
+    
     if (!_pageRef) {
         _pageRef=(void*)htWKPageRefForWKView([self wkView]);
     }
@@ -127,14 +134,15 @@
 
 - (NSString*)URLString
 {
+    if (_invalid) return nil;
     return [_tabViewItem URLString];
 }
 
 
 -(NSString*)imagePathForExt:(NSString*)ext
 {
+    if (_invalid) return nil;
     return STSafariThumbnailForURLString([self URLString], ext);
-
 }
 
 
@@ -152,13 +160,14 @@
 
 - (NSTabView *)tabView
 {
+    if (_invalid) return nil;
     return [_tabViewItem tabView];
 }
 
 
 - (void)selectTab
 {
-    if([_tabViewItem tabState]==NSSelectedTab)return;
+    if(_invalid||[_tabViewItem tabState]==NSSelectedTab)return;
     
     id ctl=STSafariBrowserWindowControllerForWKView([self wkView]);
 
@@ -274,7 +283,7 @@
 
 - (IBAction)actCloseOther:(id)sender
 {
-    if (![self isThereOtherTab]||_invalid) return;
+    if (_invalid||![self isThereOtherTab]) return;
     
     
     //BrowserWindowControllerMac - (void)tryToCloseOtherTabsWhenReady:(NSTabViewItem*)arg1;
@@ -287,13 +296,14 @@
 
 - (IBAction)actReload:(id)sender
 {
+    if (_invalid) return;
     STSafariReloadTab(self.tabViewItem);
 }
 
 
 - (IBAction)actMoveTabToNewWindow:(id)sender
 {
-    if (![self isThereOtherTab]||_invalid) return;
+    if (_invalid||![self isThereOtherTab]) return;
     STSafariMoveTabToNewWindow(self.tabViewItem);
 }
 
