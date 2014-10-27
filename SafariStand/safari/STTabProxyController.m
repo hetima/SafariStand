@@ -129,8 +129,8 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
      KZRMethodInspection, call, sel,
      ^(id slf, id/*NSTabView*/ tabView)
     {
-        [self willChangeValueForKey:@"allTabProxy"];
-        //
+        //[self willChangeValueForKey:@"allTabProxy"];
+
         //leftTabs
         NSTabView* exitTabView=objc_msgSend(slf, @selector(tabSwitcher));
         NSArray* exitTabs=[STTabProxyController tabProxiesForTabView:exitTabView];
@@ -151,7 +151,7 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
             obj.hidden=NO;
         }];
         
-        [self didChangeValueForKey:@"allTabProxy"];
+        //[self didChangeValueForKey:@"allTabProxy"];
         [[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView]; //重要：こっちが先 not used now
         //[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
      });
