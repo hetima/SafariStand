@@ -82,15 +82,15 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
 
     //tabの数変更を監視するため
     //順番入れ替えのときは2回呼ばれる(remove->insert)
-    KZRMETHOD_SWIZZLING_WITHBLOCK
+    KZRMETHOD_SWIZZLING_
     (
      "ScrollableTabBarView", "tabViewDidChangeNumberOfTabViewItems:",
-     KZRMethodInspection, call, sel,
+     KZRMethodInspection, call, sel)
      ^(id slf, id /*NSTabView*/ tabView)
     {
          call.as_void(slf, sel, tabView);
          [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidChangeNote object:tabView];
-     });
+     }_WITHBLOCK;
 
 
     //tabの選択を監視するため
@@ -152,7 +152,7 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
         }];
         
         //[self didChangeValueForKey:@"allTabProxy"];
-        [[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView]; //重要：こっちが先 not used now
+        [[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView]; //重要：こっちが先
         //[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
      });
 
