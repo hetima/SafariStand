@@ -48,8 +48,6 @@
     result=[[STCTabListViewCtl alloc]initWithNibName:@"STCTabListViewCtl" bundle:
             [NSBundle bundleWithIdentifier:kSafariStandBundleID]];
     [result setupWithTabView:tabView];
-    //[result.aryCtl bind:@"contentArray" toObject:self withKeyPath:@"tabs" options:@{}];
-    //[result.aryCtl setFilterPredicate:[NSPredicate predicateWithFormat:@"hidden=0"]];
     
     return result;
 }
@@ -95,14 +93,12 @@
 
 - (void)viewDidLoad
 {
-    LOG(@"STCTabListViewCtl viewDidLoad");
     [super viewDidLoad];
 }
 
 
 - (void)viewWillAppear
 {
-    LOG(@"viewWillAppear");
     [super viewWillAppear];
     
     _viewAppear=YES;
@@ -115,7 +111,6 @@
 
 - (void)viewDidDisappear
 {
-    LOG(@"viewDidDisappear");
     [super viewDidDisappear];
     
     _viewAppear=NO;
@@ -126,19 +121,6 @@
     }
     //_parasiteMode の場合この後 dealloc される
 }
-
-/*
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if(context == &tabListViewContext){
-        [self tabViewUpdated:nil];
-    }else{
-        [super observeValueForKeyPath:keyPath
-                             ofObject:object
-                               change:change
-                              context:context];
-    }
-}*/
 
 
 - (void)windowWillClose:(NSNotification*)note
@@ -213,9 +195,6 @@
 // _tabPool にウインドウごとにソートして格納
 - (void)updateTabsTargetTabView:(NSTabView*)tabView excludesWindow:(NSWindow*)excludesWindow
 {
-    //__block NSMutableArray* ary=[[NSMutableArray alloc]init];
-    //NSMutableArray* allTabProxy=[[STTabProxyController si]allTabProxy];
-    
     if (!_parasiteMode && !_viewAppear) {
         return;
     }
@@ -246,7 +225,6 @@
     }
 
     [self arrangeTabs];
-
 }
 
 
@@ -282,7 +260,7 @@
         }
         return NSOrderedSame;
     }];
-    //NSSortDescriptor* result=[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(compare:)];
+
     return result;
 }
 
@@ -624,13 +602,10 @@
     self.mouseIsIn=NO;
     
     NSArray *oldAreas=[self trackingAreas];
-    /*for (NSTrackingArea* area in oldAreas) {
-     [self removeTrackingArea:area];
-     }*/
     if ([oldAreas count]>0) {
         return;
     }
-    //[self addTrackingRect:[self bounds] owner:self userData:NULL assumeInside:NO];
+    
     NSTrackingArea* tracking_area = [[NSTrackingArea alloc]initWithRect:[self bounds] options:(NSTrackingMouseEnteredAndExited | NSTrackingInVisibleRect | NSTrackingActiveInActiveApp | NSTrackingEnabledDuringMouseDrag) owner:self userInfo:nil];
     [self addTrackingArea:tracking_area];
 }
