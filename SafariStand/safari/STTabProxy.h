@@ -10,6 +10,7 @@
 #define STTabViewDidChangeNote @"STTabViewDidChangeNote"
 #define STTabViewDidSelectItemNote @"STTabViewDidSelectItemNote"
 #define STTabViewDidReplaceNote @"STTabViewDidReplaceNote"
+#define STTabProxyDidFinishProgressNote @"STTabProxyDidFinishProgressNote"
 
 
 @class STPreviewImageDelivery;
@@ -34,6 +35,8 @@
 @property(nonatomic, retain)NSString* title;
 @property(nonatomic, retain)NSString* domain;
 
+@property(nonatomic, retain)NSDate* creationDate;
+@property(nonatomic, retain)NSDate* modificationDate;
 
 
 + (STTabProxy*)tabProxyForWKView:(id)wkView;

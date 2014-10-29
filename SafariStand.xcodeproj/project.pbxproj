@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA01F4E919FE21F50062F272 /* STCTabListGroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AA01F4E819FE21F50062F272 /* STCTabListGroupItem.m */; };
 		AA0357C413F3CCCC003D50F3 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0357C313F3CCCC003D50F3 /* libcrypto.dylib */; };
 		AA0357CE13F41F0E003D50F3 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0357CD13F41F0E003D50F3 /* Quartz.framework */; };
 		AA04F85013B8867700A8C548 /* STCSimblLorder.m in Sources */ = {isa = PBXBuildFile; fileRef = AA04F84E13B8867700A8C548 /* STCSimblLorder.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -41,6 +42,7 @@
 		AA3B13481806822B00DDF075 /* STTabProxyController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B13471806822B00DDF075 /* STTabProxyController.m */; };
 		AA3B13531808461900DDF075 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA3B13521808461900DDF075 /* JavaScriptCore.framework */; };
 		AA3B1356180932F400DDF075 /* STFakeJSCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B1355180932F400DDF075 /* STFakeJSCommand.m */; };
+		AA43BC8C19FF8F69004265AE /* STTLWindowIcon.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AA43BC8B19FF8F69004265AE /* STTLWindowIcon.pdf */; };
 		AA47D5DB13B9AC3100C9A19E /* STCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DA13B9AC3100C9A19E /* STCModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA47D5DF13B9AE3A00C9A19E /* STBookmarkSeparator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DE13B9AE3A00C9A19E /* STBookmarkSeparator.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA47D5E213B9AFD400C9A19E /* HTObjectHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5E113B9AFD400C9A19E /* HTObjectHook.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -112,6 +114,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AA01F4E719FE21F50062F272 /* STCTabListGroupItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCTabListGroupItem.h; sourceTree = "<group>"; };
+		AA01F4E819FE21F50062F272 /* STCTabListGroupItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCTabListGroupItem.m; sourceTree = "<group>"; };
 		AA0357C313F3CCCC003D50F3 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };
 		AA0357CD13F41F0E003D50F3 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		AA04F84E13B8867700A8C548 /* STCSimblLorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCSimblLorder.m; sourceTree = "<group>"; };
@@ -169,6 +173,7 @@
 		AA3B13521808461900DDF075 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		AA3B1354180932F400DDF075 /* STFakeJSCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFakeJSCommand.h; sourceTree = "<group>"; };
 		AA3B1355180932F400DDF075 /* STFakeJSCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFakeJSCommand.m; sourceTree = "<group>"; };
+		AA43BC8B19FF8F69004265AE /* STTLWindowIcon.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = STTLWindowIcon.pdf; sourceTree = "<group>"; };
 		AA47D5D413B9797B00C9A19E /* SafariStand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafariStand.h; sourceTree = "<group>"; };
 		AA47D5D613B97CC800C9A19E /* STCSafariStandCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCSafariStandCore.h; sourceTree = "<group>"; };
 		AA47D5D713B97CC800C9A19E /* STCSafariStandCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCSafariStandCore.m; sourceTree = "<group>"; };
@@ -432,6 +437,7 @@
 				AA0B390B15C54ED000A025FF /* STTBActionMenuDisabled.tiff */,
 				AAA1E4831813EF2B00970FAD /* STTBToggleSidebar.pdf */,
 				AAF4985F19F7FE7C0064BD35 /* STTBDownload.pdf */,
+				AA43BC8B19FF8F69004265AE /* STTLWindowIcon.pdf */,
 				AA92216F13C04DE6006E898F /* STCPrefWin.xib */,
 				AAF4985219F7508C0064BD35 /* STConsolePanel.xib */,
 				AA0881AC13E4284B003B70DF /* Localizable.strings */,
@@ -554,6 +560,8 @@
 			children = (
 				AA53193A19FCF7C90052A1B8 /* STCTabListViewCtl.h */,
 				AA53193B19FCF7C90052A1B8 /* STCTabListViewCtl.m */,
+				AA01F4E719FE21F50062F272 /* STCTabListGroupItem.h */,
+				AA01F4E819FE21F50062F272 /* STCTabListGroupItem.m */,
 				AA53193C19FCF7C90052A1B8 /* STCTabListViewCtl.xib */,
 			);
 			path = TabList;
@@ -721,6 +729,7 @@
 			files = (
 				AA12DA8813B73EFA0082EBB3 /* InfoPlist.strings in Resources */,
 				AA92216E13C04DE6006E898F /* STCPrefWin.xib in Resources */,
+				AA43BC8C19FF8F69004265AE /* STTLWindowIcon.pdf in Resources */,
 				AA718AA813BAD39D00327606 /* STPrefGeneral.tiff in Resources */,
 				AAD974891817618F004D955A /* STPrefSidebar.tiff in Resources */,
 				AA92216C13C04DB1006E898F /* HTQuerySeedEditViewCtl.xib in Resources */,
@@ -801,6 +810,7 @@
 				AA0B390515C503EC00A025FF /* STActionMenuModule.m in Sources */,
 				AA6FCF3E15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m in Sources */,
 				AA171B74168E05C1007A4661 /* STQuickSearchModule+QSToolbar.m in Sources */,
+				AA01F4E919FE21F50062F272 /* STCTabListGroupItem.m in Sources */,
 				AA171B791690A4A7007A4661 /* STQSToolbarBaseView.m in Sources */,
 				AA171B7F1690A54E007A4661 /* STQSToolbarSearchView.m in Sources */,
 				AA53193D19FCF7C90052A1B8 /* STCTabListViewCtl.m in Sources */,

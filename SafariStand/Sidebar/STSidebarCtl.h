@@ -9,11 +9,11 @@
 #define kSidebarFrameMinWidth 200
 #define kSidebarFrameMaxWidth 800
 
-@class DMTabBar, STSidebarResizeHandleView, STVTabListCtl;
+@class DMTabBar, STSidebarResizeHandleView, STCTabListViewCtl;
 
 @interface STSidebarCtl : NSViewController <NSTabViewDelegate>
 
-@property (nonatomic,strong) STVTabListCtl* tabListCtl;
+@property (nonatomic,strong) STCTabListViewCtl* tabListCtl;
 
 @property (weak) IBOutlet NSSplitView *oSplitView;
 @property (weak) IBOutlet DMTabBar *oPrimaryTabbar;

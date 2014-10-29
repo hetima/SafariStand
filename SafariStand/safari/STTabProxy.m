@@ -59,6 +59,8 @@
         _isInAnyWidget=NO;
         _invalid=NO;
         _hidden=NO;
+        _creationDate=[NSDate date];
+        _modificationDate=_creationDate;
 
         [[STTabProxyController si]addTabProxy:self];
         self.title=[item title];
@@ -205,6 +207,7 @@
 
     //[self willChangeValueForKey:@"isLoading"];
     self.isLoading=NO;
+    self.modificationDate=[NSDate date];
     if([_tabViewItem tabState]!=NSSelectedTab)self.isUnread=YES;
 
     //[self didChangeValueForKey:@"isLoading"];
@@ -217,6 +220,8 @@
             [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:7.0];
         }
     }
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:STTabProxyDidFinishProgressNote object:self];
 }
 
 - (void)installedToSidebar:(id)ctl

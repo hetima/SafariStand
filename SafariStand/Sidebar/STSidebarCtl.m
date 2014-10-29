@@ -10,12 +10,14 @@
 #import "STSidebarCtl.h"
 #import "STTabProxy.h"
 #import "STSidebarResizeHandleView.h"
-#import "STVTabListCtl.h"
+//#import "STVTabListCtl.h"
 
 #import "STSafariConnect.h"
 #import "NSObject+HTAssociatedObject.h"
 
 #import "DMTabBar.h"
+
+#import "STCTabListViewCtl.h"
 
 @interface STSidebarCtl ()
 
@@ -87,7 +89,7 @@
         return;
     }
     
-    [self.tabListCtl uninstallFromTabView];
+    //[self.tabListCtl uninstallFromTabView];
     
     [[NSNotificationCenter defaultCenter]removeObserver:self name:STTabViewDidSelectItemNote object:self.targetView];
     [self.view removeFromSuperview];
@@ -120,8 +122,8 @@
 -(void)awakeFromNib
 {
     
-    self.tabListCtl=[STVTabListCtl viewCtl];
-    [self.tabListCtl setupWithTabView:self.targetView];
+    self.tabListCtl=[STCTabListViewCtl viewCtlWithTabView:self.targetView];
+    //[self.tabListCtl setupWithTabView:self.targetView];
     //setup tabview
     [self.oPrimaryTabView setTabViewType:NSNoTabsNoBorder];
     //[self.oPrimaryTabView setDelegate:nil];

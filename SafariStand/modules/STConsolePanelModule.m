@@ -89,7 +89,10 @@
 - (void)addTabListViewView
 {
     STConsolePanelModule* consolePanelModule=[STCSafariStandCore mi:@"STConsolePanelModule"];
-    NSImage* img=[NSImage imageNamed:NSImageNameStopProgressFreestandingTemplate];
+    //NSImage* img=[NSImage imageNamed:@"NSPrivateChaptersTemplate"];
+    NSImage* img=[[NSImage alloc]initWithContentsOfFile:@"/System/Library/Frameworks/OSAKit.framework/Versions/A/Resources/osa_suites.pdf"];
+    [img setTemplate:YES];
+    //[img setSize:NSMakeSize(16.0, 16.0)];
     
     [consolePanelModule addPanelWithIdentifier:@"TabList" title:@"Tab List" icon:img weight:1 loadHandler:^id{
         STCTabListViewCtl* viewCtl=[STCTabListViewCtl viewCtl];
