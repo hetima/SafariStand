@@ -154,6 +154,18 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="ldN-Ra-6xa">
+                    <rect key="frame" x="4" y="3" width="304" height="14"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingMiddle" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Label" id="eDi-Za-Lu6">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="statusString" id="duO-82-JVO"/>
+                    </connections>
+                </textField>
             </subviews>
             <point key="canvasLocation" x="189" y="378.5"/>
         </customView>

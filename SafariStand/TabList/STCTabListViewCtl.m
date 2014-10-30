@@ -63,16 +63,16 @@
 {
     _tabPool=[[NSMutableArray alloc]initWithCapacity:16];
     _sortRule=sortTab;
+    [self loadView];
+    [self.tableView registerForDraggedTypes:@[STTABLIST_DRAG_ITEM_TYPE, @"public.url", @"public.file-url", NSStringPboardType]];
     
     if(tabView){
         _parasiteMode=YES;
         _dragDropEnabled=YES;
-        [self loadView];
         
         NSView* vew=[self.tableView enclosingScrollView];
         [vew removeFromSuperview];
         self.view=vew;
-        [self.tableView registerForDraggedTypes:@[STTABLIST_DRAG_ITEM_TYPE, @"public.url", @"public.file-url", NSStringPboardType]];
         
         [self updateTabsTargetTabView:tabView excludesWindow:nil];
     }else{
@@ -320,11 +320,15 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
+
     id obj=[self.tabs objectAtIndex:row];
     NSString* idn=@"default";
     
     if ([obj isKindOfClass:[STTabProxy class]]) {
         idn=@"default";
+        STCTabListCellView* view=[tableView makeViewWithIdentifier:idn owner:nil];
+        view.listViewCtl=self;
+        return view;
     }else if ([obj isKindOfClass:[STCTabListGroupItem class]]){
         idn=[obj viewIdentifier];
     }
@@ -485,12 +489,24 @@
 - (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation
 {
     if (!_dragDropEnabled) {
+        NSURL *aURL=HTBestURLFromPasteboard([info draggingPasteboard], NO);
+        if (aURL) {
+            [aTableView setDropRow:-1 dropOperation:NSTableViewDropOn];
+            return NSDragOperationCopy;
+        }
         return NSDragOperationNone;
     }
     
     if (operation==NSTableViewDropOn) {
         return NSDragOperationNone;
     }
+    
+    // KIMEUTI
+    NSInteger tabsCount=[self.tabs count];
+    if (row>=tabsCount) { //last item is bottom group
+        [aTableView setDropRow:row-1 dropOperation:NSTableViewDropAbove];
+    }
+
     
     NSArray *dragTypes = [[info draggingPasteboard]types];
     if([dragTypes containsObject:STTABLIST_DRAG_ITEM_TYPE]){
@@ -508,16 +524,18 @@
 
 - (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id < NSDraggingInfo >)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation
 {
+    BOOL acceptDrop = NO;
+    NSPasteboard *pb=[info draggingPasteboard];
+    
     if (!_dragDropEnabled) {
-        return NO;
+        acceptDrop=[self _tryOpenPasteboard:pb atRow:row];
+        return acceptDrop;
     }
     
     if (operation==NSTableViewDropOn) {
         return NO;
     }
     
-    BOOL acceptDrop = NO;
-    NSPasteboard *pb=[info draggingPasteboard];
     NSArray *dragTypes = [pb types];
     
     // KIMEUTI
@@ -572,23 +590,48 @@
         }
         //drag other element
     } else {
-        NSURL *urlToGo=HTBestURLFromPasteboard([info draggingPasteboard], YES);
-        if (urlToGo) {
-            acceptDrop = YES;
-            if (_parasiteMode) {
-                id newTabItem=STSafariCreateWKViewOrWebViewAtIndexAndShow([aTableView window], row, YES);
-                if(newTabItem){
-                    STTabProxy* newProxy=[STTabProxy tabProxyForTabViewItem:newTabItem];
-                    [newProxy goToURL:urlToGo];
-                }
-            }else{
-                STSafariGoToURLWithPolicy(urlToGo, poNewTab);
-            }
-        }
+        acceptDrop=[self _tryOpenPasteboard:[info draggingPasteboard] atRow:row];
     }
     
     return acceptDrop;
     
+}
+
+
+- (BOOL)_tryOpenPasteboard:(NSPasteboard*)pb atRow:(NSInteger)row
+{
+    NSURL *urlToGo=HTBestURLFromPasteboard(pb, YES);
+    if (urlToGo) {
+        if (_parasiteMode) {
+            id newTabItem=STSafariCreateWKViewOrWebViewAtIndexAndShow([self.view window], row, YES);
+            if(newTabItem){
+                STTabProxy* newProxy=[STTabProxy tabProxyForTabViewItem:newTabItem];
+                [newProxy goToURL:urlToGo];
+            }
+        }else{
+            STSafariGoToURLWithPolicy(urlToGo, poNewTab);
+        }
+        return YES;
+    }
+    return NO;
+}
+
+
+#pragma mark - cellView
+
+- (void)listCellViewMouseEntered:(STCTabListCellView*)cellView
+{
+    STTabProxy* proxy=[cellView objectValue];
+    if ([proxy isKindOfClass:[STTabProxy class]]) {
+        NSString* urlStr=[proxy URLString];
+        self.statusString=urlStr;
+    }
+}
+
+
+- (void)listCellViewMouseExited:(STCTabListCellView*)cellView
+{
+    self.statusString=@"";
 }
 
 @end
@@ -625,20 +668,22 @@
         return;
     }
     
-    NSTrackingArea* tracking_area = [[NSTrackingArea alloc]initWithRect:[self bounds] options:(NSTrackingMouseEnteredAndExited | NSTrackingInVisibleRect | NSTrackingActiveInActiveApp | NSTrackingEnabledDuringMouseDrag) owner:self userInfo:nil];
+    NSTrackingArea* tracking_area = [[NSTrackingArea alloc]initWithRect:[self bounds] options:(NSTrackingMouseEnteredAndExited | NSTrackingInVisibleRect | NSTrackingActiveInActiveApp /*| NSTrackingEnabledDuringMouseDrag*/) owner:self userInfo:nil];
     [self addTrackingArea:tracking_area];
 }
 
 
 - (void)mouseEntered:(NSEvent *)theEvent
 {
-   self.mouseIsIn=YES;
+    self.mouseIsIn=YES;
+    [_listViewCtl listCellViewMouseEntered:self];
 }
 
 
 - (void)mouseExited:(NSEvent *)theEvent
 {
     self.mouseIsIn=NO;
+    [_listViewCtl listCellViewMouseExited:self];
 }
 
 

@@ -25,7 +25,8 @@ enum : NSInteger {
 @property(nonatomic, strong) IBOutlet NSArrayController* aryCtl;
 @property(nonatomic, weak) IBOutlet NSTableView* tableView;
 @property(nonatomic) NSInteger sortRule;
-@property (nonatomic, readonly) BOOL dragDropEnabled;
+@property(nonatomic, readonly) BOOL dragDropEnabled;
+@property(nonatomic, strong) NSString* statusString;
 
 + (STCTabListViewCtl*)viewCtl;
 + (STCTabListViewCtl*)viewCtlWithTabView:(NSTabView*)tabView;
@@ -44,6 +45,7 @@ enum : NSInteger {
 
 @interface STCTabListCellView : NSTableCellView
 @property (nonatomic) BOOL mouseIsIn;
+@property(nonatomic, weak) STCTabListViewCtl* listViewCtl;
 
 - (IBAction)actCloseBtn:(id)sender;
 
