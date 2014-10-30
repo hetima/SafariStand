@@ -12,6 +12,7 @@
 #import <WebKit/WebKit.h>
 #import "HTWebKit2Adapter.h"
 #import "HTWebClipwinCtl.h"
+#import "STFakeJSCommand.h"
 
 #import "STSquashContextMenuSheetCtl.h"
 
@@ -206,6 +207,14 @@
         }
     }
     
+    //solo image
+    if (wkview && [htMIMETypeForWKView(wkview) hasPrefix:@"image/"]) {
+        NSMenu* imagePageSubmenu=[self imagePageSubmenu];
+        itm=[[NSMenuItem alloc]initWithTitle:@"Image Display" action:nil keyEquivalent:@""];
+        [itm setSubmenu:imagePageSubmenu];
+        [menu addItem:itm];
+        
+    }
     
     //SquashContextMenuItem
     if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSquashContextMenuItemEnabled]) {
@@ -417,6 +426,82 @@
 //        [winCtl release];
     }
     return [self.squashSheetCtl window];
+}
+
+#pragma mark - image
+
+- (NSMenu*)imagePageSubmenu
+{
+    NSMenu* menu=[[NSMenu alloc]initWithTitle:@""];
+    
+    NSMenuItem* itm;
+    itm=[menu addItemWithTitle:@"Alignment" action:nil keyEquivalent:@""];
+    [itm setEnabled:NO];
+    
+    itm=[menu addItemWithTitle:@"Align Left" action:@selector(actImagePageAlignment:) keyEquivalent:@""];
+    [itm setRepresentedObject:@"0"];
+    [itm setTarget:self];
+    
+    itm=[menu addItemWithTitle:@"Align Center" action:@selector(actImagePageAlignment:) keyEquivalent:@""];
+    [itm setRepresentedObject:@"auto"];
+    [itm setTarget:self];
+    
+    [menu addItem:[NSMenuItem separatorItem]];
+    itm=[menu addItemWithTitle:@"Background Color" action:nil keyEquivalent:@""];
+    [itm setEnabled:NO];
+    
+    itm=[menu addItemWithTitle:@"White (#FFFFFF)" action:@selector(actImagePageBackgroundColor:) keyEquivalent:@""];
+    [itm setRepresentedObject:@"#ffffff"];
+    [itm setTarget:self];
+    itm=[menu addItemWithTitle:@"Black (#000000)" action:@selector(actImagePageBackgroundColor:) keyEquivalent:@""];
+    [itm setRepresentedObject:@"#000000"];
+    [itm setTarget:self];
+    itm=[menu addItemWithTitle:@"Gray (#666666)" action:@selector(actImagePageBackgroundColor:) keyEquivalent:@""];
+    [itm setRepresentedObject:@"#666666"];
+    [itm setTarget:self];
+    itm=[menu addItemWithTitle:@"Light Gray (#CCCCCC)" action:@selector(actImagePageBackgroundColor:) keyEquivalent:@""];
+    [itm setRepresentedObject:@"#cccccc"];
+    [itm setTarget:self];
+    
+    itm=[menu addItemWithTitle:@"Other Color..." action:@selector(actImagePageBackgroundOther:) keyEquivalent:@""];
+    [itm setTarget:self];
+    
+    return menu;
+}
+
+
+- (void)actImagePageAlignment:(NSMenuItem*)sender
+{
+    NSString* value=[sender representedObject];
+    NSString* scpt=[NSString stringWithFormat:@"document.body.childNodes[0].style.margin=\"%@\";", value];
+    [STFakeJSCommand doScript:scpt onTarget:nil completionHandler:^(id result) { }];
+}
+
+
+- (void)actImagePageBackgroundColor:(NSMenuItem*)sender
+{
+    NSString* color=[sender representedObject];
+    NSString* scpt=[NSString stringWithFormat:@"document.body.style.background=\"%@\"", color];
+    [STFakeJSCommand doScript:scpt onTarget:nil completionHandler:^(id result) { }];
+}
+
+
+- (void)actImagePageBackgroundOther:(NSMenuItem*)sender
+{
+    NSColorPanel* panel=[NSColorPanel sharedColorPanel];
+    
+    [panel setTarget:self];
+    [panel setAction:@selector(actImagePageBackgroundFromColorPanel:)];
+    [panel makeKeyAndOrderFront:self];
+}
+
+
+- (void)actImagePageBackgroundFromColorPanel:(NSColorPanel*)sender
+{
+    NSColor* color=sender.color;
+    NSString* scpt=[NSString stringWithFormat:@"document.body.style.background=\"rgb(%d,%d,%d)\"",
+                    (int)(color.redComponent*255.0), (int)(color.greenComponent*255.0), (int)(color.blueComponent*255.0)];
+    [STFakeJSCommand doScript:scpt onTarget:nil completionHandler:^(id result) { }];
 }
 
 
