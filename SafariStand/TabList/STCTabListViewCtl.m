@@ -62,13 +62,13 @@
 - (void)setupWithTabView:(NSTabView*)tabView
 {
     _tabPool=[[NSMutableArray alloc]initWithCapacity:16];
-    _sortRule=sortTab;
+    
+    [self setSortRule:sortTab];
     [self loadView];
     [self.tableView registerForDraggedTypes:@[STTABLIST_DRAG_ITEM_TYPE, @"public.url", @"public.file-url", NSStringPboardType]];
     
     if(tabView){
         _parasiteMode=YES;
-        _dragDropEnabled=YES;
         
         NSView* vew=[self.tableView enclosingScrollView];
         [vew removeFromSuperview];
@@ -77,8 +77,7 @@
         [self updateTabsTargetTabView:tabView excludesWindow:nil];
     }else{
         _parasiteMode=NO;
-        _dragDropEnabled=NO;
-        //_sortRule=sortDomain;//test
+
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(windowWillClose:) name:NSWindowWillCloseNotification object:nil];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewUpdated:) name:STTabViewDidReplaceNote object:nil];
         
@@ -91,6 +90,16 @@
     
 }
 
+
+- (void)setSortRule:(NSInteger)sortRule
+{
+    _sortRule=sortRule;
+    if (sortRule==sortTab) {
+        _dragEnabled=YES;
+    }else{
+        _dragEnabled=NO;
+    }
+}
 
 - (void)viewDidLoad
 {
@@ -486,25 +495,36 @@
 
 - (BOOL)tableView:(NSTableView *)aTableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard
 {
-    if (!_dragDropEnabled) {
+    if (!_dragEnabled) {
         return NO;
     }
     
     [pboard declareTypes:@[STTABLIST_DRAG_ITEM_TYPE] owner:self];
     
-    NSMutableArray* ary=[[NSMutableArray alloc]initWithCapacity:[rowIndexes count]];
     NSUInteger currentIndex = [rowIndexes firstIndex];
+    
+    //support only single item
+    STTabProxy* selectedProxy=[_tabs objectAtIndex:currentIndex];
+    if (![selectedProxy isKindOfClass:[STTabProxy class]]) {
+        return NO;
+    }
+    NSArray* ary=@[@(currentIndex)];
+    
+    /*
+    NSMutableArray* ary=[[NSMutableArray alloc]initWithCapacity:[rowIndexes count]];
     while (currentIndex != NSNotFound) {
         [ary addObject:@(currentIndex)];
         currentIndex = [rowIndexes indexGreaterThanIndex:currentIndex];
     }
+    */
+    
     [pboard setPropertyList:ary forType:STTABLIST_DRAG_ITEM_TYPE];
     return YES;
 }
 
 - (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation
 {
-    if (!_dragDropEnabled) {
+    if (!_dragEnabled) {
         NSURL *aURL=HTBestURLFromPasteboard([info draggingPasteboard], NO);
         if (aURL) {
             [aTableView setDropRow:-1 dropOperation:NSTableViewDropOn];
@@ -543,7 +563,7 @@
     BOOL acceptDrop = NO;
     NSPasteboard *pb=[info draggingPasteboard];
     
-    if (!_dragDropEnabled) {
+    if (!_dragEnabled) {
         acceptDrop=[self _tryOpenPasteboard:pb atRow:row];
         return acceptDrop;
     }
@@ -566,44 +586,50 @@
         id sender=[info draggingSource]; //NSTableView
         NSArray *indexes = [pb propertyListForType:STTABLIST_DRAG_ITEM_TYPE];
         
-        //drag from same view
-        if (sender==aTableView) {
-            
-            NSMutableArray* aboveArray=[NSMutableArray array];
-            NSMutableArray* insertedArray=[NSMutableArray array];
-            NSMutableArray* belowArray=[NSMutableArray array];
-            
-            NSInteger i;
-            NSInteger cnt=tabsCount-1;//KIMEUTI last item is bottom group
-            for (i=0; i<cnt; i++) {
-                STTabProxy* tabProxy=[self.tabs objectAtIndex:i];
-                if ([indexes containsObject:[NSNumber numberWithInteger:i]]) {
-                    [insertedArray addObject:tabProxy];
-                }else if (i<row) {
-                    [aboveArray addObject:tabProxy];
-                }else{
-                    [belowArray addObject:tabProxy];
-                }
-            }
-            [aboveArray addObjectsFromArray:insertedArray];
-            [aboveArray addObjectsFromArray:belowArray];
-            cnt=[aboveArray count];
-            for (i=0; i<cnt; i++) {
-                STTabProxy* tabProxy=[aboveArray objectAtIndex:i];
-                
-                STSafariMoveTabViewItemToIndex(tabProxy.tabViewItem, i);
-            }
-            
-            //drag from other view
-        }else if([[sender dataSource]isKindOfClass:[STCTabListViewCtl class]]) {
-            STCTabListViewCtl* draggedCtl=(STCTabListViewCtl*)[sender dataSource];
-            NSEnumerator* e=[indexes reverseObjectEnumerator];
-            NSNumber* index;
-            while (index=[e nextObject]) {
-                STTabProxy* draggedProxy=[draggedCtl.tabs objectAtIndex:[index integerValue]];
-                STSafariMoveTabToOtherWindow(draggedProxy.tabViewItem, [aTableView window], row, YES);
+        
+        NSUInteger windowRow=NSNotFound;
+        NSInteger offset=0;
+        
+        //the bottom of destination
+        /*if (row>=tabsCount-1) {
+            row=tabsCount-2;
+            offset=1;
+        }*/
+        
+        STTabProxy* tabProxyAtDestination=[_tabs objectAtIndex:row];
+        
+        //care above group (window or bottom)
+        if ([tabProxyAtDestination isKindOfClass:[STCTabListGroupItem class]]) {
+            if (row==0) {
+                windowRow=0;
+            }else{
+                tabProxyAtDestination=[_tabs objectAtIndex:row-1];
+                offset=1;
             }
         }
+        
+        //table index to window index
+        if ([tabProxyAtDestination isKindOfClass:[STTabProxy class]]) {
+            for (NSArray* windowTabs in _tabPool) {
+                windowRow=[windowTabs indexOfObjectIdenticalTo:tabProxyAtDestination];
+                if (windowRow!=NSNotFound) {
+                    break;
+                }
+            }
+        }
+        
+        if (windowRow==NSNotFound) {
+            return NO;
+        }
+        windowRow+=offset;
+        
+        STCTabListViewCtl* draggedCtl=(STCTabListViewCtl*)[sender dataSource]; // self if drag from same view
+        //support only single item
+        STTabProxy* draggedProxy=[draggedCtl.tabs objectAtIndex:[[indexes firstObject]integerValue]];
+        
+        //don't mind same window or not
+        STSafariMoveTabToOtherWindow(draggedProxy.tabViewItem, [tabProxyAtDestination window], windowRow, YES);
+
         //drag other element
     } else {
         acceptDrop=[self _tryOpenPasteboard:[info draggingPasteboard] atRow:row];
