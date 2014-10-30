@@ -62,6 +62,7 @@
 - (void)setupWithTabView:(NSTabView*)tabView
 {
     _tabPool=[[NSMutableArray alloc]initWithCapacity:16];
+    _sortRule=sortTab;
     
     if(tabView){
         _parasiteMode=YES;
@@ -77,7 +78,7 @@
     }else{
         _parasiteMode=NO;
         _dragDropEnabled=NO;
-        //_sortStyle=sortDomain;//test
+        //_sortRule=sortDomain;//test
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(windowWillClose:) name:NSWindowWillCloseNotification object:nil];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewUpdated:) name:STTabViewDidReplaceNote object:nil];
         
@@ -166,7 +167,7 @@
 //ソートし直す必要がでたときには _tabPool 中の該当する array をソートし直す
 - (void)tabViewItemUpdated:(NSNotification*)note
 {
-    if (_sortStyle==sortTab||_sortStyle==sortCreationDate) {
+    if (_sortRule==sortTab||_sortRule==sortCreationDate) {
         return;
     }
     STTabProxy* proxy=[note object];
@@ -184,7 +185,7 @@
     
     if (poolIndex!=NSNotFound) {
         NSArray* tabToSort=[_tabPool objectAtIndex:poolIndex];
-        tabToSort=[self sortTabs:tabToSort];
+        tabToSort=[self sortTabs:tabToSort withRule:_sortRule];
         [_tabPool replaceObjectAtIndex:poolIndex withObject:tabToSort];
     }
     
@@ -203,7 +204,7 @@
 
     if (tabView) {
         NSArray* tabs=[STTabProxyController tabProxiesForTabView:tabView];
-        [_tabPool addObject:[self sortTabs:tabs]];
+        [_tabPool addObject:[self sortTabs:tabs withRule:_sortRule]];
     }else{
     
         STSafariEnumerateBrowserWindow(^(NSWindow *window, NSWindowController *winCtl, BOOL *stop) {
@@ -218,7 +219,7 @@
             
             NSArray* tabs=[STTabProxyController tabProxiesForWindow:window];
             if ([tabs count]>0) {
-                [_tabPool addObject:[self sortTabs:tabs]];
+                [_tabPool addObject:[self sortTabs:tabs withRule:_sortRule]];
             }
             
         });
@@ -248,19 +249,37 @@
 }
 
 
-- (NSArray*)sortTabs:(NSArray*)ary
+- (NSArray*)sortTabs:(NSArray*)ary withRule:(NSInteger)rule
 {
-    if (_sortStyle==sortTab||_sortStyle==sortCreationDate) {
+    if (rule==sortTab) {
         return ary;
     }
     
-    NSArray* result=[ary sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        if (_sortStyle==sortDomain) {
-            return [[obj1 domain]compare:[obj2 domain]];
+    NSArray* result=[ary sortedArrayUsingComparator:^NSComparisonResult(id objL, id objR) {
+
+        switch (rule) {
+            case sortDomain:
+                return [[objL domain]compare:[objR domain]];
+                break;
+            case sortCreationDate:
+                return [[objL creationDate]compare:[objR creationDate]];
+                break;
+            case sortCreationDateReverse:
+                return [[objR creationDate]compare:[objL creationDate]];
+                break;
+            case sortModificationDate:
+                return [[objL modificationDate]compare:[objR modificationDate]];
+                break;
+            case sortModificationDateReverse:
+                return [[objR modificationDate]compare:[objL modificationDate]];
+                break;
+            default:
+                break;
         }
+        
         return NSOrderedSame;
     }];
-
+    
     return result;
 }
 

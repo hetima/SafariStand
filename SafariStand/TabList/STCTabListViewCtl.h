@@ -14,7 +14,9 @@ enum : NSInteger {
     sortTab =0,
     sortDomain,
     sortCreationDate,
+    sortCreationDateReverse,
     sortModificationDate,
+    sortModificationDateReverse,
 };
 
 @interface STCTabListViewCtl : NSViewController
@@ -22,7 +24,7 @@ enum : NSInteger {
 @property(nonatomic, strong) NSMutableArray* tabs;
 @property(nonatomic, strong) IBOutlet NSArrayController* aryCtl;
 @property(nonatomic, weak) IBOutlet NSTableView* tableView;
-@property(nonatomic) NSInteger sortStyle;
+@property(nonatomic) NSInteger sortRule;
 @property (nonatomic, readonly) BOOL dragDropEnabled;
 
 + (STCTabListViewCtl*)viewCtl;
