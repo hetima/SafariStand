@@ -234,12 +234,16 @@
 {
     NSMutableArray* ary=[[NSMutableArray alloc]init];
     for (NSArray* tabs in _tabPool) {
-        if (!_parasiteMode) {
-            STCTabListGroupItem* test=[[STCWindowGroupItem alloc]init];
-            [ary addObject:test];
+        if ([tabs count]>0) {
+
+            if (!_parasiteMode) {
+                STCWindowGroupItem* windowGroup=[[STCWindowGroupItem alloc]init];
+                windowGroup.window=[[tabs firstObject]window];
+                [ary addObject:windowGroup];
+            }
+            
+            [ary addObjectsFromArray:tabs];
         }
-        
-        [ary addObjectsFromArray:tabs];
     }
     
     STCBottomGroupItem* bottomGroup=[[STCBottomGroupItem alloc]init];
@@ -293,6 +297,9 @@
         STTabProxy* tabProxy=[self.tabs objectAtIndex:clickedIndex];
         if ([tabProxy isKindOfClass:[STTabProxy class]]) {
             [tabProxy selectTab];
+            if(!_parasiteMode)[[tabProxy window]makeKeyAndOrderFront:nil];
+            return;
+        }else if([tabProxy isKindOfClass:[STCWindowGroupItem class]]){
             if(!_parasiteMode)[[tabProxy window]makeKeyAndOrderFront:nil];
             return;
         }

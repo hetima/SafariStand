@@ -23,4 +23,6 @@
 
 
 @interface STCWindowGroupItem : STCTabListGroupItem
+@property(nonatomic, weak)NSWindow* window;
+
 @end
