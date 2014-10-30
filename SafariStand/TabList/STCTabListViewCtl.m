@@ -354,6 +354,15 @@
 
 #pragma mark - menu
 
+- (IBAction)actGoToClipboard:(NSMenuItem*)sender
+{
+    NSURL* url=[sender representedObject];
+    if (url) {
+        STSafariGoToURLWithPolicy(url, poNewTab);
+    }
+}
+
+
 - (NSMenu*)menuForEmptyTarget
 {
     NSMenu* menu=[[NSMenu alloc]initWithTitle:@""];
