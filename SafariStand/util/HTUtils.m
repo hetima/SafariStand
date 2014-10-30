@@ -140,19 +140,11 @@ NSImage* HTImageWithBackgroundColor(NSImage* image, NSColor* color)
 NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance)
 {
     NSURL* result=nil;
-    //if ([pb respondsToSelector:@selector(_web_bestURL)])result=objc_msgSend(pb, @selector(_web_bestURL));
-    if(needsInstance && [[pb types] containsObject:NSURLPboardType]){
-        NSURL *URLFromPasteboard = [NSURL URLFromPasteboard:pb];
-        NSString *scheme = [URLFromPasteboard scheme];
-        if ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"]) {
-            return URLFromPasteboard;
-        }
-    }
-    
+
     static NSArray* availableTypes=nil;
     if (availableTypes==nil) {
 
-        availableTypes=[[NSArray alloc]initWithObjects:@"public.url", @"public.file-url", NSStringPboardType, nil];
+        availableTypes=[[NSArray alloc]initWithObjects:@"public.url", @"public.file-url", NSPasteboardTypeString, nil];
     }
     NSString* type=[pb availableTypeFromArray:availableTypes];
 
@@ -161,7 +153,7 @@ NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance)
         if(!needsInstance){
             result=(id)availableTypes;
         }else{
-            result=[NSURL URLWithString:[pb stringForType:type]];
+            result=[NSURL URLFromPasteboard:pb];
         }
 	}else if([type isEqualToString:@"public.file-url"]){
         
@@ -170,18 +162,21 @@ NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance)
             alloedExt=[[NSArray alloc]initWithObjects:
                 @"html", @"htm", @"webarchive", @"jpg", @"png", @"jpeg", @"tif", @"tiff", @"rtf", @"pdf", nil];
         }
-        NSString* urlStr=[pb stringForType:type];
-        NSString* ext=[[urlStr pathExtension]lowercaseString];
+        NSURL* url=[NSURL URLFromPasteboard:pb];
+        NSString* ext=[[[url path]pathExtension]lowercaseString];
         if([ext length]>0 && [alloedExt indexOfObject:ext] != NSNotFound){
             if(!needsInstance){
                 result=(id)availableTypes;
             }else{
-                result=[NSURL URLWithString:urlStr];
+                if ([url isFileReferenceURL]) {
+                    url=[url filePathURL];
+                }
+                result=url;
             }
         }
         
-	}else if([type isEqualToString:NSStringPboardType]){
-		NSString* urlString=[pb stringForType:NSStringPboardType];
+	}else if([type isEqualToString:NSPasteboardTypeString]){
+		NSString* urlString=[pb stringForType:NSPasteboardTypeString];
         urlString=[urlString stand_moderatedStringWithin:0];
         if ([urlString hasPrefix:@"ttp://"]) {
             urlString=[@"h" stringByAppendingString:urlString];
