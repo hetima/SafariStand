@@ -383,8 +383,18 @@ void STSafariMoveTabToNewWindow(NSTabViewItem* item)
 void STSafariMoveTabToOtherWindow(NSTabViewItem* itemToMove, NSWindow* destWindow, NSInteger destIndex, BOOL show)
 {
     id winCtl=[destWindow windowController];
-
-    if (winCtl && itemToMove && destIndex >= 0) {
+    
+    if (!winCtl || !itemToMove) {
+        return;
+    }
+    
+    NSWindow* fromWindow=[[itemToMove tabView]window];
+    
+    if (fromWindow==destWindow) {
+        
+        STSafariMoveTabViewItemToIndex(itemToMove, destIndex);
+        
+    }else if ( destIndex >= 0) {
         NSDisableScreenUpdates();
 
         if ([winCtl respondsToSelector:@selector(moveTabFromOtherWindow:toIndex:andSelect:)]) {
