@@ -14,6 +14,14 @@
 
 +(void)doScript:(NSString*)scpt onTarget:(id)wkViewOrTabViewItem completionHandler:(STFakeJSCommandCompletionHandler) completionHandler
 {
+    if (!wkViewOrTabViewItem) {
+        wkViewOrTabViewItem=STSafariCurrentWKView();
+    }
+    
+    if (!wkViewOrTabViewItem) {
+        return;
+    }
+    
     if ([wkViewOrTabViewItem respondsToSelector:@selector(handleDoJavaScriptCommand:)]) {
 
         NSScriptSuiteRegistry* suiteRegistry=[NSScriptSuiteRegistry sharedScriptSuiteRegistry];
