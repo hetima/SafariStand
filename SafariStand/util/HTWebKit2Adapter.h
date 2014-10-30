@@ -116,7 +116,7 @@ extern WKURLRef WKFrameCopyURL(WKFrameRef frame);
 typedef void (*WKFrameGetResourceDataFunction)(WKDataRef data, WKErrorRef error, void* functionContext);
 extern void WKFrameGetMainResourceData(WKFrameRef frame, WKFrameGetResourceDataFunction function, void* functionContext);
 extern void WKFrameGetResourceData(WKFrameRef frame, WKURLRef resourceURL, WKFrameGetResourceDataFunction function, void* functionContext);
-
+extern WKStringRef WKFrameCopyMIMEType(WKFrameRef frame);
 
 typedef void (*WKFrameGetWebArchiveFunction)(WKDataRef archiveData, WKErrorRef error, void* functionContext);
 extern void WKFrameGetWebArchive(WKFrameRef frame, WKFrameGetWebArchiveFunction function, void* functionContext);
@@ -146,6 +146,7 @@ NSString* htWKDictionaryStringForKey(void*dic, NSString* key);
 
 void htWKGoToURL(id wkView, NSURL* urlToGo);
 WKPageRef htWKPageRefForWKView(id wkView);
+NSString* htMIMETypeForWKView(id wkView);
 
 NSImage* htWKIconImageForWKView(id wkView, CGFloat maxSize);
 

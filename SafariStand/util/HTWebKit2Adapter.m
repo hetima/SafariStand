@@ -201,6 +201,25 @@ WKPageRef htWKPageRefForWKView(id wkView)
     return pageRef;
 }
 
+
+NSString* htMIMETypeForWKView(id wkView)
+{
+    NSString* result=nil;
+    WKPageRef pageRef=htWKPageRefForWKView(wkView);
+    WKFrameRef frameRef=WKPageGetMainFrame(pageRef);
+
+    if (frameRef) {
+        WKStringRef mime=WKFrameCopyMIMEType(frameRef);
+        if (mime) {
+            result=htWKNSStringFromWKString(mime);
+            WKRelease(mime);
+        }
+    }
+
+    return result;
+}
+
+
 //favicon
 /*NSImage* htWKIconImageForWKView(id wkView, CGFloat desireSize)
 {
