@@ -62,8 +62,9 @@
 - (void)setupWithTabView:(NSTabView*)tabView
 {
     _tabPool=[[NSMutableArray alloc]initWithCapacity:16];
+    _sortRule=sortTab;
+    _dragEnabled=YES;
     
-    [self setSortRule:sortTab];
     [self loadView];
     [self.tableView registerForDraggedTypes:@[STTABLIST_DRAG_ITEM_TYPE, @"public.url", @"public.file-url", NSStringPboardType]];
     
@@ -93,13 +94,27 @@
 
 - (void)setSortRule:(NSInteger)sortRule
 {
+    if (_sortRule==sortRule) {
+        return;
+    }
+    
     _sortRule=sortRule;
     if (sortRule==sortTab) {
         _dragEnabled=YES;
     }else{
         _dragEnabled=NO;
     }
+    
+    if ([_tabPool count]>0) {
+        NSTabView* tabView=nil;
+        if (_parasiteMode) {
+            tabView=STSafariTabViewForWindow(self.view.window);
+        }
+        
+        [self updateTabsTargetTabView:tabView excludesWindow:nil];
+    }
 }
+
 
 - (void)viewDidLoad
 {
@@ -160,6 +175,10 @@
 {
     NSTabView* tabView=[note object];
     if (_parasiteMode) {
+        if (!tabView) {
+            tabView=STSafariTabViewForWindow(self.view.window);
+        }
+        
         //window 基準でチェックしてるので tabView ごと入れ替わっても大丈夫
         if (self.view.window==[tabView window]) {
             [self updateTabsTargetTabView:tabView excludesWindow:nil];
@@ -363,6 +382,19 @@
 
 #pragma mark - menu
 
+- (IBAction)actDoSortMenuItem:(NSMenuItem*)sender
+{
+    NSInteger sort=[sender tag];
+}
+
+
+- (IBAction)actViewSortMenuItem:(NSMenuItem*)sender
+{
+    NSInteger sort=[sender tag];
+    [self setSortRule:sort];
+}
+
+
 - (IBAction)actGoToClipboard:(NSMenuItem*)sender
 {
     NSURL* url=[sender representedObject];
@@ -385,6 +417,14 @@
         itm=[menu addItemWithTitle:@"Move Sidebar To Far Side" action:@selector(STToggleSidebarLR:) keyEquivalent:@""];
     }
     
+    [menu addItem:[NSMenuItem separatorItem]];
+    
+    NSMenu* submenu=[self sortMenuWithAction:@selector(actViewSortMenuItem:) target:self];
+    NSMenuItem* currentState=[submenu itemWithTag:_sortRule];
+    [currentState setState:NSOnState];
+    itm=[menu addItemWithTitle:@"View Order" action:nil keyEquivalent:@""];
+    [itm setSubmenu:submenu];
+    
     separator=[NSMenuItem separatorItem];
     
     //goToClipboard
@@ -406,7 +446,7 @@
         [itm setTarget:self];
         [itm setRepresentedObject:url];
         
-        //search Clipboard
+    //search Clipboard
     }else{
         NSPasteboard* pb=[NSPasteboard generalPasteboard];
         NSString* searchString=[[pb stringForType:NSStringPboardType]stand_moderatedStringWithin:255];
@@ -424,7 +464,10 @@
                 [menu addItem:separator];
                 separator=nil;
             }
-            itm=[menu addItemWithTitle:title action:nil keyEquivalent:@""];
+            NSMenuItem* labelMenu=[[NSMenuItem alloc]initWithTitle:title action:nil keyEquivalent:@""];
+            [labelMenu setEnabled:NO];
+            [qsMenu insertItem:labelMenu atIndex:0];
+            itm=[menu addItemWithTitle:@"Search Clipboard" action:nil keyEquivalent:@""];
             [itm setSubmenu:qsMenu];
         }
     }
@@ -489,6 +532,33 @@
     return nil;
 }
 
+
+- (NSMenu*)sortMenuWithAction:(SEL)action target:(id)target
+{
+    NSMenu* menu=[[NSMenu alloc]initWithTitle:@"Sort"];
+    NSMenuItem* itm;
+    
+    itm=[menu addItemWithTitle:@"Synchronized" action:action keyEquivalent:@""];
+    [itm setTag:sortTab];
+    [itm setTarget:target];
+    itm=[menu addItemWithTitle:@"Domain" action:action keyEquivalent:@""];
+    [itm setTag:sortDomain];
+    [itm setTarget:target];
+    itm=[menu addItemWithTitle:@"Creation Time (Older First)" action:action keyEquivalent:@""];
+    [itm setTag:sortCreationDate];
+    [itm setTarget:target];
+    itm=[menu addItemWithTitle:@"Creation Time (Newer First)" action:action keyEquivalent:@""];
+    [itm setTag:sortCreationDateReverse];
+    [itm setTarget:target];
+    itm=[menu addItemWithTitle:@"Load Time (Older First)" action:action keyEquivalent:@""];
+    [itm setTag:sortModificationDate];
+    [itm setTarget:target];
+    itm=[menu addItemWithTitle:@"Load Time (Newer First)" action:action keyEquivalent:@""];
+    [itm setTag:sortModificationDateReverse];
+    [itm setTarget:target];
+    
+    return menu;
+}
 
 
 #pragma mark - drag and drop
@@ -564,7 +634,7 @@
     NSPasteboard *pb=[info draggingPasteboard];
     
     if (!_dragEnabled) {
-        acceptDrop=[self _tryOpenPasteboard:pb atRow:row];
+        acceptDrop=[self _tryOpenPasteboard:pb atRow:-1];
         return acceptDrop;
     }
     
@@ -644,7 +714,7 @@
 {
     NSURL *urlToGo=HTBestURLFromPasteboard(pb, YES);
     if (urlToGo) {
-        if (_parasiteMode) {
+        if (_parasiteMode && row>=0) {
             id newTabItem=STSafariCreateWKViewOrWebViewAtIndexAndShow([self.view window], row, YES);
             if(newTabItem){
                 STTabProxy* newProxy=[STTabProxy tabProxyForTabViewItem:newTabItem];

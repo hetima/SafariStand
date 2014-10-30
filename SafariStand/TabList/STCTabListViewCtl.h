@@ -11,12 +11,12 @@
 #define STTABLIST_DRAG_ITEM_TYPE @"STTABLIST_DRAG_ITEM_TYPE"
 
 enum : NSInteger {
-    sortTab =0,
-    sortDomain,
-    sortCreationDate,
-    sortCreationDateReverse,
-    sortModificationDate,
-    sortModificationDateReverse,
+    sortTab = 0,
+    sortDomain = 1,
+    sortCreationDate = 2, // old -> new
+    sortCreationDateReverse = 3, // new -> old
+    sortModificationDate = 4 , // old -> new
+    sortModificationDateReverse = 5, // new -> old
 };
 
 @interface STCTabListViewCtl : NSViewController
