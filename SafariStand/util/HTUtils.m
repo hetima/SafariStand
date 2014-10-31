@@ -238,3 +238,29 @@ NSString* HTStringFromDateWithFormat(NSDate* date, NSString* format)
     return result;
 }
 
+//ドメインを切り出す かなり適当
+NSString* HTDomainFromHost(NSString* host)
+{
+    NSArray* strings=[host componentsSeparatedByString:@"."];
+    NSUInteger location, length;
+    NSUInteger cnt=[strings count];
+    
+    if (cnt<=2) {
+        return host;
+    }else if (cnt==3) {
+        if ([[strings firstObject]hasPrefix:@"ww"]) {
+            length=2;
+        }else{
+            return host;
+        }
+    }else{
+        length=3;
+    }
+    
+    location=cnt-length;
+    NSRange range=NSMakeRange(location, length);
+    
+    NSString* domain=[[strings subarrayWithRange:range]componentsJoinedByString:@"."];
+    
+    return domain;
+}

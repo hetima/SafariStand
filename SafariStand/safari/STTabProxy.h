@@ -33,7 +33,7 @@
 @property(nonatomic, retain)NSImage* cachedImage;
 @property(nonatomic, retain)NSString* cachedImageURLString;
 @property(nonatomic, retain)NSString* title;
-@property(nonatomic, retain)NSString* domain;
+@property(nonatomic, retain)NSString* host;
 
 @property(nonatomic, retain)NSDate* creationDate;
 @property(nonatomic, retain)NSDate* modificationDate;
@@ -51,6 +51,7 @@
 - (BOOL)canClose;
 - (BOOL)isThereOtherTab;
 
+- (NSString*)domain;
 - (NSString*)URLString;
 - (NSString*)imagePathForExt:(NSString*)ext;
 - (NSImage*)image;

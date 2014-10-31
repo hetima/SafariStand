@@ -23,3 +23,5 @@ NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance);
 void HTShowPopupMenuForButton(NSEvent* event, NSButton* view, NSMenu* aMenu);
 
 NSString* HTStringFromDateWithFormat(NSDate* date, NSString* format);
+
+NSString* HTDomainFromHost(NSString* host);

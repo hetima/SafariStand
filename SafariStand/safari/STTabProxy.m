@@ -20,6 +20,7 @@
 {
     BOOL _invalid;
     void* _pageRef;
+    NSString* _cachedDomain;
 }
 
 
@@ -49,6 +50,7 @@
 
         // Initialization code here.
         [item htao_setValue:self forKey:@"STTabProxy"];
+        _cachedDomain=nil;
         _pageRef=nil;
         _tabViewItem=item;
         _cachedImage=nil;
@@ -134,6 +136,16 @@
 }
 
 
+- (NSString*)domain
+{
+    if (_invalid) return nil;
+    if (!_cachedDomain) {
+        _cachedDomain=HTDomainFromHost(_host);
+    }
+    return _cachedDomain;
+}
+
+
 - (NSString*)URLString
 {
     if (_invalid) return nil;
@@ -212,9 +224,10 @@
 
     //[self didChangeValueForKey:@"isLoading"];
     self.title=[self.tabViewItem title];
-    self.domain=[[NSURL URLWithString:[self URLString]] host];
+    self.host=[[NSURL URLWithString:[self URLString]]host];
+    _cachedDomain=nil;
 
-    if ((self.wantsImage || self.isInAnyWidget) && [self.domain length]>0) {
+    if ((self.wantsImage || self.isInAnyWidget) && [self.host length]>0) {
         if (![self fetchIconImage]) {
             [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:2.5];
             [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:7.0];
@@ -247,7 +260,7 @@
         return YES;
     }
     
-    if (!self.domain) {
+    if (!self.host) {
         return NO;
     }
     

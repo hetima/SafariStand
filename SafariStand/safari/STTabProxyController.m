@@ -58,7 +58,7 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
         }
         NSString* URLString=[(id)tabViewItem URLString];
         if (URLString) {
-            proxy.domain=[[NSURL URLWithString:URLString]host];
+            proxy.host=[[NSURL URLWithString:URLString]host];
         }
         //}
     });
