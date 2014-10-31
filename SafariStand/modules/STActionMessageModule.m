@@ -24,10 +24,10 @@ static STActionMessageModule* actionMessageModule;
     if (self) {
         actionMessageModule=self;
 
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (STSafariBookmarksControllerClass(),
          "addMenuItemForBookmark:withTabPlacementHint:toMenu:",
-         KZRMethodInspection, call, sel,
+         id, call, sel)
          ^id(id slf, id bookmark, void* tabLocation, id menu)
         {
              id returnValue=nil;
@@ -37,16 +37,16 @@ static STActionMessageModule* actionMessageModule;
                  [menu addItem:returnValue];
                  return returnValue;
              }
-             returnValue=call.as_id(slf, sel, bookmark, tabLocation, menu);
+             returnValue=call(slf, sel, bookmark, tabLocation, menu);
              return returnValue;
 
-         });
+         }_WITHBLOCK;
         
         //BookmarkBarをクリックしたとき
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "FavoriteButton", "_goToBookmark",
-         KZRMethodInspection, call, sel,
+         void, call, sel)
          ^(id slf){
              BOOL	hackHandled=NO;
              if([[NSUserDefaults standardUserDefaults]boolForKey:kpActionMessageEnabled] && [slf respondsToSelector:@selector(bookmark)]){
@@ -58,9 +58,9 @@ static STActionMessageModule* actionMessageModule;
              }
              //横取りしてなかったら元を呼ぶ
              if(!hackHandled)
-                 call.as_void(slf, sel);
+                 call(slf, sel);
 
-         });
+         }_WITHBLOCK;
     }
     return self;
 }

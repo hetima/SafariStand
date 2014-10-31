@@ -70,9 +70,9 @@ BOOL isLikeURLString(NSString* inStr)
     (
      "WBSURLCompletionDatabase",
      "getBestMatchesForTypedString:topHits:matches:limit:",
-     KZRMethodInspection, call, sel)
-    ^void (id slf, id str, id *topHits, id *matches, unsigned long long limit){
-        call.as_void(slf, sel, str, topHits, matches, limit);
+     void, call, sel)
+    ^ (id slf, id str, id *topHits, id *matches, unsigned long long limit){
+        call(slf, sel, str, topHits, matches, limit);
         
         NSDictionary* seedInfo=[quickSearchModule seedInfoForLocationText:str];
         NSString* searchStr=seedInfo[@"searchStr"];

@@ -68,13 +68,13 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
          1: DownloadsPath/file.name.download
          2: DownloadsPath/modPath/file.name
          */
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "NSFileManager", sel_getName(nameForPathSelector),
-         KZRMethodInspection, call, sel,
+         id, call, sel)
          ^id (id slf, NSString *inStr){
              if(![[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
-                 return call.as_id(slf, sel, inStr);
+                 return call(slf, sel, inStr);
              }
              
              NSString* outputDir=inStr;
@@ -99,9 +99,9 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
                  }
              }
              
-             NSString *result=call.as_id(slf, sel, outputDir);
+             NSString *result=call(slf, sel, outputDir);
              return result;
-         });
+         }_WITHBLOCK;
 
     }
     
@@ -278,29 +278,29 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "AppController",
          "showDownloads:",
-         KZRMethodInspection, call, sel,
+         void, call, sel)
          ^void (id slf, id sender){
              dispatch_async(dispatch_get_main_queue(), ^{
                  STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
                  [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
              });
-         });
+         }_WITHBLOCK;
         
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          kSafariBrowserWindowControllerCstr,
          "toggleDownloadsPopover:",
-         KZRMethodInspection, call, sel,
+         void, call, sel)
          ^void (id slf, id sender){
              dispatch_async(dispatch_get_main_queue(), ^{
                  STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
                  [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
              });
-         });
+         }_WITHBLOCK;
     });
     
     

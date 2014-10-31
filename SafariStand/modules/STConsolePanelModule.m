@@ -138,13 +138,13 @@
         (
          "BookmarksSidebarViewController",
          "_openBookmarkAndGiveFocusToWebContent:", //BookmarkLeaf
-         KZRMethodInspection, call, sel)
+         void, call, sel)
         ^void (id slf, id bookmarkLeaf){
             if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
                 NSURL* url=[STSafariWebBookmarkURLString(bookmarkLeaf) stand_httpOrFileURL];
                 if(url)STSafariGoToURLWithPolicy(url, poNormal);
             }else{
-                call.as_void(slf, sel, bookmarkLeaf);
+                call(slf, sel, bookmarkLeaf);
             }
             
         }_WITHBLOCK;
@@ -154,13 +154,13 @@
         (
          "BookmarksSidebarViewController",
          "_openInCurrentTab:",
-         KZRMethodInspection, call, sel)
+         void, call, sel)
         ^void (id slf, id obj){
             if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
                 NSURL* url=[STConsolePanelModule selectedURLOnSafariBookmarksView:slf];
                 if(url)STSafariGoToURLWithPolicy(url, poNormal);
             }else{
-                call.as_void(slf, sel, obj);
+                call(slf, sel, obj);
             }
             
         }_WITHBLOCK;
@@ -169,13 +169,13 @@
         (
          "BookmarksSidebarViewController",
          "_openInNewTab:",
-         KZRMethodInspection, call, sel)
+         void, call, sel)
         ^void (id slf, id obj){
             if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
                 NSURL* url=[STConsolePanelModule selectedURLOnSafariBookmarksView:slf];
                 if(url)STSafariGoToURLWithPolicy(url, poNewTab);
             }else{
-                call.as_void(slf, sel, obj);
+                call(slf, sel, obj);
             }
             
         }_WITHBLOCK;
@@ -184,13 +184,13 @@
         (
          "BookmarksSidebarViewController",
          "_openInNewWindow:",
-         KZRMethodInspection, call, sel)
+         void, call, sel)
         ^void (id slf, id obj){
             if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
                 NSURL* url=[STConsolePanelModule selectedURLOnSafariBookmarksView:slf];
                 if(url)STSafariGoToURLWithPolicy(url, poNewWindow);
             }else{
-                call.as_void(slf, sel, obj);
+                call(slf, sel, obj);
             }
             
         }_WITHBLOCK;

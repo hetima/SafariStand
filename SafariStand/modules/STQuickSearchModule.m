@@ -63,18 +63,18 @@ STQuickSearchModule* quickSearchModule;
 
 
         // ttp
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "NSString", "bestURLForUserTypedString",
-         KZRMethodInspection, call, sel,
+         id, call, sel)
          ^id (id slf)
         {
              if([slf hasPrefix:@"ttp://"]){
                  return [NSURL URLWithString:[@"h" stringByAppendingString:slf]];
              }
-             id result=call.as_id(slf, sel);
+             id result=call(slf, sel);
              return result;
-         });
+         }_WITHBLOCK;
 
         
         NSDictionary* dict=[NSDictionary dictionaryWithObjectsAndKeys:

@@ -390,15 +390,15 @@
     self = [super initWithStand:core];
     if (self) {
 
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "WKMenuTarget", "setMenuProxy:",
-         KZRMethodInspection, call, sel,
+         void, call, sel)
          ^(id slf, void *menuProxy)
         {
-            call.as_void(slf, sel, menuProxy);
+            call(slf, sel, menuProxy);
             [self injectToContextMenuProxy:menuProxy];
-         });
+         }_WITHBLOCK;
 
     }
     return self;

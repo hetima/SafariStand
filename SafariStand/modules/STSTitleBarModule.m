@@ -23,21 +23,21 @@
 
         _showingPathPopUpMenu=NO;
 /*
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "TitleBarButton", "showPathPopUpMenu",
-         KZRMethodInspection, call, sel,
+         void, call, sel)
          ^(id slf){
              _showingPathPopUpMenu=YES;
-             call.as_void(slf, sel);
+             call(slf, sel);
              _showingPathPopUpMenu=NO;
-         });
+         }_WITHBLOCK;
         
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "NSCarbonMenuImpl",
          "popUpMenu:atLocation:width:forView:withSelectedItem:withFont:withFlags:withOptions:",
-         KZRMethodInspection, call, sel,
+         void, call, sel)
          ^(id slf, NSMenu* menu, NSPoint pt, double width, NSView* view, long long selection, id font,
                   unsigned long long arg7, id arg8)
         {
@@ -45,8 +45,8 @@
                  //[[STCSafariStandCore mi:@"STSTitleBarModule"]alterPathPopUpMenu:menu];
                  [self alterPathPopUpMenu:menu];
              }
-             call.as_void(slf, sel, menu, pt, width, view, selection, font, arg7, arg8);
-         });
+             call(slf, sel, menu, pt, width, view, selection, font, arg7, arg8);
+         }_WITHBLOCK;
 */
     }
     return self;

@@ -69,18 +69,18 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     //Safari 8
     if ([cls instancesRespondToSelector:@selector(initWithScrollableTabBarView:browserTab:)]) {
         //- (id)initWithScrollableTabBarView:(id)arg1 browserTab:(struct BrowserTab *)arg2;
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "BrowserTabViewItem",
          "initWithScrollableTabBarView:browserTab:",
-         KZRMethodInspection, call, sel,
+         id, call, sel)
          ^id (id slf, id tabBarView, void* browserTab)
          {
-             id result=call.as_id(slf, sel, tabBarView, browserTab);
+             id result=call(slf, sel, tabBarView, browserTab);
              id proxy __unused=[[STTabProxy alloc]initWithTabViewItem:result];
              return result;
              
-         });
+         }_WITHBLOCK;
     }
 
 
@@ -89,22 +89,22 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     KZRMETHOD_SWIZZLING_
     (
      "ScrollableTabBarView", "tabViewDidChangeNumberOfTabViewItems:",
-     KZRMethodInspection, call, sel)
+     void, call, sel)
      ^(id slf, id /*NSTabView*/ tabView)
     {
-         call.as_void(slf, sel, tabView);
+         call(slf, sel, tabView);
          [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidChangeNote object:tabView];
      }_WITHBLOCK;
 
 
     //tabの選択を監視するため
-    KZRMETHOD_SWIZZLING_WITHBLOCK
+    KZRMETHOD_SWIZZLING_
     (
      "ScrollableTabBarView", "tabView:didSelectTabViewItem:",
-     KZRMethodInspection, call, sel,
+     void, call, sel)
      ^(id slf, id tabView, id item)
     {
-         call.as_void(slf, sel, tabView, item);
+         call(slf, sel, tabView, item);
          
          NSArray* tabViewItems=[tabView tabViewItems];
          for (NSTabViewItem* eachItem in tabViewItems) {
@@ -119,7 +119,7 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
          
          [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidSelectItemNote object:tabView];
 
-     });
+     }_WITHBLOCK;
 
 
     //tabView入れ替わりを監視するため
@@ -127,10 +127,10 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
        このとき古い NSTabView は「戻る」できるように保持されている。
        そこからページ遷移すると古い NSTabView は破棄され、戻ることもできなくなる。
      */
-    KZRMETHOD_SWIZZLING_WITHBLOCK
+    KZRMETHOD_SWIZZLING_
     (
      "BrowserWindowContentView", "setTabSwitcher:",
-     KZRMethodInspection, call, sel,
+     void, call, sel)
      ^(id slf, id/*NSTabView*/ tabView)
     {
         //[self willChangeValueForKey:@"allTabProxy"];
@@ -142,7 +142,7 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
             obj.hidden=YES;
         }];
 
-        call.as_void(slf, sel, tabView);
+        call(slf, sel, tabView);
         
         //[[STTabProxyController si]maintainTabSelectionOrder:[STTabProxy tabProxyForTabViewItem:tabView]];
         //proxy.isSelected がセットされてないことがある
@@ -158,21 +158,21 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
         //[self didChangeValueForKey:@"allTabProxy"];
         [[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView]; //重要：こっちが先
         //[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
-     });
+     }_WITHBLOCK;
 
 
     //STTabProxy の title を更新するため
-    KZRMETHOD_SWIZZLING_WITHBLOCK
+    KZRMETHOD_SWIZZLING_
     (
      "BrowserTabViewItem", "setLabel:",
-     KZRMethodInspection, call, sel,
+     void, call, sel)
      ^(id slf, NSString* label)
     {
-        call.as_void(slf, sel, label);
+        call(slf, sel, label);
 
         STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:slf];
         proxy.title=label;
-     });
+     }_WITHBLOCK;
 
 
     //STTabProxyをリストから除外するため
@@ -181,10 +181,10 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     
     //tabViewItem がdealloc、 STTabProxyリストから除外
     //重要：dealloc 中 retain されないように self は __unsafe_unretained
-    KZRMETHOD_SWIZZLING_WITHBLOCK
+    KZRMETHOD_SWIZZLING_
     (
      "BrowserTabViewItem", "dealloc",
-     KZRMethodInspection, call, sel,
+     void, call, sel)
      ^(__unsafe_unretained id slf){
          
          id proxy=[STTabProxy tabProxyForTabViewItem:slf];
@@ -193,8 +193,8 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
              [[STTabProxyController si]removeTabProxy:proxy];
          }
          proxy=nil;
-         call.as_void(slf, sel);
-     });
+         call(slf, sel);
+     }_WITHBLOCK;
     
 }
 

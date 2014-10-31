@@ -45,10 +45,10 @@
         _duration = ((1000000000 * timebaseInfo.denom) / 3) / timebaseInfo.numer; //1/3sec
         _nextTime=mach_absolute_time();
         
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "ScrollableTabBarView", "scrollWheel:",
-         KZRMethodInspection, call, sel,
+         void, call, sel)
          ^void (id slf, NSEvent* event){
              if([[NSUserDefaults standardUserDefaults]boolForKey:kpSwitchTabWithWheelEnabled]){
                  id window=objc_msgSend(slf, @selector(window));
@@ -70,18 +70,18 @@
                  }
              }
              
-             call.as_void(slf, sel, event);
+             call(slf, sel, event);
 
-         });
+         }_WITHBLOCK;
 
 
         //タブバー幅変更
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "ScrollableTabBarView", "_buttonWidthForNumberOfButtons:inWidth:remainderWidth:",
-         KZRMethodInspection, call, sel,
+         double, call, sel)
          ^double (id slf, unsigned long long buttonNum, double inWidth, double* remainderWidth){
-             double result=call.as_double(slf, sel, buttonNum, inWidth, remainderWidth);
+             double result=call(slf, sel, buttonNum, inWidth, remainderWidth);
              if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
                  double maxWidth=floor([[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue]);
                  if (result>maxWidth) {
@@ -91,20 +91,20 @@
                  }
              }
              return result;
-         });
+         }_WITHBLOCK;
         
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "ScrollableTabBarView", "_shouldLayOutButtonsToAlignWithWindowCenter",
-         KZRMethodInspection, call, sel,
+         BOOL, call, sel)
          ^BOOL (id slf){
              if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
                  return NO;
              }
              
-             BOOL result=call.as_char(slf, sel);
+             BOOL result=call(slf, sel);
              return result;
-         });
+         }_WITHBLOCK;
 
     
         double minX=[[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue];
@@ -121,9 +121,9 @@
         (
          "ScrollableTabButton",
          "initWithFrame:tabViewItem:",
-         KZRMethodInspection, call, sel)
+         id, call, sel)
         ^id (id slf, NSRect frame, id obj){
-            NSButton* result=call.as_id(slf, sel, frame, obj);
+            NSButton* result=call(slf, sel, frame, obj);
             if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnTabBarEnabled]) {
                 [self _installIconToTabButton:result ofTabViewItem:obj];
             }

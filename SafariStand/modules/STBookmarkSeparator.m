@@ -21,10 +21,10 @@
     self = [super initWithStand:core];
     if (self) {
         
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (STSafariBookmarksControllerClass(),
          "addMenuItemForBookmark:withTabPlacementHint:toMenu:",
-         KZRMethodInspection, call, sel,
+         id, call, sel)
          ^id (id slf, id bookmark, void* tabLocation, id menu)
         {
              id returnValue=nil;
@@ -37,16 +37,16 @@
                  return returnValue;
              }
              
-             returnValue=call.as_id(slf, sel, bookmark, tabLocation, menu);
+             returnValue=call(slf, sel, bookmark, tabLocation, menu);
              
              return returnValue;
-         });
+         }_WITHBLOCK;
 
         //bookmark追加ポップアップメニューに区切り線フォルダを表示しない
         //-(id)[NewBookmarksController _addBookmarkFolder:toMenu:]
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         ("NewBookmarksController", "_addBookmarkFolder:toMenu:",
-         KZRMethodInspection, call, sel,
+         id, call, sel)
          ^id (id slf, id bookmark, id menu)
         {
              NSString* title=STSafariWebBookmarkTitle(bookmark);
@@ -54,9 +54,9 @@
                  return nil;
              }
              
-             id result=call.as_id(slf, sel, bookmark, menu);
+             id result=call(slf, sel, bookmark, menu);
              return result;
-         });
+         }_WITHBLOCK;
   
     }
     

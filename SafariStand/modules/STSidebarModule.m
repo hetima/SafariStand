@@ -21,16 +21,16 @@
     self = [super initWithStand:core];
     if (self) {
         
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          "NSTabView", "contentRect",
-         KZRMethodInspection, call, sel,
+         NSRect, call, sel)
          ^NSRect(id slf)
         {
             NSArray* subviews=[slf subviews];
             for (NSView* subview in subviews) {
                 if ([subview isKindOfClass:[STSidebarFrameView class]]) {
-                    NSRect origRect=call.as_rect(slf, sel);
+                    NSRect origRect=call(slf, sel);
                     NSRect sidebarRect=[subview frame];
                     BOOL rightside=[(STSidebarFrameView*)subview rightSide];
                     
@@ -42,18 +42,18 @@
                 }
             }
             
-            return call.as_rect(slf, sel);
-         });
+            return call(slf, sel);
+         }_WITHBLOCK;
 
         //kpSidebarShowsDefault
         
-        KZRMETHOD_SWIZZLING_WITHBLOCK
+        KZRMETHOD_SWIZZLING_
         (
          kSafariBrowserWindowControllerCstr, "showWindow:",
-         KZRMethodInspection, call, sel,
+         void, call, sel)
          ^(id slf, id sender)
         {
-            call.as_void(slf, sel, sender);
+            call(slf, sel, sender);
             if ( ![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault] ||
                 [slf htao_valueForKey:kAOValueNotShowSidebarAuto] ) {
                 return;
@@ -64,7 +64,7 @@
             if(winSize.width>640 && winSize.height>600){
                 [self installSidebarToWindow:[slf window]];
             }
-         });
+         }_WITHBLOCK;
 
 
         NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Sidebar" action:@selector(toggleSidebar:) keyEquivalent:@""];
