@@ -541,20 +541,23 @@
     itm=[menu addItemWithTitle:@"Synchronized" action:action keyEquivalent:@""];
     [itm setTag:sortTab];
     [itm setTarget:target];
-    itm=[menu addItemWithTitle:@"Domain" action:action keyEquivalent:@""];
+    
+    [menu addItem:[NSMenuItem separatorItem]];
+    
+    itm=[menu addItemWithTitle:@"by Domain" action:action keyEquivalent:@""];
     [itm setTag:sortDomain];
     [itm setTarget:target];
-    itm=[menu addItemWithTitle:@"Creation Time (Older First)" action:action keyEquivalent:@""];
-    [itm setTag:sortCreationDate];
-    [itm setTarget:target];
-    itm=[menu addItemWithTitle:@"Creation Time (Newer First)" action:action keyEquivalent:@""];
-    [itm setTag:sortCreationDateReverse];
-    [itm setTarget:target];
-    itm=[menu addItemWithTitle:@"Load Time (Older First)" action:action keyEquivalent:@""];
+    itm=[menu addItemWithTitle:@"by Page Loaded (Older First)" action:action keyEquivalent:@""];
     [itm setTag:sortModificationDate];
     [itm setTarget:target];
-    itm=[menu addItemWithTitle:@"Load Time (Newer First)" action:action keyEquivalent:@""];
+    itm=[menu addItemWithTitle:@"by Page Loaded (Newer First)" action:action keyEquivalent:@""];
     [itm setTag:sortModificationDateReverse];
+    [itm setTarget:target];
+    itm=[menu addItemWithTitle:@"by Tab Creation (Older First)" action:action keyEquivalent:@""];
+    [itm setTag:sortCreationDate];
+    [itm setTarget:target];
+    itm=[menu addItemWithTitle:@"by Tab Creation (Newer First)" action:action keyEquivalent:@""];
+    [itm setTag:sortCreationDateReverse];
     [itm setTarget:target];
     
     return menu;
