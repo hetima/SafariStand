@@ -24,6 +24,7 @@
 @property (nonatomic, assign)STConsolePanelModule* consolePanelModule;
 
 - (void)commonConsolePanelCtlInitWithModule:(STConsolePanelModule*)consolePanelModule;
+- (NSToolbarItem*)firstSelectableItem;
 - (void)selectTab:(NSString*)identifier;
 - (void)highlighteToolbarItemIdentifier:(NSString *)itemIdentifier;
 

@@ -65,9 +65,12 @@
         _winCtl=[[STConsolePanelCtl alloc]initWithWindowNibName:@"STConsolePanel"];
         [_winCtl commonConsolePanelCtlInitWithModule:self];
         [self observePrefValue:kpConsolePanelToolbarIdentifier]; //after toolbar created
+        if (!identifier) {
+            identifier=[[_winCtl firstSelectableItem]itemIdentifier];
+        }
     }
 
-    [_winCtl selectTab:identifier];
+    if (identifier)[_winCtl selectTab:identifier];
     [_winCtl showWindow:self];
     
 }
@@ -317,6 +320,18 @@
             }
         }
     }
+}
+
+
+- (NSToolbarItem*)firstSelectableItem
+{
+    NSArray* items=self.oToolbar.items;
+    for (NSToolbarItem* itm in items) {
+        if([self.identifiers containsObject:itm.itemIdentifier]){
+            return itm;
+        }
+    }
+    return nil;
 }
 
 
