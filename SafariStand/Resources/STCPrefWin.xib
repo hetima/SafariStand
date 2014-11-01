@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
@@ -159,7 +158,7 @@
                                             </connections>
                                         </button>
                                         <button id="185">
-                                            <rect key="frame" x="18" y="142" width="252" height="18"/>
+                                            <rect key="frame" x="18" y="182" width="252" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Suppress Tab Bar Width" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="186">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -175,7 +174,7 @@
                                             </connections>
                                         </button>
                                         <slider verticalHuggingPriority="750" id="189">
-                                            <rect key="frame" x="56" y="119" width="140" height="17"/>
+                                            <rect key="frame" x="56" y="159" width="140" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <sliderCell key="cell" controlSize="small" state="on" alignment="left" minValue="140" maxValue="480" doubleValue="140" tickMarkPosition="below" numberOfTickMarks="6" sliderType="linear" id="190"/>
                                             <connections>
@@ -205,7 +204,7 @@
                                             </connections>
                                         </textField>
                                         <button id="8LT-wt-rnX">
-                                            <rect key="frame" x="18" y="95" width="252" height="18"/>
+                                            <rect key="frame" x="18" y="135" width="252" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Expand Address Bar Width" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1gk-yO-ULF">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -221,7 +220,7 @@
                                             </connections>
                                         </button>
                                         <slider verticalHuggingPriority="750" id="IIf-xv-YaO">
-                                            <rect key="frame" x="56" y="72" width="140" height="17"/>
+                                            <rect key="frame" x="56" y="112" width="140" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <sliderCell key="cell" controlSize="small" state="on" alignment="left" minValue="0.40999999999999998" maxValue="1" doubleValue="1" tickMarkPosition="below" numberOfTickMarks="6" sliderType="linear" id="GxZ-s7-o3Z"/>
                                             <connections>
@@ -255,7 +254,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <button id="30F-hP-sUz">
-                                            <rect key="frame" x="18" y="162" width="252" height="18"/>
+                                            <rect key="frame" x="18" y="70" width="252" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Show Icon on Tab Bar" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="lXM-d3-eAG">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -263,6 +262,22 @@
                                             </buttonCell>
                                             <connections>
                                                 <binding destination="6" name="value" keyPath="values.Stand_ShowIconOnTabBarEnabled" id="3fE-UO-jDx">
+                                                    <dictionary key="options">
+                                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                        <integer key="NSNullPlaceholder" value="0"/>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
+                                        </button>
+                                        <button id="x5c-62-paD">
+                                            <rect key="frame" x="18" y="50" width="252" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Show Icon on Sidebar Bookmark" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="4eC-Bl-NA8">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="6" name="value" keyPath="values.Stand_ShowIconOnSidebarBookmarkEnabled" id="hIE-Or-At0">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>

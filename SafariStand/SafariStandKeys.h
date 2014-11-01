@@ -90,5 +90,6 @@
 #define kpBrowserToolbarConfigurationBackup @"Stand_BrowserToolbarConfigurationBackup"
 #define kpConsolePanelToolbarConfigurationBackup @"Stand_ConsolePanelToolbarConfigurationBackup"
 
+#define kpShowIconOnSidebarBookmarkEnabled @"Stand_ShowIconOnSidebarBookmarkEnabled"
 
 #endif

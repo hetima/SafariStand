@@ -10,7 +10,7 @@
 @interface STConsolePanelModule : STCModule
 
 @property (nonatomic, strong)NSMutableDictionary* panels;
-
+@property (nonatomic, weak)id bookmarksSidebarViewController;
 
 // register panel item. do not call outside of modulesDidFinishLoading:
 - (void)addPanelWithIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight loadHandler:(id(^)())loadHandler;
