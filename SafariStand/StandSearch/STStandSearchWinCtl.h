@@ -8,7 +8,7 @@
 
 @interface STStandSearchWinCtl : NSWindowController
 
-@property(nonatomic,retain)STStandSearchViewCtl* viewCtl;
+@property (nonatomic,retain) STStandSearchViewCtl* viewCtl;
 
 + (void)showStandSearcWindow;
 

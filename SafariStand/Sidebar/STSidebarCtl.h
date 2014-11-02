@@ -13,17 +13,17 @@
 
 @interface STSidebarCtl : NSViewController <NSTabViewDelegate>
 
-@property (nonatomic,strong) STCTabListViewCtl* tabListCtl;
+@property (nonatomic, strong) STCTabListViewCtl* tabListCtl;
 
-@property (weak) IBOutlet NSSplitView *oSplitView;
-@property (weak) IBOutlet DMTabBar *oPrimaryTabbar;
-@property (weak) IBOutlet DMTabBar *oSecondaryTabbar;
-@property (weak) IBOutlet STSidebarResizeHandleView *oResizeHandle;
-@property (weak) IBOutlet NSTabView* oPrimaryTabView;
-@property (weak) IBOutlet NSTabView* oSecondaryTabView;
+@property (nonatomic, weak) IBOutlet NSSplitView *oSplitView;
+@property (nonatomic, weak) IBOutlet DMTabBar *oPrimaryTabbar;
+@property (nonatomic, weak) IBOutlet DMTabBar *oSecondaryTabbar;
+@property (nonatomic, weak) IBOutlet STSidebarResizeHandleView *oResizeHandle;
+@property (nonatomic, weak) IBOutlet NSTabView* oPrimaryTabView;
+@property (nonatomic, weak) IBOutlet NSTabView* oSecondaryTabView;
 
-@property (nonatomic,weak)NSTabView* targetView;
-@property (nonatomic,weak)NSView* counterpartView;
+@property (nonatomic, weak) NSTabView* targetView;
+@property (nonatomic, weak) NSView* counterpartView;
 
 + (STSidebarCtl*)viewCtl;
 

@@ -22,13 +22,14 @@
 @interface STPrefWindowCtl : STCTabWithToolbarWinCtl{
     
 }
-@property (nonatomic,retain)id otherDefaults;
+@property(nonatomic, strong) id otherDefaults;
 
-@property (nonatomic,assign)IBOutlet NSTextField* oCurrentVarsionLabel;
-@property (nonatomic,retain)NSString* currentVersionString;
-@property (nonatomic,retain)NSString* latestVersionString;
+@property(nonatomic, assign) IBOutlet NSTextField* oCurrentVarsionLabel;
+@property(nonatomic, strong) NSString* currentVersionString;
+@property(nonatomic, strong) NSString* latestVersionString;
 
 - (IBAction)actShowDownloadFolderAdvanedSetting:(id)sender;
 - (IBAction)actShowSquashCMAdvanedSetting:(id)sender;
 
 @end
+

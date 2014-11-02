@@ -30,7 +30,7 @@
 
 @implementation STSidebarCtl
 
-+(STSidebarCtl*)viewCtl
++ (STSidebarCtl*)viewCtl
 {
     
     STSidebarCtl* result=[[STSidebarCtl alloc]initWithNibName:@"STSidebarCtl" bundle:
@@ -39,22 +39,27 @@
     return result;
 }
 
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.targetView=nil;
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewReplaced:) name:STTabViewDidReplaceNote object:nil];
-    }
+    if (!self) return nil;
+    
+    
+    self.targetView=nil;
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewReplaced:) name:STTabViewDidReplaceNote object:nil];
+    
     
     return self;
 }
+
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     LOG(@"STSidebarCtl d");
 }
+
 
 - (void)installToTabView:(NSTabView*)tabView sidebarWidth:(CGFloat)width rightSide:(BOOL)rightSide
 {
@@ -83,6 +88,7 @@
      
 }
 
+
 - (void)uninstallFromTabView
 {
     if (!self.targetView) {
@@ -101,6 +107,7 @@
     self.targetView=nil;
 }
 
+
 - (void)tabViewReplaced:(NSNotification*)note
 {
     //古い tabView は既に window から取り除かれているので self.view.window==nil
@@ -113,13 +120,14 @@
     }
 }
 
+
 - (void)tabViewItemSelected:(NSNotification*)note
 {
     [self layout:[self rightSide]];
 }
 
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
     
     self.tabListCtl=[STCTabListViewCtl viewCtlWithTabView:self.targetView];
@@ -167,11 +175,11 @@
 }
 
 
-
 - (BOOL)rightSide
 {
     return  [(STSidebarFrameView*)self.view rightSide];
 }
+
 
 - (void)setRightSide:(BOOL)rightSide
 {
@@ -242,6 +250,7 @@
 
 }
 
+
 #pragma mark - sidebarResizeHandle
 
 - (CGFloat)counterpartResizeLimit
@@ -251,6 +260,7 @@
     return width>=0 ? width:0;
 }
 
+
 - (CGFloat)sidebarFrameResizeLimit
 {
     CGFloat width=NSWidth(self.view.frame) - kSidebarFrameMinWidth;
@@ -258,6 +268,7 @@
     return width>=1 ? width:0;
     
 }
+
 
 - (STMinMax)userDragResizeLimit
 {
@@ -280,6 +291,7 @@
     return result;
 }
 
+
 - (void)sidebarResizeHandleWillStartTracking:(STSidebarResizeHandleView*)resizeHandle
 {
     if ([self rightSide]) {
@@ -292,12 +304,14 @@
     resizeHandle.resizeLimit=[self userDragResizeLimit];
 }
 
+
 - (void)sidebarResizeHandleDidEndTracking:(STSidebarResizeHandleView*)resizeHandle
 {
     if(!([self.view.window styleMask] & NSFullScreenWindowMask)) {
         [[NSUserDefaults standardUserDefaults]setFloat:NSWidth(self.view.frame) forKey:kpSidebarWidth];
     }
 }
+
 
 #pragma mark - NSSplitView
 
@@ -306,10 +320,12 @@
     [self.oSplitView setPosition:NSHeight(self.oSplitView.frame)-kSplitViewBottomMinHeight ofDividerAtIndex:0];
 }
 
+
 - (void)splitViewDidResizeSubviews:(NSNotification *)notification;
 {
 
 }
+
 
 - (BOOL)splitView:(NSSplitView *)splitView shouldAdjustSizeOfSubview:(NSView *)subview
 {
@@ -320,6 +336,7 @@
     
     return YES;
 }
+
 
 - (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview
 {
@@ -339,11 +356,13 @@
 
 }
 
+
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
 {
 
     return proposedMax-kSplitViewBottomMinHeight;
 }
+
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainSplitPosition:(CGFloat)proposedPosition ofSubviewAt:(NSInteger)dividerIndex
 {
@@ -372,9 +391,9 @@
 - (id)initWithFrame:(NSRect)frameRect
 {
     self = [super initWithFrame:frameRect];
-    if (self) {
-        
-    }
+    if (!self) return nil;
+    
+    
     return self;
 }
 
@@ -385,3 +404,4 @@
 }
 
 @end
+

@@ -8,36 +8,37 @@
 
 @interface HTQuerySeed : NSObject
 
-@property(nonatomic,retain)NSString* title;
-@property(nonatomic,retain)NSString* baseUrl;
-@property(nonatomic,retain)NSString* shortcut;
-@property(nonatomic,retain)NSString* method;
-@property(nonatomic,retain)NSNumber* encoding;
-@property(nonatomic,retain)NSNumber* use;
-@property(nonatomic,retain)NSString* referrer;
-@property(nonatomic,retain)NSMutableArray* posts;
-@property(nonatomic,retain)NSString* uuid;
+@property(nonatomic, strong) NSString* title;
+@property(nonatomic, strong) NSString* baseUrl;
+@property(nonatomic, strong) NSString* shortcut;
+@property(nonatomic, strong) NSString* method;
+@property(nonatomic, strong) NSNumber* encoding;
+@property(nonatomic, strong) NSNumber* use;
+@property(nonatomic, strong) NSString* referrer;
+@property(nonatomic, strong) NSMutableArray* posts;
+@property(nonatomic, strong) NSString* uuid;
 
 + (id)querySeed;
 - (id)initWithDict:(NSDictionary*)dic;
 
--(NSDictionary*)dictionaryData;
+- (NSDictionary*)dictionaryData;
 
--(NSURLRequest*)requestWithLocationString:(NSString*)inStr;
--(NSURLRequest*)requestWithSearchString:(NSString*)inStr;
+- (NSURLRequest*)requestWithLocationString:(NSString*)inStr;
+- (NSURLRequest*)requestWithSearchString:(NSString*)inStr;
 
 @end
 
 
 @protocol HTQuerySeedsBinder <NSObject>
 
--(NSMutableArray*)querySeeds;
--(void)setQuerySeeds:(NSMutableArray*)ary;
--(void)addQuerySeed:(HTQuerySeed*)qs;
+- (NSMutableArray*)querySeeds;
+- (void)setQuerySeeds:(NSMutableArray*)ary;
+- (void)addQuerySeed:(HTQuerySeed*)qs;
 
 @end
 
 
-@interface HTMethodIsNotPOSTValueTransformer : NSValueTransformer {
-}
+@interface HTMethodIsNotPOSTValueTransformer : NSValueTransformer
+
 @end
+

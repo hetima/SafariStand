@@ -18,55 +18,54 @@
 static STActionMessageModule* actionMessageModule;
 
 
--(id)initWithStand:(id)core
+- (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
-    if (self) {
-        actionMessageModule=self;
+    if (!self) return nil;
 
-        KZRMETHOD_SWIZZLING_
-        (STSafariBookmarksControllerClass(),
-         "addMenuItemForBookmark:withTabPlacementHint:toMenu:",
-         id, call, sel)
-         ^id(id slf, id bookmark, void* tabLocation, id menu)
-        {
-             id returnValue=nil;
-             
-             returnValue=[actionMessageModule menuItemForBookmarkLeaf:bookmark];
-             if(returnValue){
-                 [menu addItem:returnValue];
-                 return returnValue;
-             }
-             returnValue=call(slf, sel, bookmark, tabLocation, menu);
-             return returnValue;
-
-         }_WITHBLOCK;
+    
+    actionMessageModule=self;
+    
+    KZRMETHOD_SWIZZLING_(STSafariBookmarksControllerClass(),
+                         "addMenuItemForBookmark:withTabPlacementHint:toMenu:",
+                         id, call, sel)
+    ^id(id slf, id bookmark, void* tabLocation, id menu)
+    {
+        id returnValue=nil;
         
-        //BookmarkBarをクリックしたとき
-        KZRMETHOD_SWIZZLING_
-        (
-         "FavoriteButton", "_goToBookmark",
-         void, call, sel)
-         ^(id slf){
-             BOOL	hackHandled=NO;
-             if([[NSUserDefaults standardUserDefaults]boolForKey:kpActionMessageEnabled] && [slf respondsToSelector:@selector(bookmark)]){
-                 id	bookmark=objc_msgSend(slf, @selector(bookmark));
-                 if(bookmark){
-                     NSString	*url=STSafariWebBookmarkURLString(bookmark);
-                     hackHandled=[actionMessageModule handleBookmakBarAction:url];
-                 }
-             }
-             //横取りしてなかったら元を呼ぶ
-             if(!hackHandled)
-                 call(slf, sel);
-
-         }_WITHBLOCK;
-    }
+        returnValue=[actionMessageModule menuItemForBookmarkLeaf:bookmark];
+        if(returnValue){
+            [menu addItem:returnValue];
+            return returnValue;
+        }
+        returnValue=call(slf, sel, bookmark, tabLocation, menu);
+        return returnValue;
+        
+    }_WITHBLOCK;
+    
+    //BookmarkBarをクリックしたとき
+    KZRMETHOD_SWIZZLING_("FavoriteButton", "_goToBookmark", void, call, sel)
+    ^(id slf){
+        BOOL	hackHandled=NO;
+        if([[NSUserDefaults standardUserDefaults]boolForKey:kpActionMessageEnabled] && [slf respondsToSelector:@selector(bookmark)]){
+            id	bookmark=objc_msgSend(slf, @selector(bookmark));
+            if(bookmark){
+                NSString	*url=STSafariWebBookmarkURLString(bookmark);
+                hackHandled=[actionMessageModule handleBookmakBarAction:url];
+            }
+        }
+        //横取りしてなかったら元を呼ぶ
+        if(!hackHandled)
+            call(slf, sel);
+        
+    }_WITHBLOCK;
+    
+    
     return self;
 }
 
 
--(NSMenuItem*)menuItemForBookmarkLeaf:(id)bookmarkLeaf
+- (NSMenuItem*)menuItemForBookmarkLeaf:(id)bookmarkLeaf
 {
 	id returnValue=nil;
     
@@ -89,7 +88,7 @@ static STActionMessageModule* actionMessageModule;
 }
 
 
--(void)handleActionMessage:(NSArray*)messages
+- (void)handleActionMessage:(NSArray*)messages
 {
     NSString* action=[[messages objectAtIndex:1]stringByAppendingString:@":"];
     SEL	selector=NSSelectorFromString(action);
@@ -99,7 +98,7 @@ static STActionMessageModule* actionMessageModule;
 }
 
 //001 BookmakBar_Action
--(BOOL)handleBookmakBarAction:(NSString*)url
+- (BOOL)handleBookmakBarAction:(NSString*)url
 {
     if(![[NSUserDefaults standardUserDefaults]boolForKey:kpActionMessageEnabled])return NO;
     
@@ -117,7 +116,7 @@ static STActionMessageModule* actionMessageModule;
 
 //001 BookmakBar_Action
 //ブックマークバーのクリック、ブックマークメニュー選択 IBAction
--(void)actHandleBookmakItem:(id)sender
+- (void)actHandleBookmakItem:(id)sender
 {
     id url=nil;
     if([sender isKindOfClass:[NSString class]]){

@@ -63,14 +63,11 @@ BOOL isLikeURLString(NSString* inStr)
 }
 
 
--(void)setupCompletionCtl
+- (void)setupCompletionCtl
 {
 
-    KZRMETHOD_SWIZZLING_
-    (
-     "WBSURLCompletionDatabase",
-     "getBestMatchesForTypedString:topHits:matches:limit:",
-     void, call, sel)
+    KZRMETHOD_SWIZZLING_("WBSURLCompletionDatabase", "getBestMatchesForTypedString:topHits:matches:limit:",
+                         void, call, sel)
     ^ (id slf, id str, id *topHits, id *matches, unsigned long long limit){
         call(slf, sel, str, topHits, matches, limit);
         

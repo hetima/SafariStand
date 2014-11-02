@@ -16,12 +16,13 @@ static char modulePrefContext;
 -(id)initWithStand:(id)core
 {
     self = [super init];
-    if (self) {
-        //LOG(@"module init %@", NSStringFromClass([self class]));
-    }
+    if (!self) return nil;
+    //LOG(@"module init %@", NSStringFromClass([self class]));
+
     
     return self;
 }
+
 
 - (void)prefValue:(NSString*)key changed:(id)value
 {

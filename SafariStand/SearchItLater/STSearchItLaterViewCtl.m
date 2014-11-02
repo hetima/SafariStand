@@ -28,23 +28,26 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        LOG(@"STSearchItLaterViewCtl init");
-        self.silBinder=[STQuickSearchModule si];
-        [[STQuickSearchModule si] addObserver:self
-                                   forKeyPath:@"searchItLaterStrings"
-                                      options:(NSKeyValueObservingOptionNew)
-                                      context:NULL];
-    }
+    if (!self) return nil;
+    
+    
+    LOG(@"STSearchItLaterViewCtl init");
+    self.silBinder=[STQuickSearchModule si];
+    [[STQuickSearchModule si] addObserver:self
+                               forKeyPath:@"searchItLaterStrings"
+                                  options:(NSKeyValueObservingOptionNew)
+                                  context:NULL];
+    
+    
     return self;
 }
 
 
 - (void)viewDidLoad
 {
-    LOG(@"STSearchItLaterView load");
     
 }
+
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object 
@@ -82,7 +85,7 @@
 }
 
 
--(NSMenu*)menuForTableView:(NSTableView*)tableView index:(NSInteger)row
+- (NSMenu*)menuForTableView:(NSTableView*)tableView index:(NSInteger)row
 {
     NSMutableDictionary* itm=[self safeArrangedObjectAtIndex:row];
     if(itm){

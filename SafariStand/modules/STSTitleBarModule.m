@@ -19,65 +19,61 @@
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
-    if (self) {
-
-        _showingPathPopUpMenu=NO;
+    if (!self) return nil;
+    
+    
+    _showingPathPopUpMenu=NO;
 /*
-        KZRMETHOD_SWIZZLING_
-        (
-         "TitleBarButton", "showPathPopUpMenu",
-         void, call, sel)
-         ^(id slf){
-             _showingPathPopUpMenu=YES;
-             call(slf, sel);
-             _showingPathPopUpMenu=NO;
-         }_WITHBLOCK;
-        
-        KZRMETHOD_SWIZZLING_
-        (
-         "NSCarbonMenuImpl",
-         "popUpMenu:atLocation:width:forView:withSelectedItem:withFont:withFlags:withOptions:",
-         void, call, sel)
-         ^(id slf, NSMenu* menu, NSPoint pt, double width, NSView* view, long long selection, id font,
-                  unsigned long long arg7, id arg8)
-        {
-             if(_showingPathPopUpMenu && [[NSUserDefaults standardUserDefaults]boolForKey:kpImprovePathPopupMenu]){
-                 //[[STCSafariStandCore mi:@"STSTitleBarModule"]alterPathPopUpMenu:menu];
-                 [self alterPathPopUpMenu:menu];
-             }
-             call(slf, sel, menu, pt, width, view, selection, font, arg7, arg8);
-         }_WITHBLOCK;
+    KZRMETHOD_SWIZZLING_("TitleBarButton", "showPathPopUpMenu", void, call, sel)
+    ^(id slf)
+    {
+        _showingPathPopUpMenu=YES;
+        call(slf, sel);
+        _showingPathPopUpMenu=NO;
+    }_WITHBLOCK;
+    
+    KZRMETHOD_SWIZZLING_("NSCarbonMenuImpl",
+     "popUpMenu:atLocation:width:forView:withSelectedItem:withFont:withFlags:withOptions:",
+     void, call, sel)
+    ^(id slf, NSMenu* menu, NSPoint pt, double width, NSView* view, long long selection, id font,
+              unsigned long long arg7, id arg8)
+    {
+         if(_showingPathPopUpMenu && [[NSUserDefaults standardUserDefaults]boolForKey:kpImprovePathPopupMenu]){
+             //[[STCSafariStandCore mi:@"STSTitleBarModule"]alterPathPopUpMenu:menu];
+             [self alterPathPopUpMenu:menu];
+         }
+         call(slf, sel, menu, pt, width, view, selection, font, arg7, arg8);
+     }_WITHBLOCK;
 */
-        
-        //show window title
-        //not implement yet
-        /*
-        KZRMETHOD_SWIZZLING_
-        ("BrowserWindow", "setTitle:", void, call, sel)
-        ^void (id slf, id val){
-            call(slf, sel, val);
-            if([slf titleVisibility]==NSWindowTitleVisible){
-                id frameView=[[slf contentView]superview];
-                if ([frameView respondsToSelector:@selector(setTitle:)]) {
-                    objc_msgSend(frameView, @selector(setTitle:), val);
-                }
+    
+    //show window title
+    //not implement yet
+    /*
+    KZRMETHOD_SWIZZLING_("BrowserWindow", "setTitle:", void, call, sel)
+    ^void (id slf, id val)
+    {
+        call(slf, sel, val);
+        if([slf titleVisibility]==NSWindowTitleVisible){
+            id frameView=[[slf contentView]superview];
+            if ([frameView respondsToSelector:@selector(setTitle:)]) {
+                objc_msgSend(frameView, @selector(setTitle:), val);
             }
-        }_WITHBLOCK;
+        }
+    }_WITHBLOCK;
+    
+    
+    NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Title Bar" action:@selector(STToggleWindowTitleVisibility:) keyEquivalent:@""];
+    [itm setTag:kMenuItemTagToggleTitlebar];
+    [core addItemToStandMenu:itm];
+    */
+    //[self observePrefValue:kpShowBrowserWindowTitlebar];
 
-        
-        NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Title Bar" action:@selector(STToggleWindowTitleVisibility:) keyEquivalent:@""];
-        [itm setTag:kMenuItemTagToggleTitlebar];
-        [core addItemToStandMenu:itm];
-        */
-        //[self observePrefValue:kpShowBrowserWindowTitlebar];
-        
-    }
     
     return self;
 }
 
 
--(void)modulesDidFinishLoading:(id)core
+- (void)modulesDidFinishLoading:(id)core
 {
     if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowBrowserWindowTitlebar]) {
         //not implement yet

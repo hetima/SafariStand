@@ -24,7 +24,8 @@
 	NSPredicate*	_typeFilter;
 }
 
-+(STMetadataQueryCtl*)bookmarksSearchCtl
+
++ (STMetadataQueryCtl*)bookmarksSearchCtl
 {
     NSString *path=[[NSHomeDirectory() stringByStandardizingPath]stringByAppendingPathComponent:
                     @"/Library/Caches/Metadata/Safari/Bookmarks"];
@@ -33,7 +34,8 @@
     return ctl;
 }
 
-+(STMetadataQueryCtl*)historySearchCtl
+
++ (STMetadataQueryCtl*)historySearchCtl
 {
     NSString *path=[[NSHomeDirectory() stringByStandardizingPath]stringByAppendingPathComponent:
                     @"/Library/Caches/Metadata/Safari/History"];
@@ -42,6 +44,7 @@
     return ctl;
 }
 
+
 - (void)dealloc
 {
     LOG(@"query dealloc");
@@ -49,36 +52,40 @@
 	[_query stopQuery];
 }
 
+
 - (id) initWithContentType:(NSString*)type scope:(NSString*)scope
 {
 	self = [super init];
-	if (self != nil) {
-
-		NSString*	fmt=[NSString stringWithFormat:@"(kMDItemContentType == '%@')", type];
-		_typeFilter = [NSPredicate predicateWithFormat:fmt];
-		_query = [[NSMetadataQuery alloc] init];
-        if (!scope) {
-            scope=NSMetadataQueryUserHomeScope;
-        }
-        
-		[[NSNotificationCenter defaultCenter]addObserver:self
-                                                selector:@selector(queryNote:) name:nil object:_query];
-		[_query setSearchScopes:[NSArray arrayWithObject:scope]];
-		[_query setSortDescriptors:[NSArray arrayWithObject:
-                        [[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO] ]];
-		[_query setGroupingAttributes:nil];
-		[_query setValueListAttributes:[NSArray arrayWithObjects:(id)kMDItemDisplayName, (id)kMDItemURL, nil]];
-		//[_query setValueListAttributes:nil];
-		[_query setDelegate:self];
-        
-	}
+    if (!self) return nil;
+    
+    
+    NSString*	fmt=[NSString stringWithFormat:@"(kMDItemContentType == '%@')", type];
+    _typeFilter = [NSPredicate predicateWithFormat:fmt];
+    _query = [[NSMetadataQuery alloc] init];
+    if (!scope) {
+        scope=NSMetadataQueryUserHomeScope;
+    }
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(queryNote:) name:nil object:_query];
+    [_query setSearchScopes:[NSArray arrayWithObject:scope]];
+    [_query setSortDescriptors:[NSArray arrayWithObject:
+                                [[NSSortDescriptor alloc] initWithKey:(id)kMDItemContentModificationDate ascending:NO] ]];
+    [_query setGroupingAttributes:nil];
+    [_query setValueListAttributes:[NSArray arrayWithObjects:(id)kMDItemDisplayName, (id)kMDItemURL, nil]];
+    //[_query setValueListAttributes:nil];
+    [_query setDelegate:self];
+    
+    
 	return self;
 }
+
 
 - (NSUInteger)count
 {
 	return [_query resultCount];
 }
+
 
 - (id)objectAtIndex:(int)idx
 {
@@ -87,6 +94,7 @@
 	}
 	return nil;
 }
+
 
 - (id)valueForAttribute:(NSString *)key
 {
@@ -104,6 +112,7 @@
 	}
 	return @"";
 }
+
 
 - (NSMetadataQuery *)query
 {
@@ -168,15 +177,18 @@
 	
 }
 
+
 - (void)_clearMDTree
 {
 	[self.delegate standMetaDataTreeUpdate:self];
 }
 
+
 - (void)_updateMDTree
 {
 	[self.delegate standMetaDataTreeUpdate:self];    
 }
+
 
 - (void)queryNote:(NSNotification *)note
 {

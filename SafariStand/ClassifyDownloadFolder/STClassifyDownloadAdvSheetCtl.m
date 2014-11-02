@@ -14,7 +14,7 @@
 @implementation STClassifyDownloadAdvSheetCtl
 
 
--(id)defaultObjecOfHTArrayController:(id)aryCtl
+- (id)defaultObjecOfHTArrayController:(id)aryCtl
 {
     return [NSMutableDictionary dictionaryWithObjectsAndKeys:
             [NSNumber numberWithBool:YES], @"use", @"ext",@"type",@"@/images",@"exp",@"jpg, jpeg, gif, png",@"pattern",
@@ -31,27 +31,30 @@
     [self.arrayBinder saveToStorage];
 }
 
+
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
-    if (self) {
-        // Initialization code here.
-    }
+    if (!self) return nil;
+    
     
     return self;
 }
+
 
 - (void)dealloc
 {
 
 }
 
--(void)setAdvancedFilters:(NSMutableArray *)ary
+
+- (void)setAdvancedFilters:(NSMutableArray *)ary
 {
     [self.arrayBinder setAdvancedFilters:ary];
 }
 
--(NSMutableArray*)advancedFilters
+
+- (NSMutableArray*)advancedFilters
 {
     return [self.arrayBinder advancedFilters];
 }
@@ -64,10 +67,12 @@
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
 
+
 - (IBAction)actSheetDone:(id)sender
 {
     [NSApp endSheet:[self window]];
 }
+
 
 - (IBAction)actDateFormatHelpBtn:(id)sender
 {

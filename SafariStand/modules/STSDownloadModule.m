@@ -58,55 +58,55 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
-    if (self) {
-        _advSheetCtl=nil;
-        [self loadFromStorage];
-
-        SEL nameForPathSelector=[[NSFileManager defaultManager]stand_selectorForPathWithUniqueFilenameForPath];
-        if (!nameForPathSelector)nameForPathSelector=@selector(stand_pathWithUniqueFilenameForPath:);
-        /*
-         1: DownloadsPath/file.name.download
-         2: DownloadsPath/modPath/file.name
-         */
-        KZRMETHOD_SWIZZLING_
-        (
-         "NSFileManager", sel_getName(nameForPathSelector),
-         id, call, sel)
-         ^id (id slf, NSString *inStr){
-             if(![[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
-                 return call(slf, sel, inStr);
-             }
-             
-             NSString* outputDir=inStr;
-             NSString* rootDir=[inStr stringByDeletingLastPathComponent];
-             NSString* defaultDir=[[[NSUserDefaults standardUserDefaults]stringForKey:@"DownloadsPath"]stringByStandardizingPath];
-             if([defaultDir isEqualToString:rootDir]){
-                 NSString* fileName=[inStr lastPathComponent];
-                 NSString* filteredExpression=[self filteredExpressionForFileName:fileName url:nil];
-                 
-                 rootDir=[rootDir stringByAppendingPathComponent:filteredExpression];
-                 
-                 //フォルダ作成
-                 BOOL isDirectory;
-                 if(![[NSFileManager defaultManager] fileExistsAtPath:rootDir isDirectory:&isDirectory]){
-                     isDirectory=[[NSFileManager defaultManager]createDirectoryAtPath:rootDir withIntermediateDirectories:YES attributes:nil error:nil];
-                 }
-                 
-                 if(isDirectory){
-                     outputDir=[rootDir stringByAppendingPathComponent:fileName];
-                 }else{
-                     outputDir=inStr;
-                 }
-             }
-             
-             NSString *result=call(slf, sel, outputDir);
-             return result;
-         }_WITHBLOCK;
-
-    }
+    if (!self) return nil;
+    
+    
+    _advSheetCtl=nil;
+    [self loadFromStorage];
+    
+    SEL nameForPathSelector=[[NSFileManager defaultManager]stand_selectorForPathWithUniqueFilenameForPath];
+    if (!nameForPathSelector) nameForPathSelector=@selector(stand_pathWithUniqueFilenameForPath:);
+    /*
+     1: DownloadsPath/file.name.download
+     2: DownloadsPath/modPath/file.name
+     */
+    KZRMETHOD_SWIZZLING_("NSFileManager", sel_getName(nameForPathSelector), id, call, sel)
+    ^id (id slf, NSString *inStr)
+    {
+        if(![[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
+            return call(slf, sel, inStr);
+        }
+        
+        NSString* outputDir=inStr;
+        NSString* rootDir=[inStr stringByDeletingLastPathComponent];
+        NSString* defaultDir=[[[NSUserDefaults standardUserDefaults]stringForKey:@"DownloadsPath"]stringByStandardizingPath];
+        if([defaultDir isEqualToString:rootDir]){
+            NSString* fileName=[inStr lastPathComponent];
+            NSString* filteredExpression=[self filteredExpressionForFileName:fileName url:nil];
+            
+            rootDir=[rootDir stringByAppendingPathComponent:filteredExpression];
+            
+            //フォルダ作成
+            BOOL isDirectory;
+            if(![[NSFileManager defaultManager] fileExistsAtPath:rootDir isDirectory:&isDirectory]){
+                isDirectory=[[NSFileManager defaultManager]createDirectoryAtPath:rootDir withIntermediateDirectories:YES attributes:nil error:nil];
+            }
+            
+            if(isDirectory){
+                outputDir=[rootDir stringByAppendingPathComponent:fileName];
+            }else{
+                outputDir=inStr;
+            }
+        }
+        
+        NSString *result=call(slf, sel, outputDir);
+        return result;
+    }_WITHBLOCK;
+    
     
     return self;
 }
+
 
 - (void)modulesDidFinishLoading:(id)core
 {
@@ -117,10 +117,12 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
     }
 }
 
+
 - (void)dealloc
 {
 
 }
+
 
 - (void)prefValue:(NSString*)key changed:(id)value
 {
@@ -160,7 +162,8 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
     }
 }
 
--(NSWindow*)advancedSettingSheet
+
+- (NSWindow*)advancedSettingSheet
 {
     if (!_advSheetCtl) {
         _advSheetCtl=[[STClassifyDownloadAdvSheetCtl alloc]initWithWindowNibName:@"STClassifyDownloadAdvSheet"];
@@ -173,7 +176,7 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 
 #pragma mark - IO
 
--(void)loadFromStorage
+- (void)loadFromStorage
 {
     self.basicExp=[[STCSafariStandCore si]objectForKey:kpClassifyDownloadFolderBasicExpression];
     if (!self.basicExp) {
@@ -195,7 +198,7 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 
 
 //url is not used currently
--(NSString*)expressionForRule:(NSDictionary*)rule fileName:(NSString*)fileName url:(id)url
+- (NSString*)expressionForRule:(NSDictionary*)rule fileName:(NSString*)fileName url:(id)url
 {
     if([[rule objectForKey:@"use"]boolValue]!=YES)return nil;
 
@@ -211,8 +214,9 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
     return result;
 }
 
+
 //url is not used currently
--(NSString*)filteredExpressionForFileName:(NSString*)fileName url:(id)url
+- (NSString*)filteredExpressionForFileName:(NSString*)fileName url:(id)url
 {
     if ([fileName hasSuffix:@".download"])fileName=[fileName stringByDeletingPathExtension];
     NSString* ext=[fileName pathExtension];
@@ -245,7 +249,8 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 
 }
 
--(void)saveToStorage
+
+- (void)saveToStorage
 {
     if(self.basicExp)[[STCSafariStandCore si]setObject:self.basicExp forKey:kpClassifyDownloadFolderBasicExpression];
 
@@ -278,29 +283,23 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        KZRMETHOD_SWIZZLING_
-        (
-         "AppController",
-         "showDownloads:",
-         void, call, sel)
-         ^void (id slf, id sender){
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
-                 [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
-             });
-         }_WITHBLOCK;
+        KZRMETHOD_SWIZZLING_("AppController", "showDownloads:", void, call, sel)
+        ^(id slf, id sender)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
+                [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
+            });
+        }_WITHBLOCK;
         
-        KZRMETHOD_SWIZZLING_
-        (
-         kSafariBrowserWindowControllerCstr,
-         "toggleDownloadsPopover:",
-         void, call, sel)
-         ^void (id slf, id sender){
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
-                 [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
-             });
-         }_WITHBLOCK;
+        KZRMETHOD_SWIZZLING_(kSafariBrowserWindowControllerCstr, "toggleDownloadsPopover:", void, call, sel)
+        ^(id slf, id sender)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                STConsolePanelModule* cp=[STCSafariStandCore mi:@"STConsolePanelModule"];
+                [cp showConsolePanelAndSelectTab:@"DownloadMonitor"];
+            });
+        }_WITHBLOCK;
     });
     
     

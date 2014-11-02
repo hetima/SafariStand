@@ -10,25 +10,30 @@
 #import "STKeyHandlerModule.h"
 
 
-@implementation STKeyHandlerModule
+@implementation STKeyHandlerModule{
+    NSMenuItem* _oneKeyNavigationMenuItem;
+}
 
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
-    if (self) {
-        [self setupOneKeyNavigationMenuItem];
-        BOOL enabled=[[NSUserDefaults standardUserDefaults]boolForKey:kpSwitchTabWithOneKeyEnabled];
-        [self setupTabNavigationMenuItem:enabled];
-        
-        enabled=[[NSUserDefaults standardUserDefaults]boolForKey:kpGoBackForwardByDeleteKeyEnabled];
-        [self setupGoBackForwardMenuItem:enabled];
-        
-        [self observePrefValue:kpSwitchTabWithOneKeyEnabled];
-        [self observePrefValue:kpGoBackForwardByDeleteKeyEnabled];
-
-    }
+    if (!self) return nil;
+    
+    
+    [self setupOneKeyNavigationMenuItem];
+    BOOL enabled=[[NSUserDefaults standardUserDefaults]boolForKey:kpSwitchTabWithOneKeyEnabled];
+    [self setupTabNavigationMenuItem:enabled];
+    
+    enabled=[[NSUserDefaults standardUserDefaults]boolForKey:kpGoBackForwardByDeleteKeyEnabled];
+    [self setupGoBackForwardMenuItem:enabled];
+    
+    [self observePrefValue:kpSwitchTabWithOneKeyEnabled];
+    [self observePrefValue:kpGoBackForwardByDeleteKeyEnabled];
+    
+    
     return self;
 }
+
 
 - (void)prefValue:(NSString*)key changed:(id)value
 {
@@ -45,11 +50,11 @@
 }
 
 
--(void)setupOneKeyNavigationMenuItem
+- (void)setupOneKeyNavigationMenuItem
 {
     NSMenu* subMenu=[[NSMenu alloc]initWithTitle:@"Navigation"];
-    oneKeyNavigationMenuItem=[[NSMenuItem alloc]initWithTitle:@"Navigation" action:nil keyEquivalent:@""];
-    //[oneKeyNavigationMenuItem setHidden:YES];
+    _oneKeyNavigationMenuItem=[[NSMenuItem alloc]initWithTitle:@"Navigation" action:nil keyEquivalent:@""];
+    //[_oneKeyNavigationMenuItem setHidden:YES];
     
     id m;
     m=[subMenu addItemWithTitle:@"selectPreviousTab" action:@selector(selectPreviousTab:) keyEquivalent:@""];
@@ -66,28 +71,30 @@
     [m setKeyEquivalentModifierMask:0];
     [m setTag:kMenuItemTagGoForward];
     
-    [oneKeyNavigationMenuItem setSubmenu:subMenu];
+    [_oneKeyNavigationMenuItem setSubmenu:subMenu];
 
-    [oneKeyNavigationMenuItem setTag:kMenuItemTagOneKeyNavigation];
+    [_oneKeyNavigationMenuItem setTag:kMenuItemTagOneKeyNavigation];
     
     //insert
     NSMenu* standMenu=[STCSafariStandCore si].standMenu;
     id toRemove=[standMenu itemWithTag:kMenuItemTagOneKeyNavigation];
     if(!toRemove){
-        [[STCSafariStandCore si]addItemToStandMenu:oneKeyNavigationMenuItem];
+        [[STCSafariStandCore si]addItemToStandMenu:_oneKeyNavigationMenuItem];
     }
 }
 
--(void)insertOneKeyNavigationMenuItem
+
+- (void)insertOneKeyNavigationMenuItem
 {
     NSMenu* standMenu=[STCSafariStandCore si].standMenu;
     id toRemove=[standMenu itemWithTag:kMenuItemTagOneKeyNavigation];
     if(!toRemove){
-        [[STCSafariStandCore si]addItemToStandMenu:oneKeyNavigationMenuItem];
+        [[STCSafariStandCore si]addItemToStandMenu:_oneKeyNavigationMenuItem];
     }
 }
 
--(void)removeOneKeyNavigationMenuItem
+
+- (void)removeOneKeyNavigationMenuItem
 {
     NSMenu* standMenu=[STCSafariStandCore si].standMenu;
     id toRemove=[standMenu itemWithTag:kMenuItemTagOneKeyNavigation];
@@ -96,23 +103,25 @@
     }
 }
 
--(void)setupTabNavigationMenuItem:(BOOL)enabled
+
+- (void)setupTabNavigationMenuItem:(BOOL)enabled
 {
     NSMenuItem* m;
 
-    m=[[oneKeyNavigationMenuItem submenu]itemWithTag:kMenuItemTagSelectPreviousTab];
+    m=[[_oneKeyNavigationMenuItem submenu]itemWithTag:kMenuItemTagSelectPreviousTab];
     if (m) {
         if (enabled) [m setKeyEquivalent:@","];
         else  [m setKeyEquivalent:@""];
     }
-    m=[[oneKeyNavigationMenuItem submenu]itemWithTag:kMenuItemTagSelectNextTab];
+    m=[[_oneKeyNavigationMenuItem submenu]itemWithTag:kMenuItemTagSelectNextTab];
     if (m) {
         if (enabled) [m setKeyEquivalent:@"."];
         else  [m setKeyEquivalent:@""];
     }
 }
 
--(void)setupGoBackForwardMenuItem:(BOOL)enabled
+
+- (void)setupGoBackForwardMenuItem:(BOOL)enabled
 {
     return; //do nothing
 /*
@@ -126,18 +135,19 @@
         key=@"";
     }
     
-    m=[[oneKeyNavigationMenuItem submenu]itemWithTag:kMenuItemTagGoBack];
+    m=[[_oneKeyNavigationMenuItem submenu]itemWithTag:kMenuItemTagGoBack];
     if (m) {
         [m setKeyEquivalent:key];
     }
-    m=[[oneKeyNavigationMenuItem submenu]itemWithTag:kMenuItemTagGoForward];
+    m=[[_oneKeyNavigationMenuItem submenu]itemWithTag:kMenuItemTagGoForward];
     if (m) {
         [m setKeyEquivalent:key];
         if (enabled) [m setKeyEquivalentModifierMask:NSControlKeyMask];
         else  [m setKeyEquivalentModifierMask:0];
     }
-*/}
+*/
 
+}
 
 
 @end

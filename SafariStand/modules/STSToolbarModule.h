@@ -12,8 +12,8 @@
 - (NSArray*)toolbarIdentifiers;
 
 
--(void)registerToolbarIdentifier:(NSString*)identifier module:(id)obj;
--(id)toolBarItem:(NSString*)identifier label:(NSString*)label view:(NSView*)view;
--(id)simpleToolBarItem:(NSString*)identifier label:(NSString*)label action:(SEL)action iconImage:(NSImage*)iconImage;
+- (void)registerToolbarIdentifier:(NSString*)identifier module:(id)obj;
+- (id)toolBarItem:(NSString*)identifier label:(NSString*)label view:(NSView*)view;
+- (id)simpleToolBarItem:(NSString*)identifier label:(NSString*)label action:(SEL)action iconImage:(NSImage*)iconImage;
 
 @end

@@ -110,6 +110,7 @@ NSString* htWKNSStringFromWKString(WKTypeRef wkStr)
     return keyStr;
 }
 
+
 NSString* htNSStringFromWKURL(WKTypeRef wkURL)
 {
     if(!wkURL || WKGetTypeID(wkURL)!=WKURLGetTypeID())return nil;
@@ -121,12 +122,14 @@ NSString* htNSStringFromWKURL(WKTypeRef wkURL)
     return result;
 }
 
+
 NSData* htNSDataFromWKData(WKTypeRef wkData)
 {
     if(!wkData || WKGetTypeID(wkData)!=WKDataGetTypeID())return nil;
     
     return [NSData dataWithBytes:WKDataGetBytes(wkData) length:WKDataGetSize(wkData)];
 }
+
 
 NSArray* htWKDictionaryAllKeys(void* dic)
 {
@@ -147,6 +150,7 @@ NSArray* htWKDictionaryAllKeys(void* dic)
     return result;
 }
 
+
 WKTypeRef htWKDictionaryTypeRefForKey(void* dic, NSString* key)
 {
     
@@ -156,6 +160,7 @@ WKTypeRef htWKDictionaryTypeRefForKey(void* dic, NSString* key)
 
     return val;
 }
+
 
 //TypeString と TypeURL に対応。TypeURL の場合も NSString を返す
 NSString* htWKDictionaryStringForKey(void* dic, NSString* key)
@@ -174,6 +179,7 @@ NSString* htWKDictionaryStringForKey(void* dic, NSString* key)
     return nil;
 }
 
+
 void htWKGoToURL(id wkView, NSURL* urlToGo)
 {
     if (!urlToGo || !wkView) {
@@ -190,6 +196,7 @@ void htWKGoToURL(id wkView, NSURL* urlToGo)
     WKRelease(urlRef);
     
 }
+
 
 WKPageRef htWKPageRefForWKView(id wkView)
 {

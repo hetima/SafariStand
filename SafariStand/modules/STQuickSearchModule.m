@@ -54,64 +54,63 @@ STQuickSearchModule* quickSearchModule;
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
-    if (self) {
-        quickSearchModule=self;
-        //[self observePrefValue:];
-        //init querySeeds
-        NSMutableArray* qss=[[NSMutableArray alloc]initWithCapacity:8];
-        self.querySeeds=qss;
+    if (!self) return nil;
+    
+    
+    quickSearchModule=self;
+    //[self observePrefValue:];
+    //init querySeeds
+    NSMutableArray* qss=[[NSMutableArray alloc]initWithCapacity:8];
+    self.querySeeds=qss;
+    
 
-
-        // ttp
-        KZRMETHOD_SWIZZLING_
-        (
-         "NSString", "bestURLForUserTypedString",
-         id, call, sel)
-         ^id (id slf)
-        {
-             if([slf hasPrefix:@"ttp://"]){
-                 return [NSURL URLWithString:[@"h" stringByAppendingString:slf]];
-             }
-             id result=call(slf, sel);
-             return result;
-         }_WITHBLOCK;
-
-        
-        NSDictionary* dict=[NSDictionary dictionaryWithObjectsAndKeys:
-                            @"Google",@"title",
-                            @"http://www.google.com/search?client=safari&rls=en&q=%s&ie=UTF-8&oe=UTF-8",@"baseUrl",
-                            @"",@"shortcut",
-                            @"GET",@"method",
-                            //[NSNumber numberWithBool:NO],@"use",
-                            [NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding],@"encoding",
-                            //[NSString stand_UUIDStringWithFormat:@"%@"],@"uuid",
-                            nil];
-        _googleQuerySeed=[[HTQuerySeed alloc]initWithDict:dict];
-        
-        dict=[NSDictionary dictionaryWithObjectsAndKeys:
-                            @"GoogleImage",@"title",
-                            @"http://www.google.com/searchbyimage?image_url=%s",@"baseUrl",
-                            @"",@"shortcut",
-                            @"GET",@"method",
-                            //[NSNumber numberWithBool:NO],@"use",
-                            [NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding],@"encoding",
-                            //[NSString stand_UUIDStringWithFormat:@"%@"],@"uuid",
-                            nil];
-        _googleImageQuerySeed=[[HTQuerySeed alloc]initWithDict:dict];
-        
-        
-        [self loadFromStorage];
-
-        //temp off
-        [self setupCompletionCtl];
-        
-        //Stand Search Menu
-        NSMenuItem* silMenuItem=[[NSMenuItem alloc]initWithTitle:@"Stand Search" action:@selector(showStandSearchWindow:) keyEquivalent:@""];
-        [core addItemToStandMenu:silMenuItem];
-
-        [core registerToolbarIdentifier:STQSToolbarIdentifier module:self];
-
-    }
+    // ttp
+    KZRMETHOD_SWIZZLING_("NSString", "bestURLForUserTypedString", id, call, sel)
+    ^id (id slf)
+    {
+        if([slf hasPrefix:@"ttp://"]){
+            return [NSURL URLWithString:[@"h" stringByAppendingString:slf]];
+        }
+        id result=call(slf, sel);
+        return result;
+    }_WITHBLOCK;
+    
+    
+    NSDictionary* dict=[NSDictionary dictionaryWithObjectsAndKeys:
+                        @"Google",@"title",
+                        @"http://www.google.com/search?client=safari&rls=en&q=%s&ie=UTF-8&oe=UTF-8",@"baseUrl",
+                        @"",@"shortcut",
+                        @"GET",@"method",
+                        //[NSNumber numberWithBool:NO],@"use",
+                        [NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding],@"encoding",
+                        //[NSString stand_UUIDStringWithFormat:@"%@"],@"uuid",
+                        nil];
+    _googleQuerySeed=[[HTQuerySeed alloc]initWithDict:dict];
+    
+    dict=[NSDictionary dictionaryWithObjectsAndKeys:
+          @"GoogleImage",@"title",
+          @"http://www.google.com/searchbyimage?image_url=%s",@"baseUrl",
+          @"",@"shortcut",
+          @"GET",@"method",
+          //[NSNumber numberWithBool:NO],@"use",
+          [NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding],@"encoding",
+          //[NSString stand_UUIDStringWithFormat:@"%@"],@"uuid",
+          nil];
+    _googleImageQuerySeed=[[HTQuerySeed alloc]initWithDict:dict];
+    
+    
+    [self loadFromStorage];
+    
+    //temp off
+    [self setupCompletionCtl];
+    
+    //Stand Search Menu
+    NSMenuItem* silMenuItem=[[NSMenuItem alloc]initWithTitle:@"Stand Search" action:@selector(showStandSearchWindow:) keyEquivalent:@""];
+    [core addItemToStandMenu:silMenuItem];
+    
+    [core registerToolbarIdentifier:STQSToolbarIdentifier module:self];
+    
+    
     return self;
 }
 

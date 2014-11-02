@@ -29,13 +29,13 @@
 }
 
 
--(id)delegate
+- (id)delegate
 {
 	return delegate;
 }
 
 
--(NSTableView*)tableView
+- (NSTableView*)tableView
 {
 	return oTableView;
 }
@@ -106,7 +106,6 @@
 }
 
 
-
 - (NSInteger)acceptDrop:(id <NSDraggingInfo>)info toIndex:(NSInteger)row
 {
     NSInteger droppedIndex=-1;
@@ -136,6 +135,7 @@
     return droppedIndex;
 }
 
+
 - (BOOL)tableView:(NSTableView*)tableView acceptDrop:(id <NSDraggingInfo>)info row:(int)row dropOperation:(NSTableViewDropOperation)operation
 {
     NSInteger droppedIndex=[self acceptDrop:info toIndex:row];
@@ -146,6 +146,7 @@
 
     return YES;
 }
+
 
 - (BOOL)collectionView:(NSCollectionView *)collectionView acceptDrop:(id < NSDraggingInfo >)draggingInfo index:(NSInteger)index dropOperation:(NSCollectionViewDropOperation)dropOperation
 {
@@ -162,4 +163,6 @@
     return YES;
 
 }
+
+
 @end

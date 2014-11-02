@@ -12,7 +12,7 @@
 
 @implementation NSString (NSString_HTUtil)
 
-+(NSString*)stand_UUIDStringWithFormat:(NSString*)ptn
++ (NSString*)stand_UUIDStringWithFormat:(NSString*)ptn
 {
     // Create CFUUID
     CFUUIDRef   uuid=CFUUIDCreate(NULL);
@@ -27,7 +27,8 @@
     
 }
 
--(NSString*)stand_scapeWithEncoding:(NSStringEncoding)enco
+
+- (NSString*)stand_scapeWithEncoding:(NSStringEncoding)enco
 {
     CFStringRef cfString=CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                             (CFStringRef)self,
@@ -39,7 +40,7 @@
 }
 
 
--(NSArray*)stand_arrayWithStandardSeparation
+- (NSArray*)stand_arrayWithStandardSeparation
 {
     if ([self length]==0)return nil;
     NSArray* ary=[self componentsSeparatedByString:@","];
@@ -55,7 +56,8 @@
     return result;
 }
 
--(NSString*)stand_moderatedStringWithin:(NSInteger)max
+
+- (NSString*)stand_moderatedStringWithin:(NSInteger)max
 {
     NSString* result=nil;
     if ([self length]<1024*8) {
@@ -71,6 +73,7 @@
     
     return result;
 }
+
 
 + (NSString *)stand_fileSizeStringFromSize:(uint64_t)siz
 {
@@ -88,6 +91,7 @@
     return([NSString stringWithFormat:@"%1.1f GB",floatSize]);
 }
 
+
 + (NSString *)stand_verboseFileSizeStringFromSize:(uint64_t)siz
 {
     NSString* shortStr=[NSString stand_fileSizeStringFromSize:siz];
@@ -100,6 +104,7 @@
     NSString* result=[NSString stringWithFormat:@"%@ (%@ bytes)",shortStr,longStr];
     return result;
 }
+
 
 - (NSURL*)stand_httpOrFileURL
 {

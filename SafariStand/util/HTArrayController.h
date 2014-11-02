@@ -12,8 +12,8 @@
     IBOutlet NSCollectionView* oCollectionView;
     NSString*   _pasteboardType;
 }
-- (void)add:(id)sender;
--(id)delegate;
 
+- (void)add:(id)sender;
+- (id)delegate;
 
 @end

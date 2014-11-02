@@ -11,7 +11,7 @@
 
 @implementation HTQuerySeed
 
-+(id)querySeed
++ (id)querySeed
 {
     NSDictionary* dict=[NSDictionary dictionaryWithObjectsAndKeys:
                         @"NewSearch",@"title",
@@ -32,23 +32,24 @@
 - (id)initWithDict:(NSDictionary*)dic
 {
     self = [super init];
-    if (self) {
-        // Initialization code here.
-        self.title=[dic objectForKey:@"title"];
-        self.baseUrl=[dic objectForKey:@"baseUrl"];
-        self.shortcut=[dic objectForKey:@"shortcut"];
-        self.encoding=[dic objectForKey:@"encoding"];
-        self.method=[dic objectForKey:@"method"]; if(!_method)self.method=@"GET";
-        self.posts=[[dic objectForKey:@"posts"]mutableCopy]; if(!_posts)self.posts=[NSMutableArray array];
-        self.use=[dic objectForKey:@"use"]; if(!_use)self.use=[NSNumber numberWithBool:YES];
-        self.uuid=[dic objectForKey:@"uuid"]; if(!_uuid)self.uuid=[NSString stand_UUIDStringWithFormat:@"%@"];
-        self.referrer=[dic objectForKey:@"referrer"]; if(!_referrer)self.referrer=@"";
-    }
+    if (!self) return nil;
+    
+    
+    self.title=[dic objectForKey:@"title"];
+    self.baseUrl=[dic objectForKey:@"baseUrl"];
+    self.shortcut=[dic objectForKey:@"shortcut"];
+    self.encoding=[dic objectForKey:@"encoding"];
+    self.method=[dic objectForKey:@"method"]; if(!_method)self.method=@"GET";
+    self.posts=[[dic objectForKey:@"posts"]mutableCopy]; if(!_posts)self.posts=[NSMutableArray array];
+    self.use=[dic objectForKey:@"use"]; if(!_use)self.use=[NSNumber numberWithBool:YES];
+    self.uuid=[dic objectForKey:@"uuid"]; if(!_uuid)self.uuid=[NSString stand_UUIDStringWithFormat:@"%@"];
+    self.referrer=[dic objectForKey:@"referrer"]; if(!_referrer)self.referrer=@"";
+    
     
     return self;
 }
 
--(NSDictionary*)dictionaryData
+- (NSDictionary*)dictionaryData
 {
     if(!_title)self.title=@"";
     if(!_baseUrl)self.baseUrl=@"";
@@ -74,18 +75,21 @@
     return result;
 }
 
+
 - (void)dealloc
 {
 
 }
 
--(BOOL)shouldHiddenPostEdit
+
+- (BOOL)shouldHiddenPostEdit
 {
     if([self.method isEqualToString:@"POST"])return NO;
     return YES;
 }
 
--(NSURLRequest*)requestWithLocationString:(NSString*)inStr
+
+- (NSURLRequest*)requestWithLocationString:(NSString*)inStr
 {
     NSString* serachStr=nil;
     
@@ -96,7 +100,8 @@
     return [self requestWithSearchString:serachStr];
 }
 
--(NSURLRequest*)requestWithSearchString:(NSString*)inStr
+
+- (NSURLRequest*)requestWithSearchString:(NSString*)inStr
 {
     if([self.baseUrl hasPrefix:@"quicksearch:"])return nil;
     NSStringEncoding enco=[self.encoding integerValue];

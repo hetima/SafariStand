@@ -19,7 +19,7 @@
 
 @implementation STQuickSearchModule (STQuickSearchModule_SearchItLater)
 
--(void)installSearchItLaterViewToConsolePanel
+- (void)installSearchItLaterViewToConsolePanel
 {
     STConsolePanelModule* consolePanelModule=[STCSafariStandCore mi:@"STConsolePanelModule"];
     NSImage* img=[NSImage imageNamed:NSImageNameRevealFreestandingTemplate];
@@ -31,7 +31,7 @@
 }
 
 
--(NSMutableDictionary*)existingSearchItLaterForString:(NSString*)str
+- (NSMutableDictionary*)existingSearchItLaterForString:(NSString*)str
 {
     for (NSMutableDictionary* sil in self.searchItLaterStrings) {
         NSString* val=[sil objectForKey:@"val"];
@@ -41,7 +41,7 @@
 }
 
 
--(NSMutableDictionary*)searchItLaterForString:(NSString*)str
+- (NSMutableDictionary*)searchItLaterForString:(NSString*)str
 {
     NSMutableDictionary* sil=[self existingSearchItLaterForString:str];
     if(!sil){
@@ -50,7 +50,8 @@
     return sil;
 }
 
--(void)actAddSearchItLaterMenu:(id)sender
+
+- (void)actAddSearchItLaterMenu:(id)sender
 {
     NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
     NSString* selectedText=[[pb stringForType:NSStringPboardType]stand_moderatedStringWithin:0];
@@ -58,7 +59,8 @@
     if(selectedText)[self searchItLaterForString:selectedText];
 }
 
--(void)actAddSearchItLaterWithFlagMenu:(id)sender
+
+- (void)actAddSearchItLaterWithFlagMenu:(id)sender
 {
     NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
     NSString* selectedText=[[pb stringForType:NSStringPboardType]stand_moderatedStringWithin:0];
@@ -70,7 +72,7 @@
 }
 
 
--(NSMutableDictionary*)addSearchItLaterString:(NSString*)inStr
+- (NSMutableDictionary*)addSearchItLaterString:(NSString*)inStr
 {
     NSDate* now=[NSDate date];
     NSNumber* count=[NSNumber numberWithInteger:0];
@@ -89,7 +91,8 @@
     return dic;
 }
 
--(void)removeSearchItLaterString:(NSString*)inStr
+
+- (void)removeSearchItLaterString:(NSString*)inStr
 {
     NSMutableDictionary* dic=[self existingSearchItLaterForString:inStr];
     if(dic){
@@ -101,3 +104,4 @@
 }
 
 @end
+

@@ -32,12 +32,15 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Initialization code here.
-        ((STStandSearchView*)[self view]).ctl=nil;
-        
-        mode=SSModeHistorySearch;
-    }
+    if (!self) return nil;
+    
+    
+    // Initialization code here.
+    ((STStandSearchView*)[self view]).ctl=nil;
+    
+    mode=SSModeHistorySearch;
+    
+    
     return self;
 }
 
@@ -67,7 +70,6 @@
 {
 
 }
-
 
 
 -(void)standMetaDataTreeUpdate:(STMetadataQueryCtl*)ctl
@@ -202,6 +204,7 @@
 	return YES;
 }
 
+
 //インクリメンタルサーチ
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
@@ -216,13 +219,13 @@
 }
 
 
-
--(void)focusToOutlineView
+- (void)focusToOutlineView
 {
 	[[self.oOutline window] makeFirstResponder:self.oOutline];
 }
 
--(void)focusToSearchField
+
+- (void)focusToSearchField
 {
 	[self.searchField selectText:self];
 }
@@ -258,6 +261,7 @@
     return nil;
 }
 
+
 // isItemExpandable
 - (BOOL)outlineView:(NSOutlineView*)outlineView isItemExpandable:(id)item
 {
@@ -265,6 +269,7 @@
     //if(item==historySearch || item==bookmarksSearch)return YES;
     return NO;
 }
+
 
 // item count
 - (NSInteger)outlineView:(NSOutlineView*)outlineView numberOfChildrenOfItem:(id)item
@@ -278,6 +283,7 @@
 
     return 0;
 }
+
 
 // item value
 - (id)outlineView:(NSOutlineView*)outlineView objectValueForTableColumn:(NSTableColumn*)column byItem:(id)item
@@ -302,6 +308,7 @@
 {
 	[self updateStatusViewForceShowCount:NO];
 }
+
 
 - (NSMenu*)menuForOutlineView:(id)outlineView
 {
@@ -353,6 +360,7 @@
 
 }
 
+
 -(NSString*)selectedURLStringNeedsEncode:(BOOL)needEncode
 {
     NSString *url=nil;
@@ -374,6 +382,7 @@
     [self.oOutline deselectAll:self];
     [self.oOutline scrollToBeginningOfDocument:self];
 }
+
 
 - (IBAction)actCopyFromTable:(id)sender;
 {
@@ -411,20 +420,24 @@
 	return nil;
 }
 
+
 - (void)awakeFromNib
 {
 	[self setDoubleAction:@selector(tableDoubleClicked)];
 }
+
 
 - (void)dealloc
 {
 
 }
 
+
 - (void)tableDoubleClicked{
 	if([[self delegate]respondsToSelector:@selector(actJump:)])
 		[((STStandSearchViewCtl*)[self delegate])actJump:self];
 }
+
 
 - (void)keyDown:(NSEvent *)theEvent
 {
@@ -439,6 +452,7 @@
 	[super keyDown:theEvent];
 }
 
+
 - (BOOL)performKeyEquivalent:(NSEvent *)theEvent
 {
 	if([theEvent type]==NSKeyDown){
@@ -452,6 +466,7 @@
 	}
 	return [super performKeyEquivalent:theEvent];
 }
+
 
 - (NSMenu *)menuForEvent:(NSEvent *)theEvent
 {
@@ -492,3 +507,4 @@
 
 
 @end
+

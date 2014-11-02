@@ -12,25 +12,24 @@
 
 @property(nonatomic,readonly)NSMenu *standMenu;
 
-@property(nonatomic, strong, readonly)NSString* revision;
-@property (nonatomic,retain)NSString* currentVersionString;
-@property (nonatomic,retain)NSString* latestVersionString;
-@property (nonatomic,assign)BOOL missMatchAlertShown;
+@property(nonatomic, strong, readonly) NSString* revision;
+@property(nonatomic,retain) NSString* currentVersionString;
+@property(nonatomic,retain) NSString* latestVersionString;
+@property(nonatomic,assign) BOOL missMatchAlertShown;
 
 + (STCSafariStandCore *)si;
 + (id)mi:(NSString*)moduleClassName;
 + (NSString *)standLibraryPath:(NSString*)subPath;
 
--(void)startup;
+- (void)startup;
 
--(id)registerModule:(NSString*)aClassName;
--(id)moduleForClassName:(NSString*)name;
--(void)sendMessage:(SEL)selector toAllModule:(id)sender;
+- (id)registerModule:(NSString*)aClassName;
+- (id)moduleForClassName:(NSString*)name;
+- (void)sendMessage:(SEL)selector toAllModule:(id)sender;
 
 
--(void)setupStandMenu;
--(void)addItemToStandMenu:(NSMenuItem*)itm;
-
+- (void)setupStandMenu;
+- (void)addItemToStandMenu:(NSMenuItem*)itm;
 
 @end
 
@@ -38,7 +37,8 @@
 
 @interface STCSafariStandCore (STCSafariStandCore_Toolbar)
 
--(void)registerToolbarIdentifier:(NSString*)identifier module:(id)obj;
+- (void)registerToolbarIdentifier:(NSString*)identifier module:(id)obj;
+
 @end
 
 
@@ -51,9 +51,9 @@
 - (void)setBool:(BOOL)value forKey:(NSString*)key;
 - (BOOL)synchronize;
 
--(id)makeMutablePlistCopy:(id)plist;
--(NSMutableArray*)makeMutableArrayCopy:(NSArray*)array;
--(NSMutableDictionary*)makeMutableDictionaryCopy:(NSDictionary*)dict;
+- (id)makeMutablePlistCopy:(id)plist;
+- (NSMutableArray*)makeMutableArrayCopy:(NSArray*)array;
+- (NSMutableDictionary*)makeMutableDictionaryCopy:(NSDictionary*)dict;
 
 
 @end

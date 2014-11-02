@@ -18,7 +18,7 @@
 @end
 
 @interface STQSToolbarSearchBtnCell : NSButtonCell
-{
-    NSSize _titleSize;
-}
+
+
 @end
+

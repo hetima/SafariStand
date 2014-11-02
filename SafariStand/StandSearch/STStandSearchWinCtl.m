@@ -34,12 +34,12 @@ STStandSearchWinCtl* sharedStandSearchWinCtl;
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
-    if (self) {
-        // Initialization code here.
-    }
+    if (!self) return nil;
+    
     
     return self;
 }
+
 
 - (void)windowDidLoad
 {
@@ -61,6 +61,7 @@ STStandSearchWinCtl* sharedStandSearchWinCtl;
     //[[self window] setContentBorderThickness:30.5 forEdge:NSMinYEdge];
 
 }
+
 
 - (void)windowWillClose:(NSNotification *)aNotification
 {

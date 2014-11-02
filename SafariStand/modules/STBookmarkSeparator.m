@@ -17,75 +17,73 @@
 @implementation STBookmarkSeparator
 
 
--(id)initWithStand:(id)core
+- (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
-    if (self) {
+    if (!self) return nil;
+    
+    KZRMETHOD_SWIZZLING_(STSafariBookmarksControllerClass(),
+                         "addMenuItemForBookmark:withTabPlacementHint:toMenu:",
+                         id, call, sel)
+    ^id (id slf, id bookmark, void* tabLocation, id menu)
+    {
+        id returnValue=nil;
+        static STBookmarkSeparator* bookmarkSeparator;
+        if(!bookmarkSeparator)bookmarkSeparator=[STCSafariStandCore mi:@"STBookmarkSeparator"];
         
-        KZRMETHOD_SWIZZLING_
-        (STSafariBookmarksControllerClass(),
-         "addMenuItemForBookmark:withTabPlacementHint:toMenu:",
-         id, call, sel)
-         ^id (id slf, id bookmark, void* tabLocation, id menu)
-        {
-             id returnValue=nil;
-             static STBookmarkSeparator* bookmarkSeparator;
-             if(!bookmarkSeparator)bookmarkSeparator=[STCSafariStandCore mi:@"STBookmarkSeparator"];
-             
-             returnValue=[bookmarkSeparator menuItemForBookmarkLeaf:bookmark];
-             if(returnValue){
-                 [menu addItem:returnValue];
-                 return returnValue;
-             }
-             
-             returnValue=call(slf, sel, bookmark, tabLocation, menu);
-             
-             return returnValue;
-         }_WITHBLOCK;
+        returnValue=[bookmarkSeparator menuItemForBookmarkLeaf:bookmark];
+        if(returnValue){
+            [menu addItem:returnValue];
+            return returnValue;
+        }
+        
+        returnValue=call(slf, sel, bookmark, tabLocation, menu);
+        
+        return returnValue;
+    }_WITHBLOCK;
 
         //bookmark追加ポップアップメニューに区切り線フォルダを表示しない not works in Safari 8
         //-(id)[NewBookmarksController _addBookmarkFolder:toMenu:]
-
-/*        KZRMETHOD_SWIZZLING_
-        ("NewBookmarksController", "_addBookmarkFolder:toMenu:", id, call, sel)
-         ^id (id slf, id bookmark, id menu)
-        {
-             NSString* title=STSafariWebBookmarkTitle(bookmark);
-             if ([title hasPrefix:kSeparatorStr]) {
-                 return nil;
-             }
-             
-             id result=call(slf, sel, bookmark, menu);
-             return result;
-         }_WITHBLOCK;
-*/
-        
-        
-        
-        //SidebarBookmarkIcon
-        KZRMETHOD_ADDING_
-        ("BookmarksSidebarTableCellView", "NSTableCellView", "setObjectValue:", void, call_super, sel)
-         ^void (NSTableCellView* slf, id value){
-             call_super(slf, sel, value);
-             if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnSidebarBookmarkEnabled]) {
-                 NSImage* icon=nil;
-                 if ([value respondsToSelector:@selector(icon)]) {
-                     icon=objc_msgSend(value, @selector(icon));
-                 }
-                 if (icon) {
-                     NSImageView* imageView=[slf imageView];
-                     [imageView setImage:icon];
-                 }
-             }
-
-         }_WITHBLOCK_ADD;
-        
-        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnSidebarBookmarkEnabled]) {
-            [self updateSidebarBookmarkIcon];
+/*
+    KZRMETHOD_SWIZZLING_("NewBookmarksController", "_addBookmarkFolder:toMenu:", id, call, sel)
+    ^id (id slf, id bookmark, id menu)
+    {
+        NSString* title=STSafariWebBookmarkTitle(bookmark);
+        if ([title hasPrefix:kSeparatorStr]) {
+            return nil;
         }
-        [self observePrefValue:kpShowIconOnSidebarBookmarkEnabled];
-
+        
+        id result=call(slf, sel, bookmark, menu);
+        return result;
+    }_WITHBLOCK;
+*/
+    
+    
+    //SidebarBookmarkIcon
+    KZRMETHOD_ADDING_
+    ("BookmarksSidebarTableCellView", "NSTableCellView", "setObjectValue:",
+                      void, call_super, sel)
+    ^void (NSTableCellView* slf, id value){
+        call_super(slf, sel, value);
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnSidebarBookmarkEnabled]) {
+            NSImage* icon=nil;
+            if ([value respondsToSelector:@selector(icon)]) {
+                icon=objc_msgSend(value, @selector(icon));
+            }
+            if (icon) {
+                NSImageView* imageView=[slf imageView];
+                [imageView setImage:icon];
+            }
+        }
+        
+    }_WITHBLOCK_ADD;
+    
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnSidebarBookmarkEnabled]) {
+        [self updateSidebarBookmarkIcon];
     }
+    [self observePrefValue:kpShowIconOnSidebarBookmarkEnabled];
+    
+
     
     return self;
 }
@@ -102,7 +100,7 @@
 #pragma mark - BookmarkSeparator
 
 //セパレータにする
--(NSMenuItem*)menuItemForBookmarkLeaf:(id)bookmarkLeaf
+- (NSMenuItem*)menuItemForBookmarkLeaf:(id)bookmarkLeaf
 {
 	id returnValue=nil;
     
@@ -140,7 +138,7 @@
 
 #pragma mark - SidebarBookmarkIcon
 
--(void)_recursiveUpdateSidebarBookmarkIcon:(NSView*)v
+- (void)_recursiveUpdateSidebarBookmarkIcon:(NSView*)v
 {
 
     if([v isKindOfClass:NSClassFromString(@"BookmarksOutlineView")]) {

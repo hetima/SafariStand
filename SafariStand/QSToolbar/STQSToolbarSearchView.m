@@ -14,7 +14,9 @@
 #define kSearchButtonMaxWidth 100
 #define kSearchButtonMargin 8
 
-@implementation STQSToolbarSearchBtnCell
+@implementation STQSToolbarSearchBtnCell{
+    NSSize _titleSize;
+}
 
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
@@ -29,12 +31,14 @@
     [super drawInteriorWithFrame:drawRect inView:controlView];
 }
 
+
 - (NSSize)cellSize
 {
     return _titleSize;
 }
 
--(void)setTitle:(NSString *)aString
+
+- (void)setTitle:(NSString *)aString
 {
     [super setTitle:aString];
     
@@ -120,7 +124,7 @@
 
 
 
-+(void)load
++ (void)load
 {
 //    [self setCellClass:[STQSToolbarSearchCell class]];
 }
@@ -128,33 +132,33 @@
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code here.
-        [self setAutoresizesSubviews:YES];
-        self.originalSearchBtn=[[self cell]searchButtonCell];
-        
-        STQSToolbarSearchBtnCell* btnCell=[[STQSToolbarSearchBtnCell alloc]init];
-        [btnCell setBezelStyle:NSRoundRectBezelStyle];
-        [btnCell setBordered:NO];
-        [btnCell setLineBreakMode:NSLineBreakByTruncatingTail];
-        [btnCell setFont:[NSFont systemFontOfSize:10.0]];
-        [btnCell setFocusRingType:NSFocusRingTypeNone];
-        [[self cell] setSearchButtonCell:btnCell];
-        [btnCell setAction:@selector(actToolbarSearchBtnClick:)];
-        [btnCell setTarget:self];
-        
-        
-        [[self cell]setScrollable:YES];
-        //[self setFont:[NSFont systemFontOfSize:12.0]];
-        
-        //reset title
-        [self setCurrentSeed:nil];
-        
-        [self setDelegate:self];
-        //[self setAction:@selector(actToolbarSearch:)];
-        [[self cell]setSendsSearchStringImmediately:NO];
-
-    }
+    if (!self) return nil;
+    
+    
+    [self setAutoresizesSubviews:YES];
+    self.originalSearchBtn=[[self cell]searchButtonCell];
+    
+    STQSToolbarSearchBtnCell* btnCell=[[STQSToolbarSearchBtnCell alloc]init];
+    [btnCell setBezelStyle:NSRoundRectBezelStyle];
+    [btnCell setBordered:NO];
+    [btnCell setLineBreakMode:NSLineBreakByTruncatingTail];
+    [btnCell setFont:[NSFont systemFontOfSize:10.0]];
+    [btnCell setFocusRingType:NSFocusRingTypeNone];
+    [[self cell] setSearchButtonCell:btnCell];
+    [btnCell setAction:@selector(actToolbarSearchBtnClick:)];
+    [btnCell setTarget:self];
+    
+    
+    [[self cell]setScrollable:YES];
+    //[self setFont:[NSFont systemFontOfSize:12.0]];
+    
+    //reset title
+    [self setCurrentSeed:nil];
+    
+    [self setDelegate:self];
+    //[self setAction:@selector(actToolbarSearch:)];
+    [[self cell]setSendsSearchStringImmediately:NO];
+    
     
     return self;
 }
@@ -180,7 +184,8 @@
     
 }
 
--(IBAction)actToolbarSearch:(id)sender
+
+- (IBAction)actToolbarSearch:(id)sender
 {
     HTQuerySeed* seed=self.currentQS;
     NSString* searchText=[self stringValue];
@@ -197,12 +202,11 @@
     
 }
 
--(IBAction)actToolbarSearchBtnClick:(id)sender
+
+- (IBAction)actToolbarSearchBtnClick:(id)sender
 {
     //reset to default
     self.currentQS=nil;
-    
-    
 }
 
 
@@ -242,6 +246,7 @@
     
 }
 
+
 - (BOOL)performKeyEquivalent:(NSEvent *)theEvent
 {
 	if([theEvent type]==NSKeyDown){
@@ -253,6 +258,7 @@
 	}
 	return [super performKeyEquivalent:theEvent];
 }
+
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)command
 {
@@ -273,10 +279,8 @@
         }
         
     }
-
-    
-    
     return NO;
 }
+
 
 @end

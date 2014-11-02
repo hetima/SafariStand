@@ -35,11 +35,15 @@ static HTWindowControllerRetainer *sharedInstance;
 - (id)init
 {
     self = [super init];
-    if (self) {
-        self.windowControllers=[[NSMutableArray alloc]init];
-    }
+    if (!self) return nil;
+    
+    
+    self.windowControllers=[[NSMutableArray alloc]init];
+    
+    
     return self;
 }
+
 
 - (void)windowWillClose:(NSNotification *)aNotification
 {

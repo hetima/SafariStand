@@ -7,7 +7,7 @@
 
 @interface STSquashContextMenuSheetCtl : NSWindowController
 
-@property (nonatomic, retain)NSMutableArray* menuItemDefs;
+@property (nonatomic, retain) NSMutableArray* menuItemDefs;
 
 - (IBAction)actSheetDone:(id)sender;
 

@@ -27,27 +27,32 @@
  - (BOOL)synchronize;
  */
 
--(id)initWithStand:(STCSafariStandCore*)core
+- (id)initWithStand:(STCSafariStandCore*)core
 {
     self = [super initWithStand:core];
-    if (self) { 
-        //SafariStand Setting
-        NSMenu *standMenu=core.standMenu;
-        [standMenu addItem:[NSMenuItem separatorItem]];
-        id m=[standMenu addItemWithTitle:@"SafariStand Setting..." action:@selector(actShowPrefWindow:) keyEquivalent:@","];
-        [m setKeyEquivalentModifierMask:NSCommandKeyMask|NSAlternateKeyMask];
-        [m setTarget:self];
-        [m setTag:kMenuItemTagSafariStandSetting];
-    }
+    if (!self) return nil;
+    
+    
+    //SafariStand Setting
+    NSMenu *standMenu=core.standMenu;
+    [standMenu addItem:[NSMenuItem separatorItem]];
+    id m=[standMenu addItemWithTitle:@"SafariStand Setting..." action:@selector(actShowPrefWindow:) keyEquivalent:@","];
+    [m setKeyEquivalentModifierMask:NSCommandKeyMask|NSAlternateKeyMask];
+    [m setTarget:self];
+    [m setTag:kMenuItemTagSafariStandSetting];
+    
+    
     return self;
 }
+
 
 - (void)dealloc
 {
 
 }
 
--(IBAction)actShowPrefWindow:(id)sender
+
+- (IBAction)actShowPrefWindow:(id)sender
 {
     if(!_prefWinCtl){
         _prefWinCtl=[[STPrefWindowCtl alloc]initWithWindowNibName:@"STCPrefWin"];
@@ -58,7 +63,7 @@
 }
 
 
--(void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon
+- (void)addPane:(NSView*)view withIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon
 {
     [_prefWinCtl addPane:view withIdentifier:identifier title:title icon:icon];
 }
@@ -72,21 +77,23 @@
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
-    if (self) {
-
-        self.currentVersionString=[[STCSafariStandCore si]currentVersionString];
-        self.latestVersionString=[[STCSafariStandCore si]latestVersionString];
-        
-        //other plugin support
-        self.otherDefaults=nil;
-        id sudc=[NSUserDefaultsController sharedUserDefaultsController];
-        id dflts=[sudc defaults];
-        //NSUserDefaults or SCUserDefaults
-        if (![[dflts className]isEqualToString:@"NSUserDefaults"] && [sudc respondsToSelector:@selector(_setDefaults:)]) {
-            self.otherDefaults=dflts;
-            LOG(@"sharedUserDefaultsController %@", [self.otherDefaults className]);
-        }
+    if (!self) return nil;
+    
+    
+    self.currentVersionString=[[STCSafariStandCore si]currentVersionString];
+    self.latestVersionString=[[STCSafariStandCore si]latestVersionString];
+    
+    //other plugin support
+    self.otherDefaults=nil;
+    id sudc=[NSUserDefaultsController sharedUserDefaultsController];
+    id dflts=[sudc defaults];
+    //NSUserDefaults or SCUserDefaults
+    if (![[dflts className]isEqualToString:@"NSUserDefaults"] && [sudc respondsToSelector:@selector(_setDefaults:)]) {
+        self.otherDefaults=dflts;
+        LOG(@"sharedUserDefaultsController %@", [self.otherDefaults className]);
     }
+    
+    
     return self;
 }
 

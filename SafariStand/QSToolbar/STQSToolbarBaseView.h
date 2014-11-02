@@ -11,8 +11,9 @@
 @class STQuickSearchModule, STQSToolbarSearchView;
 
 @interface STQSToolbarBaseView : NSView
-@property(nonatomic, assign) STQSToolbarSearchView* rightView;
+@property (nonatomic, assign) STQSToolbarSearchView* rightView;
 
 - (id)initWithQuickSearch:(STQuickSearchModule*)qs;
 
 @end
+

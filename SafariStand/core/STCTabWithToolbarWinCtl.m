@@ -16,9 +16,10 @@
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
-    if (self) {
-        _identifiers=[[NSMutableArray alloc]initWithCapacity:4];
-    }
+    if (!self) return nil;
+    
+    _identifiers=[[NSMutableArray alloc]initWithCapacity:4];
+
     return self;
 }
 

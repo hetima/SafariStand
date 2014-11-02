@@ -35,16 +35,19 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
-        self.viewIdentifier=@"bottomGroup";
-        
-        self.groupRow=NO;
-        self.image=nil;
-        self.title=@"";
-        
-    }
+    if (!self) return nil;
+    
+    
+    self.viewIdentifier=@"bottomGroup";
+    
+    self.groupRow=NO;
+    self.image=nil;
+    self.title=@"";
+    
+    
     return self;
 }
+
 
 //pretend to STTabProxy
 - (BOOL)isSelected
@@ -60,22 +63,23 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
-        //self.viewIdentifier=@"windowGroup";
-        
-        static NSImage* windowGroupItemImage;
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            windowGroupItemImage=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]imageForResource:@"STTLWindowIcon"];
-            [windowGroupItemImage setTemplate:YES];
-        });
-        
-        self.image=windowGroupItemImage;
-        // ウインドウタイトルの変更監視するのめんどいし、選択してるタブと同じ名前だから省略
-        // ウインドウの幅とか表示するのがいいかもしれない。変更監視（ｒｙ
-        self.title=@"";
-
-    }
+    if (!self) return nil;
+    
+    
+    //self.viewIdentifier=@"windowGroup";
+    static NSImage* windowGroupItemImage;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        windowGroupItemImage=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]imageForResource:@"STTLWindowIcon"];
+        [windowGroupItemImage setTemplate:YES];
+    });
+    
+    self.image=windowGroupItemImage;
+    // ウインドウタイトルの変更監視するのめんどいし、選択してるタブと同じ名前だから省略
+    // ウインドウの幅とか表示するのがいいかもしれない。変更監視（ｒｙ
+    self.title=@"";
+    
+    
     return self;
 }
 

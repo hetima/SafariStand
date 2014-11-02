@@ -17,13 +17,12 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Initialization code here.
-
-    }
+    if (!self) return nil;
+    
     
     return self;
 }
+
 
 - (void)dealloc
 {
@@ -31,10 +30,11 @@
 }
 
 
--(void)setQuerySeeds:(NSMutableArray *)qss
+- (void)setQuerySeeds:(NSMutableArray *)qss
 {
     [self.querySeedsBinder setQuerySeeds:qss];
 }
+
 
 -(NSMutableArray*)querySeeds
 {
@@ -42,14 +42,15 @@
 }
 
 
--(id)defaultObjecOfHTArrayController:(id)aryCtl
+- (id)defaultObjecOfHTArrayController:(id)aryCtl
 {
     if(aryCtl==querySeedsArrayCtl) return [HTQuerySeed querySeed];
     if(aryCtl==postsArrayCtl) return [NSMutableDictionary dictionaryWithObjectsAndKeys:@"key",@"key",@"value",@"val", nil];
     return nil;
 }
 
--(void)setupAddPopup:(NSArray*)defaultItems
+
+- (void)setupAddPopup:(NSArray*)defaultItems
 {
     NSMenu* menu=[self.addPopupBtn menu];
     for (NSDictionary* dict in defaultItems) {
@@ -60,7 +61,8 @@
     }
 }
 
--(IBAction)actQuerySeedPresetMenu:(id)sender
+
+- (IBAction)actQuerySeedPresetMenu:(id)sender
 {
     NSDictionary* dic=[sender representedObject];
     HTQuerySeed* seed=[[HTQuerySeed alloc]initWithDict:dic];

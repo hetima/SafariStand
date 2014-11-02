@@ -73,6 +73,7 @@ NSString* HTMD5StringFromString(NSString* inStr)
                 digest[14], digest[15]];
 }
 
+
 NSColor* HTColorFromHTMLString(NSString *inStr)
 {
     NSColor* result=nil;
@@ -106,6 +107,7 @@ NSColor* HTColorFromHTMLString(NSString *inStr)
     return result;
 }
 
+
 NSData* HTPNGDataRepresentation(NSImage* image)
 {
     NSBitmapImageRep *rep = [NSBitmapImageRep imageRepWithData:[image TIFFRepresentation]];
@@ -122,6 +124,7 @@ NSData* HTPNGDataRepresentation(NSImage* image)
     return nil;
 }
 
+
 NSImage* HTImageWithBackgroundColor(NSImage* image, NSColor* color)
 {
     NSImage* canvas=[[NSImage alloc]initWithSize:[image size]];
@@ -136,6 +139,7 @@ NSImage* HTImageWithBackgroundColor(NSImage* image, NSColor* color)
     [canvas unlockFocus];
     return canvas;
 }
+
 
 NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance)
 {
@@ -237,6 +241,7 @@ NSString* HTStringFromDateWithFormat(NSDate* date, NSString* format)
 
     return result;
 }
+
 
 //ドメインを切り出す かなり適当
 NSString* HTDomainFromHost(NSString* host)

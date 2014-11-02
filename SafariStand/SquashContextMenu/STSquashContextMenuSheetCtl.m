@@ -17,12 +17,12 @@
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
-    if (self) {
-        // Initialization code here.
-    }
+    if (!self) return nil;
+    
     
     return self;
 }
+
 
 - (void)dealloc
 {
@@ -56,6 +56,7 @@
 {
     [NSApp endSheet:[self window]];
 }
+
 
 - (void)windowDidLoad
 {

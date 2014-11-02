@@ -10,12 +10,12 @@
 
 @interface STSearchItLaterViewCtl : NSViewController
 
-@property(nonatomic, assign)id silBinder;
-@property(nonatomic, strong)IBOutlet HTArrayController *silArrayCtl;
+@property (nonatomic, assign) id silBinder;
+@property (nonatomic, strong) IBOutlet HTArrayController *silArrayCtl;
 
 + (STSearchItLaterViewCtl*)viewCtl;
 
--(id)safeArrangedObjectAtIndex:(NSInteger)idx;
+- (id)safeArrangedObjectAtIndex:(NSInteger)idx;
 @end
 
 

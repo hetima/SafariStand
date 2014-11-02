@@ -388,19 +388,17 @@
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
-    if (self) {
-
-        KZRMETHOD_SWIZZLING_
-        (
-         "WKMenuTarget", "setMenuProxy:",
-         void, call, sel)
-         ^(id slf, void *menuProxy)
-        {
-            call(slf, sel, menuProxy);
-            [self injectToContextMenuProxy:menuProxy];
-         }_WITHBLOCK;
-
-    }
+    if (!self) return nil;
+    
+    KZRMETHOD_SWIZZLING_("WKMenuTarget", "setMenuProxy:",
+                         void, call, sel)
+    ^(id slf, void *menuProxy)
+    {
+        call(slf, sel, menuProxy);
+        [self injectToContextMenuProxy:menuProxy];
+    }_WITHBLOCK;
+    
+    
     return self;
 }
 

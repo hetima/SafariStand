@@ -13,7 +13,7 @@
 @implementation STCSimblLorder
 
 //SIMBL
-+(void)install
++ (void)install
 {
     [STCSafariStandCore si];
 }

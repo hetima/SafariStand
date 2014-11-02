@@ -22,52 +22,49 @@ static STSToolbarModule* toolbarModule;
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
-    if (self) {
-        //[self observePrefValue:];
-        toolbarModule=self;
-        _toolbarItemClasses=[[NSMutableDictionary alloc]initWithCapacity:8];
-        _toolbarIdentifiers=[[NSMutableArray alloc]initWithCapacity:8];
-
+    if (!self) return nil;
+    
+    //[self observePrefValue:];
+    toolbarModule=self;
+    _toolbarItemClasses=[[NSMutableDictionary alloc]initWithCapacity:8];
+    _toolbarIdentifiers=[[NSMutableArray alloc]initWithCapacity:8];
+    
+    
+    //- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
+    KZRMETHOD_SWIZZLING_("ToolbarController", "toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:",
+                         id, call, sel)
+    ^id (id slf, id toolbar, NSString *itemIdentifier, BOOL real)
+    {
+        if([[toolbarModule toolbarIdentifiers]containsObject:itemIdentifier]){
+            return [toolbarModule _toolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:real];
+        }else{
+            id result=call(slf, sel, toolbar, itemIdentifier, real);
+            if ([[NSUserDefaults standardUserDefaults]boolForKey:kpExpandAddressBarWidthEnabled]
+                && [itemIdentifier isEqualToString:@"InputFieldsToolbarIdentifier"]) {
+                [self expandInputFieldsToolbar:result];
+            }
+            return result;
+        }
+        return nil;
+    }_WITHBLOCK;
+    
+    //- (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
+    KZRMETHOD_SWIZZLING_("ToolbarController", "toolbarAllowedItemIdentifiers:",
+                         id, call, sel)
+    ^id (id slf, id toolbar)
+    {
+        NSArray* result=call(slf, sel, toolbar);
         
-        //- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
-        KZRMETHOD_SWIZZLING_
-        (
-         "ToolbarController",
-         "toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:",
-         id, call, sel)
-         ^id (id slf, id toolbar, NSString *itemIdentifier, BOOL real){
-             if([[toolbarModule toolbarIdentifiers]containsObject:itemIdentifier]){
-                 return [toolbarModule _toolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:real];
-             }else{
-                 id result=call(slf, sel, toolbar, itemIdentifier, real);
-                 if ([[NSUserDefaults standardUserDefaults]boolForKey:kpExpandAddressBarWidthEnabled]
-                     && [itemIdentifier isEqualToString:@"InputFieldsToolbarIdentifier"]) {
-                     [self expandInputFieldsToolbar:result];
-                 }
-                 return result;
-             }
-             return nil;
-         }_WITHBLOCK;
+        NSArray* myArray=[toolbarModule toolbarIdentifiers];
+        if([myArray count]>0)result=[[result arrayByAddingObjectsFromArray:myArray]arrayByAddingObject:NSToolbarSpaceItemIdentifier];
         
-        //- (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
-        KZRMETHOD_SWIZZLING_
-        (
-         "ToolbarController",
-         "toolbarAllowedItemIdentifiers:",
-         id, call, sel)
-         ^id (id slf, id toolbar){
-             NSArray* result=call(slf, sel, toolbar);
-             
-             NSArray* myArray=[toolbarModule toolbarIdentifiers];
-             if([myArray count]>0)result=[[result arrayByAddingObjectsFromArray:myArray]arrayByAddingObject:NSToolbarSpaceItemIdentifier];
-             
-             return result;
-         }_WITHBLOCK;
-        
-        [self observePrefValue:kpExpandAddressBarWidthEnabled];
-        [self observePrefValue:kpExpandAddressBarWidthValue];
-
-    }
+        return result;
+    }_WITHBLOCK;
+    
+    [self observePrefValue:kpExpandAddressBarWidthEnabled];
+    [self observePrefValue:kpExpandAddressBarWidthValue];
+    
+    
     return self;
 }
 
@@ -89,7 +86,8 @@ static STSToolbarModule* toolbarModule;
 
 }
 
--(void)modulesDidFinishLoading:(id)core
+
+- (void)modulesDidFinishLoading:(id)core
 {
     NSDictionary* toolbarConfig=[[NSUserDefaults standardUserDefaults]dictionaryForKey:kpBrowserToolbarIdentifier];
     toolbarConfig=[[STCSafariStandCore si]objectForKey:kpBrowserToolbarConfigurationBackup];
@@ -132,12 +130,14 @@ static STSToolbarModule* toolbarModule;
     return nil;
 }
 
--(NSArray*)toolbarIdentifiers
+
+- (NSArray*)toolbarIdentifiers
 {
     return _toolbarIdentifiers;
 }
 
--(void)registerToolbarIdentifier:(NSString*)identifier module:(id)obj
+
+- (void)registerToolbarIdentifier:(NSString*)identifier module:(id)obj
 {
     if(![obj respondsToSelector:@selector(toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:)])return;
     [_toolbarItemClasses setObject:obj forKey:identifier];
@@ -145,8 +145,7 @@ static STSToolbarModule* toolbarModule;
 }
 
 
-
--(id)simpleToolBarItem:(NSString*)identifier label:(NSString*)label action:(SEL)action iconImage:(NSImage*)iconImage
+- (id)simpleToolBarItem:(NSString*)identifier label:(NSString*)label action:(SEL)action iconImage:(NSImage*)iconImage
 {
     
 	//NSSegmentedControl
@@ -167,7 +166,8 @@ static STSToolbarModule* toolbarModule;
     return result;
 }
 
--(id)toolBarItem:(NSString*)identifier label:(NSString*)label view:(NSView*)view
+
+- (id)toolBarItem:(NSString*)identifier label:(NSString*)label view:(NSView*)view
 {
 	NSToolbarItem*	result=[[NSToolbarItem alloc] initWithItemIdentifier:identifier];
     NSSize frameSize=[view frame].size;
@@ -208,7 +208,7 @@ static STSToolbarModule* toolbarModule;
 }
 
 
--(void)layoutAddressBarForExistingWindow
+- (void)layoutAddressBarForExistingWindow
 {
     //check exists window
     STSafariEnumerateBrowserWindow(^(NSWindow* win, NSWindowController* winCtl, BOOL* stop){

@@ -69,79 +69,68 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     //Safari 8
     if ([cls instancesRespondToSelector:@selector(initWithScrollableTabBarView:browserTab:)]) {
         //- (id)initWithScrollableTabBarView:(id)arg1 browserTab:(struct BrowserTab *)arg2;
-        KZRMETHOD_SWIZZLING_
-        (
-         "BrowserTabViewItem",
-         "initWithScrollableTabBarView:browserTab:",
-         id, call, sel)
-         ^id (id slf, id tabBarView, void* browserTab)
-         {
-             id result=call(slf, sel, tabBarView, browserTab);
-             id proxy __unused=[[STTabProxy alloc]initWithTabViewItem:result];
-             return result;
-             
-         }_WITHBLOCK;
+        KZRMETHOD_SWIZZLING_("BrowserTabViewItem", "initWithScrollableTabBarView:browserTab:", id, call, sel)
+        ^id (id slf, id tabBarView, void* browserTab)
+        {
+            id result=call(slf, sel, tabBarView, browserTab);
+            id proxy __unused=[[STTabProxy alloc]initWithTabViewItem:result];
+            return result;
+            
+        }_WITHBLOCK;
     }
 
-
+    
     //tabの数変更を監視するため
     //順番入れ替えのときは2回呼ばれる(remove->insert)
-    KZRMETHOD_SWIZZLING_
-    (
-     "ScrollableTabBarView", "tabViewDidChangeNumberOfTabViewItems:",
-     void, call, sel)
-     ^(id slf, id /*NSTabView*/ tabView)
+    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "tabViewDidChangeNumberOfTabViewItems:",
+                         void, call, sel)
+    ^(id slf, id /*NSTabView*/ tabView)
     {
-         call(slf, sel, tabView);
-         [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidChangeNote object:tabView];
-     }_WITHBLOCK;
-
-
+        call(slf, sel, tabView);
+        [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidChangeNote object:tabView];
+    }_WITHBLOCK;
+    
+    
     //tabの選択を監視するため
-    KZRMETHOD_SWIZZLING_
-    (
-     "ScrollableTabBarView", "tabView:didSelectTabViewItem:",
-     void, call, sel)
-     ^(id slf, id tabView, id item)
+    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "tabView:didSelectTabViewItem:",
+                         void, call, sel)
+    ^(id slf, id tabView, id item)
     {
-         call(slf, sel, tabView, item);
-         
-         NSArray* tabViewItems=[tabView tabViewItems];
-         for (NSTabViewItem* eachItem in tabViewItems) {
-             STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:eachItem];
-             if (eachItem==item) {
-                 proxy.isUnread=NO;
-                 proxy.isSelected=YES;
-             }else if (proxy.isSelected){
-                 proxy.isSelected=NO;
-             }
-         }
-         
-         [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidSelectItemNote object:tabView];
-
-     }_WITHBLOCK;
-
+        call(slf, sel, tabView, item);
+        
+        NSArray* tabViewItems=[tabView tabViewItems];
+        for (NSTabViewItem* eachItem in tabViewItems) {
+            STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:eachItem];
+            if (eachItem==item) {
+                proxy.isUnread=NO;
+                proxy.isSelected=YES;
+            }else if (proxy.isSelected){
+                proxy.isSelected=NO;
+            }
+        }
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidSelectItemNote object:tabView];
+        
+    }_WITHBLOCK;
+    
 
     //tabView入れ替わりを監視するため
     /* bookmarks bar の「すべてをタブで開く」などで呼ばれる。NSTabView ごと入れ替わる
        このとき古い NSTabView は「戻る」できるように保持されている。
        そこからページ遷移すると古い NSTabView は破棄され、戻ることもできなくなる。
      */
-    KZRMETHOD_SWIZZLING_
-    (
-     "BrowserWindowContentView", "setTabSwitcher:",
-     void, call, sel)
-     ^(id slf, id/*NSTabView*/ tabView)
+    KZRMETHOD_SWIZZLING_("BrowserWindowContentView", "setTabSwitcher:", void, call, sel)
+    ^(id slf, id/*NSTabView*/ tabView)
     {
         //[self willChangeValueForKey:@"allTabProxy"];
-
+        
         //leftTabs
         NSTabView* exitTabView=objc_msgSend(slf, @selector(tabSwitcher));
         NSArray* exitTabs=[STTabProxyController tabProxiesForTabView:exitTabView];
         [exitTabs enumerateObjectsUsingBlock:^(STTabProxy* obj, NSUInteger idx, BOOL *stop) {
             obj.hidden=YES;
         }];
-
+        
         call(slf, sel, tabView);
         
         //[[STTabProxyController si]maintainTabSelectionOrder:[STTabProxy tabProxyForTabViewItem:tabView]];
@@ -158,21 +147,18 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
         //[self didChangeValueForKey:@"allTabProxy"];
         [[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView]; //重要：こっちが先
         //[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
-     }_WITHBLOCK;
-
-
+    }_WITHBLOCK;
+    
+    
     //STTabProxy の title を更新するため
-    KZRMETHOD_SWIZZLING_
-    (
-     "BrowserTabViewItem", "setLabel:",
-     void, call, sel)
-     ^(id slf, NSString* label)
+    KZRMETHOD_SWIZZLING_("BrowserTabViewItem", "setLabel:", void, call, sel)
+    ^(id slf, NSString* label)
     {
         call(slf, sel, label);
-
+        
         STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:slf];
         proxy.title=label;
-     }_WITHBLOCK;
+    }_WITHBLOCK;
 
 
     //STTabProxyをリストから除外するため
@@ -181,22 +167,21 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     
     //tabViewItem がdealloc、 STTabProxyリストから除外
     //重要：dealloc 中 retain されないように self は __unsafe_unretained
-    KZRMETHOD_SWIZZLING_
-    (
-     "BrowserTabViewItem", "dealloc",
-     void, call, sel)
-     ^(__unsafe_unretained id slf){
-         
-         id proxy=[STTabProxy tabProxyForTabViewItem:slf];
-         if(proxy){
-             [proxy tabViewItemWillDealloc];
-             [[STTabProxyController si]removeTabProxy:proxy];
-         }
-         proxy=nil;
-         call(slf, sel);
-     }_WITHBLOCK;
+    KZRMETHOD_SWIZZLING_("BrowserTabViewItem", "dealloc", void, call, sel)
+    ^(__unsafe_unretained id slf)
+    {
+        
+        id proxy=[STTabProxy tabProxyForTabViewItem:slf];
+        if(proxy){
+            [proxy tabViewItemWillDealloc];
+            [[STTabProxyController si]removeTabProxy:proxy];
+        }
+        proxy=nil;
+        call(slf, sel);
+    }_WITHBLOCK;
     
 }
+
 
 + (STTabProxyController *)si
 {
@@ -207,6 +192,7 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     
     return sharedInstance;
 }
+
 
 + (NSMutableArray *)tabProxiesForTabView:(NSTabView*)tabView
 {
@@ -224,6 +210,7 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     return ary;
 
 }
+
 
 + (NSMutableArray *)tabProxiesForWindow:(NSWindow*)win
 {
@@ -246,13 +233,14 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     return ary;
 }
 
+
 - (id)init {
     self = [super init];
-    if (self) {
-        
-    }
+    if (!self) return nil;
+
     return self;
 }
+
 
 - (STTabProxy*)tabProxyForPageRef:(void*)pageRef
 {
@@ -264,13 +252,15 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     return nil;
 }
 
--(void)addTabProxy:(id)tabProxy
+
+- (void)addTabProxy:(id)tabProxy
 {
     NSIndexSet *indexes = [NSIndexSet indexSetWithIndex:[_allTabProxy count]];
     [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"allTabProxy"];
     [_allTabProxy addObject:tabProxy];
     [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"allTabProxy"];
 }
+
 
 - (void)removeTabProxy:(id)tabProxy
 {
@@ -289,7 +279,7 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
 }
 
 //not use now
--(void)maintainTabSelectionOrder:(id)tabProxy
+- (void)maintainTabSelectionOrder:(id)tabProxy
 {
     if (tabProxy) {
         [self.allTabProxy removeObject:tabProxy];
@@ -297,7 +287,8 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     }
 }
 
--(NSTabViewItem*)lastSelectedTabViewItemForwindow:(NSWindow*)win
+
+- (NSTabViewItem*)lastSelectedTabViewItemForwindow:(NSWindow*)win
 {
     NSTabViewItem* result=nil;
     NSEnumerator* e=[self.allTabProxy reverseObjectEnumerator];
@@ -312,5 +303,4 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
 }
 
 @end
-
 

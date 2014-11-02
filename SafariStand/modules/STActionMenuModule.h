@@ -15,6 +15,6 @@
 
 @interface STActionButton : NSButton
 
-+(id)actionButton;
++ (id)actionButton;
 
 @end

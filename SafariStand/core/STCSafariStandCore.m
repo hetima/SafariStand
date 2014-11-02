@@ -31,10 +31,12 @@ static STCSafariStandCore *sharedInstance;
     return sharedInstance;
 }
 
+
 + (id)mi:(NSString*)moduleClassName
 {
     return [[STCSafariStandCore si]moduleForClassName:moduleClassName];
 }
+
 
 + (NSString *)standLibraryPath:(NSString*)subPath
 {
@@ -57,15 +59,18 @@ static STCSafariStandCore *sharedInstance;
 - (id)init
 {
     self = [super init];
-    if (self) {
-        _startup=NO;
-        _missMatchAlertShown=NO;
-    }
+    if (!self) return nil;
+    
+    
+    _startup=NO;
+    _missMatchAlertShown=NO;
+    
     
     return self;
 }
 
--(void)registerBuiltInModules
+
+- (void)registerBuiltInModules
 {
 #define registerAndAddOrder(name) module=[self registerModule:name];if(module)[orderedModule addObject:module];
     
@@ -100,7 +105,7 @@ static STCSafariStandCore *sharedInstance;
 }
 
 
--(void)startup
+- (void)startup
 {
     if(_startup)return;    
     _startup=YES;
@@ -147,15 +152,16 @@ static STCSafariStandCore *sharedInstance;
     
 }
 
+
 //保存のタイミング
--(void)noteAppWillTerminate:(NSNotification*)notification
+- (void)noteAppWillTerminate:(NSNotification*)notification
 {
     [self sendMessage:@selector(applicationWillTerminate:) toAllModule:self];
     
 }
 
 
--(id)registerModule:(NSString*)aClassName
+- (id)registerModule:(NSString*)aClassName
 {
     id aIns=nil;
     if(_modules==nil){
@@ -169,12 +175,14 @@ static STCSafariStandCore *sharedInstance;
     return aIns;
 }
 
--(id)moduleForClassName:(NSString*)name
+
+- (id)moduleForClassName:(NSString*)name
 {
     return [_modules objectForKey:name];
 }
 
--(void)sendMessage:(SEL)selector toAllModule:(id)sender
+
+- (void)sendMessage:(SEL)selector toAllModule:(id)sender
 {
     NSEnumerator *enumerator = [_modules objectEnumerator];
     for (id plgin in enumerator) {
@@ -185,7 +193,7 @@ static STCSafariStandCore *sharedInstance;
 }
 
 
--(void)addItemToStandMenu:(NSMenuItem*)itm
+- (void)addItemToStandMenu:(NSMenuItem*)itm
 {
 
     NSInteger idx=[self.standMenu indexOfItemWithTag:909];
@@ -193,7 +201,7 @@ static STCSafariStandCore *sharedInstance;
 }
 
 
--(void)setupStandMenu
+- (void)setupStandMenu
 {
     _standMenu=[[NSMenu alloc]initWithTitle:@"Stand"];
 	NSMenu*	mainMenuBar=[NSApp mainMenu];
@@ -218,12 +226,13 @@ static STCSafariStandCore *sharedInstance;
 
 #pragma mark -
 
--(void)openWebSite
+- (void)openWebSite
 {
 
 }
 
--(void)showMissMatchAlert
+
+- (void)showMissMatchAlert
 {
     if (self.missMatchAlertShown) {
         return;
@@ -233,7 +242,8 @@ static STCSafariStandCore *sharedInstance;
 
 }
 
--(void)showMissMatchAlertM
+
+- (void)showMissMatchAlertM
 {
     NSString* messageTitle=LOCALIZE(@"Miss Match Title");
     NSString* info=LOCALIZE(@"Miss Match Info");
@@ -253,7 +263,8 @@ static STCSafariStandCore *sharedInstance;
 
 }
 
-- (void) missMatchAlertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+
+- (void)missMatchAlertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
     //ok=1, visit=0
     [[alert window]orderOut:nil];
@@ -275,10 +286,12 @@ static STCSafariStandCore *sharedInstance;
     return result;
 }
 
+
 - (BOOL)boolForKey:(NSString*)key
 {
 	return [self boolForKey:key defaultValue:NO];
 }
+
 
 - (BOOL)boolForKey:(NSString*)key  defaultValue:(BOOL)inValue
 {
@@ -296,16 +309,19 @@ static STCSafariStandCore *sharedInstance;
 	return [self makeMutablePlistCopy:[self objectForKey:key]];
 }
 
+
 - (void)setObject:(id)value forKey:(NSString*)key
 {
     CFPreferencesSetAppValue( (__bridge CFStringRef) key, (__bridge CFPropertyListRef) value, (CFStringRef)kSafariStandPrefDomain);
 }
+
 
 - (void)setBool:(BOOL)value forKey:(NSString*)key
 {
     CFPreferencesSetAppValue((__bridge CFStringRef)key, (CFPropertyListRef)(value ? kCFBooleanTrue : kCFBooleanFalse),
                              (CFStringRef)kSafariStandPrefDomain);
 }
+
 
 - (BOOL)synchronize
 {
@@ -314,8 +330,7 @@ static STCSafariStandCore *sharedInstance;
 
 
 
-
--(id)makeMutablePlistCopy:(id)plist
+- (id)makeMutablePlistCopy:(id)plist
 {
 	id copyPlist;
 	if ([plist isKindOfClass:[NSArray class]]) {
@@ -328,7 +343,8 @@ static STCSafariStandCore *sharedInstance;
 	return copyPlist;
 }
 
--(NSMutableArray*)makeMutableArrayCopy:(NSArray*)array
+
+- (NSMutableArray*)makeMutableArrayCopy:(NSArray*)array
 {
 	id  copy;
 	int i;
@@ -353,7 +369,8 @@ static STCSafariStandCore *sharedInstance;
 	return copy;
 }
 
--(NSMutableDictionary*)makeMutableDictionaryCopy:(NSDictionary*)dict
+
+- (NSMutableDictionary*)makeMutableDictionaryCopy:(NSDictionary*)dict
 {
 	id		copy = [[NSMutableDictionary alloc] initWithCapacity:[dict count]];
 	
@@ -372,7 +389,6 @@ static STCSafariStandCore *sharedInstance;
     
 	return copy;
 }
-
 
 
 @end

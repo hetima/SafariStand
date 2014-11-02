@@ -8,13 +8,14 @@
 
 @interface STSDownloadModule : STCModule
 
-@property(nonatomic,retain)NSMutableArray* advancedFilters;
-@property(nonatomic,retain)NSString* basicExp;
--(NSWindow*)advancedSettingSheet;
+@property(nonatomic, strong) NSMutableArray* advancedFilters;
+@property(nonatomic, strong) NSString* basicExp;
 
--(NSString*)filteredExpressionForFileName:(NSString*)fileName url:(id)url;
+- (NSWindow*)advancedSettingSheet;
 
--(void)saveToStorage;
--(void)loadFromStorage;
+- (NSString*)filteredExpressionForFileName:(NSString*)fileName url:(id)url;
+
+- (void)saveToStorage;
+- (void)loadFromStorage;
 
 @end

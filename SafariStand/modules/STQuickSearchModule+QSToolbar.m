@@ -22,7 +22,8 @@
     return result;
 }
 
--(void)quickSearchToolbarPopupWithEvent:(NSEvent*)event forView:(NSButton*)view
+
+- (void)quickSearchToolbarPopupWithEvent:(NSEvent*)event forView:(NSButton*)view
 {
     @autoreleasepool {
         NSMenu* actMenu=nil;

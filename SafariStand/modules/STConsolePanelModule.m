@@ -14,21 +14,24 @@
 }
 
 
--(id)initWithStand:(STCSafariStandCore*)core
+- (id)initWithStand:(STCSafariStandCore*)core
 {
     self = [super initWithStand:core];
-    if (self) {
-        //[self observePrefValue:];
-        _winCtl=nil;
-        _bookmarksSidebarViewController=nil;
-        _panels=[[NSMutableDictionary alloc]initWithCapacity:8];
-
-        NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Console Panel" action:@selector(actShowConsolePanel:) keyEquivalent:@"k"];
-        [itm setKeyEquivalentModifierMask:NSCommandKeyMask|NSAlternateKeyMask];
-        [itm setTarget:self];
-        [itm setTag:kMenuItemTagConsolePanel];
-        [core addItemToStandMenu:itm];
-    }
+    if (!self) return nil;
+    
+    
+    //[self observePrefValue:];
+    _winCtl=nil;
+    _bookmarksSidebarViewController=nil;
+    _panels=[[NSMutableDictionary alloc]initWithCapacity:8];
+    
+    NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Console Panel" action:@selector(actShowConsolePanel:) keyEquivalent:@"k"];
+    [itm setKeyEquivalentModifierMask:NSCommandKeyMask|NSAlternateKeyMask];
+    [itm setTarget:self];
+    [itm setTag:kMenuItemTagConsolePanel];
+    [core addItemToStandMenu:itm];
+    
+    
     return self;
 }
 
@@ -138,12 +141,10 @@
     dispatch_once(&onceToken, ^{
         
         //click
-        KZRMETHOD_SWIZZLING_
-        (
-         "BookmarksSidebarViewController",
-         "_openBookmarkAndGiveFocusToWebContent:", //BookmarkLeaf
-         void, call, sel)
-        ^void (id slf, id bookmarkLeaf){
+        KZRMETHOD_SWIZZLING_("BookmarksSidebarViewController", "_openBookmarkAndGiveFocusToWebContent:", //BookmarkLeaf
+                             void, call, sel)
+        ^void (id slf, id bookmarkLeaf)
+        {
             if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
                 NSURL* url=[STSafariWebBookmarkURLString(bookmarkLeaf) stand_httpOrFileURL];
                 if(url)STSafariGoToURLWithPolicy(url, poNormal);
@@ -154,12 +155,9 @@
         }_WITHBLOCK;
         
         //context menu
-        KZRMETHOD_SWIZZLING_
-        (
-         "BookmarksSidebarViewController",
-         "_openInCurrentTab:",
-         void, call, sel)
-        ^void (id slf, id obj){
+        KZRMETHOD_SWIZZLING_("BookmarksSidebarViewController", "_openInCurrentTab:", void, call, sel)
+        ^void (id slf, id obj)
+        {
             if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
                 NSURL* url=[STConsolePanelModule selectedURLOnSafariBookmarksView:slf];
                 if(url)STSafariGoToURLWithPolicy(url, poNormal);
@@ -169,12 +167,9 @@
             
         }_WITHBLOCK;
         
-        KZRMETHOD_SWIZZLING_
-        (
-         "BookmarksSidebarViewController",
-         "_openInNewTab:",
-         void, call, sel)
-        ^void (id slf, id obj){
+        KZRMETHOD_SWIZZLING_("BookmarksSidebarViewController", "_openInNewTab:", void, call, sel)
+        ^void (id slf, id obj)
+        {
             if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
                 NSURL* url=[STConsolePanelModule selectedURLOnSafariBookmarksView:slf];
                 if(url)STSafariGoToURLWithPolicy(url, poNewTab);
@@ -184,11 +179,7 @@
             
         }_WITHBLOCK;
         
-        KZRMETHOD_SWIZZLING_
-        (
-         "BookmarksSidebarViewController",
-         "_openInNewWindow:",
-         void, call, sel)
+        KZRMETHOD_SWIZZLING_("BookmarksSidebarViewController", "_openInNewWindow:", void, call, sel)
         ^void (id slf, id obj){
             if ([[[slf view]window]isKindOfClass:[STConsolePanelWindow class]]) {
                 NSURL* url=[STConsolePanelModule selectedURLOnSafariBookmarksView:slf];
@@ -217,9 +208,9 @@
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
-    if (self) {
-        
-    }
+    if (!self) return nil;
+    
+    
     return self;
 }
 

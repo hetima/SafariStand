@@ -19,65 +19,60 @@
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
-    if (self) {
-        
-        KZRMETHOD_SWIZZLING_
-        (
-         "NSTabView", "contentRect",
-         NSRect, call, sel)
-         ^NSRect(id slf)
-        {
-            NSArray* subviews=[slf subviews];
-            for (NSView* subview in subviews) {
-                if ([subview isKindOfClass:[STSidebarFrameView class]]) {
-                    NSRect origRect=call(slf, sel);
-                    NSRect sidebarRect=[subview frame];
-                    BOOL rightside=[(STSidebarFrameView*)subview rightSide];
-                    
-                    origRect.size.width-=sidebarRect.size.width;
-                    if (!rightside) {
-                        origRect.origin.x+=sidebarRect.size.width;
-                    }
-                    return origRect;
+    if (!self) return nil;
+    
+    
+    KZRMETHOD_SWIZZLING_("NSTabView", "contentRect", NSRect, call, sel)
+    ^NSRect(id slf)
+    {
+        NSArray* subviews=[slf subviews];
+        for (NSView* subview in subviews) {
+            if ([subview isKindOfClass:[STSidebarFrameView class]]) {
+                NSRect origRect=call(slf, sel);
+                NSRect sidebarRect=[subview frame];
+                BOOL rightside=[(STSidebarFrameView*)subview rightSide];
+                
+                origRect.size.width-=sidebarRect.size.width;
+                if (!rightside) {
+                    origRect.origin.x+=sidebarRect.size.width;
                 }
+                return origRect;
             }
-            
-            return call(slf, sel);
-         }_WITHBLOCK;
-
-        //kpSidebarShowsDefault
+        }
         
-        KZRMETHOD_SWIZZLING_
-        (
-         kSafariBrowserWindowControllerCstr, "showWindow:",
-         void, call, sel)
-         ^(id slf, id sender)
-        {
-            call(slf, sel, sender);
-            if ( ![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault] ||
-                [slf htao_valueForKey:kAOValueNotShowSidebarAuto] ) {
-                return;
-            }
-            
-            [slf htao_setValue:@YES forKey:kAOValueNotShowSidebarAuto];
-            NSSize winSize=[[slf window]frame].size;
-            if(winSize.width>640 && winSize.height>600){
-                [self installSidebarToWindow:[slf window]];
-            }
-         }_WITHBLOCK;
-
-
-        NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Sidebar" action:@selector(toggleSidebar:) keyEquivalent:@""];
-        [itm setTarget:self];
-        [core addItemToStandMenu:itm];
-/*
-        itm=[[NSMenuItem alloc]initWithTitle:@"SidebarLR" action:@selector(toggleSidebarLR:) keyEquivalent:@""];
-        [itm setTarget:self];
-        [core addItemToStandMenu:itm];
-*/
-        [core registerToolbarIdentifier:STSidebarTBItemIdentifier module:self];
-
-    }
+        return call(slf, sel);
+    }_WITHBLOCK;
+    
+    //kpSidebarShowsDefault
+    
+    KZRMETHOD_SWIZZLING_(kSafariBrowserWindowControllerCstr, "showWindow:", void, call, sel)
+    ^(id slf, id sender)
+    {
+        call(slf, sel, sender);
+        if ( ![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault] ||
+            [slf htao_valueForKey:kAOValueNotShowSidebarAuto] ) {
+            return;
+        }
+        
+        [slf htao_setValue:@YES forKey:kAOValueNotShowSidebarAuto];
+        NSSize winSize=[[slf window]frame].size;
+        if(winSize.width>640 && winSize.height>600){
+            [self installSidebarToWindow:[slf window]];
+        }
+    }_WITHBLOCK;
+    
+    
+    NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Sidebar" action:@selector(toggleSidebar:) keyEquivalent:@""];
+    [itm setTarget:self];
+    [core addItemToStandMenu:itm];
+    /*
+    itm=[[NSMenuItem alloc]initWithTitle:@"SidebarLR" action:@selector(toggleSidebarLR:) keyEquivalent:@""];
+    [itm setTarget:self];
+    [core addItemToStandMenu:itm];
+    */
+    [core registerToolbarIdentifier:STSidebarTBItemIdentifier module:self];
+    
+    
     return self;
 }
 
@@ -86,15 +81,18 @@
 
 }
 
+
 - (void)modulesDidFinishLoading:(id)core
 {
     [self showSidebarForExistingWindow];
 }
 
+
 - (void)prefValue:(NSString*)key changed:(id)value
 {
     //if([key isEqualToString:])
 }
+
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
 {
@@ -132,8 +130,7 @@
 }
 
 
-
--(void)toggleSidebar:(id)sender
+- (void)toggleSidebar:(id)sender
 {
     NSWindow* win=STSafariCurrentBrowserWindow();
     //STSidebarContentView* view=[self sidebarContentViewForWindow:win];
@@ -147,7 +144,8 @@
     }
 }
 
--(void)toggleSidebarLR:(id)sender
+
+- (void)toggleSidebarLR:(id)sender
 {
     NSWindow* win=STSafariCurrentBrowserWindow();
     //STSidebarContentView* view=[self sidebarContentViewForWindow:win];
@@ -161,7 +159,8 @@
     }
 }
 
--(void)installSidebarToWindow:(NSWindow*)win
+
+- (void)installSidebarToWindow:(NSWindow*)win
 {
     NSTabView* tabView=STSafariTabViewForWindow(win);
 
@@ -186,7 +185,8 @@
 
 }
 
--(void)removeSidebar:(STSidebarCtl*)ctl fromWindow:(NSWindow*)win
+
+- (void)removeSidebar:(STSidebarCtl*)ctl fromWindow:(NSWindow*)win
 {
     [ctl uninstallFromTabView];
     
@@ -194,20 +194,21 @@
 }
 
 
-
--(STSidebarCtl*)sidebarCtlForWindow:(NSWindow*)win
+- (STSidebarCtl*)sidebarCtlForWindow:(NSWindow*)win
 {
     STSidebarCtl* ctl=[win htao_valueForKey:@"sidebarCtl"];
     return ctl;
 }
 
--(STSidebarFrameView*)sidebarContentViewForWindow:(NSWindow*)win
+
+- (STSidebarFrameView*)sidebarContentViewForWindow:(NSWindow*)win
 {
     NSView* tabView=STSafariTabViewForWindow(win);
     return [self sidebarContentViewForTabView:tabView];
 }
 
--(STSidebarFrameView*)sidebarContentViewForTabView:(NSView*)tabView
+
+- (STSidebarFrameView*)sidebarContentViewForTabView:(NSView*)tabView
 {
     NSArray* subviews=[tabView subviews];
     for (NSView* subview in subviews) {

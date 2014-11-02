@@ -44,29 +44,31 @@
 - (id)initWithTabViewItem:(id)item
 {
     self = [super init];
-    if (self) {
-        _ownRef=(uintptr_t)(self);
+    if (!self) return nil;
+    
+    
+    _ownRef=(uintptr_t)(self);
 
-        // Initialization code here.
-        [item htao_setValue:self forKey:@"STTabProxy"];
-        _cachedDomain=nil;
-        _tabViewItem=item;
-        _cachedImage=nil;
-        _isLoading=NO;
-        _wantsImage=YES; //test
-        _isMarked=NO;
-        _isUnread=NO;
-        _isInAnyWidget=NO;
-        _invalid=NO;
-        _hidden=NO;
-        _creationDate=[NSDate date];
-        _modificationDate=_creationDate;
+    // Initialization code here.
+    [item htao_setValue:self forKey:@"STTabProxy"];
+    _cachedDomain=nil;
+    _tabViewItem=item;
+    _cachedImage=nil;
+    _isLoading=NO;
+    _wantsImage=YES; //test
+    _isMarked=NO;
+    _isUnread=NO;
+    _isInAnyWidget=NO;
+    _invalid=NO;
+    _hidden=NO;
+    _creationDate=[NSDate date];
+    _modificationDate=_creationDate;
 
-        [[STTabProxyController si]addTabProxy:self];
-        self.title=[item title];
-        //まだwindowに入ってない
-        [[NSNotificationCenter defaultCenter]postNotificationName:STTabProxyCreatedNote object:self];
-    }
+    [[STTabProxyController si]addTabProxy:self];
+    self.title=[item title];
+    //まだwindowに入ってない
+    [[NSNotificationCenter defaultCenter]postNotificationName:STTabProxyCreatedNote object:self];
+
     
     return self;
 }

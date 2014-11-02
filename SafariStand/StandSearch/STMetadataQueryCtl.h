@@ -9,12 +9,12 @@
 
 @interface STMetadataQueryCtl : NSObject<NSMetadataQueryDelegate>
 
-@property (nonatomic,retain) NSString* title;
-@property (nonatomic,assign) id delegate;
-@property (nonatomic,assign) BOOL isExpanded;
+@property(nonatomic,retain) NSString* title;
+@property(nonatomic,assign) id delegate;
+@property(nonatomic,assign) BOOL isExpanded;
 
-+(STMetadataQueryCtl*)bookmarksSearchCtl;
-+(STMetadataQueryCtl*)historySearchCtl;
++ (STMetadataQueryCtl*)bookmarksSearchCtl;
++ (STMetadataQueryCtl*)historySearchCtl;
 
 - (id) initWithContentType:(NSString*)type scope:(NSString*)scope;
 - (NSUInteger)count;

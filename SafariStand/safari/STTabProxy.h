@@ -17,26 +17,26 @@
 
 @interface STTabProxy : NSObject
 
-@property(nonatomic, assign)uintptr_t parentRef;
-@property(nonatomic, readonly)uintptr_t ownRef;
+@property(nonatomic, assign) uintptr_t parentRef;
+@property(nonatomic, readonly) uintptr_t ownRef;
 
-@property(nonatomic, assign)BOOL wantsImage;
-@property(nonatomic, assign)BOOL isInAnyWidget;
-@property(nonatomic, assign)BOOL isMarked;
+@property(nonatomic, assign) BOOL wantsImage;
+@property(nonatomic, assign) BOOL isInAnyWidget;
+@property(nonatomic, assign) BOOL isMarked;
 
 
-@property(nonatomic, assign)BOOL isLoading;
-@property(nonatomic, assign)BOOL isSelected;
-@property(nonatomic, assign, getter=isHidden)BOOL hidden;
-@property(nonatomic, assign)BOOL isUnread;
-@property(nonatomic, assign)id tabViewItem;
-@property(nonatomic, retain)NSImage* cachedImage;
-@property(nonatomic, retain)NSString* cachedImageURLString;
-@property(nonatomic, retain)NSString* title;
-@property(nonatomic, retain)NSString* host;
+@property(nonatomic, assign) BOOL isLoading;
+@property(nonatomic, assign) BOOL isSelected;
+@property(nonatomic, assign, getter=isHidden) BOOL hidden;
+@property(nonatomic, assign) BOOL isUnread;
+@property(nonatomic, assign) id tabViewItem;
+@property(nonatomic, retain) NSImage* cachedImage;
+@property(nonatomic, retain) NSString* cachedImageURLString;
+@property(nonatomic, retain) NSString* title;
+@property(nonatomic, retain) NSString* host;
 
-@property(nonatomic, retain)NSDate* creationDate;
-@property(nonatomic, retain)NSDate* modificationDate;
+@property(nonatomic, retain) NSDate* creationDate;
+@property(nonatomic, retain) NSDate* modificationDate;
 
 
 + (STTabProxy*)tabProxyForWKView:(id)wkView;

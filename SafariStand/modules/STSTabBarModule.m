@@ -37,113 +37,108 @@
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
-    if (self) {
-
-        //SwitchTabWithWheel
-        mach_timebase_info_data_t timebaseInfo;
-        mach_timebase_info(&timebaseInfo);
-        _duration = ((1000000000 * timebaseInfo.denom) / 3) / timebaseInfo.numer; //1/3sec
-        _nextTime=mach_absolute_time();
-        
-        KZRMETHOD_SWIZZLING_
-        (
-         "ScrollableTabBarView", "scrollWheel:",
-         void, call, sel)
-         ^void (id slf, NSEvent* event){
-             if([[NSUserDefaults standardUserDefaults]boolForKey:kpSwitchTabWithWheelEnabled]){
-                 id window=objc_msgSend(slf, @selector(window));
-                 if([[[window windowController]className]isEqualToString:kSafariBrowserWindowController]){
-                     if ([self canAction]) {
-                         SEL action=nil;
-                         //[theEvent deltaY] が+なら上、-なら下
-                         CGFloat deltaY=[event deltaY];
-                         if(deltaY>0){
-                             action=@selector(selectPreviousTab:);
-                         }else if(deltaY<0){
-                             action=@selector(selectNextTab:);
-                         }
-                         if(action){
-                             [NSApp sendAction:action to:nil from:self];
-                             return;
-                         }
-                     }
-                 }
-             }
-             
-             call(slf, sel, event);
-
-         }_WITHBLOCK;
-
-
-        //タブバー幅変更
-        KZRMETHOD_SWIZZLING_
-        (
-         "ScrollableTabBarView", "_buttonWidthForNumberOfButtons:inWidth:remainderWidth:",
-         double, call, sel)
-         ^double (id slf, unsigned long long buttonNum, double inWidth, double* remainderWidth){
-             double result=call(slf, sel, buttonNum, inWidth, remainderWidth);
-             if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
-                 double maxWidth=floor([[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue]);
-                 if (result>maxWidth) {
-                     //double diff=result-maxWidth;
-                     //*remainderWidth=diff+*remainderWidth;
-                     return maxWidth;
-                 }
-             }
-             return result;
-         }_WITHBLOCK;
-        
-        KZRMETHOD_SWIZZLING_
-        (
-         "ScrollableTabBarView", "_shouldLayOutButtonsToAlignWithWindowCenter",
-         BOOL, call, sel)
-         ^BOOL (id slf){
-             if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
-                 return NO;
-             }
-             
-             BOOL result=call(slf, sel);
-             return result;
-         }_WITHBLOCK;
-
+    if (!self) return nil;
     
-        double minX=[[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue];
-        if (minX<140.0 || minX>480.0) minX=240.0;
-        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
-            [self layoutTabBarForExistingWindow];
-        }
-        [self observePrefValue:kpSuppressTabBarWidthEnabled];
-        [self observePrefValue:kpSuppressTabBarWidthValue];
-        
-        
-        //test
-        KZRMETHOD_SWIZZLING_
-        (
-         "ScrollableTabButton",
-         "initWithFrame:tabViewItem:",
-         id, call, sel)
-        ^id (id slf, NSRect frame, id obj){
-            NSButton* result=call(slf, sel, frame, obj);
-            if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnTabBarEnabled]) {
-                [self _installIconToTabButton:result ofTabViewItem:obj];
+    //SwitchTabWithWheel
+    mach_timebase_info_data_t timebaseInfo;
+    mach_timebase_info(&timebaseInfo);
+    _duration = ((1000000000 * timebaseInfo.denom) / 3) / timebaseInfo.numer; //1/3sec
+    _nextTime=mach_absolute_time();
+    
+    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "scrollWheel:", void, call, sel)
+    ^void (id slf, NSEvent* event)
+    {
+        if([[NSUserDefaults standardUserDefaults]boolForKey:kpSwitchTabWithWheelEnabled]){
+            id window=objc_msgSend(slf, @selector(window));
+            if([[[window windowController]className]isEqualToString:kSafariBrowserWindowController]){
+                if ([self canAction]) {
+                    SEL action=nil;
+                    //[theEvent deltaY] が+なら上、-なら下
+                    CGFloat deltaY=[event deltaY];
+                    if(deltaY>0){
+                        action=@selector(selectPreviousTab:);
+                    }else if(deltaY<0){
+                        action=@selector(selectNextTab:);
+                    }
+                    if(action){
+                        [NSApp sendAction:action to:nil from:self];
+                        return;
+                    }
+                }
             }
-
-            return result;
-        }_WITHBLOCK;
-        
-        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnTabBarEnabled]) {
-            [self installIconToExistingWindows];
         }
-        [self observePrefValue:kpShowIconOnTabBarEnabled];
-
+        
+        call(slf, sel, event);
+        
+    }_WITHBLOCK;
+    
+    
+    //タブバー幅変更
+    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "_buttonWidthForNumberOfButtons:inWidth:remainderWidth:",
+                         double, call, sel)
+    ^double (id slf, unsigned long long buttonNum, double inWidth, double* remainderWidth)
+    {
+        double result=call(slf, sel, buttonNum, inWidth, remainderWidth);
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
+            double maxWidth=floor([[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue]);
+            if (result>maxWidth) {
+                //double diff=result-maxWidth;
+                //*remainderWidth=diff+*remainderWidth;
+                return maxWidth;
+            }
+        }
+        return result;
+    }_WITHBLOCK;
+    
+    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "_shouldLayOutButtonsToAlignWithWindowCenter",
+                         BOOL, call, sel)
+    ^BOOL (id slf)
+    {
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
+            return NO;
+        }
+        
+        BOOL result=call(slf, sel);
+        return result;
+    }_WITHBLOCK;
+    
+    
+    double minX=[[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue];
+    if (minX<140.0 || minX>480.0) minX=240.0;
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
+        [self layoutTabBarForExistingWindow];
     }
+    [self observePrefValue:kpSuppressTabBarWidthEnabled];
+    [self observePrefValue:kpSuppressTabBarWidthValue];
+    
+    
+    //test
+    KZRMETHOD_SWIZZLING_("ScrollableTabButton", "initWithFrame:tabViewItem:", id, call, sel)
+    ^id (id slf, NSRect frame, id obj)
+    {
+        NSButton* result=call(slf, sel, frame, obj);
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnTabBarEnabled]) {
+            [self _installIconToTabButton:result ofTabViewItem:obj];
+        }
+        
+        return result;
+    }_WITHBLOCK;
+    
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnTabBarEnabled]) {
+        [self installIconToExistingWindows];
+    }
+    [self observePrefValue:kpShowIconOnTabBarEnabled];
+    
+
     return self;
 }
+
 
 - (void)dealloc
 {
 
 }
+
 
 - (void)prefValue:(NSString*)key changed:(id)value
 {
@@ -157,6 +152,7 @@
         }
     }
 }
+
 
 - (BOOL)canAction
 {
@@ -195,7 +191,8 @@
 
 }
 
--(void)installIconToExistingWindows
+
+- (void)installIconToExistingWindows
 {
     STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem* tabViewItem, BOOL* stop){
         if (![tabViewItem respondsToSelector:@selector(scrollableTabButton)]) {
@@ -211,14 +208,14 @@
 }
 
 
--(void)_removeIconFromTabButton:(NSButton*)tabButton ofTabViewItem:(NSTabViewItem*)tabViewItem
+- (void)_removeIconFromTabButton:(NSButton*)tabButton ofTabViewItem:(NSTabViewItem*)tabViewItem
 {
     CALayer* layer=[STTabIconLayer installedIconLayerInView:tabButton];
     if(layer)[layer removeFromSuperlayer];
 }
 
 
--(void)removeIconFromExistingWindows
+- (void)removeIconFromExistingWindows
 {
     STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem* tabViewItem, BOOL* stop){
         if (![tabViewItem respondsToSelector:@selector(scrollableTabButton)]) {
@@ -250,6 +247,7 @@
     return nil;
 }
 
+
 - (void)dealloc
 {
     [self unbind:NSHiddenBinding];
@@ -258,3 +256,4 @@
 }
 
 @end
+

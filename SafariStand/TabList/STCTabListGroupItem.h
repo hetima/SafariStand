@@ -10,11 +10,11 @@
 
 @interface STCTabListGroupItem : NSObject
 
-@property(nonatomic, copy)NSString* viewIdentifier;
-@property(nonatomic)CGFloat viewHeight;
-@property(nonatomic, getter=isGroupRow)BOOL groupRow;
-@property(nonatomic, copy)NSString* title;
-@property(nonatomic, strong)NSImage* image;
+@property (nonatomic, copy) NSString* viewIdentifier;
+@property (nonatomic) CGFloat viewHeight;
+@property (nonatomic, getter=isGroupRow) BOOL groupRow;
+@property (nonatomic, copy) NSString* title;
+@property (nonatomic, strong) NSImage* image;
 
 @end
 
@@ -26,3 +26,4 @@
 @property(nonatomic, weak)NSWindow* window;
 
 @end
+

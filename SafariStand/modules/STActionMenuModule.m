@@ -16,22 +16,28 @@
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
-    if (self) {
-        //[self observePrefValue:];
-        [core registerToolbarIdentifier:STActionMenuIdentifier module:self];
-    }
+    if (!self) return nil;
+    
+    
+    //[self observePrefValue:];
+    [core registerToolbarIdentifier:STActionMenuIdentifier module:self];
+    
+    
     return self;
 }
+
 
 - (void)dealloc
 {
 
 }
 
+
 - (void)prefValue:(NSString*)key changed:(id)value
 {
     //if([key isEqualToString:])
 }
+
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
 {
@@ -47,7 +53,7 @@
 
 #pragma mark - path popup
 
--(NSMenu*)pathMenuForFileURL:(NSString*)urlString
+- (NSMenu*)pathMenuForFileURL:(NSString*)urlString
 {
     NSMenuItem* itm;
     NSMenu* menu=[[NSMenu alloc]initWithTitle:@"Path Navigation"];
@@ -86,7 +92,7 @@
 }
 
 
--(NSMenu*)pathMenuForWebURL:(NSString*)urlString
+- (NSMenu*)pathMenuForWebURL:(NSString*)urlString
 {
     NSMenuItem* itm;
     NSMenu* menu=[[NSMenu alloc]initWithTitle:@"Path Navigation"];
@@ -238,7 +244,7 @@
     return actMenu;
 }
 
--(void)actionPopupWithEvent:(NSEvent*)event forView:(NSButton*)view
+- (void)actionPopupWithEvent:(NSEvent*)event forView:(NSButton*)view
 {
     @autoreleasepool {
         NSString*  currentURLString=STSafariCurrentURLString();
@@ -257,7 +263,7 @@
 
 @implementation STActionButton
 
-+(id)actionButton
++ (id)actionButton
 {
     static NSImage* STActionButtonIcon=nil;
     if (!STActionButtonIcon) {

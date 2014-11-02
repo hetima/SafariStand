@@ -5,14 +5,13 @@
 #import <Foundation/Foundation.h>
 
 
-@interface STKeyHandlerModule : STCModule {
-    NSMenuItem* oneKeyNavigationMenuItem;
-    
-}
+@interface STKeyHandlerModule : STCModule
+
 - (void)prefValue:(NSString*)key changed:(id)value;
 
 //,.
--(void)setupOneKeyNavigationMenuItem;
--(void)insertOneKeyNavigationMenuItem;
--(void)removeOneKeyNavigationMenuItem;
+- (void)setupOneKeyNavigationMenuItem;
+- (void)insertOneKeyNavigationMenuItem;
+- (void)removeOneKeyNavigationMenuItem;
+
 @end

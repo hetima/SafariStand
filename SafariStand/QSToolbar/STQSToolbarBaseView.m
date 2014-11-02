@@ -21,19 +21,23 @@
     return self;
 }
 
+
 - (void)drawRect:(NSRect)dirtyRect
 {
     // Drawing code here.
 }
 
+
 - (id)initWithQuickSearch:(STQuickSearchModule*)qs
 {
     self = [super initWithFrame:NSMakeRect(0,0, kSTQSToolbarBaseWidth, 25)];
-    if (self) {
-        id view=[[STQSToolbarSearchView alloc] initWithFrame:NSMakeRect(0, 2, kSTQSToolbarBaseWidth, 22)];
-        self.rightView=view;
-        [self addSubview:view];
-    }
+    if (!self) return nil;
+    
+    
+    id view=[[STQSToolbarSearchView alloc] initWithFrame:NSMakeRect(0, 2, kSTQSToolbarBaseWidth, 22)];
+    self.rightView=view;
+    [self addSubview:view];
+    
     return self;
 }
 
