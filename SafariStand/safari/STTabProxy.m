@@ -19,7 +19,6 @@
 @implementation STTabProxy
 {
     BOOL _invalid;
-    void* _pageRef;
     NSString* _cachedDomain;
 }
 
@@ -51,7 +50,6 @@
         // Initialization code here.
         [item htao_setValue:self forKey:@"STTabProxy"];
         _cachedDomain=nil;
-        _pageRef=nil;
         _tabViewItem=item;
         _cachedImage=nil;
         _isLoading=NO;
@@ -107,11 +105,8 @@
 - (void*)pageRef
 {
     if (_invalid) return nil;
-    
-    if (!_pageRef) {
-        _pageRef=(void*)htWKPageRefForWKView([self wkView]);
-    }
-    return _pageRef;
+
+    return (void*)htWKPageRefForWKView([self wkView]);
 }
 
 

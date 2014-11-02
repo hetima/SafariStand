@@ -28,6 +28,7 @@
 
 //Safari::WK::didStartProgress(OpaqueWKPage const*, void const*)
 //__ZN6Safari2WKL16didStartProgressEPK12OpaqueWKPagePKv
+// Fail to catch STTabProxy at the first time when Per-Tab Process Enabled (it's default), but no problem at present.
 void (*orig_didStartProgress)(WKPageRef, const void*);
 void STWK_didStartProgress(WKPageRef page, const void* clientInfo)
 {
