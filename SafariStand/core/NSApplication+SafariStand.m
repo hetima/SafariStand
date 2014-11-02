@@ -23,7 +23,7 @@
 -(void)STTestDumpView:(NSView*)v indent:(NSString*)indent
 {
     NSString* nextIndent=[NSString stringWithFormat:@"+%@", indent];
-    LOG(@"%@%@ %@", indent, [v className], NSStringFromRect([v frame]));
+    LOG(@"%@%@ %@%@", indent, [v className], NSStringFromRect([v frame]), [v isHidden]?@"(hidden)":@"");
     if ([v isKindOfClass:[NSTextField class]]) {
         LOG(@"%@%@", indent, [(NSTextField*)v stringValue]);
         if ([[[v superview]className]isEqualToString:@"NSTitlebarView"]) {
@@ -40,8 +40,7 @@
 {
     NSView* v= STSafariCurrentWKView();
     
-    [v window].titleVisibility=NSWindowTitleVisible;
-    //[[[v window]windowController]_titlebarHeightInWindow];
+    //[v window].titleVisibility=NSWindowTitleVisible;
 
     [self STTestDumpView:[[[v window]contentView]superview] indent:@""];
 }
