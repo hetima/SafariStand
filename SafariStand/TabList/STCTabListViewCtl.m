@@ -415,6 +415,8 @@
     
     if (_parasiteMode) {
         itm=[menu addItemWithTitle:@"Move Sidebar To Far Side" action:@selector(STToggleSidebarLR:) keyEquivalent:@""];
+    }else{
+        itm=[menu addItemWithTitle:@"New Window" action:@selector(newDocument:) keyEquivalent:@""];
     }
     
     [menu addItem:[NSMenuItem separatorItem]];
