@@ -75,6 +75,7 @@
 #define kMenuItemTagSafariStandSetting 9001
 #define kMenuItemTagOneKeyNavigation 9002
 #define kMenuItemTagConsolePanel 9003
+#define kMenuItemTagToggleTitlebar 9004
 
 #define kMenuItemTagSelectPreviousTab 9050
 #define kMenuItemTagSelectNextTab 9051
@@ -91,5 +92,6 @@
 #define kpConsolePanelToolbarConfigurationBackup @"Stand_ConsolePanelToolbarConfigurationBackup"
 
 #define kpShowIconOnSidebarBookmarkEnabled @"Stand_ShowIconOnSidebarBookmarkEnabled"
+#define kpShowBrowserWindowTitlebar @"Stand_ShowBrowserWindowTitlebar"
 
 #endif

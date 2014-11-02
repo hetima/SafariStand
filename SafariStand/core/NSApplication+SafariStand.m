@@ -220,4 +220,33 @@
 }
 
 
+-(void)STToggleWindowTitleVisibility:(id)sender
+{
+    //not implement yet
+    return;
+    
+    __block BOOL show=NO;
+    __block NSInteger value=-1;
+    STSafariEnumerateBrowserWindow(^(NSWindow *window, NSWindowController *winCtl, BOOL *stop) {
+        if (value==-1) {
+            if (window.titleVisibility==NSWindowTitleVisible) {
+                value=NSWindowTitleHidden;
+                show=NO;
+            }else{
+                value=NSWindowTitleVisible;
+                show=YES;
+            }
+        }
+        
+        window.titleVisibility=value;
+        if (value==NSWindowTitleVisible) {
+            //update title
+            NSString* title=[window title];
+            [window setTitle:title];
+        }
+    });
+    
+    [[NSUserDefaults standardUserDefaults]setBool:show forKey:kpShowBrowserWindowTitlebar];
+}
+
 @end

@@ -48,15 +48,51 @@
              call(slf, sel, menu, pt, width, view, selection, font, arg7, arg8);
          }_WITHBLOCK;
 */
+        
+        //show window title
+        //not implement yet
+        /*
+        KZRMETHOD_SWIZZLING_
+        ("BrowserWindow", "setTitle:", void, call, sel)
+        ^void (id slf, id val){
+            call(slf, sel, val);
+            if([slf titleVisibility]==NSWindowTitleVisible){
+                id frameView=[[slf contentView]superview];
+                if ([frameView respondsToSelector:@selector(setTitle:)]) {
+                    objc_msgSend(frameView, @selector(setTitle:), val);
+                }
+            }
+        }_WITHBLOCK;
+
+        
+        NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Title Bar" action:@selector(STToggleWindowTitleVisibility:) keyEquivalent:@""];
+        [itm setTag:kMenuItemTagToggleTitlebar];
+        [core addItemToStandMenu:itm];
+        */
+        //[self observePrefValue:kpShowBrowserWindowTitlebar];
+        
     }
+    
     return self;
+}
+
+
+-(void)modulesDidFinishLoading:(id)core
+{
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowBrowserWindowTitlebar]) {
+        //not implement yet
+        //[NSApp sendAction:@selector(STToggleWindowTitleVisibility:) to:nil from:self];
+    }
 }
 
 
 - (void)prefValue:(NSString*)key changed:(id)value
 {
-    //if([key isEqualToString:])
+    if([key isEqualToString:kpShowBrowserWindowTitlebar]){
+    
+    }
 }
+
 
 - (void)alterPathPopUpMenu:(NSMenu*)menu
 {
