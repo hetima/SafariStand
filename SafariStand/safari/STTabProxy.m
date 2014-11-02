@@ -226,6 +226,10 @@
 
     if ((self.wantsImage || self.isInAnyWidget) && [self.host length]>0) {
         if (![self fetchIconImage]) {
+            //clean up for didStartProgress fail
+            [self willChangeValueForKey:@"image"];
+            self.cachedImage=nil;
+            [self didChangeValueForKey:@"image"];
             [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:2.5];
             [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:7.0];
         }
