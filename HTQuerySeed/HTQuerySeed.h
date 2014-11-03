@@ -3,7 +3,7 @@
 //  SafariStand
 
 
-#import <Foundation/Foundation.h>
+@import AppKit;
 
 
 @interface HTQuerySeed : NSObject

@@ -4,7 +4,7 @@
 
 
 
-#import <Foundation/Foundation.h>
+@import AppKit;
 
 
 @interface STBookmarkSeparator : STCModule

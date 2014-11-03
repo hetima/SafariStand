@@ -4,7 +4,7 @@
 
 
 
-#import <Foundation/Foundation.h>
+@import AppKit;
 
 #define STTabProxyCreatedNote @"STTabProxyCreatedNote"
 #define STTabViewDidChangeNote @"STTabViewDidChangeNote"

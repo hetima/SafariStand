@@ -3,13 +3,16 @@
 //
 
 #ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-    #import <objc/message.h>
 
-    typedef struct _STMinMax {
-        CGFloat min;
-        CGFloat max;
-    } STMinMax;
+#import <objc/message.h>
+@import CoreGraphics.CGBase;
+
+
+typedef struct _STMinMax {
+    CGFloat min;
+    CGFloat max;
+} STMinMax;
+
 
 #import "SafariStandKeys.h"
 

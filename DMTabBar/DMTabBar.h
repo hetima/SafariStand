@@ -7,7 +7,7 @@
 //  Licensed under MIT License
 //
 
-#import <Cocoa/Cocoa.h>
+@import AppKit;
 #import "DMTabBarItem.h"
 
 enum {

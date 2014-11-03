@@ -3,7 +3,7 @@
 //  SafriStand
 
 
-#import <Cocoa/Cocoa.h>
+@import AppKit;
 
 
 @interface HTArrayController : NSArrayController {

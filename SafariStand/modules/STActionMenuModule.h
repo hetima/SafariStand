@@ -2,7 +2,7 @@
 //  STActionMenuModule.h
 //  SafariStand
 
-#import <Foundation/Foundation.h>
+@import AppKit;
 
 #define STActionMenuIdentifier @"com.hetima.SafariStand.actionMenu"
 

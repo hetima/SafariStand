@@ -3,7 +3,7 @@
 //  SafariStand
 
 
-#import <Foundation/Foundation.h>
+@import AppKit;
 
 
 int HTAddXattrMDItemWhereFroms(NSString* path, NSArray* URLArray);

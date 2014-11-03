@@ -7,7 +7,7 @@
  ホイールスクロールでタブ切り替え
  */
 
-#import <Foundation/Foundation.h>
+@import AppKit;
 
 
 @interface STSTabBarModule : STCModule

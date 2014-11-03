@@ -3,7 +3,7 @@
 //  SafariStand
 
 
-#import <Cocoa/Cocoa.h>
+@import AppKit;
 
 @interface STSquashContextMenuSheetCtl : NSWindowController
 

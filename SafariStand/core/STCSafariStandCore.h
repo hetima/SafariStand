@@ -3,7 +3,7 @@
 //  SafariStand
 
 
-#import <Foundation/Foundation.h>
+@import AppKit;
 
 #define kSafariStandPrefDomain @"com.hetima.SafariStand"
 

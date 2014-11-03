@@ -2,7 +2,7 @@
 //  STKeyHandlerModule.h
 //  SafariStand
 
-#import <Foundation/Foundation.h>
+@import AppKit;
 
 
 @interface STKeyHandlerModule : STCModule

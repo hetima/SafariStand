@@ -2,7 +2,7 @@
 //  STSidebarResizeHandleView.h
 //  SafariStand
 
-#import <Cocoa/Cocoa.h>
+@import AppKit;
 
 @protocol STSidebarResizeHandleViewDelegate;
 

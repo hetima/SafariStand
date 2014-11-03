@@ -3,8 +3,9 @@
 //  SafariStand
 
 
-#import <Cocoa/Cocoa.h>
-#import <WebKit/WebKit.h>
+@import AppKit;
+@import WebKit;
+
 
 //飛ぶ
 //0==普通 1==普通うしろ

@@ -3,7 +3,7 @@
 //  SafariStand
 
 
-#import <Cocoa/Cocoa.h>
+@import AppKit;
 
 #define kSTQSToolbarBaseWidth 200
 #define kSTQSToolbarLeftWidth 64

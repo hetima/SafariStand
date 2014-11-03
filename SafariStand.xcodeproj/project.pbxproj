@@ -19,7 +19,6 @@
 		AA0B390515C503EC00A025FF /* STActionMenuModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0B390415C503EB00A025FF /* STActionMenuModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA0B390715C5044F00A025FF /* STTBActionMenu.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AA0B390615C5044F00A025FF /* STTBActionMenu.tiff */; };
 		AA0B390C15C54ED000A025FF /* STTBActionMenuDisabled.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AA0B390B15C54ED000A025FF /* STTBActionMenuDisabled.tiff */; };
-		AA12DA7E13B73EFA0082EBB3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA12DA7D13B73EFA0082EBB3 /* Cocoa.framework */; };
 		AA12DA8813B73EFA0082EBB3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA12DA8613B73EFA0082EBB3 /* InfoPlist.strings */; };
 		AA171B74168E05C1007A4661 /* STQuickSearchModule+QSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B73168E05C0007A4661 /* STQuickSearchModule+QSToolbar.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA171B791690A4A7007A4661 /* STQSToolbarBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B781690A4A7007A4661 /* STQSToolbarBaseView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -102,6 +101,8 @@
 		AAF4985719F7622A0064BD35 /* STSearchItLaterViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF4985519F7622A0064BD35 /* STSearchItLaterViewCtl.m */; };
 		AAF4985819F7622A0064BD35 /* STSearchItLaterViewCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAF4985619F7622A0064BD35 /* STSearchItLaterViewCtl.xib */; };
 		AAF4986019F7FE7C0064BD35 /* STTBDownload.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AAF4985F19F7FE7C0064BD35 /* STTBDownload.pdf */; };
+		AAF68C9D1A08021100FD8625 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA12DA8013B73EFA0082EBB3 /* AppKit.framework */; };
+		AAF68C9E1A08021800FD8625 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA12DA8213B73EFA0082EBB3 /* Foundation.framework */; };
 		AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF8702513E55E4E00AC67A1 /* STSDownloadModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAF9D293147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D28D147E1E210018C949 /* HTDOMElementHierarchyMenuItem.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAF9D296147E1E210018C949 /* HTWebClipwinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF9D292147E1E210018C949 /* HTWebClipwinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -298,11 +299,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAF68C9E1A08021800FD8625 /* Foundation.framework in Frameworks */,
+				AAF68C9D1A08021100FD8625 /* AppKit.framework in Frameworks */,
 				AADBCB5015C119070069E262 /* ApplicationServices.framework in Frameworks */,
 				AA0357CE13F41F0E003D50F3 /* Quartz.framework in Frameworks */,
 				AA0357C413F3CCCC003D50F3 /* libcrypto.dylib in Frameworks */,
 				AAD79B5B13E2D2ED004CE895 /* CoreFoundation.framework in Frameworks */,
-				AA12DA7E13B73EFA0082EBB3 /* Cocoa.framework in Frameworks */,
 				AA5B3AA913BC5782001453C0 /* WebKit.framework in Frameworks */,
 				AA3B13531808461900DDF075 /* JavaScriptCore.framework in Frameworks */,
 				AA9F781A13F91D8C0016874A /* WebKit2.framework in Frameworks */,
@@ -938,6 +940,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -964,6 +967,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;

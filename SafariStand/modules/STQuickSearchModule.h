@@ -2,7 +2,7 @@
 //  STQuickSearchModule.h
 //  SafariStand
 
-#import <Foundation/Foundation.h>
+@import AppKit;
 #import "HTQuerySeed.h"
 
 #define kDefaultSeedShortcut @"default"

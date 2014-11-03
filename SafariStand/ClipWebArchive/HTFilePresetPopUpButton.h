@@ -1,7 +1,7 @@
 //
 //  HTFilePresetPopUpButton.h
 
-#import <Cocoa/Cocoa.h>
+@import AppKit;
 
 
 //#define HTFilePresetPopUpButtonCurrentValue @"HTFilePresetPopUpButtonCurrentValue"

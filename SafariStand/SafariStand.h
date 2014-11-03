@@ -14,3 +14,4 @@
 #define LOCALIZE(key) \
 [[NSBundle bundleWithIdentifier:kSafariStandBundleID] localizedStringForKey:(key) value:key table:nil]
 #endif
+

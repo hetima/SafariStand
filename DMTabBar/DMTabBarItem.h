@@ -7,7 +7,8 @@
 //  Licensed under MIT License
 //
 
-#import <Foundation/Foundation.h>
+@import AppKit;
+
 
 @interface DMTabBarItem : NSButtonCell { }
 

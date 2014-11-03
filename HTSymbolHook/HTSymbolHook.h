@@ -11,7 +11,7 @@
  */
 
 
-#import <Foundation/Foundation.h>
+@import AppKit;
 
 enum HTSymbolHookImageNameMatchingRule {
     HTSymbolHookImageNameMatchingEqual=0,

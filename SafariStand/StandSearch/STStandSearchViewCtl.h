@@ -4,7 +4,7 @@
 
 
 
-#import <Cocoa/Cocoa.h>
+@import AppKit;
 
 enum{
     SSModeHistorySearch=0,

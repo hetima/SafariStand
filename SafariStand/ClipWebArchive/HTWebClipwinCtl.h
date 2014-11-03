@@ -2,8 +2,9 @@
 //  HTWebClipwinCtl.h
 //  SafariStand
 
-#import <Cocoa/Cocoa.h>
-#import <WebKit/WebKit.h>
+@import AppKit;
+@import WebKit;
+
 
 //#define kClipContentHeaderID @"stand-clip-header"
 

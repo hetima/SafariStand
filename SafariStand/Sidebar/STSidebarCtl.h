@@ -3,7 +3,7 @@
 //  SafariStand
 
 
-#import <Cocoa/Cocoa.h>
+@import AppKit;
 
 #define kCounterpartMinWidth 100
 #define kSidebarFrameMinWidth 200

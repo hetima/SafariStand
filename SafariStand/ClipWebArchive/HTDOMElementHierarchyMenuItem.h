@@ -3,7 +3,7 @@
 //  SafariStand
  
 
-#import <Cocoa/Cocoa.h>
+@import AppKit;
 
 NSString* HTDescriptionDOMHTMLElement(id node);
 NSMenuItem* HTDOMHTMLElementHierarchyMenuItemRetained(id node, NSString* title, SEL itemSelector, id target, BOOL includeBody);
