@@ -51,7 +51,7 @@ enum {
     KZRMethodSwizzlingErrorClassNotFound=1,
     KZRMethodSwizzlingErrorMethodNotFound=2,
     
-    KZRMethodSwizzlingErrorFailedToAddMethod=3
+    KZRMethodSwizzlingErrorFailedToAddMethod=3,
 };
 
 #define KZRMETHOD_SWIZZLING_(className, selectorName, returnType, originalIMP, originalSelector) ({\
@@ -76,7 +76,7 @@ _val_err; \
 })
 
 #define KZRMETHOD_ADDING_(className, superClassName, selectorName, returnType, superIMP, originalSelector) ({\
-NSInteger _val_err=KZRMethodSwizzlingNoError; \
+NSInteger _val_adding_err=KZRMethodSwizzlingNoError; \
 BOOL _val_isClassMethod=NO; \
 const char* _val_selName=selectorName; \
 if(*_val_selName=='+'){_val_isClassMethod=YES; _val_selName++;} \
@@ -93,10 +93,10 @@ if (superIMP) { id _val_block=
 
 #define _WITHBLOCK_ADD ;IMP _val_newImp = imp_implementationWithBlock(_val_block); \
 if(!class_addMethod(_val_target_cls, _val_selector, _val_newImp, method_getTypeEncoding(_val_originalMethod))){ \
-_val_err=KZRMethodSwizzlingErrorFailedToAddMethod;} \
-}else{_val_err=KZRMethodSwizzlingErrorMethodNotFound;} \
-}else{_val_err=KZRMethodSwizzlingErrorClassNotFound;} \
-_val_err; \
+_val_adding_err=KZRMethodSwizzlingErrorFailedToAddMethod;} \
+}else{_val_adding_err=KZRMethodSwizzlingErrorMethodNotFound;} \
+}else{_val_adding_err=KZRMethodSwizzlingErrorClassNotFound;} \
+_val_adding_err; \
 })
 
 #endif
