@@ -29,6 +29,7 @@
 //Safari::WK::didStartProgress(OpaqueWKPage const*, void const*)
 //__ZN6Safari2WKL16didStartProgressEPK12OpaqueWKPagePKv
 // Fail to catch STTabProxy some time when Per-Tab Process Enabled (it's default).
+// clientInfo 8バイト目に 構造体へのポインタ。それの16バイト目に WKView
 void (*orig_didStartProgress)(WKPageRef, const void*);
 void STWK_didStartProgress(WKPageRef page, const void* clientInfo)
 {

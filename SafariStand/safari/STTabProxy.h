@@ -61,6 +61,7 @@
 - (void)selectTab;
 
 
+- (void)wkViewDidReplaced:(id)wkView;
 - (void)didStartProgress;
 - (void)didFinishProgress;
 

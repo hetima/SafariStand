@@ -180,6 +180,26 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
         call(slf, sel);
     }_WITHBLOCK;
     
+    
+    //WKView は頻繁に作り直される。そのとき didStartProgress が上手く取れないため view の入れ替え時に捕まえる
+    KZRMETHOD_SWIZZLING_("ResizableContentContainer", "didAddSubview:", void, call, sel)
+    ^void (id slf, id wkView)
+    {
+        call(slf, sel, wkView);
+        
+        if ([[wkView className]isEqualToString:@"BrowserWKView"]) {
+            NSView* tabContentView=[slf superview];
+            STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem *tabViewItem, BOOL *stop) {
+                if ([tabViewItem view]==tabContentView) {
+                    STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:tabViewItem];
+                    [proxy wkViewDidReplaced:wkView];
+                    *stop=YES;
+                }
+            });
+        }
+    }_WITHBLOCK;
+
+    
 }
 
 

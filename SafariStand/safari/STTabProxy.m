@@ -193,6 +193,22 @@
 
 #pragma mark - pageLoader
 
+
+- (void)wkViewDidReplaced:(id)wkView
+{
+    if (_invalid) return;
+    LOG(@"didReplaceWKView");
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchIconImage) object:nil];
+    //clean up for didStartProgress fail
+    [self willChangeValueForKey:@"image"];
+    self.cachedImage=nil;
+    [self didChangeValueForKey:@"image"];
+    
+    //読み込み済みのwkViewだった場合favicon更新しないと表示されない
+}
+
+
 - (void)didStartProgress
 {
     LOG(@"didStartProgress");
