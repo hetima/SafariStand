@@ -50,6 +50,7 @@
 - (id)wkView;
 - (BOOL)canClose;
 - (BOOL)isThereOtherTab;
+- (BOOL)isInPrivateBrowsing;
 
 - (NSString*)domain;
 - (NSString*)URLString;

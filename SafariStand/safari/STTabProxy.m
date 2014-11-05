@@ -133,6 +133,18 @@
 }
 
 
+- (BOOL)isInPrivateBrowsing
+{
+    BOOL result=NO;
+    id wkView=[self wkView];
+    if ([wkView respondsToSelector:@selector(usesPrivateBrowsing)]) {
+        result=((BOOL(*)(id, SEL, ...))objc_msgSend)(wkView, @selector(usesPrivateBrowsing));
+    }
+    
+    return result;
+}
+
+
 - (NSString*)domain
 {
     if (_invalid) return nil;

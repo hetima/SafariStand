@@ -702,6 +702,10 @@
         //support only single item
         STTabProxy* draggedProxy=[draggedCtl.tabs objectAtIndex:[[indexes firstObject]integerValue]];
         
+        if ([draggedProxy isInPrivateBrowsing]!=[tabProxyAtDestination isInPrivateBrowsing]) {
+            return NO;
+        }
+        
         //don't mind same window or not
         STSafariMoveTabToOtherWindow(draggedProxy.tabViewItem, [tabProxyAtDestination window], windowRow, YES);
 
