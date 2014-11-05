@@ -204,7 +204,7 @@ WKPageRef htWKPageRefForWKView(id wkView)
         return nil;
     }
     
-    WKPageRef pageRef=(__bridge WKPageRef)(objc_msgSend(wkView, @selector(pageRef)));
+    WKPageRef pageRef=((WKPageRef(*)(id, SEL, ...))objc_msgSend)(wkView, @selector(pageRef));
     return pageRef;
 }
 
@@ -258,8 +258,17 @@ NSImage* htWKIconImageForWKView(id wkView, CGFloat maxSize)
 {
     NSImage* img=nil;
     
+    if (!wkView) {
+        return nil;
+    }
     WKPageRef pageRef=htWKPageRefForWKView(wkView);
+    if (!pageRef) {
+        return nil;
+    }
     WKFrameRef frameRef=WKPageGetMainFrame(pageRef);
+    if (!frameRef) {
+        return nil;
+    }
     WKURLRef urlRef=WKFrameCopyURL(frameRef);
     if (!urlRef) {
         return nil;
