@@ -384,7 +384,7 @@
 
 - (IBAction)actDoSortMenuItem:(NSMenuItem*)sender
 {
-    NSInteger sort=[sender tag];
+    //NSInteger sort=[sender tag];
 }
 
 
