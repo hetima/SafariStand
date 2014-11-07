@@ -10,7 +10,6 @@
 #import "STSidebarCtl.h"
 #import "STTabProxy.h"
 #import "STSidebarResizeHandleView.h"
-//#import "STVTabListCtl.h"
 
 #import "STSafariConnect.h"
 #import "NSObject+HTAssociatedObject.h"

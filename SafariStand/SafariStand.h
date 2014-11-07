@@ -4,7 +4,6 @@
 #import "STCSafariStandCore.h"
 #import "NSObject+HTAssociatedObject.h"
 #import "NSString+HTUtil.h"
-#import "HTObjectHook.h"
 #import "HTUtils.h"
 #import "STSafariConnect.h"
 

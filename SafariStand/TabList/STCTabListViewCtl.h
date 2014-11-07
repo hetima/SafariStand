@@ -40,8 +40,6 @@ enum : NSInteger {
 
 @interface STCTabListTableView : NSTableView
 
-//@property (nonatomic, unsafe_unretained) IBOutlet STVTabListCtl *oTabListCtl;
-
 @end
 
 @interface STCTabListCellView : NSTableCellView

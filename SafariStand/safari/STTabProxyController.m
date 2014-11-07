@@ -23,24 +23,6 @@
 
 static STTabProxyController *sharedInstance;
 
-//未使用
-//tabViewItem が取り除かれるとき STTabProxyリストから除外
-/*
- static void (*orig_removeTabViewItem)(id, SEL, ...);
-static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
-{
-    id proxy=[STTabProxy tabProxyForTabViewItem:tabViewItem];
-    if(proxy){
-        [NSObject cancelPreviousPerformRequestsWithTarget:proxy
-                                                 selector:@selector(updateImage) object:nil];
-
-        [[STTabProxyController si]removeTabProxy:proxy];
-    }
-    orig_removeTabViewItem(self, _cmd, tabViewItem);
-}
-*/
-
-
 - (void)setup
 {
 
@@ -161,10 +143,7 @@ static void ST_removeTabViewItem(id self, SEL _cmd, id tabViewItem)
     }_WITHBLOCK;
 
 
-    //STTabProxyをリストから除外するため
-//    orig_removeTabViewItem = RMF(NSClassFromString(kSafariBrowserWindowController),
-//                              @selector(_removeTabViewItem:), ST_removeTabViewItem);
-    
+
     //tabViewItem がdealloc、 STTabProxyリストから除外
     //重要：dealloc 中 retain されないように self は __unsafe_unretained
     KZRMETHOD_SWIZZLING_("BrowserTabViewItem", "dealloc", void, call, sel)
