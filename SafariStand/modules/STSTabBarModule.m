@@ -102,6 +102,29 @@
         return result;
     }_WITHBLOCK;
     
+    //follow empty space
+    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "_tabIndexAtPoint:", unsigned long long, call, sel)
+    ^NSUInteger(id slf, struct CGPoint arg1)
+    {
+        NSUInteger result=call(slf, sel, arg1);
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
+            if (result==0) {
+                double maxWidth=floor([[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue]);
+                if (arg1.x > maxWidth) {
+                    result=NSNotFound;
+                }
+            }else if (result!=NSNotFound) {
+                if ([slf respondsToSelector:@selector(numberOfTabs)]) {
+                    NSUInteger num=((NSUInteger(*)(id, SEL, ...))objc_msgSend)(slf, @selector(numberOfTabs));
+                    if (num <= result) {
+                        result=NSNotFound;
+                    }
+                }
+            }
+        }
+        return result;
+    }_WITHBLOCK;
+    
     
     double minX=[[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue];
     if (minX<140.0 || minX>480.0) minX=240.0;
@@ -112,7 +135,7 @@
     [self observePrefValue:kpSuppressTabBarWidthValue];
     
     
-    //test
+    //ShowIconOnTabBar
     KZRMETHOD_SWIZZLING_("ScrollableTabButton", "initWithFrame:tabViewItem:", id, call, sel)
     ^id (id slf, NSRect frame, id obj)
     {
@@ -123,6 +146,7 @@
         
         return result;
     }_WITHBLOCK;
+
     
     if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnTabBarEnabled]) {
         [self installIconToExistingWindows];
