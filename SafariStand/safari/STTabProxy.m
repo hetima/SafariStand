@@ -55,7 +55,7 @@
     _tabViewItem=item;
     _cachedImage=nil;
     _isLoading=NO;
-    _wantsImage=YES; //test
+    _waitIcon=NO;
     _isMarked=NO;
     _isUnread=NO;
     _isInAnyWidget=NO;
@@ -78,7 +78,6 @@
 {
     LOG(@"STTabProxy will dealloc");
     _invalid=YES;
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchIconImage) object:nil];
     _tabViewItem=nil;
 }
 
@@ -211,11 +210,11 @@
     if (_invalid) return;
     LOG(@"didReplaceWKView");
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchIconImage) object:nil];
     //clean up for didStartProgress fail
     [self willChangeValueForKey:@"image"];
     self.cachedImage=nil;
     [self didChangeValueForKey:@"image"];
+    _waitIcon=YES;
     
     //読み込み済みのwkViewだった場合favicon更新しないと表示されない
 }
@@ -225,14 +224,12 @@
 {
     LOG(@"didStartProgress");
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchIconImage) object:nil];
-    //[self willChangeValueForKey:@"isLoading"];
     self.isLoading=YES;
-    //[self didChangeValueForKey:@"isLoading"];
     
     [self willChangeValueForKey:@"image"];
     self.cachedImage=nil;
     [self didChangeValueForKey:@"image"];
+    _waitIcon=YES;
     
     //self.domain=@"";
     
@@ -242,45 +239,52 @@
 {
     LOG(@"didFinishProgress");
 
-    //[self willChangeValueForKey:@"isLoading"];
+    
     self.isLoading=NO;
     self.modificationDate=[NSDate date];
     if([_tabViewItem tabState]!=NSSelectedTab)self.isUnread=YES;
 
-    //[self didChangeValueForKey:@"isLoading"];
+    
     self.title=[self.tabViewItem title];
     self.host=[[NSURL URLWithString:[self URLString]]host];
     _cachedDomain=nil;
 
-    if ((self.wantsImage || self.isInAnyWidget) && [self.host length]>0) {
+    if (_waitIcon && [self.host length]>0) {
         if (![self fetchIconImage]) {
             //clean up for didStartProgress fail
             [self willChangeValueForKey:@"image"];
             self.cachedImage=nil;
             [self didChangeValueForKey:@"image"];
-            [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:2.5];
-            [self performSelector:@selector(fetchIconImage) withObject:nil afterDelay:7.0];
         }
     }
     
     [[NSNotificationCenter defaultCenter]postNotificationName:STTabProxyDidFinishProgressNote object:self];
 }
 
+
+- (void)iconDatabaseDidAddIconForURL:(NSURL*)url
+{
+    if (_invalid || !_waitIcon) {
+        return;
+    }
+    NSString* updatedURLString=[url absoluteString];
+    NSString* currentURLString=self.URLString;
+    if ([updatedURLString isEqualToString:currentURLString]) {
+        LOG(@"iconDatabaseDidAddIcon");
+        [self fetchIconImage];
+    }
+}
+
+
 - (void)installedToSidebar:(id)ctl
 {
     self.isInAnyWidget=YES;
-    if (!self.wantsImage) {
-        [self fetchIconImage];
-    }
 }
 
 //This method may be called after target tab has closed.
 - (void)uninstalledFromSidebar:(id)ctl
 {
     self.isInAnyWidget=NO;
-    if (!self.wantsImage) {
-        self.cachedImage=nil;
-    }
 }
 
 - (BOOL)fetchIconImage
@@ -297,14 +301,13 @@
     if (wkView) {
         NSImage* icon=htWKIconImageForWKView(wkView, 32.0);
         if (icon) {
-            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchIconImage) object:nil];
             [self willChangeValueForKey:@"image"];
             self.cachedImage=icon;
             [self didChangeValueForKey:@"image"];
+            _waitIcon=NO;
             return YES;
         }
     }
-    LOG(@"fail fetchIconImage");
     return NO;
 }
 

@@ -31,18 +31,21 @@ static STTabProxyController *sharedInstance;
 
     //既存のものにパッチ
     STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem* tabViewItem, BOOL* stop){
-        //if (STSafariUsesWebKit2(tabViewItem)) {
+
         STTabProxy* proxy =[[STTabProxy alloc]initWithTabViewItem:tabViewItem];
         if ([[tabViewItem tabView]selectedTabViewItem]==tabViewItem) {
             proxy.isSelected=YES;
         }else{
             proxy.isSelected=NO;
         }
-        NSString* URLString=[(id)tabViewItem URLString];
+        proxy.waitIcon=YES;
+        NSString* URLString=[(id)tabViewItem URLString]; //sometimes nil even loading
         if (URLString) {
+            
             proxy.host=[[NSURL URLWithString:URLString]host];
+            [proxy fetchIconImage];
         }
-        //}
+
     });
 
     //tabViewItem を生成するとき STTabProxy を付ける
@@ -178,7 +181,24 @@ static STTabProxyController *sharedInstance;
         }
     }_WITHBLOCK;
 
+    //favicon update
+    //2回ほど無駄に多めに呼ばれる。そのときアイコンを取りに行っても準備できてない。
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(noteWebIconDatabaseDidAddIcon:)
+                                                name:@"IconControllerDidChangeIconForPageURLNotification" object:nil];
     
+}
+
+
+- (void)noteWebIconDatabaseDidAddIcon:(NSNotification*)notification
+{
+    NSURL* url=[[notification userInfo]objectForKey:@"iconControllerPageURLKey"];
+    if (url) {
+        STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem *tabViewItem, BOOL *stop) {
+            STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:tabViewItem];
+            [proxy iconDatabaseDidAddIconForURL:url];
+        });
+    }
 }
 
 

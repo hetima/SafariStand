@@ -20,7 +20,7 @@
 @property(nonatomic, assign) uintptr_t parentRef;
 @property(nonatomic, readonly) uintptr_t ownRef;
 
-@property(nonatomic, assign) BOOL wantsImage;
+@property(nonatomic, assign) BOOL waitIcon;
 @property(nonatomic, assign) BOOL isInAnyWidget;
 @property(nonatomic, assign) BOOL isMarked;
 
@@ -65,6 +65,8 @@
 - (void)wkViewDidReplaced:(id)wkView;
 - (void)didStartProgress;
 - (void)didFinishProgress;
+- (void)iconDatabaseDidAddIconForURL:(NSURL*)url;
+- (BOOL)fetchIconImage;
 
 - (void)installedToSidebar:(id)ctl;
 - (void)uninstalledFromSidebar:(id)ctl;
