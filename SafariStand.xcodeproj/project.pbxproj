@@ -58,6 +58,7 @@
 		AA671B2B17F704FF000A470C /* udis86.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1E17F704FF000A470C /* udis86.c */; };
 		AA671B2C17F704FF000A470C /* mach_override.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1F17F704FF000A470C /* mach_override.c */; };
 		AA671B3017F71D96000A470C /* STWKClientHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA671B2F17F71D96000A470C /* STWKClientHook.m */; };
+		AA6B54E31AEE2C8C003F216D /* STTabPickerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6B54E21AEE2C8C003F216D /* STTabPickerModule.m */; };
 		AA6D308E19FBA6670049E798 /* STDummyDownloadPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6D308D19FBA6670049E798 /* STDummyDownloadPanel.xib */; };
 		AA6FCF3E15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FCF3C15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA6FCF3F15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6FCF3D15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib */; };
@@ -207,6 +208,8 @@
 		AA671B2217F704FF000A470C /* udis86.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = udis86.h; sourceTree = "<group>"; };
 		AA671B2E17F71D96000A470C /* STWKClientHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWKClientHook.h; sourceTree = "<group>"; };
 		AA671B2F17F71D96000A470C /* STWKClientHook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWKClientHook.m; sourceTree = "<group>"; };
+		AA6B54E11AEE2C8C003F216D /* STTabPickerModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTabPickerModule.h; sourceTree = "<group>"; };
+		AA6B54E21AEE2C8C003F216D /* STTabPickerModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTabPickerModule.m; sourceTree = "<group>"; };
 		AA6D308D19FBA6670049E798 /* STDummyDownloadPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STDummyDownloadPanel.xib; sourceTree = "<group>"; };
 		AA6FCF3B15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSquashContextMenuSheetCtl.h; sourceTree = "<group>"; };
 		AA6FCF3C15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSquashContextMenuSheetCtl.m; sourceTree = "<group>"; };
@@ -513,6 +516,8 @@
 				AA0B390415C503EB00A025FF /* STActionMenuModule.m */,
 				AA21447F17EF556000EDE661 /* STSidebarModule.h */,
 				AA21448017EF556000EDE661 /* STSidebarModule.m */,
+				AA6B54E11AEE2C8C003F216D /* STTabPickerModule.h */,
+				AA6B54E21AEE2C8C003F216D /* STTabPickerModule.m */,
 			);
 			path = modules;
 			sourceTree = "<group>";
@@ -776,6 +781,7 @@
 				AAD79B4E13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m in Sources */,
 				AA0881B013E51287003B70DF /* STSTitleBarModule.m in Sources */,
 				AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */,
+				AA6B54E31AEE2C8C003F216D /* STTabPickerModule.m in Sources */,
 				AA780DA313F1A88C0042A253 /* STClassifyDownloadAdvSheetCtl.m in Sources */,
 				AA780DA913F1C5E00042A253 /* HTUtils.m in Sources */,
 				AA396EFF13F61B1E00EF5806 /* STStandSearchViewCtl.m in Sources */,
