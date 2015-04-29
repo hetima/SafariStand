@@ -133,6 +133,7 @@ static STCSafariStandCore *sharedInstance;
     NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
                        [NSNumber numberWithBool:YES], kpQuickSearchMenuEnabled,
                        [NSNumber numberWithDouble:250.0], kpSuppressTabBarWidthValue,
+                       [NSNumber numberWithBool:YES], kpEnhanceVisualTabPicker,
                        //@"-", kpCheckedLatestVariosn,
                        nil];
     [[NSUserDefaults standardUserDefaults]registerDefaults:dic];

@@ -94,4 +94,8 @@
 #define kpShowIconOnSidebarBookmarkEnabled @"Stand_ShowIconOnSidebarBookmarkEnabled"
 #define kpShowBrowserWindowTitlebar @"Stand_ShowBrowserWindowTitlebar"
 
+#define kpEnhanceVisualTabPicker @"Stand_EnhanceVisualTabPicker"
+#define kpDontStackVisualTabPicker @"Stand_DontStackVisualTabPicker"
+#define kpCtlTabTriggersVisualTabPicker @"Stand_CtlTabTriggersVisualTabPicker"
+
 #endif

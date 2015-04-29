@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="STPrefWindowCtl">
@@ -35,7 +35,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button toolTip="enable action_message: scheme in bookmarks bar." id="3">
-                                            <rect key="frame" x="18" y="324" width="208" height="18"/>
+                                            <rect key="frame" x="18" y="324" width="192" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Action Message Enabled" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="4">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -115,7 +115,7 @@
                                             </connections>
                                         </button>
                                         <button toolTip="add copy URL and title, google search with pressing alt key; to Title bar" id="126">
-                                            <rect key="frame" x="18" y="304" width="244" height="18"/>
+                                            <rect key="frame" x="18" y="304" width="200" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Improve Path Popup Menu" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="127">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -142,9 +142,9 @@
                                             </connections>
                                         </button>
                                         <button toolTip="WebKit2BackspaceKeyNavigationEnabled" id="181">
-                                            <rect key="frame" x="18" y="230" width="327" height="18"/>
+                                            <rect key="frame" x="18" y="230" width="228" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Go Back / Forward by Delete Key (Needs Restart)" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="182">
+                                            <buttonCell key="cell" type="check" title="Go Back / Forward by Delete Key" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="182">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -158,7 +158,7 @@
                                             </connections>
                                         </button>
                                         <button id="185">
-                                            <rect key="frame" x="18" y="182" width="252" height="18"/>
+                                            <rect key="frame" x="18" y="182" width="180" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Suppress Tab Bar Width" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="186">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -204,7 +204,7 @@
                                             </connections>
                                         </textField>
                                         <button id="8LT-wt-rnX">
-                                            <rect key="frame" x="18" y="135" width="252" height="18"/>
+                                            <rect key="frame" x="18" y="135" width="200" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Expand Address Bar Width" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1gk-yO-ULF">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -254,7 +254,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <button id="30F-hP-sUz">
-                                            <rect key="frame" x="18" y="70" width="252" height="18"/>
+                                            <rect key="frame" x="18" y="70" width="176" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Show Icon on Tab Bar" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="lXM-d3-eAG">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -278,6 +278,64 @@
                                             </buttonCell>
                                             <connections>
                                                 <binding destination="6" name="value" keyPath="values.Stand_ShowIconOnSidebarBookmarkEnabled" id="hIE-Or-At0">
+                                                    <dictionary key="options">
+                                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                        <integer key="NSNullPlaceholder" value="0"/>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
+                                        </button>
+                                        <button id="lxe-uf-jkQ">
+                                            <rect key="frame" x="327" y="225" width="195" height="23"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Enhance Visual Tab Picker" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="3pi-84-rVo">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="6" name="value" keyPath="values.Stand_EnhanceVisualTabPicker" id="pFw-Rl-N0W">
+                                                    <dictionary key="options">
+                                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                        <integer key="NSNullPlaceholder" value="0"/>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
+                                        </button>
+                                        <button id="aHu-48-xlf">
+                                            <rect key="frame" x="327" y="200" width="236" height="23"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Ctl+Tab Triggers Visual Tab Picker" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="Dfx-Md-IyF">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="6" name="enabled" keyPath="values.Stand_EnhanceVisualTabPicker" id="dwo-04-OG4"/>
+                                                <binding destination="6" name="value" keyPath="values.Stand_CtlTabTriggersVisualTabPicker" id="sfF-2T-J5o">
+                                                    <dictionary key="options">
+                                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                        <integer key="NSNullPlaceholder" value="0"/>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
+                                        </button>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="oBo-U3-jyg">
+                                            <rect key="frame" x="183" y="214" width="99" height="14"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="(Needs Restart)" id="x8n-L5-ahX">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <button id="pPB-Ch-Aru">
+                                            <rect key="frame" x="327" y="175" width="214" height="23"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Don't Stack Visual Tab Picker" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="9O6-ML-eeC">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="6" name="value" keyPath="values.Stand_DontStackVisualTabPicker" id="pHn-L2-euK">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
