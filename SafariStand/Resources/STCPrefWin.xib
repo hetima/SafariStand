@@ -286,9 +286,9 @@
                                             </connections>
                                         </button>
                                         <button id="lxe-uf-jkQ">
-                                            <rect key="frame" x="327" y="225" width="195" height="23"/>
+                                            <rect key="frame" x="327" y="225" width="266" height="23"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Enhance Visual Tab Picker" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="3pi-84-rVo">
+                                            <buttonCell key="cell" type="check" title="&quot;Show All Tabs&quot; : Keyboard Navigation" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="3pi-84-rVo">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -304,18 +304,18 @@
                                         <button id="aHu-48-xlf">
                                             <rect key="frame" x="327" y="200" width="236" height="23"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Ctl+Tab Triggers Visual Tab Picker" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="Dfx-Md-IyF">
+                                            <buttonCell key="cell" type="check" title="Ctl+Tab Triggers &quot;Show All Tabs&quot;" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="Dfx-Md-IyF">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="enabled" keyPath="values.Stand_EnhanceVisualTabPicker" id="dwo-04-OG4"/>
                                                 <binding destination="6" name="value" keyPath="values.Stand_CtlTabTriggersVisualTabPicker" id="sfF-2T-J5o">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
                                                     </dictionary>
                                                 </binding>
+                                                <binding destination="6" name="enabled" keyPath="values.Stand_EnhanceVisualTabPicker" id="dwo-04-OG4"/>
                                             </connections>
                                         </button>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="oBo-U3-jyg">
@@ -330,7 +330,7 @@
                                         <button id="pPB-Ch-Aru">
                                             <rect key="frame" x="327" y="175" width="214" height="23"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Don't Stack Visual Tab Picker" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="9O6-ML-eeC">
+                                            <buttonCell key="cell" type="check" title="Don't Stack &quot;Show All Tabs&quot;" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="9O6-ML-eeC">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
