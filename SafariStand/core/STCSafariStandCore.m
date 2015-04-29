@@ -94,7 +94,8 @@ static STCSafariStandCore *sharedInstance;
     registerAndAddOrder(@"STActionMenuModule"); //must after STSToolbarModule
     registerAndAddOrder(@"STSidebarModule");
     registerAndAddOrder(@"STKeyHandlerModule");
-    
+    registerAndAddOrder(@"STTabPickerModule");
+
 #undef registerAndAddOrder
     
     for (id module in orderedModule) {
@@ -132,6 +133,7 @@ static STCSafariStandCore *sharedInstance;
     NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
                        [NSNumber numberWithBool:YES], kpQuickSearchMenuEnabled,
                        [NSNumber numberWithDouble:250.0], kpSuppressTabBarWidthValue,
+                       [NSNumber numberWithBool:YES], kpEnhanceVisualTabPicker,
                        //@"-", kpCheckedLatestVariosn,
                        nil];
     [[NSUserDefaults standardUserDefaults]registerDefaults:dic];

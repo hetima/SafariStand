@@ -43,9 +43,10 @@ enum : NSInteger {
 @end
 
 @interface STCTabListCellView : NSTableCellView
-@property (nonatomic) BOOL mouseIsIn;
+@property (nonatomic, weak) IBOutlet NSButton* closeButton;
 @property (nonatomic, weak) STCTabListViewCtl* listViewCtl;
 
+- (void)resetState;
 - (IBAction)actCloseBtn:(id)sender;
 
 @end
