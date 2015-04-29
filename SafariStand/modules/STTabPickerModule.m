@@ -460,6 +460,38 @@ id STArrayPrevItem(NSArray* ary, id itm)
 }
 
 
+- (void)closeFocusedTab
+{
+    if ([[self orderedTabItems]count]<=1) {
+        return;
+    }
+    
+    id thumbnailView=[self focusedThumbnailView];
+    if (!thumbnailView && ![[thumbnailView className]isEqualToString:@"VisualTabPickerThumbnailView"]) {
+        return;
+    }
+    id containerView=[thumbnailView valueForKey:@"dataSource"];
+    if (!containerView) {
+        return;
+    }
+    NSArray* views=[containerView valueForKey:@"_thumbnailViews"];
+    NSUInteger idx=[views indexOfObjectIdenticalTo:thumbnailView];
+    if (idx!=NSNotFound) {
+        id lastView=[self lastThumbnailView];
+        if (lastView==thumbnailView) {
+            [self focusPrevThumbnailView];
+        }else{
+            [self focusNextThumbnailView];
+        }
+        
+        id gridView=[self gridView];
+        if ([gridView respondsToSelector:@selector(visualTabPickerTileContainerView:closeTileAtIndex:)]) {
+            ((void(*)(id, SEL, ...))objc_msgSend)(gridView, @selector(visualTabPickerTileContainerView:closeTileAtIndex:), containerView, idx);
+        }
+    }
+}
+
+
 @end
 
 
@@ -596,6 +628,10 @@ id STArrayPrevItem(NSArray* ary, id itm)
                 cmd=@selector(moveUp:);
             }else if(key==0x7D){
                 cmd=@selector(moveDown:);
+            }else if(key==0x33){
+                if (([event modifierFlags] & NSCommandKeyMask)==NSCommandKeyMask) {
+                    cmd=@selector(deleteToBeginningOfLine:);
+                }
             }
         }
         
@@ -667,6 +703,12 @@ id STArrayPrevItem(NSArray* ary, id itm)
     }else if ([command isEqualToString:@"cancelOperation:"]){
         return NO;
         
+    }else if ([command isEqualToString:@"deleteToBeginningOfLine:"]){
+        if (![proxy hasAnySearchText]) {
+            [proxy closeFocusedTab];
+            return YES;
+        }
+        return NO;
     }
     
     return NO;
