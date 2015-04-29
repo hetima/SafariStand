@@ -384,6 +384,61 @@ id STArrayPrevItem(NSArray* ary, id itm)
 }
 
 
+- (void)focusCurrentTab
+{
+    NSUInteger idx=((unsigned long long(*)(id, SEL, ...))objc_msgSend)(_ctl, @selector(indexOfSelectedTab));
+    
+    id tabViewItem=[[self orderedTabItems]objectAtIndex:idx];
+    
+    id thumbnailView=[self thumbnailViewForTabViewItem:tabViewItem];
+    [self focusThumbnailView:thumbnailView];
+}
+
+
+// return VisualTabPickerThumbnailView
+- (id)thumbnailViewForTabViewItem:(id)tabviewItem
+{
+    if (!tabviewItem) {
+        return nil;
+    }
+    
+    id gridView=[self gridView];
+    if (!gridView) {
+        return nil;
+    }
+    
+    NSArray* tileContainerViews=[gridView valueForKey:@"_tileContainerViews"];
+    NSArray* arrayOfTabItemsPerContainer=[gridView valueForKey:@"_arrayOfTabItemsPerContainer"];
+    
+    __block NSInteger cIdx=-1;
+    __block NSInteger tIdx=-1;
+    [arrayOfTabItemsPerContainer enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [obj enumerateObjectsUsingBlock:^(id obj2, NSUInteger idx2, BOOL *stop2) {
+            if (obj2==tabviewItem) {
+                tIdx=idx2;
+                cIdx=idx;
+                *stop2=YES;
+                *stop=YES;
+            }
+        }];
+    }];
+    
+    if (tIdx<0 || cIdx>=[tileContainerViews count]) {
+        return nil;
+    }
+    
+    id containerView=[tileContainerViews objectAtIndex:cIdx];
+    NSArray* views=[containerView valueForKey:@"_thumbnailViews"];
+    if (tIdx>=[views count]) {
+        return nil;
+    }
+    
+    NSView* thumbnailView=[views objectAtIndex:tIdx];
+    return thumbnailView;
+    
+}
+
+
 - (void)selectFocusedTab
 {
     id thumbnailView=[self focusedThumbnailView];
@@ -401,7 +456,6 @@ id STArrayPrevItem(NSArray* ary, id itm)
         if ([gridView respondsToSelector:@selector(visualTabPickerTileContainerView:didSelectTileAtIndex:)]) {
             ((void(*)(id, SEL, ...))objc_msgSend)(gridView, @selector(visualTabPickerTileContainerView:didSelectTileAtIndex:), containerView, idx);
         }
-
     }
 }
 
@@ -418,9 +472,13 @@ id STArrayPrevItem(NSArray* ary, id itm)
     if (![visualTabPickerViewController instancesRespondToSelector:NSSelectorFromString(@"orderedTabItemsInVisualTabPickerGridView:")]) {
         return NO;
     }
+    if (![visualTabPickerViewController instancesRespondToSelector:NSSelectorFromString(@"indexOfSelectedTab")]) {
+        return NO;
+    }
     
     return YES;
 }
+
 
 - (id)initWithStand:(id)core
 {
@@ -448,7 +506,7 @@ id STArrayPrevItem(NSArray* ary, id itm)
         call(slf, sel);
         if([[NSUserDefaults standardUserDefaults]boolForKey:kpEnhanceVisualTabPicker]){
             STTabPickerProxy* proxy=[STTabPickerProxy proxyWithVisualTabPickerViewController:slf];
-            [self resetPickerFocus:proxy];
+            [proxy focusCurrentTab];
 //            ((void(*)(id, SEL, ...))objc_msgSend)(slf, NSSelectorFromString(@"focusSearchField"));
         }
         
