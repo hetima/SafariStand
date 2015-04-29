@@ -6,6 +6,31 @@
 #import "SafariStand.h"
 #import "STTabPickerModule.h"
 
+
+id STArrayNextItem(NSArray* ary, id itm)
+{
+    if ([ary count]>1) {
+        NSUInteger idx=[ary indexOfObjectIdenticalTo:itm];
+        if (idx+1<[ary count]) {
+            return [ary objectAtIndex:idx+1];
+        }
+    }
+    return nil;
+}
+
+id STArrayPrevItem(NSArray* ary, id itm)
+{
+    if ([ary count]>1) {
+        NSUInteger idx=[ary indexOfObjectIdenticalTo:itm];
+        if (idx>0) {
+            return [ary objectAtIndex:idx-1];
+        }
+    }
+    return nil;
+}
+
+
+
 @implementation STTabPickerProxy {
     id _ctl;
 }
@@ -191,13 +216,105 @@
 }
 
 
-- (void)focusThumbnailView:(id)aThumbnailView
+- (id)aboveThumbnailView:(NSView*)thumbnailView
 {
-    [_ctl htao_setValue:nil forKey:@"focusedThumbnailView"];
-    id gridView=[self gridView];
+    id targetView=nil;
+    
+    if (![[thumbnailView className]isEqualToString:@"VisualTabPickerThumbnailView"]) {
+        return nil;
+    }
+    id containerView=[thumbnailView valueForKey:@"dataSource"];
+    if (!containerView) {
+        return nil;
+    }
+    
+    //stacked
+    NSArray* views=[containerView valueForKey:@"_thumbnailViews"];
+    targetView=STArrayPrevItem(views, thumbnailView);
+    if (targetView) {
+        return targetView;
+    }
+    
+    NSArray* containerViews=[self arrangedContainerViewsAtSameColumn:containerView];
+    id targetContainerView=STArrayPrevItem(containerViews, containerView);
+    if (targetContainerView) {
+        targetView=[[targetContainerView valueForKey:@"_thumbnailViews"]lastObject];
+        if (![[targetView className]isEqualToString:@"VisualTabPickerThumbnailView"]) {
+            return nil;
+        }
+    }
+    
+    return targetView;
+}
+
+
+- (id)belowThumbnailView:(NSView*)thumbnailView
+{
+    id targetView=nil;
+    
+    if (![[thumbnailView className]isEqualToString:@"VisualTabPickerThumbnailView"]) {
+        return nil;
+    }
+    id containerView=[thumbnailView valueForKey:@"dataSource"];
+    if (!containerView) {
+        return nil;
+    }
+    
+    //stacked
+    NSArray* views=[containerView valueForKey:@"_thumbnailViews"];
+    targetView=STArrayNextItem(views, thumbnailView);
+    if (targetView) {
+        return targetView;
+    }
+
+    NSArray* containerViews=[self arrangedContainerViewsAtSameColumn:containerView];
+    id targetContainerView=STArrayNextItem(containerViews, containerView);
+    if (targetContainerView) {
+        targetView=[[targetContainerView valueForKey:@"_thumbnailViews"]firstObject];
+        if (![[targetView className]isEqualToString:@"VisualTabPickerThumbnailView"]) {
+            return nil;
+        }
+    }
+    
+    return targetView;
+}
+
+
+- (NSArray*)arrangedContainerViewsAtSameColumn:(NSView*)containerView
+{
+    NSView* gridView=[self gridView];
+    if (!gridView) {
+        return nil;
+    }
+    
+
+    CGFloat x=containerView.frame.origin.x;
+    NSArray* tileContainerViews=[gridView valueForKey:@"_tileContainerViews"];
+    
+    NSMutableArray* result=[[NSMutableArray alloc]initWithCapacity:[tileContainerViews count]];
+    
+    for (NSView* view in tileContainerViews) {
+        if (view.frame.origin.x==x) {
+            [result addObject:view];
+        }
+    }
+    
+    return result;
+}
+
+
+- (void)focusThumbnailView:(NSView*)aThumbnailView
+{
+    if(!aThumbnailView){
+        return;
+    }
+    
+    NSView* gridView=[self gridView];
     if (!gridView) {
         return;
     }
+    
+    [_ctl htao_setValue:nil forKey:@"focusedThumbnailView"];
     
     static CGColorRef focusedColor=nil;
     if (!focusedColor) {
@@ -208,9 +325,9 @@
     
 
     NSArray* tileContainerViews=[gridView valueForKey:@"_tileContainerViews"];
-    [tileContainerViews enumerateObjectsUsingBlock:^(id containerView, NSUInteger idx, BOOL *stop) {
+    [tileContainerViews enumerateObjectsUsingBlock:^(NSView* containerView, NSUInteger idx, BOOL *stop) {
         NSArray* views=[containerView valueForKey:@"_thumbnailViews"];
-        [views enumerateObjectsUsingBlock:^(id thumbnailView, NSUInteger idx2, BOOL *stop2) {
+        [views enumerateObjectsUsingBlock:^(NSView* thumbnailView, NSUInteger idx2, BOOL *stop2) {
             id focusMark=[thumbnailView htao_valueForKey:@"focusMark"];
             if (focusMark) {
                 NSView* headerView=[thumbnailView valueForKey:@"_headerBackgroundView"];
@@ -230,6 +347,9 @@
                 }
                 [thumbnailView htao_setValue:@"YES" forKey:@"focusMark"];
                 [_ctl htao_setValue:aThumbnailView forKey:@"focusedThumbnailView"];
+                
+                [[gridView valueForKey:@"_gridContainerView"] scrollRectToVisible:[containerView frame]];
+
             }
         }];
     }];
@@ -246,6 +366,20 @@
 - (void)focusPrevThumbnailView
 {
     id thumbnailView=[self prevThumbnailView:[self focusedThumbnailView]];
+    [self focusThumbnailView:thumbnailView];
+}
+
+
+- (void)focusAboveThumbnailView
+{
+    id thumbnailView=[self aboveThumbnailView:[self focusedThumbnailView]];
+    [self focusThumbnailView:thumbnailView];
+}
+
+
+- (void)focusBelowThumbnailView
+{
+    id thumbnailView=[self belowThumbnailView:[self focusedThumbnailView]];
     [self focusThumbnailView:thumbnailView];
 }
 
@@ -400,6 +534,10 @@
                 cmd=@selector(moveLeft:);
             }else if(key==0x7C){
                 cmd=@selector(moveRight:);
+            }else if(key==0x7E){
+                cmd=@selector(moveUp:);
+            }else if(key==0x7D){
+                cmd=@selector(moveDown:);
             }
         }
         
@@ -452,8 +590,14 @@
             [proxy focusNextThumbnailView];
             return YES;
         }
-    //}else if ([command isEqualToString:@"moveDown:"]){
-    //}else if ([command isEqualToString:@"moveUp:"]){
+    }else if ([command isEqualToString:@"moveDown:"]){
+        [proxy focusBelowThumbnailView];
+        return YES;
+        
+    }else if ([command isEqualToString:@"moveUp:"]){
+        [proxy focusAboveThumbnailView];
+        return YES;
+        
     }else if ([command isEqualToString:@"insertTab:"]){
         [proxy focusNextThumbnailView];
         return YES;
