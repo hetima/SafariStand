@@ -86,103 +86,127 @@
 }
 
 
-// return VisualTabPickerThumbnailView
-- (id)thumbnailViewForTabViewItem:(id)tabviewItem
+#pragma mark - thumbnailView
+
+- (id)firstThumbnailView
 {
-    if (!tabviewItem) {
-        return nil;
-    }
-    
+    return [self nextThumbnailView:nil];
+}
+
+
+- (id)lastThumbnailView
+{
+    return [self prevThumbnailView:nil];
+}
+
+
+- (id)focusedThumbnailView
+{
+    return [_ctl htao_valueForKey:@"focusedThumbnailView"];
+}
+
+
+- (id)nextThumbnailView:(id)aThumbnailView
+{
     id gridView=[self gridView];
     if (!gridView) {
         return nil;
     }
     
-    NSArray* tileContainerViews=[gridView valueForKey:@"_tileContainerViews"];
-    NSArray* arrayOfTabItemsPerContainer=[gridView valueForKey:@"_arrayOfTabItemsPerContainer"];
+    __block BOOL isTarget=NO;
+    __block id targetView=nil;
     
-    __block NSInteger cIdx=-1;
-    __block NSInteger tIdx=-1;
-    [arrayOfTabItemsPerContainer enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [obj enumerateObjectsUsingBlock:^(id obj2, NSUInteger idx2, BOOL *stop2) {
-            if (obj2==tabviewItem) {
-                tIdx=idx2;
-                cIdx=idx;
-                *stop2=YES;
-                *stop=YES;
+    if (!aThumbnailView) {
+        //force select first view
+        isTarget=YES;
+    }
+    
+    NSArray* tileContainerViews=[gridView valueForKey:@"_tileContainerViews"];
+    [tileContainerViews enumerateObjectsUsingBlock:^(id containerView, NSUInteger idx, BOOL *stop) {
+        NSArray* views=[containerView valueForKey:@"_thumbnailViews"];
+        [views enumerateObjectsUsingBlock:^(id thumbnailView, NSUInteger idx2, BOOL *stop2) {
+            if ([[thumbnailView className]isEqualToString:@"VisualTabPickerThumbnailView"]) {
+                if (!targetView) {
+                    targetView=thumbnailView; //fallback
+                }
+                if (isTarget) {
+                    targetView=thumbnailView;
+                    *stop2=YES;
+                    *stop=YES;
+                    return;
+                }
             }
+            if (thumbnailView==aThumbnailView) {
+                isTarget=YES;
+                return;
+            }
+
+        }];
+    }];
+
+
+    return targetView;
+}
+
+
+- (id)prevThumbnailView:(id)aThumbnailView
+{
+    id gridView=[self gridView];
+    if (!gridView) {
+        return nil;
+    }
+    
+    __block BOOL isTarget=NO;
+    __block id targetView=nil;
+    
+    if (!aThumbnailView) {
+        //force select last view
+        isTarget=YES;
+    }
+
+    NSArray* tileContainerViews=[gridView valueForKey:@"_tileContainerViews"];
+    [tileContainerViews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id containerView, NSUInteger idx, BOOL *stop) {
+        NSArray* views=[containerView valueForKey:@"_thumbnailViews"];
+        [views enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id thumbnailView, NSUInteger idx2, BOOL *stop2) {
+            if ([[thumbnailView className]isEqualToString:@"VisualTabPickerThumbnailView"]) {
+                if (!targetView) {
+                    targetView=thumbnailView; //fallback
+                }
+                if (isTarget) {
+                    targetView=thumbnailView;
+                    *stop2=YES;
+                    *stop=YES;
+                    return;
+                }
+            }
+            if (thumbnailView==aThumbnailView) {
+                isTarget=YES;
+                return;
+            }
+            
         }];
     }];
     
-    if (tIdx<0 || cIdx>=[tileContainerViews count]) {
-        return nil;
-    }
-    
-    id containerView=[tileContainerViews objectAtIndex:cIdx];
-    NSArray* views=[containerView valueForKey:@"_thumbnailViews"];
-    if (tIdx>=[views count]) {
-        return nil;
-    }
-    
-    NSView* thumbnailView=[views objectAtIndex:tIdx];
-    return thumbnailView;
-
+    return targetView;
 }
 
 
-- (id)firstTabViewItem
+- (void)focusThumbnailView:(id)aThumbnailView
 {
-    NSArray* orderedTabItems=[self orderedTabItems];
-    return [orderedTabItems firstObject];
-}
-
-
-- (id)focusedTabViewItem
-{
-    return [_ctl htao_valueForKey:@"focusedTabViewItem"];
-}
-
-
-- (id)nextTabViewItem:(id)tabviewItem
-{
-    NSArray* orderedTabItems=[self orderedTabItems];
-    if (!tabviewItem) {
-        return [orderedTabItems firstObject];
-    }
-    NSUInteger idx=[orderedTabItems indexOfObjectIdenticalTo:tabviewItem];
-    if (idx==NSNotFound || [orderedTabItems count]<=idx+1) {
-        return [orderedTabItems firstObject];
-    }
-    return [orderedTabItems objectAtIndex:idx+1];
-}
-
-
-- (id)prevTabViewItem:(id)tabviewItem
-{
-    NSArray* orderedTabItems=[self orderedTabItems];
-    if (!tabviewItem) {
-        return [orderedTabItems firstObject];
-    }
-    NSUInteger idx=[orderedTabItems indexOfObjectIdenticalTo:tabviewItem];
-    if (idx==NSNotFound) {
-        return [orderedTabItems firstObject];
-    }
-    if (idx==0) {
-        return [orderedTabItems lastObject];
-    }
-    return [orderedTabItems objectAtIndex:idx-1];
-}
-
-
-- (void)focusTabViewItem:(id)tabviewItem
-{
-    [_ctl htao_setValue:nil forKey:@"focusedTabViewItem"];
+    [_ctl htao_setValue:nil forKey:@"focusedThumbnailView"];
     id gridView=[self gridView];
     if (!gridView) {
         return;
     }
     
-    //clear
+    static CGColorRef focusedColor=nil;
+    if (!focusedColor) {
+        focusedColor=//[[NSColor colorWithDeviceRed:50.0f/255.0f green:150.0f/255.0f blue:250.0f/255.0f alpha:1.0]CGColor];
+        [[NSColor selectedMenuItemColor]CGColor];
+        CFRetain(focusedColor);
+    }
+    
+
     NSArray* tileContainerViews=[gridView valueForKey:@"_tileContainerViews"];
     [tileContainerViews enumerateObjectsUsingBlock:^(id containerView, NSUInteger idx, BOOL *stop) {
         NSArray* views=[containerView valueForKey:@"_thumbnailViews"];
@@ -191,40 +215,45 @@
             if (focusMark) {
                 NSView* headerView=[thumbnailView valueForKey:@"_headerBackgroundView"];
                 headerView.layer.backgroundColor=[[NSColor controlHighlightColor]CGColor];
-                NSTextField *titleTextField=[thumbnailView valueForKey:@"_titleTextField"];
-                titleTextField.textColor=[NSColor controlTextColor];
+                if ([[thumbnailView className]isEqualToString:@"VisualTabPickerThumbnailView"]) {
+                    NSTextField *titleTextField=[thumbnailView valueForKey:@"_titleTextField"];
+                    titleTextField.textColor=[NSColor controlTextColor];
+                }
                 [thumbnailView htao_setValue:nil forKey:@"focusMark"];
+            }
+            if (thumbnailView==aThumbnailView) {
+                NSView* headerView=[thumbnailView valueForKey:@"_headerBackgroundView"];
+                headerView.layer.backgroundColor=focusedColor;
+                if ([[thumbnailView className]isEqualToString:@"VisualTabPickerThumbnailView"]) {
+                    NSTextField *titleTextField=[thumbnailView valueForKey:@"_titleTextField"];
+                    titleTextField.textColor=[NSColor selectedMenuItemTextColor];
+                }
+                [thumbnailView htao_setValue:@"YES" forKey:@"focusMark"];
+                [_ctl htao_setValue:aThumbnailView forKey:@"focusedThumbnailView"];
             }
         }];
     }];
-    
-    //set
-    static CGColorRef focusedColor=nil;
-    if (!focusedColor) {
-        focusedColor=//[[NSColor colorWithDeviceRed:50.0f/255.0f green:150.0f/255.0f blue:250.0f/255.0f alpha:1.0]CGColor];
-        [[NSColor selectedMenuItemColor]CGColor];
-        CFRetain(focusedColor);
-    }
-    id thumbnailView=[self thumbnailViewForTabViewItem:tabviewItem];
-    if (thumbnailView) {
-        NSView* headerView=[thumbnailView valueForKey:@"_headerBackgroundView"];
-        headerView.layer.backgroundColor=focusedColor;
-        NSTextField *titleTextField=[thumbnailView valueForKey:@"_titleTextField"];
-        titleTextField.textColor=[NSColor selectedMenuItemTextColor];
-        [thumbnailView htao_setValue:@"YES" forKey:@"focusMark"];
-        [_ctl htao_setValue:tabviewItem forKey:@"focusedTabViewItem"];
-    }
-    
 }
+
+
+- (void)focusNextThumbnailView
+{
+    id thumbnailView=[self nextThumbnailView:[self focusedThumbnailView]];
+    [self focusThumbnailView:thumbnailView];
+}
+
+
+- (void)focusPrevThumbnailView
+{
+    id thumbnailView=[self prevThumbnailView:[self focusedThumbnailView]];
+    [self focusThumbnailView:thumbnailView];
+}
+
 
 - (void)selectFocusedTab
 {
-    id item=[self focusedTabViewItem];
-    if (!item) {
-        return;
-    }
-    id thumbnailView=[self thumbnailViewForTabViewItem:item];
-    if (!thumbnailView) {
+    id thumbnailView=[self focusedThumbnailView];
+    if (!thumbnailView && ![[thumbnailView className]isEqualToString:@"VisualTabPickerThumbnailView"]) {
         return;
     }
     id containerView=[thumbnailView valueForKey:@"dataSource"];
@@ -410,32 +439,32 @@
     //LOG(@"%@",command);
     if ([command isEqualToString:@"insertNewline:"]) {
         [proxy selectFocusedTab];
-
         return YES;
+        
     }else if ([command isEqualToString:@"moveLeft:"]){
         if (![proxy hasAnySearchText]) {
-            id tabViewItem=[proxy prevTabViewItem:[proxy focusedTabViewItem]];
-            [proxy focusTabViewItem:tabViewItem];
+            [proxy focusPrevThumbnailView];
             return YES;
         }
+        
     }else if ([command isEqualToString:@"moveRight:"]){
         if (![proxy hasAnySearchText]) {
-            id tabViewItem=[proxy nextTabViewItem:[proxy focusedTabViewItem]];
-            [proxy focusTabViewItem:tabViewItem];
+            [proxy focusNextThumbnailView];
             return YES;
         }
     //}else if ([command isEqualToString:@"moveDown:"]){
     //}else if ([command isEqualToString:@"moveUp:"]){
     }else if ([command isEqualToString:@"insertTab:"]){
-        id tabViewItem=[proxy nextTabViewItem:[proxy focusedTabViewItem]];
-        [proxy focusTabViewItem:tabViewItem];
+        [proxy focusNextThumbnailView];
         return YES;
+        
     }else if ([command isEqualToString:@"insertBacktab:"]){
-        id tabViewItem=[proxy prevTabViewItem:[proxy focusedTabViewItem]];
-        [proxy focusTabViewItem:tabViewItem];
+        [proxy focusPrevThumbnailView];
         return YES;
+        
     }else if ([command isEqualToString:@"cancelOperation:"]){
         return NO;
+        
     }
     
     return NO;
@@ -449,8 +478,8 @@
     if ([ary count]==0) {
         return;
     }
-    id firstTabViewItem=[proxy firstTabViewItem];
-    [proxy focusTabViewItem:firstTabViewItem];
+    id firstThumbnailView=[proxy firstThumbnailView];
+    [proxy focusThumbnailView:firstThumbnailView];
 }
 
 
@@ -466,19 +495,7 @@
         }
 
     }
-    
-    /*
-    id firstResponder=[[NSApp keyWindow]firstResponder];
-    if (![firstResponder isKindOfClass:[NSView class]]) {
-        return nil;
-    }
-    NSView* v=firstResponder;
-    while (v) {
-        if ([[v className]isEqualToString:@"VisualTabPickerRootView"]) {
-            return [v valueForKey:@"_visualTabPickerViewController"];
-        }
-        v=[v superview];
-    }*/
+
     return nil;
 }
 
