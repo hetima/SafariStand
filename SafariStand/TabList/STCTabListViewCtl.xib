@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="STCTabListViewCtl">
@@ -25,8 +25,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" selectionHighlightStyle="none" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="20" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" id="ie7-AV-Uak" customClass="STCTabListTableView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
                                     <tableColumn width="320" minWidth="40" maxWidth="1000" id="D1B-KW-NBP">
@@ -51,7 +52,6 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="GJl-56-pCS"/>
                                                         <connections>
-                                                            <binding destination="wme-5M-Ucf" name="hidden" keyPath="mouseIsIn" id="yn7-7d-kPR"/>
                                                             <binding destination="wme-5M-Ucf" name="value" keyPath="objectValue.image" id="ZHg-lK-P5S"/>
                                                         </connections>
                                                     </imageView>
@@ -68,7 +68,7 @@
                                                         </connections>
                                                     </textField>
                                                     <button id="Z3g-bi-2go">
-                                                        <rect key="frame" x="4" y="4" width="14" height="15"/>
+                                                        <rect key="frame" x="4" y="3" width="16" height="16"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSStopProgressFreestandingTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="BLI-2C-2vS">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -76,15 +76,11 @@
                                                         </buttonCell>
                                                         <connections>
                                                             <action selector="actCloseBtn:" target="wme-5M-Ucf" id="A4o-UM-5cL"/>
-                                                            <binding destination="wme-5M-Ucf" name="hidden" keyPath="mouseIsIn" id="P4B-Tw-tDm">
-                                                                <dictionary key="options">
-                                                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                                </dictionary>
-                                                            </binding>
                                                         </connections>
                                                     </button>
                                                 </subviews>
                                                 <connections>
+                                                    <outlet property="closeButton" destination="Z3g-bi-2go" id="ouj-MV-Xas"/>
                                                     <outlet property="imageView" destination="dYU-GM-kLB" id="PcC-PV-QYq"/>
                                                     <outlet property="textField" destination="xF6-DZ-eBC" id="y7U-dX-sxN"/>
                                                 </connections>

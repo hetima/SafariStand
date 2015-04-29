@@ -362,6 +362,7 @@
     if ([obj isKindOfClass:[STTabProxy class]]) {
         idn=@"default";
         STCTabListCellView* view=[tableView makeViewWithIdentifier:idn owner:nil];
+        [view resetState];
         view.listViewCtl=self;
         return view;
     }else if ([obj isKindOfClass:[STCTabListGroupItem class]]){
@@ -778,32 +779,49 @@
 
 
 
-@implementation STCTabListCellView
+@implementation STCTabListCellView{
+    NSTrackingArea* _trackingArea;
+}
 
 - (void)viewDidMoveToWindow
 {
-    self.mouseIsIn=NO;
-    
-    NSArray *oldAreas=[self trackingAreas];
-    if ([oldAreas count]>0) {
-        return;
-    }
-    
-    NSTrackingArea* tracking_area = [[NSTrackingArea alloc]initWithRect:[self bounds] options:(NSTrackingMouseEnteredAndExited | NSTrackingInVisibleRect | NSTrackingActiveInActiveApp /*| NSTrackingEnabledDuringMouseDrag*/) owner:self userInfo:nil];
-    [self addTrackingArea:tracking_area];
+    _trackingArea=nil;
+    [super viewDidMoveToWindow]; 
 }
 
 
+- (void)resetState
+{
+    self.imageView.alphaValue=1.0f;
+    self.closeButton.alphaValue=0.0f;
+}
+
+
+-(void)updateTrackingAreas
+{
+    [super updateTrackingAreas];
+    
+    if (_trackingArea) {
+        [self removeTrackingArea:_trackingArea];
+        _trackingArea=nil;
+    }
+    
+    _trackingArea = [[NSTrackingArea alloc]initWithRect:[self bounds] options:(NSTrackingMouseEnteredAndExited | NSTrackingInVisibleRect | NSTrackingActiveInActiveApp /*| NSTrackingEnabledDuringMouseDrag*/) owner:self userInfo:nil];
+    [self addTrackingArea:_trackingArea];
+}
+
 - (void)mouseEntered:(NSEvent *)theEvent
 {
-    self.mouseIsIn=YES;
+    self.imageView.alphaValue=0.0f;
+    self.closeButton.alphaValue=1.0f;
     [_listViewCtl listCellViewMouseEntered:self];
 }
 
 
 - (void)mouseExited:(NSEvent *)theEvent
 {
-    self.mouseIsIn=NO;
+    self.imageView.alphaValue=1.0f;
+    self.closeButton.alphaValue=0.0f;
     [_listViewCtl listCellViewMouseExited:self];
 }
 
