@@ -5,6 +5,7 @@
 #error This file must be compiled with ARC
 #endif
 
+#import "SafariStand.h"
 #import "HTFilePresetPopUpButton.h"
 
 
@@ -205,7 +206,7 @@ static NSString* HTFilePresetPopUpButtonAllValues= @"HTFilePresetPopUpButtonAllV
 {
     NSString* prefKey=[self currentValuePrefKey];
     if(prefKey){
-        return [[NSUserDefaults standardUserDefaults]objectForKey:prefKey];
+        return [[STCSafariStandCore ud]objectForKey:prefKey];
     }
     return nil;
 }
@@ -213,7 +214,7 @@ static NSString* HTFilePresetPopUpButtonAllValues= @"HTFilePresetPopUpButtonAllV
 {
     NSString* prefKey=[self allValuesPrefKey];
     if(prefKey){
-        return [[NSUserDefaults standardUserDefaults]objectForKey:prefKey];
+        return [[STCSafariStandCore ud]objectForKey:prefKey];
     }
     return nil;
 }
@@ -222,7 +223,7 @@ static NSString* HTFilePresetPopUpButtonAllValues= @"HTFilePresetPopUpButtonAllV
 {
     NSString* prefKey=[self currentValuePrefKey];
     if(prefKey && path){
-        [[NSUserDefaults standardUserDefaults]setObject:path forKey:prefKey];
+        [[STCSafariStandCore ud]setObject:path forKey:prefKey];
     }
 }
 
@@ -230,7 +231,7 @@ static NSString* HTFilePresetPopUpButtonAllValues= @"HTFilePresetPopUpButtonAllV
 {
     NSString* prefKey=[self allValuesPrefKey];
     if(prefKey && ary){
-        [[NSUserDefaults standardUserDefaults]setObject:ary forKey:prefKey];
+        [[STCSafariStandCore ud]setObject:ary forKey:prefKey];
     }
 }
 

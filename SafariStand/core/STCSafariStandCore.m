@@ -328,7 +328,9 @@ static STCSafariStandCore *sharedInstance;
                     kpShowBrowserWindowTitlebar,
                     kpEnhanceVisualTabPicker,
                     kpDontStackVisualTabPicker,
-                    kpCtlTabTriggersVisualTabPicker];
+                    kpCtlTabTriggersVisualTabPicker,
+                    @"HTFilePresetPopUpButtonCurrentValue_HTWebClipwin",
+                    @"HTFilePresetPopUpButtonAllValues_HTWebClipwin"];
     
     for (NSString* key in keys) {
         id val=[[NSUserDefaults standardUserDefaults]objectForKey:key];
