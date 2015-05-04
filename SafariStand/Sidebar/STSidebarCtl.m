@@ -7,6 +7,7 @@
 #endif
 
 
+#import "SafariStand.h"
 #import "STSidebarCtl.h"
 #import "STTabProxy.h"
 #import "STSidebarResizeHandleView.h"
@@ -307,7 +308,7 @@
 - (void)sidebarResizeHandleDidEndTracking:(STSidebarResizeHandleView*)resizeHandle
 {
     if(!([self.view.window styleMask] & NSFullScreenWindowMask)) {
-        [[NSUserDefaults standardUserDefaults]setFloat:NSWidth(self.view.frame) forKey:kpSidebarWidth];
+        [[STCSafariStandCore ud]setFloat:NSWidth(self.view.frame) forKey:kpSidebarWidth];
     }
 }
 

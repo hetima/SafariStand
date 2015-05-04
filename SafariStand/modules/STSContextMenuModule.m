@@ -73,7 +73,7 @@
 
     
     //STSDownloadModule  replace Save Image to “Downloads”
-	if([[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
+	if([[STCSafariStandCore ud]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
         NSInteger tag;
         
         //Safari 8
@@ -114,7 +114,7 @@
         }
         
         //Clip Web Archive
-        if(len>0 && [[NSUserDefaults standardUserDefaults]boolForKey:kpShowClipWebArchiveContextMenu]){
+        if(len>0 && [[STCSafariStandCore ud]boolForKey:kpShowClipWebArchiveContextMenu]){
             NSMenuItem* itm;
             itm=[[NSMenuItem alloc]initWithTitle:@"Clip Web Archive with Selection"
                                           action:@selector(actWebArchiveSelectionMenu:) keyEquivalent:@""];
@@ -136,8 +136,8 @@
 
         if(type==WKDictionaryGetTypeID()){
             NSInteger idx=[menu indexOfItem:copyLinkItem];
-            if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowCopyLinkTagContextMenu]){
-                if([[NSUserDefaults standardUserDefaults]boolForKey:kpCopyLinkTagAddTargetBlank]){
+            if([[STCSafariStandCore ud]boolForKey:kpShowCopyLinkTagContextMenu]){
+                if([[STCSafariStandCore ud]boolForKey:kpCopyLinkTagAddTargetBlank]){
                     itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag (_blank)") 
                                                   action:@selector(actCopyLinkTagBlankMenu:) keyEquivalent:@""];
                 }else{
@@ -148,7 +148,7 @@
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
 
-                if([[NSUserDefaults standardUserDefaults]boolForKey:kpCopyLinkTagAddTargetBlank]){
+                if([[STCSafariStandCore ud]boolForKey:kpCopyLinkTagAddTargetBlank]){
                     itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag") 
                                                   action:@selector(actCopyLinkTagMenu:) keyEquivalent:@""];
                 }else{
@@ -162,7 +162,7 @@
                 [menu insertItem:itm atIndex:++idx];
             }
             
-            if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowCopyLinkTitleContextMenu]){
+            if([[STCSafariStandCore ud]boolForKey:kpShowCopyLinkTitleContextMenu]){
                 itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Title") action:@selector(actCopyLinkTitleMenu:) keyEquivalent:@""];
                 [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
@@ -170,7 +170,7 @@
                 
             }
             
-            if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowCopyLinkAndTitleContextMenu]){
+            if([[STCSafariStandCore ud]boolForKey:kpShowCopyLinkAndTitleContextMenu]){
                 itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link and Title") action:@selector(actCopyLinkAndTitleMenu:) keyEquivalent:@""];
                 [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
@@ -198,7 +198,7 @@
     
     
     if(copyImageItem){
-        if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowGoogleImageSearchContextMenu]){
+        if([[STCSafariStandCore ud]boolForKey:kpShowGoogleImageSearchContextMenu]){
             NSInteger idx=[menu indexOfItem:copyImageItem];
             itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Google Image Search") action:@selector(actImageSearchMenu:) keyEquivalent:@""];
             [itm setTarget:self];
@@ -217,8 +217,8 @@
     }
     
     //SquashContextMenuItem
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSquashContextMenuItemEnabled]) {
-        NSArray* disabledItems=[[NSUserDefaults standardUserDefaults]arrayForKey:kpSquashContextMenuItemTags];
+    if ([[STCSafariStandCore ud]boolForKey:kpSquashContextMenuItemEnabled]) {
+        NSArray* disabledItems=[[STCSafariStandCore ud]arrayForKey:kpSquashContextMenuItemTags];
         for (NSNumber* tag in disabledItems) {
             NSMenuItem* mi=[menu itemWithTag:[tag intValue]];
             if (mi) {

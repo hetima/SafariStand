@@ -47,7 +47,7 @@ static STActionMessageModule* actionMessageModule;
     KZRMETHOD_SWIZZLING_("FavoriteButton", "_goToBookmark", void, call, sel)
     ^(id slf){
         BOOL	hackHandled=NO;
-        if([[NSUserDefaults standardUserDefaults]boolForKey:kpActionMessageEnabled] && [slf respondsToSelector:@selector(bookmark)]){
+        if([[STCSafariStandCore ud]boolForKey:kpActionMessageEnabled] && [slf respondsToSelector:@selector(bookmark)]){
             id	bookmark=objc_msgSend(slf, @selector(bookmark));
             if(bookmark){
                 NSString	*url=STSafariWebBookmarkURLString(bookmark);
@@ -100,7 +100,7 @@ static STActionMessageModule* actionMessageModule;
 //001 BookmakBar_Action
 - (BOOL)handleBookmakBarAction:(NSString*)url
 {
-    if(![[NSUserDefaults standardUserDefaults]boolForKey:kpActionMessageEnabled])return NO;
+    if(![[STCSafariStandCore ud]boolForKey:kpActionMessageEnabled])return NO;
     
 	//foundRange.location==0;    unsigned int length
     NSArray* ary=[url componentsSeparatedByString:@":"];

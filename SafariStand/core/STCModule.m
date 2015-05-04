@@ -30,7 +30,7 @@ static char modulePrefContext;
 
 - (void)observePrefValue:(NSString*)key
 {
-    [[NSUserDefaults standardUserDefaults]
+    [[STCSafariStandCore ud]
      addObserver:self
      forKeyPath:key
      options:NSKeyValueObservingOptionNew

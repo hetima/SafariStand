@@ -34,7 +34,7 @@ STQuickSearchModule* quickSearchModule;
 
 
 +(int)tabPolicy{
-    NSInteger setting=[[NSUserDefaults standardUserDefaults]integerForKey:kpQuickSearchTabPolicy];
+    NSInteger setting=[[STCSafariStandCore ud]integerForKey:kpQuickSearchTabPolicy];
     
     switch (setting) {
         case kQuickSearchTabPolicyFront:
@@ -227,7 +227,7 @@ STQuickSearchModule* quickSearchModule;
         return 0;
     }
     
-    BOOL grouping=[[NSUserDefaults standardUserDefaults]boolForKey:kpQuickSearchMenuGroupingEnabled];
+    BOOL grouping=[[STCSafariStandCore ud]boolForKey:kpQuickSearchMenuGroupingEnabled];
     NSInteger idx, insertedCount=0;
     if(onTop)idx=0;
     else idx=[menu numberOfItems];
@@ -288,12 +288,12 @@ STQuickSearchModule* quickSearchModule;
     BOOL onTop=YES;
     NSInteger idx;
     
-    if(![[NSUserDefaults standardUserDefaults]boolForKey:kpQuickSearchMenuEnabled]){
+    if(![[STCSafariStandCore ud]boolForKey:kpQuickSearchMenuEnabled]){
         return;
     }
     
-    if([[NSUserDefaults standardUserDefaults]integerForKey:kpQuickSearchMenuPlace]>0)onTop=NO;
-    if([[NSUserDefaults standardUserDefaults]integerForKey:kpQuickSearchMenuIsFlat]>0)flat=YES;
+    if([[STCSafariStandCore ud]integerForKey:kpQuickSearchMenuPlace]>0)onTop=NO;
+    if([[STCSafariStandCore ud]integerForKey:kpQuickSearchMenuIsFlat]>0)flat=YES;
     
     if (forceBottom) {
         onTop=NO;

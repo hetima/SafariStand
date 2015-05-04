@@ -65,7 +65,7 @@
                       void, call_super, sel)
     ^void (NSTableCellView* slf, id value){
         call_super(slf, sel, value);
-        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnSidebarBookmarkEnabled]) {
+        if ([[STCSafariStandCore ud]boolForKey:kpShowIconOnSidebarBookmarkEnabled]) {
             NSImage* icon=nil;
             if ([value respondsToSelector:@selector(icon)]) {
                 icon=objc_msgSend(value, @selector(icon));
@@ -78,7 +78,7 @@
         
     }_WITHBLOCK_ADD;
     
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnSidebarBookmarkEnabled]) {
+    if ([[STCSafariStandCore ud]boolForKey:kpShowIconOnSidebarBookmarkEnabled]) {
         [self updateSidebarBookmarkIcon];
     }
     [self observePrefValue:kpShowIconOnSidebarBookmarkEnabled];

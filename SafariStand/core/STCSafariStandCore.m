@@ -56,6 +56,13 @@ static STCSafariStandCore *sharedInstance;
     return path;
 }
 
+
++ (NSUserDefaults *)ud
+{
+    return [[STCSafariStandCore si]userDefaults];
+}
+
+
 - (id)init
 {
     self = [super init];
@@ -64,6 +71,7 @@ static STCSafariStandCore *sharedInstance;
     
     _startup=NO;
     _missMatchAlertShown=NO;
+    _userDefaults=[[NSUserDefaults alloc]initWithSuiteName:kSafariStandPrefDomain];
     
     
     return self;
@@ -136,7 +144,7 @@ static STCSafariStandCore *sharedInstance;
                        [NSNumber numberWithBool:YES], kpEnhanceVisualTabPicker,
                        //@"-", kpCheckedLatestVariosn,
                        nil];
-    [[NSUserDefaults standardUserDefaults]registerDefaults:dic];
+    [self.userDefaults registerDefaults:dic];
     
 	//アプリ終了をobserve
 	[[NSNotificationCenter defaultCenter]addObserver:self
@@ -160,6 +168,7 @@ static STCSafariStandCore *sharedInstance;
 {
     [self sendMessage:@selector(applicationWillTerminate:) toAllModule:self];
     
+    [self.userDefaults synchronize];
 }
 
 

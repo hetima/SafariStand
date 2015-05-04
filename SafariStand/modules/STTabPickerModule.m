@@ -522,7 +522,7 @@ id STArrayPrevItem(NSArray* ary, id itm)
                          BOOL, call, sel)
     ^BOOL(id slf)
     {
-        if([[NSUserDefaults standardUserDefaults]boolForKey:kpDontStackVisualTabPicker]){
+        if([[STCSafariStandCore ud]boolForKey:kpDontStackVisualTabPicker]){
             return NO;
         }
         
@@ -536,7 +536,7 @@ id STArrayPrevItem(NSArray* ary, id itm)
     ^(id slf)
     {
         call(slf, sel);
-        if([[NSUserDefaults standardUserDefaults]boolForKey:kpEnhanceVisualTabPicker]){
+        if([[STCSafariStandCore ud]boolForKey:kpEnhanceVisualTabPicker]){
             STTabPickerProxy* proxy=[STTabPickerProxy proxyWithVisualTabPickerViewController:slf];
             [proxy focusCurrentTab];
 //            ((void(*)(id, SEL, ...))objc_msgSend)(slf, NSSelectorFromString(@"focusSearchField"));
@@ -548,7 +548,7 @@ id STArrayPrevItem(NSArray* ary, id itm)
     ^(id slf)
     {
         call(slf, sel);
-        if([[NSUserDefaults standardUserDefaults]boolForKey:kpEnhanceVisualTabPicker]){
+        if([[STCSafariStandCore ud]boolForKey:kpEnhanceVisualTabPicker]){
             STTabPickerProxy* proxy=[STTabPickerProxy proxyWithVisualTabPickerViewController:slf];
             [self resetPickerFocus:proxy];
         }
@@ -560,7 +560,7 @@ id STArrayPrevItem(NSArray* ary, id itm)
     ^BOOL(id slf, id arg1, id arg2, SEL arg3)
     {
         BOOL result;
-        if([[NSUserDefaults standardUserDefaults]boolForKey:kpEnhanceVisualTabPicker]){
+        if([[STCSafariStandCore ud]boolForKey:kpEnhanceVisualTabPicker]){
             STTabPickerProxy* proxy=[STTabPickerProxy proxyWithVisualTabPickerViewController:slf];
             result=[self visualTabPicker:proxy handleCommandBySelector:arg3];
             if (result) {
@@ -579,11 +579,11 @@ id STArrayPrevItem(NSArray* ary, id itm)
             return event;
         }
 
-        if (![[NSUserDefaults standardUserDefaults]boolForKey:kpEnhanceVisualTabPicker]) {
+        if (![[STCSafariStandCore ud]boolForKey:kpEnhanceVisualTabPicker]) {
             return event;
         }
         
-        if (![[NSUserDefaults standardUserDefaults]boolForKey:kpCtlTabTriggersVisualTabPicker]) {
+        if (![[STCSafariStandCore ud]boolForKey:kpCtlTabTriggersVisualTabPicker]) {
             return event;
         }
         
@@ -614,7 +614,7 @@ id STArrayPrevItem(NSArray* ary, id itm)
     {
         unsigned short key=[event keyCode];
         SEL cmd=nil;
-        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpEnhanceVisualTabPicker]) {
+        if ([[STCSafariStandCore ud]boolForKey:kpEnhanceVisualTabPicker]) {
 
             if(key==48){
                 cmd= ([event modifierFlags] & NSShiftKeyMask)==NSShiftKeyMask ? @selector(insertBacktab:):@selector(insertTab:);

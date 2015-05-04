@@ -246,7 +246,7 @@
         }
     });
     
-    [[NSUserDefaults standardUserDefaults]setBool:show forKey:kpShowBrowserWindowTitlebar];
+    [[STCSafariStandCore ud]setBool:show forKey:kpShowBrowserWindowTitlebar];
 }
 
 @end

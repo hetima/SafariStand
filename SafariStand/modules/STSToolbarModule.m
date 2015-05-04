@@ -39,7 +39,7 @@ static STSToolbarModule* toolbarModule;
             return [toolbarModule _toolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:real];
         }else{
             id result=call(slf, sel, toolbar, itemIdentifier, real);
-            if ([[NSUserDefaults standardUserDefaults]boolForKey:kpExpandAddressBarWidthEnabled]
+            if ([[STCSafariStandCore ud]boolForKey:kpExpandAddressBarWidthEnabled]
                 && [itemIdentifier isEqualToString:@"InputFieldsToolbarIdentifier"]) {
                 [self expandInputFieldsToolbar:result];
             }
@@ -113,7 +113,7 @@ static STSToolbarModule* toolbarModule;
         });
     }
     
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpExpandAddressBarWidthEnabled]){
+    if ([[STCSafariStandCore ud]boolForKey:kpExpandAddressBarWidthEnabled]){
         [self layoutAddressBarForExistingWindow];
     }
 
@@ -185,8 +185,8 @@ static STSToolbarModule* toolbarModule;
 #define kPreferredWidthRatioDefault 0.41
 - (void)expandInputFieldsToolbar:(NSToolbarItem*)item
 {
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpExpandAddressBarWidthEnabled]){
-        CGFloat factor=[[NSUserDefaults standardUserDefaults]floatForKey:kpExpandAddressBarWidthValue];
+    if ([[STCSafariStandCore ud]boolForKey:kpExpandAddressBarWidthEnabled]){
+        CGFloat factor=[[STCSafariStandCore ud]floatForKey:kpExpandAddressBarWidthValue];
         if (factor<kPreferredWidthRatioDefault) {
             factor=kPreferredWidthRatioDefault;
         }else if (factor>1.0){

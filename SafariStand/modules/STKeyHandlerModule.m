@@ -21,10 +21,10 @@
     
     
     [self setupOneKeyNavigationMenuItem];
-    BOOL enabled=[[NSUserDefaults standardUserDefaults]boolForKey:kpSwitchTabWithOneKeyEnabled];
+    BOOL enabled=[[STCSafariStandCore ud]boolForKey:kpSwitchTabWithOneKeyEnabled];
     [self setupTabNavigationMenuItem:enabled];
     
-    enabled=[[NSUserDefaults standardUserDefaults]boolForKey:kpGoBackForwardByDeleteKeyEnabled];
+    enabled=[[STCSafariStandCore ud]boolForKey:kpGoBackForwardByDeleteKeyEnabled];
     [self setupGoBackForwardMenuItem:enabled];
     
     [self observePrefValue:kpSwitchTabWithOneKeyEnabled];
@@ -38,7 +38,7 @@
 - (void)prefValue:(NSString*)key changed:(id)value
 {
     if([key isEqualToString:kpSwitchTabWithOneKeyEnabled]){
-        //BOOL enabled=[[NSUserDefaults standardUserDefaults]boolForKey:kpSwitchTabWithOneKeyEnabled];
+        //BOOL enabled=[[STCSafariStandCore ud]boolForKey:kpSwitchTabWithOneKeyEnabled];
         BOOL enabled=[value boolValue];
         [self setupTabNavigationMenuItem:enabled];
         //if(enabled)[self insertOneKeyNavigationMenuItem];
