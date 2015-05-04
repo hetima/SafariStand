@@ -13,6 +13,9 @@
 #define kSafariStandBundleID @"com.hetima.SafariStand"
 #define kSafariStandPrefDomain @"com.hetima.SafariStand"
 
+#define kpSettingMigratedV1 @"Stand_SettingMigratedV1"
+
+#define kpGoBackForwardByDeleteKeyEnabled_Safari @"com.apple.Safari.ContentPageGroupIdentifier.WebKit2BackspaceKeyNavigationEnabled"
 
 #define kpActionMessageEnabled @"Stand_ActionMessageEnabled"///was com.apple.Safari
 #define kpColorizeHTMLSourceEnabled @"Stand_ColorizeHTMLSourceEnabled"//not used

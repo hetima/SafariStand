@@ -138,6 +138,8 @@ static STCSafariStandCore *sharedInstance;
     _revision=revision;
     LOG(@"Startup.... %@ - %@", revision, systemVersion);
     
+    [self migrateSetting];
+    
     NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
                        [NSNumber numberWithBool:YES], kpQuickSearchMenuEnabled,
                        [NSNumber numberWithDouble:250.0], kpSuppressTabBarWidthValue,
@@ -282,6 +284,63 @@ static STCSafariStandCore *sharedInstance;
     if (returnCode==0) {
         [self openWebSite];
     }
+}
+
+
+
+- (void)migrateSetting
+{
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSettingMigratedV1]) {
+        return;
+    }
+    if ([self.userDefaults boolForKey:kpSettingMigratedV1]) {
+        return;
+    }
+    
+    NSArray* keys=@[kpActionMessageEnabled,
+                    kpQuickSearchMenuEnabled,
+                    kpQuickSearchMenuPlace,
+                    kpQuickSearchMenuIsFlat,
+                    kpQuickSearchTabPolicy,
+                    kpQuickSearchMenuGroupingEnabled,
+                    kpSwitchTabWithWheelEnabled,
+                    kpSwitchTabWithOneKeyEnabled,
+                    kpShowCopyLinkTagContextMenu,
+                    kpCopyLinkTagAddTargetBlank,
+                    kpShowCopyLinkAndTitleContextMenu,
+                    kpShowCopyLinkTitleContextMenu,
+                    kpShowClipWebArchiveContextMenu,
+                    kpShowGoogleImageSearchContextMenu,
+                    kpImprovePathPopupMenu,
+                    kpSidebarShowsDefault,
+                    kpSidebarIsRightSide,
+                    kpSidebarWidth,
+                    kpSquashContextMenuItemEnabled,
+                    kpSquashContextMenuItemTags,
+                    kpClassifyDownloadFolderBasicEnabled,
+                    kpDownloadMonitorMovesToConsolePanel,
+                    kpSuppressTabBarWidthEnabled,
+                    kpSuppressTabBarWidthValue,
+                    kpShowIconOnTabBarEnabled,
+                    kpExpandAddressBarWidthEnabled,
+                    kpExpandAddressBarWidthValue,
+                    kpShowIconOnSidebarBookmarkEnabled,
+                    kpShowBrowserWindowTitlebar,
+                    kpEnhanceVisualTabPicker,
+                    kpDontStackVisualTabPicker,
+                    kpCtlTabTriggersVisualTabPicker];
+    
+    for (NSString* key in keys) {
+        id val=[[NSUserDefaults standardUserDefaults]objectForKey:key];
+        if (val) {
+            [self.userDefaults setObject:val forKey:key];
+        }
+    }
+    
+    [self.userDefaults setObject:[NSNumber numberWithBool:YES] forKey:kpSettingMigratedV1];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kpSettingMigratedV1];
+    
+    [self.userDefaults synchronize];
 }
 
 
