@@ -42,7 +42,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_ActionMessageEnabled" id="48">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ActionMessageEnabled" id="075-A5-Ruo">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -58,7 +58,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_SwitchTabWithWheelEnabled" id="77">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_SwitchTabWithWheelEnabled" id="Heu-ab-6ON">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -74,7 +74,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_SwitchTabWithOneKeyEnabled" id="81">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_SwitchTabWithOneKeyEnabled" id="dbg-dd-0Vz">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -90,7 +90,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_SwitchTabWithSwipeEnabled" id="120">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_SwitchTabWithSwipeEnabled" id="lPm-U4-Y9v">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -106,7 +106,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_ClassifyDownloadFolderBasicEnabled" id="125">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ClassifyDownloadFolderBasicEnabled" id="bbq-w9-G1D">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -122,7 +122,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_ImprovePathPopupMenu" id="129">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ImprovePathPopupMenu" id="oFo-Is-KwI">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -165,7 +165,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_SuppressTabBarWidthEnabled" id="188">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_SuppressTabBarWidthEnabled" id="JzX-CI-NGx">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -178,8 +178,8 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <sliderCell key="cell" controlSize="small" state="on" alignment="left" minValue="140" maxValue="480" doubleValue="140" tickMarkPosition="below" numberOfTickMarks="6" sliderType="linear" id="190"/>
                                             <connections>
-                                                <binding destination="6" name="enabled" keyPath="values.Stand_SuppressTabBarWidthEnabled" id="194"/>
-                                                <binding destination="6" name="value" keyPath="values.Stand_SuppressTabBarWidthValue" id="192"/>
+                                                <binding destination="f0r-av-vRL" name="enabled" keyPath="values.Stand_SuppressTabBarWidthEnabled" id="gUM-0f-E0R"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_SuppressTabBarWidthValue" id="Phb-6g-crz"/>
                                             </connections>
                                         </slider>
                                         <textField verticalHuggingPriority="750" id="207">
@@ -211,7 +211,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_ExpandAddressBarWidthEnabled" id="ODx-cA-svm">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ExpandAddressBarWidthEnabled" id="NTy-PD-jsK">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -224,8 +224,8 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <sliderCell key="cell" controlSize="small" state="on" alignment="left" minValue="0.40999999999999998" maxValue="1" doubleValue="1" tickMarkPosition="below" numberOfTickMarks="6" sliderType="linear" id="GxZ-s7-o3Z"/>
                                             <connections>
-                                                <binding destination="6" name="enabled" keyPath="values.Stand_ExpandAddressBarWidthEnabled" id="xFK-qQ-aQu"/>
-                                                <binding destination="6" name="value" keyPath="values.Stand_ExpandAddressBarWidthValue" id="eCv-RY-o18"/>
+                                                <binding destination="f0r-av-vRL" name="enabled" keyPath="values.Stand_ExpandAddressBarWidthEnabled" id="aX4-Me-Q8U"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ExpandAddressBarWidthValue" id="wuX-Bn-XbL"/>
                                             </connections>
                                         </slider>
                                         <button id="O4h-dn-5D1">
@@ -236,7 +236,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_DownloadMonitorMovesToConsolePanel" id="haF-XF-Grs">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_DownloadMonitorMovesToConsolePanel" id="klT-JM-2JG">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -261,7 +261,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_ShowIconOnTabBarEnabled" id="3fE-UO-jDx">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowIconOnTabBarEnabled" id="rMq-AS-QKB">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -277,7 +277,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_ShowIconOnSidebarBookmarkEnabled" id="hIE-Or-At0">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowIconOnSidebarBookmarkEnabled" id="7NO-w4-3Uk">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -293,7 +293,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_EnhanceVisualTabPicker" id="pFw-Rl-N0W">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_EnhanceVisualTabPicker" id="Y6n-Bh-Aqg">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -309,13 +309,13 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_CtlTabTriggersVisualTabPicker" id="sfF-2T-J5o">
+                                                <binding destination="f0r-av-vRL" name="enabled" keyPath="values.Stand_EnhanceVisualTabPicker" id="oOP-5R-EOI"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_CtlTabTriggersVisualTabPicker" id="BHY-lK-7OT">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
                                                     </dictionary>
                                                 </binding>
-                                                <binding destination="6" name="enabled" keyPath="values.Stand_EnhanceVisualTabPicker" id="dwo-04-OG4"/>
                                             </connections>
                                         </button>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="oBo-U3-jyg">
@@ -335,7 +335,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_DontStackVisualTabPicker" id="pHn-L2-euK">
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_DontStackVisualTabPicker" id="v5u-eV-LMd">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
@@ -376,7 +376,7 @@
                                                 </column>
                                             </cells>
                                             <connections>
-                                                <binding destination="6" name="selectedTag" keyPath="values.Stand_QuickSearchMenuPlace" id="94">
+                                                <binding destination="f0r-av-vRL" name="selectedTag" keyPath="values.Stand_QuickSearchMenuPlace" id="FPN-aD-afZ">
                                                     <dictionary key="options">
                                                         <real key="NSMultipleValuesPlaceholder" value="0.0"/>
                                                         <real key="NSNoSelectionPlaceholder" value="0.0"/>
@@ -420,7 +420,7 @@
                                                 </column>
                                             </cells>
                                             <connections>
-                                                <binding destination="6" name="selectedTag" keyPath="values.Stand_QuickSearchMenuIsFlat" id="102">
+                                                <binding destination="f0r-av-vRL" name="selectedTag" keyPath="values.Stand_QuickSearchMenuIsFlat" id="bFB-G2-dSy">
                                                     <dictionary key="options">
                                                         <real key="NSMultipleValuesPlaceholder" value="0.0"/>
                                                         <real key="NSNoSelectionPlaceholder" value="0.0"/>
@@ -438,7 +438,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_ShowCopyLinkTagContextMenu" id="114"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowCopyLinkTagContextMenu" id="lo2-uj-iWw"/>
                                             </connections>
                                         </button>
                                         <button id="105">
@@ -449,7 +449,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_ShowCopyLinkTitleContextMenu" id="113"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowCopyLinkTitleContextMenu" id="skX-p8-e9Y"/>
                                             </connections>
                                         </button>
                                         <button id="110">
@@ -460,7 +460,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_ShowCopyLinkAndTitleContextMenu" id="112"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowCopyLinkAndTitleContextMenu" id="K0p-d7-ENi"/>
                                             </connections>
                                         </button>
                                         <textField verticalHuggingPriority="750" id="115">
@@ -480,7 +480,7 @@
                                                 <font key="font" metaFont="smallSystem"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_CopyLinkTagAddTargetBlank" id="133"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_CopyLinkTagAddTargetBlank" id="LMY-Ya-J88"/>
                                             </connections>
                                         </button>
                                         <button id="175">
@@ -491,7 +491,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_ShowClipWebArchiveContextMenu" id="178"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowClipWebArchiveContextMenu" id="uVb-QP-gfd"/>
                                             </connections>
                                         </button>
                                         <textField verticalHuggingPriority="750" id="179">
@@ -511,7 +511,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_QuickSearchMenuEnabled" id="199"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_QuickSearchMenuEnabled" id="YtH-ES-kZ1"/>
                                             </connections>
                                         </button>
                                         <button id="200">
@@ -522,7 +522,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_ShowGoogleImageSearchContextMenu" id="203"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowGoogleImageSearchContextMenu" id="cKg-07-esN"/>
                                             </connections>
                                         </button>
                                         <textField verticalHuggingPriority="750" id="204">
@@ -542,7 +542,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_SquashContextMenuItemEnabled" id="228"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_SquashContextMenuItemEnabled" id="Kh8-eh-riL"/>
                                             </connections>
                                         </button>
                                         <button verticalHuggingPriority="750" id="229">
@@ -564,7 +564,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_QuickSearchMenuGroupingEnabled" id="9Ns-le-nGD"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_QuickSearchMenuGroupingEnabled" id="2ZB-jk-sOn"/>
                                             </connections>
                                         </button>
                                         <popUpButton toolTip="Rely = depends Safari's Preference" verticalHuggingPriority="750" id="134">
@@ -582,7 +582,7 @@
                                                 </menu>
                                             </popUpButtonCell>
                                             <connections>
-                                                <binding destination="6" name="selectedTag" keyPath="values.Stand_QuickSearchTabPolicy" id="143"/>
+                                                <binding destination="f0r-av-vRL" name="selectedTag" keyPath="values.Stand_QuickSearchTabPolicy" id="A0q-B3-FdG"/>
                                             </connections>
                                         </popUpButton>
                                         <textField verticalHuggingPriority="750" id="144">
@@ -610,7 +610,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.Stand_SidebarShowsDefault" id="y6k-7b-Vt7"/>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_SidebarShowsDefault" id="5KN-0I-0mV"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -655,6 +655,7 @@
             <point key="canvasLocation" x="398" y="358"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="6"/>
+        <userDefaultsController id="f0r-av-vRL" userLabel="STCUserDefaultsController" customClass="STCUserDefaultsController"/>
     </objects>
     <resources>
         <image name="NSAdvanced" width="32" height="32"/>
