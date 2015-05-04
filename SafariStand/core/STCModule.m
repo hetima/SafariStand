@@ -37,6 +37,17 @@ static char modulePrefContext;
      context:&modulePrefContext];
 }
 
+
+- (void)observeSafariPrefValue:(NSString*)key
+{
+    [[NSUserDefaults standardUserDefaults]
+     addObserver:self
+     forKeyPath:key
+     options:NSKeyValueObservingOptionNew
+     context:&modulePrefContext];
+}
+
+
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change

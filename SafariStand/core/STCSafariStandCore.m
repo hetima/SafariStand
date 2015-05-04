@@ -11,6 +11,7 @@
 #import <WebKit/WebKit.h>
 #import "STTabProxyController.h"
 #import "STWKClientHook.h"
+#import "STCUserDefaultsController.h"
 
 @implementation STCSafariStandCore {
     BOOL _startup;
@@ -71,7 +72,7 @@ static STCSafariStandCore *sharedInstance;
     
     _startup=NO;
     _missMatchAlertShown=NO;
-    _userDefaults=[[NSUserDefaults alloc]initWithSuiteName:kSafariStandPrefDomain];
+    _userDefaults=[[STCUserDefaults alloc]initWithSuiteName:kSafariStandPrefDomain];
     
     
     return self;

@@ -117,7 +117,7 @@ static STSToolbarModule* toolbarModule;
         [self layoutAddressBarForExistingWindow];
     }
 
-    [self observePrefValue:kpBrowserToolbarIdentifier];
+    [self observeSafariPrefValue:kpBrowserToolbarIdentifier];
 }
 
 

@@ -6,6 +6,19 @@
 #import "SafariStand.h"
 #import "STCUserDefaultsController.h"
 
+
+@implementation STCUserDefaults
+
+- (void)setObject:(id)value forKey:(NSString *)defaultName
+{
+    [self willChangeValueForKey:defaultName];
+    [super setObject:value forKey:defaultName];
+    [self didChangeValueForKey:defaultName];
+}
+
+@end
+
+
 @implementation STCUserDefaultsController
 
 - (instancetype)initWithCoder:(NSCoder *)coder

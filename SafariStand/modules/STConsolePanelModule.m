@@ -68,7 +68,7 @@
     if(!_winCtl){
         _winCtl=[[STConsolePanelCtl alloc]initWithWindowNibName:@"STConsolePanel"];
         [_winCtl commonConsolePanelCtlInitWithModule:self];
-        [self observePrefValue:kpConsolePanelToolbarIdentifier]; //after toolbar created
+        [self observeSafariPrefValue:kpConsolePanelToolbarIdentifier]; //after toolbar created
         if (!identifier) {
             identifier=[[_winCtl firstSelectableItem]itemIdentifier];
         }
