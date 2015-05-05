@@ -45,7 +45,7 @@
 - (id)querySeedsRawData;
 - (void)loadSearchItLaterStringDictionaries:(NSArray*)ary;
 - (void)loadQuerySeedDictionaries:(NSArray*)ary;
-- (void)importOldSetting;
+
 @end
 
 

@@ -421,8 +421,6 @@ STQuickSearchModule* quickSearchModule;
         [self loadQuerySeedDictionaries:data];
     }
     
-    //old QuickSearch
-    [self importOldSetting];
     //default
     [self importDefaultSetting];
     
@@ -480,51 +478,6 @@ STQuickSearchModule* quickSearchModule;
     }
     self.querySeeds=qss;
 
-}
-
-
-- (void)importOldSetting
-{
-    if([[STCSafariStandCore si]boolForKey:kpQuickSearchOldSettingImported]) return;
-    
-    [[STCSafariStandCore si]setBool:YES forKey:kpQuickSearchOldSettingImported];
-    
-    id ary = (__bridge id)CFPreferencesCopyAppValue( (CFStringRef)@"Hetima_QuickSearchDict", (CFStringRef)@"jp.hetima.SafariStand");
-    if(ary && (CFGetTypeID((__bridge CFTypeRef)(ary)) == CFArrayGetTypeID()) ){
-        for (NSDictionary* one in ary) {
-            NSString* title=[one objectForKey:@"title"];
-            NSString* baseUrl=[one objectForKey:@"url"];
-            NSString* shortcut=[one objectForKey:@"shortcut"];
-            NSNumber* use=[one objectForKey:@"state"];
-            NSNumber* encoding=[one objectForKey:@"encode"];
-            if(!baseUrl||[baseUrl length]<=0)continue;
-            baseUrl=[baseUrl stringByReplacingOccurrencesOfString:@"@key" withString:@"%s"];
-            if(!title)title=@"imported";
-            if(!shortcut)shortcut=@"";
-            if(!use)use=[NSNumber numberWithBool:NO];
-            if(!encoding)encoding=[NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding];
-            NSDictionary* dict=[NSDictionary dictionaryWithObjectsAndKeys:
-                                title,@"title",
-                                baseUrl,@"baseUrl",
-                                shortcut,@"shortcut",
-                                @"GET",@"method",
-                                use,@"use",
-                                encoding,@"encoding",
-                                
-                                [NSString stand_UUIDStringWithFormat:@"%@"],@"uuid",
-                                nil];
-            
-            HTQuerySeed* qs=[[HTQuerySeed alloc]initWithDict:dict];
-            if(qs){
-                [self addQuerySeed:qs];
-            }
-        }
-    }
-    
-    id data=[self querySeedsRawData];
-    if(data)[[STCSafariStandCore si]setObject:data forKey:kpQuerySeeds];
-    [[STCSafariStandCore si]synchronize];
-    
 }
 
 
