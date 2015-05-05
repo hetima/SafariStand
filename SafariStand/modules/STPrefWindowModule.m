@@ -83,39 +83,7 @@
     self.currentVersionString=[[STCSafariStandCore si]currentVersionString];
     self.latestVersionString=[[STCSafariStandCore si]latestVersionString];
     
-    //other plugin support
-    self.otherDefaults=nil;
-    id sudc=[NSUserDefaultsController sharedUserDefaultsController];
-    id dflts=[sudc defaults];
-    //NSUserDefaults or SCUserDefaults
-    if (![[dflts className]isEqualToString:@"NSUserDefaults"] && [sudc respondsToSelector:@selector(_setDefaults:)]) {
-        self.otherDefaults=dflts;
-        LOG(@"sharedUserDefaultsController %@", [self.otherDefaults className]);
-    }
-    
-    
     return self;
-}
-
-- (void)windowDidBecomeKey:(NSNotification *)notification
-{
-    //other plugin support
-    if(self.otherDefaults){
-        objc_msgSend([NSUserDefaultsController sharedUserDefaultsController], 
-                     @selector(_setDefaults:), [NSUserDefaults standardUserDefaults]);
-    }
-}
-
-- (void)windowDidResignKey:(NSNotification *)notification
-{
-
-    //other plugin support
-    //シートでもresignするから注意
-    if(self.otherDefaults){
-        objc_msgSend([NSUserDefaultsController sharedUserDefaultsController], 
-                     @selector(_setDefaults:), self.otherDefaults);
-    }
-    
 }
 
 

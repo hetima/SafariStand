@@ -19,10 +19,7 @@
 @end
 
 
-@interface STPrefWindowCtl : STCTabWithToolbarWinCtl{
-    
-}
-@property(nonatomic, strong) id otherDefaults;
+@interface STPrefWindowCtl : STCTabWithToolbarWinCtl
 
 @property(nonatomic, assign) IBOutlet NSTextField* oCurrentVarsionLabel;
 @property(nonatomic, assign) IBOutlet NSButton* oGoBackForwardByDeleteKeyCB;
