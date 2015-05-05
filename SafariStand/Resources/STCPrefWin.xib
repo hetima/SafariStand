@@ -6,6 +6,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="STPrefWindowCtl">
             <connections>
+                <outlet property="oGoBackForwardByDeleteKeyCB" destination="181" id="fQW-xh-S0C"/>
                 <outlet property="oTabView" destination="12" id="29"/>
                 <outlet property="oToolbar" destination="17" id="28"/>
                 <outlet property="window" destination="1" id="9"/>
@@ -149,12 +150,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="6" name="value" keyPath="values.com.apple.Safari.ContentPageGroupIdentifier.WebKit2BackspaceKeyNavigationEnabled" id="ZCc-KW-Td1">
-                                                    <dictionary key="options">
-                                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
-                                                        <integer key="NSNullPlaceholder" value="0"/>
-                                                    </dictionary>
-                                                </binding>
+                                                <action selector="actGoBackForwardByDeleteKeyCB:" target="-2" id="2hw-ig-l6y"/>
                                             </connections>
                                         </button>
                                         <button id="185">
@@ -309,13 +305,13 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <binding destination="f0r-av-vRL" name="enabled" keyPath="values.Stand_EnhanceVisualTabPicker" id="oOP-5R-EOI"/>
                                                 <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_CtlTabTriggersVisualTabPicker" id="BHY-lK-7OT">
                                                     <dictionary key="options">
                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                         <integer key="NSNullPlaceholder" value="0"/>
                                                     </dictionary>
                                                 </binding>
+                                                <binding destination="f0r-av-vRL" name="enabled" keyPath="values.Stand_EnhanceVisualTabPicker" id="oOP-5R-EOI"/>
                                             </connections>
                                         </button>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="oBo-U3-jyg">
@@ -654,7 +650,6 @@
             </connections>
             <point key="canvasLocation" x="398" y="358"/>
         </window>
-        <userDefaultsController representsSharedInstance="YES" id="6"/>
         <userDefaultsController id="f0r-av-vRL" userLabel="STCUserDefaultsController" customClass="STCUserDefaultsController"/>
     </objects>
     <resources>

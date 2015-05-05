@@ -118,6 +118,21 @@
     
 }
 
+
+- (void)windowDidLoad
+{
+    [super windowDidLoad];
+    BOOL val=[[NSUserDefaults standardUserDefaults]boolForKey:kpGoBackForwardByDeleteKeyEnabled_Safari];
+    
+    if (val) {
+        [self.oGoBackForwardByDeleteKeyCB setState:NSOnState];
+    }else{
+        [self.oGoBackForwardByDeleteKeyCB setState:NSOffState];
+    }
+    
+}
+
+
 - (void)windowWillClose:(NSNotification *)notification{
     [[STCSafariStandCore si]sendMessage:@selector(stMessagePrefWindowWillClose:) toAllModule:self];
 
@@ -145,6 +160,16 @@
        didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:nil];
 }
 
+
+- (IBAction)actGoBackForwardByDeleteKeyCB:(id)sender
+{
+    NSButton* cb=sender;
+    BOOL val=NO;
+    if([cb state]==NSOnState){
+        val=YES;
+    }
+    [[NSUserDefaults standardUserDefaults]setBool:val forKey:kpGoBackForwardByDeleteKeyEnabled_Safari];
+}
 
 
 @end
