@@ -343,6 +343,8 @@ static STCSafariStandCore *sharedInstance;
     [self.userDefaults setObject:[NSNumber numberWithBool:YES] forKey:kpSettingMigratedV1];
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kpSettingMigratedV1];
     
+    NSLog(@"SafariStand setting was migrated (V1)");
+    
     [self.userDefaults synchronize];
 }
 
