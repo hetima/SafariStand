@@ -13,6 +13,12 @@
 
 static char modulePrefContext;
 
+
++ (BOOL)canRegisterModule
+{
+    return YES;
+}
+
 -(id)initWithStand:(id)core
 {
     self = [super init];

@@ -497,7 +497,7 @@ id STArrayPrevItem(NSArray* ary, id itm)
 
 @implementation STTabPickerModule
 
-+ (BOOL)canUseModule
++ (BOOL)canRegisterModule
 {
     Class visualTabPickerViewController=NSClassFromString(@"VisualTabPickerViewController");
     

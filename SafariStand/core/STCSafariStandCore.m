@@ -182,9 +182,13 @@ static STCSafariStandCore *sharedInstance;
         _modules=[[NSMutableDictionary alloc]initWithCapacity:16];
     }
     Class aClass=NSClassFromString(aClassName);
-    if([aClass instancesRespondToSelector:@selector(initWithStand:)]){
-        aIns=[[aClass alloc]initWithStand:self];
-        if(aIns)[_modules setObject:aIns forKey:aClassName];
+    if([aClass instancesRespondToSelector:@selector(initWithStand:)] && [aClass respondsToSelector:@selector(canRegisterModule)]){
+        if ([aClass canRegisterModule]) {
+            aIns=[[aClass alloc]initWithStand:self];
+            if(aIns)[_modules setObject:aIns forKey:aClassName];
+        }else{
+            NSLog(@"SafariStand:%@ was not loaded because of canRegisterModule==NO.", aClassName);
+        }
     }
     return aIns;
 }
