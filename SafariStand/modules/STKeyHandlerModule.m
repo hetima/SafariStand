@@ -24,11 +24,8 @@
     BOOL enabled=[[STCSafariStandCore ud]boolForKey:kpSwitchTabWithOneKeyEnabled];
     [self setupTabNavigationMenuItem:enabled];
     
-    enabled=[[STCSafariStandCore ud]boolForKey:kpGoBackForwardByDeleteKeyEnabled];
-    [self setupGoBackForwardMenuItem:enabled];
     
     [self observePrefValue:kpSwitchTabWithOneKeyEnabled];
-    [self observePrefValue:kpGoBackForwardByDeleteKeyEnabled];
     
     
     return self;
@@ -43,9 +40,6 @@
         [self setupTabNavigationMenuItem:enabled];
         //if(enabled)[self insertOneKeyNavigationMenuItem];
         //else [self removeOneKeyNavigationMenuItem];
-    }else if([key isEqualToString:kpGoBackForwardByDeleteKeyEnabled]){
-        BOOL enabled=[value boolValue];
-        [self setupGoBackForwardMenuItem:enabled];
     }
 }
 
@@ -64,12 +58,6 @@
     [m setKeyEquivalentModifierMask:0];
     [m setTag:kMenuItemTagSelectNextTab];
 
-    m=[subMenu addItemWithTitle:@"goBack" action:@selector(goBack:) keyEquivalent:@""];
-    [m setKeyEquivalentModifierMask:0];
-    [m setTag:kMenuItemTagGoBack];
-    m=[subMenu addItemWithTitle:@"goForward" action:@selector(goForward:) keyEquivalent:@""];
-    [m setKeyEquivalentModifierMask:0];
-    [m setTag:kMenuItemTagGoForward];
     
     [_oneKeyNavigationMenuItem setSubmenu:subMenu];
 
@@ -118,35 +106,6 @@
         if (enabled) [m setKeyEquivalent:@"."];
         else  [m setKeyEquivalent:@""];
     }
-}
-
-
-- (void)setupGoBackForwardMenuItem:(BOOL)enabled
-{
-    return; //do nothing
-/*
-    NSMenuItem* m;
-    NSString* key;
-    
-    if (enabled) {
-        unichar *del=(unichar *)NSBackspaceCharacter;
-        key=[NSString stringWithCharacters:(const unichar *)&del length:1];
-    }else {
-        key=@"";
-    }
-    
-    m=[[_oneKeyNavigationMenuItem submenu]itemWithTag:kMenuItemTagGoBack];
-    if (m) {
-        [m setKeyEquivalent:key];
-    }
-    m=[[_oneKeyNavigationMenuItem submenu]itemWithTag:kMenuItemTagGoForward];
-    if (m) {
-        [m setKeyEquivalent:key];
-        if (enabled) [m setKeyEquivalentModifierMask:NSControlKeyMask];
-        else  [m setKeyEquivalentModifierMask:0];
-    }
-*/
-
 }
 
 

@@ -83,8 +83,7 @@
 
 #define kMenuItemTagSelectPreviousTab 9050
 #define kMenuItemTagSelectNextTab 9051
-#define kMenuItemTagGoBack 9052
-#define kMenuItemTagGoForward 9053
+
 
 #define kpCheckedLatestVariosn @"Stand_CheckedLatestVariosn"//not used
 
