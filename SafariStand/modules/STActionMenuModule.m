@@ -188,14 +188,14 @@
     [itm setAlternate:YES];
     
 
-    if([[NSUserDefaults standardUserDefaults]boolForKey:kpCopyLinkTagAddTargetBlank]){
+    if([[STCSafariStandCore ud]boolForKey:kpCopyLinkTagAddTargetBlank]){
         itm=[actMenu addItemWithTitle:LOCALIZE(@"Copy Link Tag (_blank)") 
                                       action:@selector(STCopyWindowURLTagBlank:) keyEquivalent:@""];
     }else{
         itm=[actMenu addItemWithTitle:LOCALIZE(@"Copy Link Tag") 
                                       action:@selector(STCopyWindowURLTag:) keyEquivalent:@""];
     }    
-    if([[NSUserDefaults standardUserDefaults]boolForKey:kpCopyLinkTagAddTargetBlank]){
+    if([[STCSafariStandCore ud]boolForKey:kpCopyLinkTagAddTargetBlank]){
         itm=[actMenu addItemWithTitle:LOCALIZE(@"Copy Link Tag") 
                                       action:@selector(STCopyWindowURLTag:) keyEquivalent:@""];
     }else{

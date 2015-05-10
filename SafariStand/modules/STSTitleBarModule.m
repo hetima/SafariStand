@@ -38,7 +38,7 @@
     ^(id slf, NSMenu* menu, NSPoint pt, double width, NSView* view, long long selection, id font,
               unsigned long long arg7, id arg8)
     {
-         if(_showingPathPopUpMenu && [[NSUserDefaults standardUserDefaults]boolForKey:kpImprovePathPopupMenu]){
+         if(_showingPathPopUpMenu && [[STCSafariStandCore ud]boolForKey:kpImprovePathPopupMenu]){
              //[[STCSafariStandCore mi:@"STSTitleBarModule"]alterPathPopUpMenu:menu];
              [self alterPathPopUpMenu:menu];
          }
@@ -75,7 +75,7 @@
 
 - (void)modulesDidFinishLoading:(id)core
 {
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowBrowserWindowTitlebar]) {
+    if ([[STCSafariStandCore ud]boolForKey:kpShowBrowserWindowTitlebar]) {
         //not implement yet
         //[NSApp sendAction:@selector(STToggleWindowTitleVisibility:) to:nil from:self];
     }
@@ -129,7 +129,7 @@
     }*/
     
     i=1;
-    if([[NSUserDefaults standardUserDefaults]boolForKey:kpCopyLinkTagAddTargetBlank]){
+    if([[STCSafariStandCore ud]boolForKey:kpCopyLinkTagAddTargetBlank]){
         m=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag (_blank)")
                                     action:@selector(STCopyWindowURLTagBlank:) keyEquivalent:@""];
     }else{
@@ -138,7 +138,7 @@
     }
     [menu insertItem:m atIndex:i++];
     
-    if([[NSUserDefaults standardUserDefaults]boolForKey:kpCopyLinkTagAddTargetBlank]){
+    if([[STCSafariStandCore ud]boolForKey:kpCopyLinkTagAddTargetBlank]){
         m=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag")
                                     action:@selector(STCopyWindowURLTag:) keyEquivalent:@""];
     }else{

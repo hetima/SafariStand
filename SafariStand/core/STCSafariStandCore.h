@@ -5,7 +5,6 @@
 
 @import AppKit;
 
-#define kSafariStandPrefDomain @"com.hetima.SafariStand"
 
 @interface STCSafariStandCore : NSObject
 
@@ -16,10 +15,12 @@
 @property(nonatomic,retain) NSString* currentVersionString;
 @property(nonatomic,retain) NSString* latestVersionString;
 @property(nonatomic,assign) BOOL missMatchAlertShown;
+@property(nonatomic, strong, readonly) NSUserDefaults* userDefaults;
 
 + (STCSafariStandCore *)si;
 + (id)mi:(NSString*)moduleClassName;
 + (NSString *)standLibraryPath:(NSString*)subPath;
++ (NSUserDefaults *)ud;
 
 - (void)startup;
 

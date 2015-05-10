@@ -49,7 +49,7 @@
     ^(id slf, id sender)
     {
         call(slf, sel, sender);
-        if ( ![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault] ||
+        if ( ![[STCSafariStandCore ud]boolForKey:kpSidebarShowsDefault] ||
             [slf htao_valueForKey:kAOValueNotShowSidebarAuto] ) {
             return;
         }
@@ -116,7 +116,7 @@
 -(void)showSidebarForExistingWindow
 {
 
-    if (![[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault]) {
+    if (![[STCSafariStandCore ud]boolForKey:kpSidebarShowsDefault]) {
         return;
     }
     
@@ -154,7 +154,7 @@
     
     if (ctl) {
         BOOL rightSide=![ctl rightSide];
-        [[NSUserDefaults standardUserDefaults]setBool:rightSide forKey:kpSidebarIsRightSide];
+        [[STCSafariStandCore ud]setBool:rightSide forKey:kpSidebarIsRightSide];
         [ctl setRightSide:rightSide];
     }
 }
@@ -167,8 +167,8 @@
     if ([self sidebarCtlForWindow:win] || !tabView) {
         return;
     }
-    BOOL rightSide=[[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarIsRightSide];
-    CGFloat width=[[NSUserDefaults standardUserDefaults]floatForKey:kpSidebarWidth];
+    BOOL rightSide=[[STCSafariStandCore ud]boolForKey:kpSidebarIsRightSide];
+    CGFloat width=[[STCSafariStandCore ud]floatForKey:kpSidebarWidth];
     if (width<kSidebarFrameMinWidth) {
         width=kSidebarFrameMinWidth;
     }

@@ -45,8 +45,8 @@
             }
         }
     }
-    [[NSUserDefaults standardUserDefaults]setObject:disabledItems forKey:kpSquashContextMenuItemTags];
-    [[NSUserDefaults standardUserDefaults]synchronize];
+    [[STCSafariStandCore ud]setObject:disabledItems forKey:kpSquashContextMenuItemTags];
+    [[STCSafariStandCore ud]synchronize];
 }
 
 
@@ -66,7 +66,7 @@
 
     NSString* defFile=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForResource:plistName ofType:@"plist"];
 
-    NSArray* disabledItems=[[NSUserDefaults standardUserDefaults]arrayForKey:kpSquashContextMenuItemTags];
+    NSArray* disabledItems=[[STCSafariStandCore ud]arrayForKey:kpSquashContextMenuItemTags];
     
     NSArray* ary=[[NSArray alloc]initWithContentsOfFile:defFile];
     NSMutableArray* defs=[[STCSafariStandCore si]makeMutableArrayCopy:ary];

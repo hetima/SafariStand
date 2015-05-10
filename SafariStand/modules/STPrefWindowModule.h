@@ -19,17 +19,17 @@
 @end
 
 
-@interface STPrefWindowCtl : STCTabWithToolbarWinCtl{
-    
-}
-@property(nonatomic, strong) id otherDefaults;
+@interface STPrefWindowCtl : STCTabWithToolbarWinCtl
 
 @property(nonatomic, assign) IBOutlet NSTextField* oCurrentVarsionLabel;
+@property(nonatomic, assign) IBOutlet NSButton* oGoBackForwardByDeleteKeyCB;
 @property(nonatomic, strong) NSString* currentVersionString;
 @property(nonatomic, strong) NSString* latestVersionString;
 
 - (IBAction)actShowDownloadFolderAdvanedSetting:(id)sender;
 - (IBAction)actShowSquashCMAdvanedSetting:(id)sender;
+
+- (IBAction)actGoBackForwardByDeleteKeyCB:(id)sender;
 
 @end
 

@@ -48,7 +48,7 @@
     KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "scrollWheel:", void, call, sel)
     ^void (id slf, NSEvent* event)
     {
-        if([[NSUserDefaults standardUserDefaults]boolForKey:kpSwitchTabWithWheelEnabled]){
+        if([[STCSafariStandCore ud]boolForKey:kpSwitchTabWithWheelEnabled]){
             id window=objc_msgSend(slf, @selector(window));
             if([[[window windowController]className]isEqualToString:kSafariBrowserWindowController]){
                 if ([self canAction]) {
@@ -79,8 +79,8 @@
     ^double (id slf, unsigned long long buttonNum, double inWidth, double* remainderWidth)
     {
         double result=call(slf, sel, buttonNum, inWidth, remainderWidth);
-        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
-            double maxWidth=floor([[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue]);
+        if ([[STCSafariStandCore ud]boolForKey:kpSuppressTabBarWidthEnabled]) {
+            double maxWidth=floor([[STCSafariStandCore ud]doubleForKey:kpSuppressTabBarWidthValue]);
             if (result>maxWidth) {
                 //double diff=result-maxWidth;
                 //*remainderWidth=diff+*remainderWidth;
@@ -94,7 +94,7 @@
                          BOOL, call, sel)
     ^BOOL (id slf)
     {
-        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
+        if ([[STCSafariStandCore ud]boolForKey:kpSuppressTabBarWidthEnabled]) {
             return NO;
         }
         
@@ -107,9 +107,9 @@
     ^NSUInteger(id slf, struct CGPoint arg1)
     {
         NSUInteger result=call(slf, sel, arg1);
-        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
+        if ([[STCSafariStandCore ud]boolForKey:kpSuppressTabBarWidthEnabled]) {
             if (result==0) {
-                double maxWidth=floor([[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue]);
+                double maxWidth=floor([[STCSafariStandCore ud]doubleForKey:kpSuppressTabBarWidthValue]);
                 if (arg1.x > maxWidth) {
                     result=NSNotFound;
                 }
@@ -126,9 +126,9 @@
     }_WITHBLOCK;
     
     
-    double minX=[[NSUserDefaults standardUserDefaults]doubleForKey:kpSuppressTabBarWidthValue];
+    double minX=[[STCSafariStandCore ud]doubleForKey:kpSuppressTabBarWidthValue];
     if (minX<140.0 || minX>480.0) minX=240.0;
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSuppressTabBarWidthEnabled]) {
+    if ([[STCSafariStandCore ud]boolForKey:kpSuppressTabBarWidthEnabled]) {
         [self layoutTabBarForExistingWindow];
     }
     [self observePrefValue:kpSuppressTabBarWidthEnabled];
@@ -140,7 +140,7 @@
     ^id (id slf, NSRect frame, id obj)
     {
         NSButton* result=call(slf, sel, frame, obj);
-        if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnTabBarEnabled]) {
+        if ([[STCSafariStandCore ud]boolForKey:kpShowIconOnTabBarEnabled]) {
             [self _installIconToTabButton:result ofTabViewItem:obj];
         }
         
@@ -148,7 +148,7 @@
     }_WITHBLOCK;
 
     
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpShowIconOnTabBarEnabled]) {
+    if ([[STCSafariStandCore ud]boolForKey:kpShowIconOnTabBarEnabled]) {
         [self installIconToExistingWindows];
     }
     [self observePrefValue:kpShowIconOnTabBarEnabled];

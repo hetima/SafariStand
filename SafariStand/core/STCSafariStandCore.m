@@ -11,6 +11,7 @@
 #import <WebKit/WebKit.h>
 #import "STTabProxyController.h"
 #import "STWKClientHook.h"
+#import "STCUserDefaultsController.h"
 
 @implementation STCSafariStandCore {
     BOOL _startup;
@@ -56,6 +57,13 @@ static STCSafariStandCore *sharedInstance;
     return path;
 }
 
+
++ (NSUserDefaults *)ud
+{
+    return [[STCSafariStandCore si]userDefaults];
+}
+
+
 - (id)init
 {
     self = [super init];
@@ -64,6 +72,7 @@ static STCSafariStandCore *sharedInstance;
     
     _startup=NO;
     _missMatchAlertShown=NO;
+    _userDefaults=[[STCUserDefaults alloc]initWithSuiteName:kSafariStandPrefDomain];
     
     
     return self;
@@ -130,13 +139,15 @@ static STCSafariStandCore *sharedInstance;
     _revision=revision;
     LOG(@"Startup.... %@ - %@", revision, systemVersion);
     
+    [self migrateSetting];
+    
     NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
                        [NSNumber numberWithBool:YES], kpQuickSearchMenuEnabled,
                        [NSNumber numberWithDouble:250.0], kpSuppressTabBarWidthValue,
                        [NSNumber numberWithBool:YES], kpEnhanceVisualTabPicker,
                        //@"-", kpCheckedLatestVariosn,
                        nil];
-    [[NSUserDefaults standardUserDefaults]registerDefaults:dic];
+    [self.userDefaults registerDefaults:dic];
     
 	//アプリ終了をobserve
 	[[NSNotificationCenter defaultCenter]addObserver:self
@@ -160,6 +171,7 @@ static STCSafariStandCore *sharedInstance;
 {
     [self sendMessage:@selector(applicationWillTerminate:) toAllModule:self];
     
+    [self.userDefaults synchronize];
 }
 
 
@@ -170,9 +182,13 @@ static STCSafariStandCore *sharedInstance;
         _modules=[[NSMutableDictionary alloc]initWithCapacity:16];
     }
     Class aClass=NSClassFromString(aClassName);
-    if([aClass instancesRespondToSelector:@selector(initWithStand:)]){
-        aIns=[[aClass alloc]initWithStand:self];
-        if(aIns)[_modules setObject:aIns forKey:aClassName];
+    if([aClass instancesRespondToSelector:@selector(initWithStand:)] && [aClass respondsToSelector:@selector(canRegisterModule)]){
+        if ([aClass canRegisterModule]) {
+            aIns=[[aClass alloc]initWithStand:self];
+            if(aIns)[_modules setObject:aIns forKey:aClassName];
+        }else{
+            NSLog(@"SafariStand:%@ was not loaded because of canRegisterModule==NO.", aClassName);
+        }
     }
     return aIns;
 }
@@ -273,6 +289,67 @@ static STCSafariStandCore *sharedInstance;
     if (returnCode==0) {
         [self openWebSite];
     }
+}
+
+
+
+- (void)migrateSetting
+{
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSettingMigratedV1]) {
+        return;
+    }
+    if ([self.userDefaults boolForKey:kpSettingMigratedV1]) {
+        return;
+    }
+    
+    NSArray* keys=@[kpActionMessageEnabled,
+                    kpQuickSearchMenuEnabled,
+                    kpQuickSearchMenuPlace,
+                    kpQuickSearchMenuIsFlat,
+                    kpQuickSearchTabPolicy,
+                    kpQuickSearchMenuGroupingEnabled,
+                    kpSwitchTabWithWheelEnabled,
+                    kpSwitchTabWithOneKeyEnabled,
+                    kpShowCopyLinkTagContextMenu,
+                    kpCopyLinkTagAddTargetBlank,
+                    kpShowCopyLinkAndTitleContextMenu,
+                    kpShowCopyLinkTitleContextMenu,
+                    kpShowClipWebArchiveContextMenu,
+                    kpShowGoogleImageSearchContextMenu,
+                    kpImprovePathPopupMenu,
+                    kpSidebarShowsDefault,
+                    kpSidebarIsRightSide,
+                    kpSidebarWidth,
+                    kpSquashContextMenuItemEnabled,
+                    kpSquashContextMenuItemTags,
+                    kpClassifyDownloadFolderBasicEnabled,
+                    kpDownloadMonitorMovesToConsolePanel,
+                    kpSuppressTabBarWidthEnabled,
+                    kpSuppressTabBarWidthValue,
+                    kpShowIconOnTabBarEnabled,
+                    kpExpandAddressBarWidthEnabled,
+                    kpExpandAddressBarWidthValue,
+                    kpShowIconOnSidebarBookmarkEnabled,
+                    kpShowBrowserWindowTitlebar,
+                    kpEnhanceVisualTabPicker,
+                    kpDontStackVisualTabPicker,
+                    kpCtlTabTriggersVisualTabPicker,
+                    @"HTFilePresetPopUpButtonCurrentValue_HTWebClipwin",
+                    @"HTFilePresetPopUpButtonAllValues_HTWebClipwin"];
+    
+    for (NSString* key in keys) {
+        id val=[[NSUserDefaults standardUserDefaults]objectForKey:key];
+        if (val) {
+            [self.userDefaults setObject:val forKey:key];
+        }
+    }
+    
+    [self.userDefaults setObject:[NSNumber numberWithBool:YES] forKey:kpSettingMigratedV1];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kpSettingMigratedV1];
+    
+    NSLog(@"SafariStand setting was migrated (V1)");
+    
+    [self.userDefaults synchronize];
 }
 
 

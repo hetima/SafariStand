@@ -83,40 +83,23 @@
     self.currentVersionString=[[STCSafariStandCore si]currentVersionString];
     self.latestVersionString=[[STCSafariStandCore si]latestVersionString];
     
-    //other plugin support
-    self.otherDefaults=nil;
-    id sudc=[NSUserDefaultsController sharedUserDefaultsController];
-    id dflts=[sudc defaults];
-    //NSUserDefaults or SCUserDefaults
-    if (![[dflts className]isEqualToString:@"NSUserDefaults"] && [sudc respondsToSelector:@selector(_setDefaults:)]) {
-        self.otherDefaults=dflts;
-        LOG(@"sharedUserDefaultsController %@", [self.otherDefaults className]);
-    }
-    
-    
     return self;
 }
 
-- (void)windowDidBecomeKey:(NSNotification *)notification
-{
-    //other plugin support
-    if(self.otherDefaults){
-        objc_msgSend([NSUserDefaultsController sharedUserDefaultsController], 
-                     @selector(_setDefaults:), [NSUserDefaults standardUserDefaults]);
-    }
-}
 
-- (void)windowDidResignKey:(NSNotification *)notification
+- (void)windowDidLoad
 {
-
-    //other plugin support
-    //シートでもresignするから注意
-    if(self.otherDefaults){
-        objc_msgSend([NSUserDefaultsController sharedUserDefaultsController], 
-                     @selector(_setDefaults:), self.otherDefaults);
+    [super windowDidLoad];
+    BOOL val=[[NSUserDefaults standardUserDefaults]boolForKey:kpGoBackForwardByDeleteKeyEnabled_Safari];
+    
+    if (val) {
+        [self.oGoBackForwardByDeleteKeyCB setState:NSOnState];
+    }else{
+        [self.oGoBackForwardByDeleteKeyCB setState:NSOffState];
     }
     
 }
+
 
 - (void)windowWillClose:(NSNotification *)notification{
     [[STCSafariStandCore si]sendMessage:@selector(stMessagePrefWindowWillClose:) toAllModule:self];
@@ -145,6 +128,16 @@
        didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:nil];
 }
 
+
+- (IBAction)actGoBackForwardByDeleteKeyCB:(id)sender
+{
+    NSButton* cb=sender;
+    BOOL val=NO;
+    if([cb state]==NSOnState){
+        val=YES;
+    }
+    [[NSUserDefaults standardUserDefaults]setBool:val forKey:kpGoBackForwardByDeleteKeyEnabled_Safari];
+}
 
 
 @end

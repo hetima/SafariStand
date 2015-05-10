@@ -56,7 +56,7 @@ void (*orig_showPage)(WKPageRef, const void*);
 void STWK_showPage(WKPageRef page, const void* clientInfo)
 {
     //JavaScriptで開いたウインドウにはサイドバーを自動表示しないようにする
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSidebarShowsDefault]) {
+    if ([[STCSafariStandCore ud]boolForKey:kpSidebarShowsDefault]) {
         STTabProxy* proxy=[[STTabProxyController si]tabProxyForPageRef:(void*)page];
         NSTabView* tabView=[proxy tabView];
         if ([tabView numberOfTabViewItems]<=1){

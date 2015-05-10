@@ -73,7 +73,7 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
     KZRMETHOD_SWIZZLING_("NSFileManager", sel_getName(nameForPathSelector), id, call, sel)
     ^id (id slf, NSString *inStr)
     {
-        if(![[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
+        if(![[STCSafariStandCore ud]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
             return call(slf, sel, inStr);
         }
         
@@ -110,7 +110,7 @@ void copyImageToDownloadFolderCallBack(void* data, void* error, CFDictionaryRef 
 
 - (void)modulesDidFinishLoading:(id)core
 {
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:kpDownloadMonitorMovesToConsolePanel]) {
+    if ([[STCSafariStandCore ud]boolForKey:kpDownloadMonitorMovesToConsolePanel]) {
         [self installDownloadMonitorViewToConsolePanel];
     }else{
         [self installDummyDownloadMonitorViewToConsolePanel];

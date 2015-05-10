@@ -13,6 +13,12 @@
 
 static char modulePrefContext;
 
+
++ (BOOL)canRegisterModule
+{
+    return YES;
+}
+
 -(id)initWithStand:(id)core
 {
     self = [super init];
@@ -30,12 +36,23 @@ static char modulePrefContext;
 
 - (void)observePrefValue:(NSString*)key
 {
+    [[STCSafariStandCore ud]
+     addObserver:self
+     forKeyPath:key
+     options:NSKeyValueObservingOptionNew
+     context:&modulePrefContext];
+}
+
+
+- (void)observeSafariPrefValue:(NSString*)key
+{
     [[NSUserDefaults standardUserDefaults]
      addObserver:self
      forKeyPath:key
      options:NSKeyValueObservingOptionNew
      context:&modulePrefContext];
 }
+
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object

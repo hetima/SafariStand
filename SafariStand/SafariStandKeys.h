@@ -11,66 +11,70 @@
 #define __SAFARISTAND_KEYS__
 
 #define kSafariStandBundleID @"com.hetima.SafariStand"
+#define kSafariStandPrefDomain @"com.hetima.SafariStand"
 
+#define kpSettingMigratedV1 @"Stand_SettingMigratedV1"
 
-#define kpActionMessageEnabled @"Stand_ActionMessageEnabled"
-#define kpColorizeHTMLSourceEnabled @"Stand_ColorizeHTMLSourceEnabled"
-#define kpHTMLSourceFontSize @"Stand_HTMLSourceFontSize"
+#define kpGoBackForwardByDeleteKeyEnabled_Safari @"com.apple.Safari.ContentPageGroupIdentifier.WebKit2BackspaceKeyNavigationEnabled"
 
-#define kpQuerySeeds @"Stand_QuerySeeds"
-#define kpQuickSearchOldSettingImported @"Stand_QuickSearchOldSettingImported"
-#define kpSearchItLaterStrings @"Stand_SearchItLaterStrings"
+#define kpActionMessageEnabled @"Stand_ActionMessageEnabled"///was com.apple.Safari
+#define kpColorizeHTMLSourceEnabled @"Stand_ColorizeHTMLSourceEnabled"//not used
+#define kpHTMLSourceFontSize @"Stand_HTMLSourceFontSize"//not used
 
-#define kpQuickSearchMenuEnabled @"Stand_QuickSearchMenuEnabled"
-#define kpQuickSearchMenuPlace @"Stand_QuickSearchMenuPlace"
-#define kpQuickSearchMenuIsFlat @"Stand_QuickSearchMenuIsFlat"
-#define kpQuickSearchTabPolicy @"Stand_QuickSearchTabPolicy" //int
+#define kpQuerySeeds @"Stand_QuerySeeds"///com.hetima.SafariStand
+#define kpQuickSearchOldSettingImported @"Stand_QuickSearchOldSettingImported"///com.hetima.SafariStand
+#define kpSearchItLaterStrings @"Stand_SearchItLaterStrings"///com.hetima.SafariStand
+
+#define kpQuickSearchMenuEnabled @"Stand_QuickSearchMenuEnabled"///was com.apple.Safari
+#define kpQuickSearchMenuPlace @"Stand_QuickSearchMenuPlace"///was com.apple.Safari
+#define kpQuickSearchMenuIsFlat @"Stand_QuickSearchMenuIsFlat"///was com.apple.Safari
+#define kpQuickSearchTabPolicy @"Stand_QuickSearchTabPolicy" //int///was com.apple.Safari
 #define kQuickSearchTabPolicyRely 0
 #define kQuickSearchTabPolicyFront 1
 #define kQuickSearchTabPolicyBack 2
-#define kpQuickSearchMenuGroupingEnabled @"Stand_QuickSearchMenuGroupingEnabled"
+#define kpQuickSearchMenuGroupingEnabled @"Stand_QuickSearchMenuGroupingEnabled"///was com.apple.Safari
 
-#define kpSwitchTabWithWheelEnabled @"Stand_SwitchTabWithWheelEnabled"
-#define kpSwitchTabWithOneKeyEnabled @"Stand_SwitchTabWithOneKeyEnabled"
-#define kpGoBackForwardByDeleteKeyEnabled @"Stand_GoBackForwardByDeleteKeyEnabled"
-#define kpSwitchTabWithSwipeEnabled @"Stand_SwitchTabWithSwipeEnabled"
+#define kpSwitchTabWithWheelEnabled @"Stand_SwitchTabWithWheelEnabled"///was com.apple.Safari
+#define kpSwitchTabWithOneKeyEnabled @"Stand_SwitchTabWithOneKeyEnabled"///was com.apple.Safari
+#define kpGoBackForwardByDeleteKeyEnabled @"Stand_GoBackForwardByDeleteKeyEnabled"///was com.apple.Safari
+#define kpSwitchTabWithSwipeEnabled @"Stand_SwitchTabWithSwipeEnabled"//not used
 
-#define kpShowCopyLinkTagContextMenu @"Stand_ShowCopyLinkTagContextMenu"
-#define kpCopyLinkTagAddTargetBlank @"Stand_CopyLinkTagAddTargetBlank"
+#define kpShowCopyLinkTagContextMenu @"Stand_ShowCopyLinkTagContextMenu"///was com.apple.Safari
+#define kpCopyLinkTagAddTargetBlank @"Stand_CopyLinkTagAddTargetBlank"///was com.apple.Safari
 
-#define kpShowCopyLinkAndTitleContextMenu @"Stand_ShowCopyLinkAndTitleContextMenu"
-#define kpShowCopyLinkTitleContextMenu @"Stand_ShowCopyLinkTitleContextMenu"
-#define kpShowClipWebArchiveContextMenu @"Stand_ShowClipWebArchiveContextMenu"
-#define kpShowGoogleImageSearchContextMenu @"Stand_ShowGoogleImageSearchContextMenu"
-
-
-#define kpImprovePathPopupMenu @"Stand_ImprovePathPopupMenu"
-
-#define kpSidebarEnabled @"Stand_SidebarEnabled"
-#define kpSidebarShowsDefault @"Stand_SidebarShowsDefault"
-#define kpSidebarIsRightSide @"Stand_SidebarIsRightSide"
-#define kpSidebarWidth @"Stand_SidebarWidth"
-
-#define kpSquashContextMenuItemEnabled @"Stand_SquashContextMenuItemEnabled"
-#define kpSquashContextMenuItemTags @"Stand_SquashContextMenuItemTags"
-
-#define kpKillJSStatusTextEnabled @"Stand_KillJSStatusTextEnabled"
+#define kpShowCopyLinkAndTitleContextMenu @"Stand_ShowCopyLinkAndTitleContextMenu"///was com.apple.Safari
+#define kpShowCopyLinkTitleContextMenu @"Stand_ShowCopyLinkTitleContextMenu"///was com.apple.Safari
+#define kpShowClipWebArchiveContextMenu @"Stand_ShowClipWebArchiveContextMenu"///was com.apple.Safari
+#define kpShowGoogleImageSearchContextMenu @"Stand_ShowGoogleImageSearchContextMenu"///was com.apple.Safari
 
 
-#define kpClassifyDownloadFolderBasicEnabled @"Stand_ClassifyDownloadFolderBasicEnabled"
-#define kpClassifyDownloadFolderBasicExpression @"Stand_ClassifyDownloadFolderBasicExpression"
-#define kpClassifyDownloadFolderAdvancedEnabled @"Stand_ClassifyDownloadFolderAdvancedEnabled"
-#define kpClassifyDownloadFolderAdvancedRules @"Stand_ClassifyDownloadFolderAdvancedRules"
+#define kpImprovePathPopupMenu @"Stand_ImprovePathPopupMenu"///was com.apple.Safari
+
+#define kpSidebarEnabled @"Stand_SidebarEnabled"//not used
+#define kpSidebarShowsDefault @"Stand_SidebarShowsDefault"///was com.apple.Safari
+#define kpSidebarIsRightSide @"Stand_SidebarIsRightSide"///was com.apple.Safari
+#define kpSidebarWidth @"Stand_SidebarWidth"///was com.apple.Safari
+
+#define kpSquashContextMenuItemEnabled @"Stand_SquashContextMenuItemEnabled"///was com.apple.Safari
+#define kpSquashContextMenuItemTags @"Stand_SquashContextMenuItemTags"///was com.apple.Safari
+
+#define kpKillJSStatusTextEnabled @"Stand_KillJSStatusTextEnabled"//not used
+
+
+#define kpClassifyDownloadFolderBasicEnabled @"Stand_ClassifyDownloadFolderBasicEnabled"///was com.apple.Safari
+#define kpClassifyDownloadFolderBasicExpression @"Stand_ClassifyDownloadFolderBasicExpression"///com.hetima.SafariStand
+#define kpClassifyDownloadFolderAdvancedEnabled @"Stand_ClassifyDownloadFolderAdvancedEnabled"//not used
+#define kpClassifyDownloadFolderAdvancedRules @"Stand_ClassifyDownloadFolderAdvancedRules"///com.hetima.SafariStand
 #define kDownloadFolderRuleExtension 1
 #define kDownloadFolderRuleDomain 2
-#define kpDownloadMonitorMovesToConsolePanel @"Stand_DownloadMonitorMovesToConsolePanel"
+#define kpDownloadMonitorMovesToConsolePanel @"Stand_DownloadMonitorMovesToConsolePanel"///was com.apple.Safari
 
-#define kpSuppressTabBarWidthEnabled @"Stand_SuppressTabBarWidthEnabled"
-#define kpSuppressTabBarWidthValue @"Stand_SuppressTabBarWidthValue"
-#define kpShowIconOnTabBarEnabled @"Stand_ShowIconOnTabBarEnabled"
+#define kpSuppressTabBarWidthEnabled @"Stand_SuppressTabBarWidthEnabled"///was com.apple.Safari
+#define kpSuppressTabBarWidthValue @"Stand_SuppressTabBarWidthValue"///was com.apple.Safari
+#define kpShowIconOnTabBarEnabled @"Stand_ShowIconOnTabBarEnabled"///was com.apple.Safari
 
-#define kpExpandAddressBarWidthEnabled @"Stand_ExpandAddressBarWidthEnabled"
-#define kpExpandAddressBarWidthValue @"Stand_ExpandAddressBarWidthValue"
+#define kpExpandAddressBarWidthEnabled @"Stand_ExpandAddressBarWidthEnabled"///was com.apple.Safari
+#define kpExpandAddressBarWidthValue @"Stand_ExpandAddressBarWidthValue"///was com.apple.Safari
 
 #define kMenuItemTagSafariStandSetting 9001
 #define kMenuItemTagOneKeyNavigation 9002
@@ -79,23 +83,22 @@
 
 #define kMenuItemTagSelectPreviousTab 9050
 #define kMenuItemTagSelectNextTab 9051
-#define kMenuItemTagGoBack 9052
-#define kMenuItemTagGoForward 9053
 
-#define kpCheckedLatestVariosn @"Stand_CheckedLatestVariosn"
+
+#define kpCheckedLatestVariosn @"Stand_CheckedLatestVariosn"//not used
 
 #define kSafariStandPBKey @"com.hetima.safaristand.cm"
 
 #define kAOValueNotShowSidebarAuto @"STSMShouldNotShowSidebarAuto"
 
-#define kpBrowserToolbarConfigurationBackup @"Stand_BrowserToolbarConfigurationBackup"
-#define kpConsolePanelToolbarConfigurationBackup @"Stand_ConsolePanelToolbarConfigurationBackup"
+#define kpBrowserToolbarConfigurationBackup @"Stand_BrowserToolbarConfigurationBackup"///com.hetima.SafariStand
+#define kpConsolePanelToolbarConfigurationBackup @"Stand_ConsolePanelToolbarConfigurationBackup"///com.hetima.SafariStand
 
-#define kpShowIconOnSidebarBookmarkEnabled @"Stand_ShowIconOnSidebarBookmarkEnabled"
-#define kpShowBrowserWindowTitlebar @"Stand_ShowBrowserWindowTitlebar"
+#define kpShowIconOnSidebarBookmarkEnabled @"Stand_ShowIconOnSidebarBookmarkEnabled"///was com.apple.Safari
+#define kpShowBrowserWindowTitlebar @"Stand_ShowBrowserWindowTitlebar"///was com.apple.Safari
 
-#define kpEnhanceVisualTabPicker @"Stand_EnhanceVisualTabPicker"
-#define kpDontStackVisualTabPicker @"Stand_DontStackVisualTabPicker"
-#define kpCtlTabTriggersVisualTabPicker @"Stand_CtlTabTriggersVisualTabPicker"
+#define kpEnhanceVisualTabPicker @"Stand_EnhanceVisualTabPicker"///was com.apple.Safari
+#define kpDontStackVisualTabPicker @"Stand_DontStackVisualTabPicker"///was com.apple.Safari
+#define kpCtlTabTriggersVisualTabPicker @"Stand_CtlTabTriggersVisualTabPicker"///was com.apple.Safari
 
 #endif
