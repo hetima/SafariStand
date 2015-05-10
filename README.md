@@ -1,15 +1,13 @@
 # SafariStand 
 
-Safari を拡張する SIMBL プラグインです。バイナリは、
+SIMBL plugin for Safari.
 
 http://hetima.com/safari/stand.html (日本語ページ)  
-http://hetima.com/safari/stand-e.html (英語ページ)
+http://hetima.com/safari/stand-e.html (English)
 
-で公開しています。
+Tested on Safari 8.0.x / OS X 10.10.x with [EasySIMBL](https://github.com/norio-nomura/EasySIMBL).
 
-Xcode 6.1 で開発しています。  
-コーディングスタイルに一貫性がありません。  
-コメントは頼りになりません。
+[Download latest version](https://github.com/hetima/SafariStand/releases/latest)
 
 # Author
 
