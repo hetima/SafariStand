@@ -101,4 +101,6 @@
 #define kpDontStackVisualTabPicker @"Stand_DontStackVisualTabPicker"///was com.apple.Safari
 #define kpCtlTabTriggersVisualTabPicker @"Stand_CtlTabTriggersVisualTabPicker"///was com.apple.Safari
 
+#define kpSelfUpdateSkippedTag @"Stand_SelfUpdateSkippedTag"
+
 #endif

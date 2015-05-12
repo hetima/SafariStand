@@ -11,7 +11,7 @@
 
 @property(nonatomic,readonly)NSMenu *standMenu;
 
-@property(nonatomic, strong, readonly) NSString* revision;
+@property(nonatomic, strong, readonly) NSString* safariRevision;
 @property(nonatomic,retain) NSString* currentVersionString;
 @property(nonatomic,retain) NSString* latestVersionString;
 @property(nonatomic,assign) BOOL missMatchAlertShown;
