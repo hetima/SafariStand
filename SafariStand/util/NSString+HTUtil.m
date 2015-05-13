@@ -117,6 +117,22 @@
     return nil;
 }
 
+
+- (NSString*)stand_revisionFromVersionString
+{
+    NSString* revision=nil;
+    NSArray* revisionArray=[self componentsSeparatedByString:@"."];
+    
+    if ([revisionArray count]>1) {
+        revision=[NSString stringWithFormat:@"%@.%@", revisionArray[0], revisionArray[1]];
+    }else if ([revisionArray count]==1){
+        revision=[NSString stringWithFormat:@"%@.0", revisionArray[0]];
+    }
+    
+    return revision;
+
+}
+
 @end
 
 

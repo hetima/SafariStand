@@ -75,8 +75,8 @@ void STSafariGoToURLWithPolicy(NSURL* url, int policy);
 void STSafariGoToRequestWithPolicy(NSURLRequest* req, int policy);
 
 NSString* STSafariDownloadDestinationWithFileName(NSString* fileName);
-void STSafariDownloadURL(NSURL* url);
-void STSafariDownloadRequest(NSURLRequest* req);
+void STSafariDownloadURL(NSURL* url, BOOL removeEntryWhenDone);
+void STSafariDownloadRequest(NSURLRequest* req, BOOL removeEntryWhenDone);
 void STSafariDownloadURLWithFileName(NSURL* url, NSString* fileName);
 void STSafariDownloadRequestWithFileName(NSURLRequest* req, NSString* fileName);
 

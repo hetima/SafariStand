@@ -14,6 +14,7 @@
 + (NSString*)stand_fileSizeStringFromSize:(uint64_t)siz;
 + (NSString*)stand_verboseFileSizeStringFromSize:(uint64_t)siz;
 - (NSURL*)stand_httpOrFileURL;
+- (NSString*)stand_revisionFromVersionString;
 @end
 
 @interface HTFileSizeStringTransformer : NSValueTransformer

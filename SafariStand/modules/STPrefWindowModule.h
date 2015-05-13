@@ -22,6 +22,7 @@
 @interface STPrefWindowCtl : STCTabWithToolbarWinCtl
 
 @property(nonatomic, assign) IBOutlet NSTextField* oCurrentVarsionLabel;
+@property(nonatomic, assign) IBOutlet NSProgressIndicator* oUpdateChekingPie;
 @property(nonatomic, assign) IBOutlet NSButton* oGoBackForwardByDeleteKeyCB;
 @property(nonatomic, strong) NSString* currentVersionString;
 @property(nonatomic, strong) NSString* latestVersionString;

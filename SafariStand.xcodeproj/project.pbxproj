@@ -48,6 +48,8 @@
 		AA53193E19FCF7C90052A1B8 /* STCTabListViewCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA53193C19FCF7C90052A1B8 /* STCTabListViewCtl.xib */; };
 		AA5B3AA913BC5782001453C0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5B3AA813BC5782001453C0 /* WebKit.framework */; };
 		AA5B3AAC13BC7667001453C0 /* STSContextMenuModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5B3AAB13BC7667001453C0 /* STSContextMenuModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		AA5DD7C31B01F6C600EB2CF3 /* STSelfUpdaterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5DD7C21B01F6C600EB2CF3 /* STSelfUpdaterModule.m */; };
+		AA5DD7C51B024B8B00EB2CF3 /* STSelfUpdaterWinCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA5DD7C41B024B8B00EB2CF3 /* STSelfUpdaterWinCtl.xib */; };
 		AA671B2317F704FF000A470C /* HTSymbolHook.m in Sources */ = {isa = PBXBuildFile; fileRef = AA671B0D17F704FF000A470C /* HTSymbolHook.m */; };
 		AA671B2517F704FF000A470C /* decode.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1117F704FF000A470C /* decode.c */; };
 		AA671B2617F704FF000A470C /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = AA671B1417F704FF000A470C /* input.c */; };
@@ -186,6 +188,9 @@
 		AA5B3AA813BC5782001453C0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		AA5B3AAA13BC7667001453C0 /* STSContextMenuModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSContextMenuModule.h; sourceTree = "<group>"; };
 		AA5B3AAB13BC7667001453C0 /* STSContextMenuModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSContextMenuModule.m; sourceTree = "<group>"; };
+		AA5DD7C11B01F6C600EB2CF3 /* STSelfUpdaterModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSelfUpdaterModule.h; sourceTree = "<group>"; };
+		AA5DD7C21B01F6C600EB2CF3 /* STSelfUpdaterModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSelfUpdaterModule.m; sourceTree = "<group>"; };
+		AA5DD7C41B024B8B00EB2CF3 /* STSelfUpdaterWinCtl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STSelfUpdaterWinCtl.xib; sourceTree = "<group>"; };
 		AA671B0C17F704FF000A470C /* HTSymbolHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTSymbolHook.h; sourceTree = "<group>"; };
 		AA671B0D17F704FF000A470C /* HTSymbolHook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTSymbolHook.m; sourceTree = "<group>"; };
 		AA671B0F17F704FF000A470C /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -436,6 +441,7 @@
 				AAF4985219F7508C0064BD35 /* STConsolePanel.xib */,
 				AA0881AC13E4284B003B70DF /* Localizable.strings */,
 				AA6D308D19FBA6670049E798 /* STDummyDownloadPanel.xib */,
+				AA5DD7C41B024B8B00EB2CF3 /* STSelfUpdaterWinCtl.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -523,6 +529,8 @@
 				AA21448017EF556000EDE661 /* STSidebarModule.m */,
 				AA6B54E11AEE2C8C003F216D /* STTabPickerModule.h */,
 				AA6B54E21AEE2C8C003F216D /* STTabPickerModule.m */,
+				AA5DD7C11B01F6C600EB2CF3 /* STSelfUpdaterModule.h */,
+				AA5DD7C21B01F6C600EB2CF3 /* STSelfUpdaterModule.m */,
 			);
 			path = modules;
 			sourceTree = "<group>";
@@ -742,6 +750,7 @@
 				AAF9D2A3147E23310018C949 /* clip_savec.tiff in Resources */,
 				AA0B390215C28CEA00A025FF /* quicksearch_defaults.plist in Resources */,
 				AA0B390715C5044F00A025FF /* STTBActionMenu.tiff in Resources */,
+				AA5DD7C51B024B8B00EB2CF3 /* STSelfUpdaterWinCtl.xib in Resources */,
 				AAF4986019F7FE7C0064BD35 /* STTBDownload.pdf in Resources */,
 				AA6FCF3F15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib in Resources */,
 				AAF4985819F7622A0064BD35 /* STSearchItLaterViewCtl.xib in Resources */,
@@ -784,6 +793,7 @@
 				AA09B1F213DE866100389D8B /* STKeyHandlerModule.m in Sources */,
 				AACAD26D13E126D700170193 /* HTWebKit2Adapter.m in Sources */,
 				AAD79B4E13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m in Sources */,
+				AA5DD7C31B01F6C600EB2CF3 /* STSelfUpdaterModule.m in Sources */,
 				AA0881B013E51287003B70DF /* STSTitleBarModule.m in Sources */,
 				AA9620491AF7ACEA002FEA56 /* STCUserDefaultsController.m in Sources */,
 				AAF8702613E55E4E00AC67A1 /* STSDownloadModule.m in Sources */,
