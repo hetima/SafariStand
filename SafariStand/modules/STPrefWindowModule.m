@@ -11,6 +11,7 @@
 
 #import "STSDownloadModule.h"
 #import "STSContextMenuModule.h"
+#import "STSelfUpdaterModule.h"
 
 
 @implementation STPrefWindowModule {
@@ -98,12 +99,15 @@
         [self.oGoBackForwardByDeleteKeyCB setState:NSOffState];
     }
     
+    STSelfUpdaterModule* selfUpdater=[STCSafariStandCore mi:@"STSelfUpdaterModule"];
+    self.oUpdateChekingPie.displayedWhenStopped=NO;
+    [self.oUpdateChekingPie bind:NSAnimateBinding toObject:selfUpdater withKeyPath:@"isChecking" options:nil];
 }
 
 
-- (void)windowWillClose:(NSNotification *)notification{
+- (void)windowWillClose:(NSNotification *)notification
+{
     [[STCSafariStandCore si]sendMessage:@selector(stMessagePrefWindowWillClose:) toAllModule:self];
-
 }
 
 //STSDownloadModule
@@ -140,4 +144,13 @@
 }
 
 
+//STSelfUpdaterModule
+
+- (IBAction)actCheckUpdaterNow:(id)sender
+{
+    STSelfUpdaterModule* selfUpdater=[STCSafariStandCore mi:@"STSelfUpdaterModule"];
+    [selfUpdater checkUpdateWithDetailedResult:YES];
+}
+
 @end
+

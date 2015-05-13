@@ -12,6 +12,7 @@
 
 #define kSafariStandBundleID @"com.hetima.SafariStand"
 #define kSafariStandPrefDomain @"com.hetima.SafariStand"
+#define kSafariStandGitHubRepoName @"hetima/SafariStand"
 
 #define kpSettingMigratedV1 @"Stand_SettingMigratedV1"
 
@@ -101,6 +102,7 @@
 #define kpDontStackVisualTabPicker @"Stand_DontStackVisualTabPicker"///was com.apple.Safari
 #define kpCtlTabTriggersVisualTabPicker @"Stand_CtlTabTriggersVisualTabPicker"///was com.apple.Safari
 
+#define kpSelfUpdateEnabled @"Stand_SelfUpdateEnabled"
 #define kpSelfUpdateSkippedTag @"Stand_SelfUpdateSkippedTag"
 
 #endif

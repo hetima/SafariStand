@@ -9,6 +9,7 @@
                 <outlet property="oGoBackForwardByDeleteKeyCB" destination="181" id="fQW-xh-S0C"/>
                 <outlet property="oTabView" destination="12" id="29"/>
                 <outlet property="oToolbar" destination="17" id="28"/>
+                <outlet property="oUpdateChekingPie" destination="2ed-3g-6g2" id="Zwm-gT-bsy"/>
                 <outlet property="window" destination="1" id="9"/>
             </connections>
         </customObject>
@@ -339,6 +340,37 @@
                                                 </binding>
                                             </connections>
                                         </button>
+                                        <button id="j61-jf-gfi">
+                                            <rect key="frame" x="327" y="32" width="182" height="23"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Check Update At Launch" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="4C9-wp-Q41">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_SelfUpdateEnabled" id="bZH-1W-yMx">
+                                                    <dictionary key="options">
+                                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                        <integer key="NSNullPlaceholder" value="0"/>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
+                                        </button>
+                                        <button verticalHuggingPriority="750" id="T9B-U9-n36">
+                                            <rect key="frame" x="515" y="33" width="80" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="roundRect" title="Check now" bezelStyle="roundedRect" alignment="center" controlSize="small" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aZ4-ce-vVR">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="smallSystem"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="actCheckUpdaterNow:" target="-2" id="qZx-nE-5qB"/>
+                                            </connections>
+                                        </button>
+                                        <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="2ed-3g-6g2">
+                                            <rect key="frame" x="604" y="34" width="16" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        </progressIndicator>
                                     </subviews>
                                 </view>
                             </tabViewItem>

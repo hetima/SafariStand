@@ -97,14 +97,14 @@ NSString* STSafariDownloadDestinationWithFileName(NSString* fileName)
 }
 
 
-void STSafariDownloadURL(NSURL* url)
+void STSafariDownloadURL(NSURL* url, BOOL removeEntryWhenDone)
 {
     NSURLRequest *req=[NSURLRequest requestWithURL:url];
-    STSafariDownloadRequest(req);
+    STSafariDownloadRequest(req, removeEntryWhenDone);
 }
 
 
-void STSafariDownloadRequest(NSURLRequest* req)
+void STSafariDownloadRequest(NSURLRequest* req, BOOL removeEntryWhenDone)
 {
     Class dmClass=NSClassFromString(@"DownloadMonitorOld");
     if (![dmClass respondsToSelector:@selector(sharedDownloadMonitor)])return;
@@ -112,7 +112,7 @@ void STSafariDownloadRequest(NSURLRequest* req)
     id dm=objc_msgSend(dmClass, @selector(sharedDownloadMonitor));
     
     if([dm respondsToSelector:@selector(startDownloadForRequest:mayOpenWhenDone:removeEntryWhenDone:)]){ //Safari 8
-        objc_msgSend(dm, @selector(startDownloadForRequest:mayOpenWhenDone:removeEntryWhenDone:), req, NO, YES);
+        objc_msgSend(dm, @selector(startDownloadForRequest:mayOpenWhenDone:removeEntryWhenDone:), req, NO, removeEntryWhenDone);
         
     }else if([dm respondsToSelector:@selector(startDownloadForRequest:mayOpenWhenDone:)]){ //Safari 7
         objc_msgSend(dm, @selector(startDownloadForRequest:mayOpenWhenDone:) ,req, NO);
