@@ -2,8 +2,7 @@
 
 SIMBL plugin for Safari.
 
-http://hetima.com/safari/stand.html (日本語ページ)  
-http://hetima.com/safari/stand-e.html (English)
+http://hetima.com/safaristand/
 
 Tested on Safari 8.0.x / OS X 10.10.x with [EasySIMBL](https://github.com/norio-nomura/EasySIMBL).
 
