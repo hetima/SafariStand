@@ -27,6 +27,19 @@
     
     [self observePrefValue:kpSwitchTabWithOneKeyEnabled];
     
+    //Intercept cmd+num
+    KZRMETHOD_SWIZZLING_("BookmarksController", "goToNthFavoriteLeaf:", void, call, sel)
+    ^(id slf, int arg1)
+    {
+        if ([[STCSafariStandCore ud]boolForKey:kpInterceptGoToNthFavorite]) {
+            [self handleGoToNthFavoriteLeaf:arg1];
+        }else{
+            call(slf, sel, arg1);
+        }
+        
+    }_WITHBLOCK;
+    
+    
     
     return self;
 }
@@ -108,5 +121,26 @@
     }
 }
 
+#pragma mark - Intercept cmd+num
+
+- (BOOL)handleGoToNthFavoriteLeaf:(NSInteger)idx
+{
+    NSWindow* win=STSafariCurrentBrowserWindow();
+    id winCtl=[win windowController];
+    if (!winCtl) {
+        return NO;
+    }
+    
+    NSTabView* tabView=STTabSwitcherForWinCtl(winCtl);
+    NSInteger cnt=[tabView numberOfTabViewItems];
+    if (cnt>idx) {
+        id tab=[tabView tabViewItemAtIndex:idx];
+        if ([tab tabState]!=NSSelectedTab && [winCtl respondsToSelector:@selector(_selectTab:)]) {
+            objc_msgSend(winCtl, @selector(_selectTab:), tab);
+            return YES;
+        }
+    }
+    return NO;
+}
 
 @end

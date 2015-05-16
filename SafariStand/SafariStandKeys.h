@@ -105,4 +105,7 @@
 #define kpSelfUpdateEnabled @"Stand_SelfUpdateEnabled"
 #define kpSelfUpdateSkippedTag @"Stand_SelfUpdateSkippedTag"
 
+#define kpInterceptGoToNthFavorite @"Stand_InterceptGoToNthFavorite"
+
+
 #endif

@@ -444,14 +444,17 @@ BOOL STSafariUsesWebKit2(id anyObject)
     return YES;
 }
 
-/*
-id STTabSwitcherForWinCtl(id winCtl){
+
+id STTabSwitcherForWinCtl(id winCtl)
+{
     NSTabView* tabView=nil;
-    //object_getInstanceVariable は ARC で使用不可
-    object_getInstanceVariable(winCtl, "tabSwitcher", (__bridge void **)&tabView);
+    if ([winCtl respondsToSelector:@selector(tabSwitcher)]) {
+        tabView=((NSTabView *(*)(id, SEL, ...))objc_msgSend)(winCtl, @selector(tabSwitcher));
+    }
+    
     return tabView;
 }
-*/
+
 
 NSImage* STSafariBundleImageNamed(NSString* name)
 {
