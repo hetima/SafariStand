@@ -97,6 +97,7 @@ BOOL isLikeURLString(NSString* inStr)
                 }
                 *topHits=ary;
             }
+            //@TODO: can't add to recent search
         }
         
     }_WITHBLOCK;

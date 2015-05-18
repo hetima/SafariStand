@@ -517,10 +517,13 @@ NSString* STSafariThumbnailForURLString(NSString* URLString, NSString* ext)
 
 void STSafariAddSearchStringHistory(NSString* str)
 {
-    //obsolate
-    id webSearchFieldCell=NSClassFromString(@"WebSearchFieldCell");
-    if([webSearchFieldCell respondsToSelector:@selector(addSearchString:)]){
-        objc_msgSend(webSearchFieldCell, @selector(addSearchString:), str);
+    //Safari 8
+    Class rwsc=NSClassFromString(@"RecentWebSearchesController");
+    if ([rwsc respondsToSelector:@selector(sharedController)] &&
+        [rwsc instancesRespondToSelector:@selector(addRecentSearch:)]) {
+        id recentWebSearchesController=
+        ((id(*)(id, SEL, ...))objc_msgSend)(NSClassFromString(@"RecentWebSearchesController"), @selector(sharedController));
+        ((void(*)(id, SEL, ...))objc_msgSend)(recentWebSearchesController, @selector(addRecentSearch:), str);
     }
 
     NSString* kwd=str;
