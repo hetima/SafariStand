@@ -82,7 +82,7 @@
                     </scroller>
                 </scrollView>
                 <button verticalHuggingPriority="750" id="99" userLabel="RemoveBtn">
-                    <rect key="frame" x="49" y="19" width="24" height="24"/>
+                    <rect key="frame" x="53" y="19" width="24" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <buttonCell key="cell" type="smallSquare" title="-" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="100">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -361,9 +361,9 @@
                     </connections>
                 </textField>
                 <popUpButton verticalHuggingPriority="750" id="212">
-                    <rect key="frame" x="20" y="19" width="30" height="24"/>
+                    <rect key="frame" x="20" y="19" width="34" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <popUpButtonCell key="cell" type="smallSquare" title=" " bezelStyle="smallSquare" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" autoenablesItems="NO" selectedItem="215" id="213">
+                    <popUpButtonCell key="cell" type="smallSquare" title=" " bezelStyle="smallSquare" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" autoenablesItems="NO" id="213">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                         <menu key="menu" title="OtherViews" autoenablesItems="NO" id="214">
@@ -375,8 +375,12 @@
                                     </connections>
                                 </menuItem>
                                 <menuItem isSeparatorItem="YES" id="218"/>
-                                <menuItem title="Add from Default Items" enabled="NO" id="217"/>
+                                <menuItem title="Add from Default Items" tag="1" id="217"/>
+                                <menuItem title="Add from Visited Sites" tag="2" id="Mj0-fS-IYc"/>
                             </items>
+                            <connections>
+                                <outlet property="delegate" destination="-2" id="60t-c6-BDM"/>
+                            </connections>
                         </menu>
                     </popUpButtonCell>
                 </popUpButton>

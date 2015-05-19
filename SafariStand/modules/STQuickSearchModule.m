@@ -101,7 +101,6 @@ STQuickSearchModule* quickSearchModule;
     
     [self loadFromStorage];
     
-    //temp off
     [self setupCompletionCtl];
     
     //Stand Search Menu
@@ -158,7 +157,7 @@ STQuickSearchModule* quickSearchModule;
     _querySeedEditViewCtl.querySeedsBinder=self;
     NSView* sqView=[_querySeedEditViewCtl view];
     
-    [_querySeedEditViewCtl setupAddPopup:self.defaultQuerySeeds];
+    _querySeedEditViewCtl.defaultItems=self.defaultQuerySeeds;
     
     //STPrefSearch
     NSString* imgPath=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]pathForImageResource:@"STPrefSearch"];

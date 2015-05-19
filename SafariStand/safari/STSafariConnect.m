@@ -574,3 +574,45 @@ NSString* STSafariWebBookmarkTitle(id webBookmark)
     return nil;
 }
 
+
+id STSafariQuickWebsiteSearchController()
+{
+    Class cls=NSClassFromString(@"WBSQuickWebsiteSearchController");
+    id ctl=nil;
+    if ([cls respondsToSelector:@selector(sharedController)]) {
+        ctl=((id(*)(id, SEL, ...))objc_msgSend)(cls, @selector(sharedController));
+    }
+    
+    return ctl;
+}
+
+
+NSArray* STSafariQuickWebsiteSearchItems()
+{
+    id ctl=STSafariQuickWebsiteSearchController();
+    if (!ctl) {
+        return nil;
+    }
+    NSDictionary* dic=[ctl valueForKey:@"_quickWebsiteSearchProvidersByHost"];
+    
+    __block NSMutableArray* ary=[[NSMutableArray alloc]initWithCapacity:[dic count]];
+    [dic enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if (![obj respondsToSelector:@selector(searchURLTemplateString)]) {
+            return;
+        }
+        
+        NSString* baseUrl=((NSString *(*)(id, SEL, ...))objc_msgSend)(obj, @selector(searchURLTemplateString));
+        if ([baseUrl containsString:@"{searchTerms}"]) {
+            baseUrl=[baseUrl stringByReplacingOccurrencesOfString:@"{searchTerms}" withString:@"%s"];
+            NSDictionary* site=@{@"title":key, @"baseUrl":baseUrl, @"encoding":@(NSUTF8StringEncoding)};
+            [ary addObject:site];
+        }else{
+            return;
+        }
+    }];
+    
+    return ary;
+}
+
+
+

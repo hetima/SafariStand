@@ -50,18 +50,6 @@
 }
 
 
-- (void)setupAddPopup:(NSArray*)defaultItems
-{
-    NSMenu* menu=[self.addPopupBtn menu];
-    for (NSDictionary* dict in defaultItems) {
-        NSString* title=[dict objectForKey:@"title"];
-        NSMenuItem* mi=[menu addItemWithTitle:title action:@selector(actQuerySeedPresetMenu:) keyEquivalent:@""];
-        [mi setRepresentedObject:dict];
-        [mi setTarget:self];
-    }
-}
-
-
 - (IBAction)actQuerySeedPresetMenu:(id)sender
 {
     NSDictionary* dic=[sender representedObject];
@@ -72,5 +60,42 @@
 }
 
 
+- (void)menuNeedsUpdate:(NSMenu*)menu
+{
+    NSMenuItem* defauntMenuItem=[menu itemWithTag:1];
+    if (![defauntMenuItem hasSubmenu]) {
+        NSMenu* subMenu=[[NSMenu alloc]initWithTitle:@""];
+        for (NSDictionary* dict in _defaultItems) {
+            NSString* title=[dict objectForKey:@"title"];
+            NSMenuItem* mi=[subMenu addItemWithTitle:title action:@selector(actQuerySeedPresetMenu:) keyEquivalent:@""];
+            [mi setRepresentedObject:dict];
+            [mi setTarget:self];
+        }
+        if ([subMenu numberOfItems]==0) {
+            NSMenuItem* mi=[subMenu addItemWithTitle:@"Not Found" action:nil keyEquivalent:@""];
+            [mi setEnabled:NO];
+        }
+        [defauntMenuItem setSubmenu:subMenu];
+    }
+    
+    
+    NSMenuItem* recentMenuItem=[menu itemWithTag:2];
+    if ([recentMenuItem hasSubmenu]) {
+        [recentMenuItem setSubmenu:nil];
+    }
+    NSArray* recentItems=STSafariQuickWebsiteSearchItems();
+    NSMenu* subMenu=[[NSMenu alloc]initWithTitle:@""];
+    for (NSDictionary* dict in recentItems) {
+        NSString* title=[dict objectForKey:@"title"];
+        NSMenuItem* mi=[subMenu addItemWithTitle:title action:@selector(actQuerySeedPresetMenu:) keyEquivalent:@""];
+        [mi setRepresentedObject:dict];
+        [mi setTarget:self];
+    }
+    if ([subMenu numberOfItems]==0) {
+        NSMenuItem* mi=[subMenu addItemWithTitle:@"Not Found" action:nil keyEquivalent:@""];
+        [mi setEnabled:NO];
+    }
+    [recentMenuItem setSubmenu:subMenu];
+}
 
 @end
