@@ -46,7 +46,11 @@ enum : NSInteger {
 @property (nonatomic, weak) IBOutlet NSButton* closeButton;
 @property (nonatomic, weak) STCTabListViewCtl* listViewCtl;
 
-- (void)resetState;
 - (IBAction)actCloseBtn:(id)sender;
+
+@end
+
+
+@interface STCTabListCloseButtonCell : NSButtonCell
 
 @end
