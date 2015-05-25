@@ -74,10 +74,18 @@
 }
 
 
+- (void)makeInvalid
+{
+    if (!_invalid) {
+        _invalid=YES;
+        [[NSNotificationCenter defaultCenter]postNotificationName:STTabProxyBecameInvalidNote object:self];
+    }
+}
+
 - (void)tabViewItemWillDealloc
 {
     LOG(@"STTabProxy will dealloc");
-    _invalid=YES;
+    [self makeInvalid];
     _tabViewItem=nil;
 }
 
@@ -323,7 +331,7 @@
     }else{
         //BrowserWindowControllerMac - (void)tryToCloseTabWhenReady:(NSTabViewItem*)arg1;
         if ([winCtl respondsToSelector:@selector(tryToCloseTabWhenReady:)]) {
-            _invalid=YES;
+            [self makeInvalid];
             objc_msgSend(winCtl, @selector(tryToCloseTabWhenReady:), _tabViewItem);
         }
     }

@@ -11,6 +11,7 @@
 #define STTabViewDidSelectItemNote @"STTabViewDidSelectItemNote"
 #define STTabViewDidReplaceNote @"STTabViewDidReplaceNote"
 #define STTabProxyDidFinishProgressNote @"STTabProxyDidFinishProgressNote"
+#define STTabProxyBecameInvalidNote @"STTabProxyBecameInvalidNote"
 
 
 @class STPreviewImageDelivery;

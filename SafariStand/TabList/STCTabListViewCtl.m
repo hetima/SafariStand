@@ -85,7 +85,7 @@
     }
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewUpdated:) name:STTabViewDidChangeNote object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewItemSelected:) name:STTabViewDidSelectItemNote object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewItemSelected:) name:STTabViewDidSelectItemNote object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewItemUpdated:) name:STTabProxyDidFinishProgressNote object:nil];
     
     
@@ -855,6 +855,44 @@
                                   toPoint:NSMakePoint(NSMaxX(self.bounds), NSMaxY(self.bounds))];
     }
 }
+
+
+#pragma mark - objectValue
+
+- (void)setObjectValue:(id)objectValue
+{
+    id old=self.objectValue;
+    [super setObjectValue:objectValue];
+    if (objectValue!=old) {
+        if ([objectValue isKindOfClass:[STTabProxy class]]) {
+            [objectValue addObserver:self forKeyPath:@"isSelected" options:(NSKeyValueObservingOptionNew) context:nil];
+            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabProxyBecameInvalid:) name:STTabProxyBecameInvalidNote object:objectValue];
+        }
+        if ([old isKindOfClass:[STTabProxy class]]) {
+            [old removeObserver:self forKeyPath:@"isSelected"];
+            [[NSNotificationCenter defaultCenter]removeObserver:self name:STTabProxyBecameInvalidNote object:old];
+        }
+    }
+}
+
+
+- (void)tabProxyBecameInvalid:(NSNotification*)note
+{
+    if (self.objectValue==[note object]) {
+        self.objectValue=nil;
+    }
+}
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqual:@"isSelected"]) {
+        [self setNeedsDisplay:YES];
+    }else{
+        /*[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];*/
+    }
+}
+
 
 
 @end
