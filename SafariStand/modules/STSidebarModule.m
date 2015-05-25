@@ -14,12 +14,39 @@
 
 @implementation STSidebarModule
 
-
-
 - (id)initWithStand:(id)core
 {
     self = [super initWithStand:core];
     if (!self) return nil;
+    
+    
+    //hide tabbar
+    KZRMETHOD_SWIZZLING_("BrowserWindowControllerMac", "_shouldShowTabBar", BOOL, call, sel)
+    ^BOOL(id slf)
+    {
+        STSidebarCtl* ctl=[self sidebarCtlForWindow:[slf window]];
+        if (ctl && [[STCSafariStandCore ud]boolForKey:kpHideTabBarIfSidebarExists]) {
+            return NO;
+        }
+        BOOL result=call(slf, sel);
+        return result;
+    }_WITHBLOCK;
+    
+    //care menu shortcut
+    KZRMETHOD_SWIZZLING_("BrowserWindowControllerMac", "_moreThanOneTabShowing", BOOL, call, sel)
+    ^BOOL(id slf)
+    {
+        //original method checks isTabBarVisible first.
+        //BOOL result=call(slf, sel);
+        
+        NSTabView* tabView=STTabSwitcherForWinCtl(slf);
+        if([tabView numberOfTabViewItems]>1){
+            return YES;
+        }
+        return NO;
+        
+    }_WITHBLOCK;
+
     
     
     KZRMETHOD_SWIZZLING_("NSTabView", "contentRect", NSRect, call, sel)
@@ -183,6 +210,9 @@
 
     [win htao_setValue:ctl forKey:@"sidebarCtl"];
 
+    if ([[STCSafariStandCore ud]boolForKey:kpHideTabBarIfSidebarExists]) {
+        [self hideTabBar:win];
+    }
 }
 
 
@@ -191,6 +221,10 @@
     [ctl uninstallFromTabView];
     
     [win htao_setValue:nil forKey:@"sidebarCtl"];
+    
+    //force show even single tab
+    [self showTabBar:win];
+
 }
 
 
@@ -220,6 +254,46 @@
 }
 
 
+- (void)hideTabBar:(NSWindow*)win
+{
+    id winCtl=[win windowController];
+    id tabBar=nil;
+    
+    if ([winCtl respondsToSelector:@selector(tabBarEnclosureView)]) {
+        tabBar=((id(*)(id, SEL, ...))objc_msgSend)(winCtl, @selector(tabBarEnclosureView));
+    }
+    if (!tabBar) {
+        return;
+    }
+    if ([winCtl respondsToSelector:@selector(isTabBarVisible)]) {
+        BOOL isTabBarVisible=((BOOL(*)(id, SEL, ...))objc_msgSend)(winCtl, @selector(isTabBarVisible));
+        if (!isTabBarVisible) {
+            return;
+        }
+    }
+
+    if ([winCtl respondsToSelector:@selector(toggleTabBar:)]) {
+        ((void(*)(id, SEL, ...))objc_msgSend)(winCtl, @selector(toggleTabBar:), nil);
+    }
+
+}
+
+- (void)showTabBar:(NSWindow*)win
+{
+    id winCtl=[win windowController];
+
+    if ([winCtl respondsToSelector:@selector(isTabBarVisible)]) {
+        BOOL isTabBarVisible=((BOOL(*)(id, SEL, ...))objc_msgSend)(winCtl, @selector(isTabBarVisible));
+        if (isTabBarVisible) {
+            return;
+        }
+    }
+    
+    if ([winCtl respondsToSelector:@selector(toggleTabBar:)]) {
+        ((void(*)(id, SEL, ...))objc_msgSend)(winCtl, @selector(toggleTabBar:), nil);
+    }
+    
+}
 
 @end
 

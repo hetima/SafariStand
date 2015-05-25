@@ -55,6 +55,7 @@
 #define kpSidebarShowsDefault @"Stand_SidebarShowsDefault"///was com.apple.Safari
 #define kpSidebarIsRightSide @"Stand_SidebarIsRightSide"///was com.apple.Safari
 #define kpSidebarWidth @"Stand_SidebarWidth"///was com.apple.Safari
+#define kpHideTabBarIfSidebarExists @"Stand_HideTabBarIfSidebarExists"
 
 #define kpSquashContextMenuItemEnabled @"Stand_SquashContextMenuItemEnabled"///was com.apple.Safari
 #define kpSquashContextMenuItemTags @"Stand_SquashContextMenuItemTags"///was com.apple.Safari
