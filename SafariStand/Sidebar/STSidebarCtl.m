@@ -116,7 +116,7 @@
     if (self==ctl) {
         [self installToTabView:tabView sidebarWidth:NSWidth(self.view.frame) rightSide:[self rightSide]];
         //後でリファクタリングする
-        [self.tabListCtl tabViewUpdated:note];
+        [self.tabListCtl tabViewReplaced:note];
     }
 }
 

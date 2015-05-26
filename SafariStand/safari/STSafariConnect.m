@@ -332,17 +332,18 @@ id STSafariTabViewItemForWKView(id wkView)
 }
 
 
-id/* NSTabView */ STSafariTabViewForWindow(NSWindow* win)
+NSTabView* STSafariTabViewForWindow(NSWindow* win)
 {
-    id result=nil;
-    id winCtl=[win windowController];
-    if([[winCtl className]isEqualToString:kSafariBrowserWindowController]
-        && [winCtl respondsToSelector:@selector(selectedTab)]){
-        id tabViewItem=objc_msgSend(winCtl, @selector(selectedTab));
-        result=[tabViewItem tabView];
+    return STSafariTabViewForBrowserWindowCtl([win windowController]);
+}
+
+
+NSTabView* STSafariTabViewForBrowserWindowCtl(id winCtl)
+{
+    if ([winCtl respondsToSelector:@selector(tabSwitcher)]) {
+        return ((NSTabView *(*)(id, SEL, ...))objc_msgSend)(winCtl, @selector(tabSwitcher));
     }
-    
-    return result;
+    return nil;
 }
 
 

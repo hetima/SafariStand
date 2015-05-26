@@ -39,6 +39,7 @@ enum webbookmarktype {
 
 #define kSafariBrowserWindowController @"BrowserWindowControllerMac"
 #define kSafariBrowserWindowControllerCstr "BrowserWindowControllerMac"
+#define BrowserWindowControllerMacTabsInWindowDidChangeNotification @"BrowserWindowControllerMacTabsInWindowDidChangeNotification"
 
 #define kSafariURLWindowPolicyDecider @"URLWindowPolicyDecider" //Safari 8
 
@@ -91,7 +92,8 @@ id STSafariCurrentURLString();
 id STSafariCurrentWKView();
 id STSafariWKViewForTabViewItem(id tabViewItem);
 id STSafariTabViewItemForWKView(id wkView);
-id /* NSTabView */ STSafariTabViewForWindow(NSWindow* win);
+NSTabView* STSafariTabViewForWindow(NSWindow* win);
+NSTabView* STSafariTabViewForBrowserWindowCtl(id winCtl);
 NSView* /* TabContentView */ STSafariTabContentViewForTabView(NSView* tabView);
 
 void STSafariMoveTabViewItemToIndex(id tabViewItem, NSInteger idx);

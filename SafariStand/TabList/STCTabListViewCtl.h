@@ -33,7 +33,8 @@ enum : NSInteger {
 + (STCTabListViewCtl*)viewCtlWithTabView:(NSTabView*)tabView;
 
 - (void)setupWithTabView:(NSTabView*)tabView;
-- (void)tabViewUpdated:(NSNotification*)note;
+- (void)tabViewUpdatedNoteFromCtl:(NSNotification*)note;
+- (void)tabViewReplaced:(NSNotification*)note;
 
 @end
 

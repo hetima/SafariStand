@@ -80,11 +80,12 @@
         _parasiteMode=NO;
 
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(windowWillClose:) name:NSWindowWillCloseNotification object:nil];
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewUpdated:) name:STTabViewDidReplaceNote object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewReplaced:) name:STTabViewDidReplaceNote object:nil];
         
     }
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewUpdated:) name:STTabViewDidChangeNote object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewUpdatedNoteFromCtl:) name:
+                                              BrowserWindowControllerMacTabsInWindowDidChangeNotification object:nil];
 //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewItemSelected:) name:STTabViewDidSelectItemNote object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewItemUpdated:) name:STTabProxyDidFinishProgressNote object:nil];
     
@@ -157,6 +158,7 @@
 }
 
 
+//unused
 - (void)tabViewItemSelected:(NSNotification*)note
 {
     if (_parasiteMode) {
@@ -171,9 +173,22 @@
 }
 
 
-- (void)tabViewUpdated:(NSNotification*)note
+//BrowserWindowControllerMac
+- (void)tabViewUpdatedNoteFromCtl:(NSNotification*)note
+{
+    NSTabView* tabView=STSafariTabViewForBrowserWindowCtl([note object]);
+    [self _tabViewUpdated:tabView];
+}
+
+//NSTabView
+- (void)tabViewReplaced:(NSNotification*)note
 {
     NSTabView* tabView=[note object];
+    [self _tabViewUpdated:tabView];
+}
+
+- (void)_tabViewUpdated:(NSTabView*)tabView
+{
     if (_parasiteMode) {
         if (!tabView) {
             tabView=STSafariTabViewForWindow(self.view.window);
@@ -187,7 +202,6 @@
     }else{
         //新規ウインドウはこの時点ではisVisible==NO
         [self updateTabsTargetTabView:nil excludesWindow:nil];
-
     }
 }
 

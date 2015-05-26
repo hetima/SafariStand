@@ -67,18 +67,20 @@ static STTabProxyController *sharedInstance;
     
     //tabの数変更を監視するため
     //順番入れ替えのときは2回呼ばれる(remove->insert)
-    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "tabViewDidChangeNumberOfTabViewItems:",
-                         void, call, sel)
-    ^(id slf, id /*NSTabView*/ tabView)
+    //Safari が飛ばす BrowserWindowControllerMacTabsInWindowDidChangeNotification に依存するように変更
+    //こちらは順番入れ替えでも1回しか発生しない。notification object は BrowserWindowControllerMac
+    /*
+     KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "tabViewDidChangeNumberOfTabViewItems:", void, call, sel)
+    ^(id slf, NSTabView* tabView)
     {
         call(slf, sel, tabView);
         [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidChangeNote object:tabView];
     }_WITHBLOCK;
+    */
     
     
     //tabの選択を監視するため
-    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "tabView:didSelectTabViewItem:",
-                         void, call, sel)
+    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "tabView:didSelectTabViewItem:", void, call, sel)
     ^(id slf, id tabView, id item)
     {
         call(slf, sel, tabView, item);
@@ -103,6 +105,9 @@ static STTabProxyController *sharedInstance;
     /* bookmarks bar の「すべてをタブで開く」などで呼ばれる。NSTabView ごと入れ替わる
        このとき古い NSTabView は「戻る」できるように保持されている。
        そこからページ遷移すると古い NSTabView は破棄され、戻ることもできなくなる。
+     
+       新規作成した直後に「すべてをタブで開く」を実行するとうまく取れない。#wontfix
+       tabViewDidChangeNumberOfTabViewItems: は取れるので以前は問題なかった
      */
     KZRMETHOD_SWIZZLING_("BrowserWindowContentView", "setTabSwitcher:", void, call, sel)
     ^(id slf, id/*NSTabView*/ tabView)
@@ -130,8 +135,7 @@ static STTabProxyController *sharedInstance;
         }];
         
         //[self didChangeValueForKey:@"allTabProxy"];
-        [[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView]; //重要：こっちが先
-        //[[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidChangeNote object:tabView];
+        [[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView];
     }_WITHBLOCK;
     
     
