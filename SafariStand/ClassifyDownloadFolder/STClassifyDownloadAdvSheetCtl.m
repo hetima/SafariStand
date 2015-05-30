@@ -76,7 +76,7 @@
 
 - (IBAction)actDateFormatHelpBtn:(id)sender
 {
-    NSURL* url=[NSURL URLWithString:@"http://hetima.com/safari/safaristandhelp/dateformat.html"];
+    NSURL* url=[NSURL URLWithString:@"http://hetima.com/safaristand/help/dateformat.html"];
     STSafariGoToURLWithPolicy(url, poNewTab);
 }
 
