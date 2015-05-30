@@ -6,6 +6,9 @@
 @import AppKit;
 
 
+typedef BOOL (^BrowserWindowKeyDownHandler)(NSEvent* event, NSWindow* window);
+
+
 @interface STCSafariStandCore : NSObject
 
 
@@ -31,6 +34,8 @@
 
 - (void)setupStandMenu;
 - (void)addItemToStandMenu:(NSMenuItem*)itm;
+
+- (void)registerBrowserWindowKeyDownHandler:(BrowserWindowKeyDownHandler)block;
 
 @end
 

@@ -16,7 +16,7 @@
 @implementation STCSafariStandCore {
     BOOL _startup;
     NSMutableDictionary* _modules;
-    
+    NSMutableArray* _browserWindowKeyDownHandlers;
 }
 
 static STCSafariStandCore *sharedInstance;
@@ -73,7 +73,7 @@ static STCSafariStandCore *sharedInstance;
     _startup=NO;
     _missMatchAlertShown=NO;
     _userDefaults=[[STCUserDefaults alloc]initWithSuiteName:kSafariStandPrefDomain];
-    
+    _browserWindowKeyDownHandlers=[[NSMutableArray alloc]init];
     
     return self;
 }
@@ -156,6 +156,7 @@ static STCSafariStandCore *sharedInstance;
                         name:NSApplicationWillTerminateNotification object:NSApp];
 
 
+    [self hookBrowserWindowKeyDown];
     [self setupStandMenu];
     
     [STTabProxyController si];
@@ -242,6 +243,35 @@ static STCSafariStandCore *sharedInstance;
     }
 }
 
+
+- (void)registerBrowserWindowKeyDownHandler:(BrowserWindowKeyDownHandler)block
+{
+    [_browserWindowKeyDownHandlers addObject:[block copy]];
+}
+
+- (void)hookBrowserWindowKeyDown
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        KZRMETHOD_SWIZZLING_("BrowserWindow", "keyDown:", void, call, sel)
+        ^(id slf, NSEvent* event)
+        {
+            BOOL interrupt=NO;
+            
+            for (BrowserWindowKeyDownHandler block in _browserWindowKeyDownHandlers) {
+                interrupt=block(event, slf);
+                if (interrupt) {
+                    break;
+                }
+            }
+            
+            if (!interrupt) {
+                call(slf, sel, event);
+            }
+        }_WITHBLOCK;
+
+    });
+}
 
 #pragma mark -
 
