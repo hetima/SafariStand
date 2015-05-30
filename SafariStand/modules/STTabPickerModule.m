@@ -609,13 +609,12 @@ id STArrayPrevItem(NSArray* ary, id itm)
     }];
     
     //VisualTabPicker 表示中に responder から外れることがある対策
-    KZRMETHOD_SWIZZLING_("BrowserWindow", "keyDown:", void, call, sel)
-    ^(id slf, NSEvent* event)
-    {
+    [core registerBrowserWindowKeyDownHandler:^BOOL(NSEvent *event, NSWindow* window) {
         unsigned short key=[event keyCode];
         SEL cmd=nil;
+        
         if ([[STCSafariStandCore ud]boolForKey:kpEnhanceVisualTabPicker]) {
-
+            
             if(key==48){
                 cmd= ([event modifierFlags] & NSShiftKeyMask)==NSShiftKeyMask ? @selector(insertBacktab:):@selector(insertTab:);
             }else if(key==36||key==76){
@@ -640,14 +639,11 @@ id STArrayPrevItem(NSArray* ary, id itm)
             if (picker) {
                 STTabPickerProxy* proxy=[STTabPickerProxy proxyWithVisualTabPickerViewController:picker];
                 [self visualTabPicker:proxy handleCommandBySelector:cmd];
-                return;
+                return YES;
             }
         }
-
-        call(slf, sel, event);
-        
-    }_WITHBLOCK;
-
+        return NO;
+    }];
     
     return self;
 }
