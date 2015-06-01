@@ -114,8 +114,9 @@
             structuralString=[structuralString stringByAppendingString:@"/"];
         }
 
-        itm=[menu addItemWithTitle:[NSString stringWithFormat:@"➡️ %@", structuralString] action:@selector(actGoToPath:) keyEquivalent:@""];
+        itm=[menu addItemWithTitle:structuralString action:@selector(actGoToPath:) keyEquivalent:@""];
         [itm setRepresentedObject:structuralString];
+        [itm setImage:[NSImage imageNamed:NSImageNameFollowLinkFreestandingTemplate]];
         [itm setTarget:self];
         
         itm=[menu addItemWithTitle:[NSString stringWithFormat:@"📋 %@", structuralString] action:@selector(actCopyPath:) keyEquivalent:@""];
@@ -124,9 +125,10 @@
         [itm setAlternate:YES];
         [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
         
-        itm=[menu addItemWithTitle:[NSString stringWithFormat:@"🔍 %@", structuralString] action:@selector(STGoogleSiteSearchMenuItemAction:) keyEquivalent:@""];
+        itm=[menu addItemWithTitle:structuralString action:@selector(STGoogleSiteSearchMenuItemAction:) keyEquivalent:@""];
         [itm setRepresentedObject:structuralString];
         [itm setAlternate:YES];
+        [itm setImage:[NSImage imageNamed:NSImageNameRevealFreestandingTemplate]];
         [itm setKeyEquivalentModifierMask:NSShiftKeyMask];
     }
     
