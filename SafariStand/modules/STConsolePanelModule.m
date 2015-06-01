@@ -29,8 +29,7 @@
     [itm setKeyEquivalentModifierMask:NSCommandKeyMask|NSAlternateKeyMask];
     [itm setTarget:self];
     [itm setTag:kMenuItemTagConsolePanel];
-    [core addItemToStandMenu:itm];
-    
+    [core addGroupToStandMenu:@[itm] name:@"0000-Console Panel"];
     
     return self;
 }

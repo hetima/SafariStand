@@ -64,7 +64,7 @@
     
     NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Title Bar" action:@selector(STToggleWindowTitleVisibility:) keyEquivalent:@""];
     [itm setTag:kMenuItemTagToggleTitlebar];
-    [core addItemToStandMenu:itm];
+     [core addGroupToStandMenu:@[itm] name:@"1111"];
     */
     //[self observePrefValue:kpShowBrowserWindowTitlebar];
 

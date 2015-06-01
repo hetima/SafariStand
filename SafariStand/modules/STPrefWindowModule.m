@@ -35,13 +35,12 @@
     
     
     //SafariStand Setting
-    NSMenu *standMenu=core.standMenu;
-    [standMenu addItem:[NSMenuItem separatorItem]];
-    id m=[standMenu addItemWithTitle:@"SafariStand Setting..." action:@selector(actShowPrefWindow:) keyEquivalent:@","];
-    [m setKeyEquivalentModifierMask:NSCommandKeyMask|NSAlternateKeyMask];
-    [m setTarget:self];
-    [m setTag:kMenuItemTagSafariStandSetting];
+    NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"SafariStand Setting..." action:@selector(actShowPrefWindow:) keyEquivalent:@","];
+    [itm setKeyEquivalentModifierMask:NSCommandKeyMask|NSAlternateKeyMask];
+    [itm setTarget:self];
+    [itm setTag:kMenuItemTagSafariStandSetting];
     
+    [core addGroupToStandMenu:@[[NSMenuItem separatorItem], itm] name:@"9999-Setting"];
     
     return self;
 }

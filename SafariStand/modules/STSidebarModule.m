@@ -91,7 +91,7 @@
     
     NSMenuItem* itm=[[NSMenuItem alloc]initWithTitle:@"Sidebar" action:@selector(toggleSidebar:) keyEquivalent:@""];
     [itm setTarget:self];
-    [core addItemToStandMenu:itm];
+    [core addGroupToStandMenu:@[itm] name:@"0003-Sidebar"];
     /*
     itm=[[NSMenuItem alloc]initWithTitle:@"SidebarLR" action:@selector(toggleSidebarLR:) keyEquivalent:@""];
     [itm setTarget:self];

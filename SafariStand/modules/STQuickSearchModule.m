@@ -105,7 +105,7 @@ STQuickSearchModule* quickSearchModule;
     
     //Stand Search Menu
     NSMenuItem* silMenuItem=[[NSMenuItem alloc]initWithTitle:@"Stand Search" action:@selector(showStandSearchWindow:) keyEquivalent:@""];
-    [core addItemToStandMenu:silMenuItem];
+    [core addGroupToStandMenu:@[silMenuItem] name:@"0001-Stand Search"];
     
     [core registerToolbarIdentifier:STQSToolbarIdentifier module:self];
     

@@ -33,7 +33,8 @@ typedef BOOL (^BrowserWindowKeyDownHandler)(NSEvent* event, NSWindow* window);
 
 
 - (void)setupStandMenu;
-- (void)addItemToStandMenu:(NSMenuItem*)itm;
+- (void)addGroupToStandMenu:(NSArray*)items name:(NSString*)groupName; //overrides same groupName
+- (void)removeGroupFromStandMenu:(NSString*)groupName;
 
 - (void)registerBrowserWindowKeyDownHandler:(BrowserWindowKeyDownHandler)block;
 

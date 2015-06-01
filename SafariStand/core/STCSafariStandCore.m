@@ -17,6 +17,8 @@
     BOOL _startup;
     NSMutableDictionary* _modules;
     NSMutableArray* _browserWindowKeyDownHandlers;
+    
+    NSMutableDictionary* _menuItemGroups;
 }
 
 static STCSafariStandCore *sharedInstance;
@@ -74,6 +76,7 @@ static STCSafariStandCore *sharedInstance;
     _missMatchAlertShown=NO;
     _userDefaults=[[STCUserDefaults alloc]initWithSuiteName:kSafariStandPrefDomain];
     _browserWindowKeyDownHandlers=[[NSMutableArray alloc]init];
+    _menuItemGroups=[[NSMutableDictionary alloc]init];
     
     return self;
 }
@@ -212,12 +215,39 @@ static STCSafariStandCore *sharedInstance;
     }
 }
 
+#pragma mark - StandMenu
 
-- (void)addItemToStandMenu:(NSMenuItem*)itm
+
+//overrides same groupName
+- (void)addGroupToStandMenu:(NSArray*)items name:(NSString*)groupName
 {
+    if (groupName && items) {
+        [_menuItemGroups setObject:items forKey:groupName];
+        [self updateStandMenu];
+    }
+}
 
-    NSInteger idx=[self.standMenu indexOfItemWithTag:909];
-    [self.standMenu insertItem:itm atIndex:idx];
+- (void)removeGroupFromStandMenu:(NSString*)groupName
+{
+    if (groupName) {
+        [_menuItemGroups removeObjectForKey:groupName];
+        [self updateStandMenu];
+    }
+}
+
+
+- (void)updateStandMenu
+{
+    [_standMenu removeAllItems];
+    
+    NSArray* keys=[[_menuItemGroups allKeys]sortedArrayUsingSelector:@selector(compare:)];
+    
+    for (NSArray* key in keys) {
+        NSArray* group=_menuItemGroups[key];
+        for (NSMenuItem* itm in group) {
+            [_standMenu addItem:itm];
+        }
+    }
 }
 
 
@@ -231,11 +261,6 @@ static STCSafariStandCore *sharedInstance;
         [_standMenu setTitle:@"Stand"];
         [myMenuItem setSubmenu:_standMenu];
 
-
-        NSMenuItem* m=[_standMenu addItemWithTitle:@"Anchor" action:nil keyEquivalent:@""];
-        [m setTag:909];
-        [m setHidden:YES];
-        
         NSInteger menuCount=8;
         if([mainMenuBar numberOfItems]<8) menuCount=[mainMenuBar numberOfItems];
         [mainMenuBar insertItem:myMenuItem atIndex:menuCount];
@@ -243,6 +268,8 @@ static STCSafariStandCore *sharedInstance;
     }
 }
 
+
+#pragma mark - KeyDownHandler
 
 - (void)registerBrowserWindowKeyDownHandler:(BrowserWindowKeyDownHandler)block
 {
