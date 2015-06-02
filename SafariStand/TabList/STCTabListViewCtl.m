@@ -738,7 +738,7 @@
     NSURL *urlToGo=HTBestURLFromPasteboard(pb, YES);
     if (urlToGo) {
         if (_parasiteMode && row>=0) {
-            id newTabItem=STSafariCreateWKViewOrWebViewAtIndexAndShow([self.view window], row, YES);
+            id newTabItem=STSafariCreateWKViewOrWebViewAtIndexAndShow([[self.view window]windowController], row, YES);
             if(newTabItem){
                 STTabProxy* newProxy=[STTabProxy tabProxyForTabViewItem:newTabItem];
                 [newProxy goToURL:urlToGo];

@@ -83,7 +83,8 @@ void STSafariDownloadRequestWithFileName(NSURLRequest* req, NSString* fileName);
 
 //Safari
 void STSafariNewTabAction();
-id STSafariCreateWKViewOrWebViewAtIndexAndShow(NSWindow* win, NSInteger idx, BOOL show);
+NSTabViewItem* STSafariCreateWKViewOrWebViewAtIndexAndShow(id winCtl, NSInteger idx, BOOL show);
+NSTabViewItem* STSafariCreateEmptyTab();
 
 id STSafariCurrentDocument();
 NSWindow* STSafariCurrentBrowserWindow();
@@ -103,6 +104,7 @@ void STSafariReloadTab(NSTabViewItem* item);
 BOOL STSafariCanReloadTab(NSTabViewItem* item);
 
 id STSafariBrowserWindowControllerForWKView(id wkView);
+id STSafariBrowserWindowControllerForDocument(id doc);
 BOOL STSafariUsesWebKit2(id anyObject);
 id STTabSwitcherForWinCtl(id winCtl);
 

@@ -157,13 +157,10 @@ void STSafariNewTabAction()
 }
 
 
-// -(BrowserContentViewController*)[BrowserWindowControllerMac createTabWithFrameName:atIndex:andShow:]
-// と同じようにする
 // return BrowserTabViewItem
-id STSafariCreateWKViewOrWebViewAtIndexAndShow(NSWindow* win, NSInteger idx, BOOL show)
+NSTabViewItem* STSafariCreateWKViewOrWebViewAtIndexAndShow(id winCtl, NSInteger idx, BOOL show)
 {
     id result=nil;
-    id winCtl=[win windowController];
 	if(![winCtl respondsToSelector:@selector(browserDocument)]){
         return nil;
     }
@@ -171,22 +168,49 @@ id STSafariCreateWKViewOrWebViewAtIndexAndShow(NSWindow* win, NSInteger idx, BOO
     id doc=objc_msgSend(winCtl, @selector(browserDocument));
     id webView=nil;
     
-	if(STSafariUsesWebKit2(winCtl)){
-        if([doc respondsToSelector:@selector(createWKView)]){
-            webView=objc_msgSend(doc, @selector(createWKView));
-        }
-	}else{
-        if([doc respondsToSelector:@selector(createWebViewWithFrameName:)]){
-            webView=objc_msgSend(doc, @selector(createWebViewWithFrameName:), nil);
-        }
+    if([doc respondsToSelector:@selector(createWKView)]){
+        webView=objc_msgSend(doc, @selector(createWKView));
     }
-    
+
     if (webView) {
-        //Safari 7
         if([winCtl respondsToSelector:@selector(_createTabWithView:atIndex:andSelect:)]){
             result=objc_msgSend(winCtl, @selector(_createTabWithView:atIndex:andSelect:), webView, idx, show);
         }
     }
+    return result;
+}
+
+
+// return BrowserTabViewItem
+NSTabViewItem* STSafariCreateEmptyTab()
+{
+    id result=nil;
+    NSDocument* doc=nil;
+    id winCtl=nil;
+    id sdc=[NSDocumentController sharedDocumentController];
+    if([sdc respondsToSelector:@selector(activateFrontmostBrowserDocumentIfAvailable)]){
+        doc=objc_msgSend(sdc, @selector(activateFrontmostBrowserDocumentIfAvailable));
+    }
+    if (doc) {
+        winCtl=STSafariBrowserWindowControllerForDocument(doc);
+    }
+    if (winCtl) {
+        NSTabView* tabView=STSafariTabViewForBrowserWindowCtl(winCtl);
+        NSInteger cnt=[tabView numberOfTabViewItems];
+        result=STSafariCreateWKViewOrWebViewAtIndexAndShow(winCtl, cnt, YES);
+    }
+    if (!result) {
+        if([sdc respondsToSelector:@selector(openEmptyBrowserDocument)]){
+            doc=objc_msgSend(sdc, @selector(openEmptyBrowserDocument));
+            winCtl=STSafariBrowserWindowControllerForDocument(doc);
+            if ([winCtl respondsToSelector:@selector(selectedTab)]) {
+                result=((id(*)(id, SEL, ...))objc_msgSend)(winCtl, @selector(selectedTab));
+            }
+
+        }
+        
+    }
+    
     return result;
 }
 
@@ -434,6 +458,14 @@ id STSafariBrowserWindowControllerForWKView(id wkView)
         return objc_msgSend(wkView, @selector(browserWindowControllerMac));
     }
     return nil;    
+}
+
+id STSafariBrowserWindowControllerForDocument(id doc)
+{
+    if ([doc respondsToSelector:@selector(browserWindowControllerMac)]) {
+        return objc_msgSend(doc, @selector(browserWindowControllerMac));
+    }
+    return nil;
 }
 
 
