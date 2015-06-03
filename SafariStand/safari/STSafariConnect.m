@@ -344,6 +344,17 @@ id STSafariWKViewForTabViewItem(id tabViewItem)
     return nil;
 }
 
+
+void* STSafariStructBrowserTabForTabViewItem(id tabViewItem)
+{
+    void* browserTab=nil;
+    if ([tabViewItem respondsToSelector:@selector(browserTab)]) {
+        browserTab=((void *(*)(id, SEL, ...))objc_msgSend)(tabViewItem, @selector(browserTab));
+    }
+    return browserTab;
+}
+
+
 //
 id STSafariTabViewItemForWKView(id wkView)
 {

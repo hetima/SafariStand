@@ -13,6 +13,7 @@
 - (NSString*)stand_moderatedStringWithin:(NSInteger)max;
 + (NSString*)stand_fileSizeStringFromSize:(uint64_t)siz;
 + (NSString*)stand_verboseFileSizeStringFromSize:(uint64_t)siz;
++ (NSString *)stand_timeStringFromSecs:(NSInteger)secs;
 - (NSURL*)stand_httpOrFileURL;
 - (NSString*)stand_revisionFromVersionString;
 @end

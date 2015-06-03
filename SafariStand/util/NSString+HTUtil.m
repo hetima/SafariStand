@@ -105,6 +105,21 @@
     return result;
 }
 
++ (NSString *)stand_timeStringFromSecs:(NSInteger)secs
+{
+    long h=secs/(60*60);
+    secs-=(h*60*60);
+    long min=secs/60;
+    long sec=secs%60;
+    
+    if (h>0) {
+        return([NSString stringWithFormat:@"%lih%lim", h, min]);
+    }else if (min>0) {
+        return([NSString stringWithFormat:@"%lim%lis", min, sec]);
+    }
+
+    return([NSString stringWithFormat:@"%lis", sec]);
+}
 
 - (NSURL*)stand_httpOrFileURL
 {

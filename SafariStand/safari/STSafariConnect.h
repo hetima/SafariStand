@@ -92,6 +92,7 @@ id STSafariCurrentTitle();
 id STSafariCurrentURLString();
 id STSafariCurrentWKView();
 id STSafariWKViewForTabViewItem(id tabViewItem);
+void* STSafariStructBrowserTabForTabViewItem(id tabViewItem);
 id STSafariTabViewItemForWKView(id wkView);
 NSTabView* STSafariTabViewForWindow(NSWindow* win);
 NSTabView* STSafariTabViewForBrowserWindowCtl(id winCtl);

@@ -107,6 +107,6 @@
 #define kpSelfUpdateSkippedTag @"Stand_SelfUpdateSkippedTag"
 
 #define kpInterceptGoToNthFavorite @"Stand_InterceptGoToNthFavorite"
-
+#define kpClosedTabQuantities @"Stand_ClosedTabQuantities"
 
 #endif

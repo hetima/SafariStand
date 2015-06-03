@@ -39,7 +39,7 @@
                                         <button toolTip="enable action_message: scheme in bookmarks bar." id="3">
                                             <rect key="frame" x="18" y="111" width="192" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Action Message Enabled" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="4">
+                                            <buttonCell key="cell" type="check" title="Enable Action Message" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="4">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -400,6 +400,52 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="0Ds-lV-GS2">
+                                            <rect key="frame" x="37" y="88" width="195" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Keep Closed Tab for Reopen :" id="zxA-RE-Ms9">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <popUpButton verticalHuggingPriority="750" id="hBs-dz-eHU">
+                                            <rect key="frame" x="234" y="81" width="77" height="26"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="ONv-R9-A8v">
+                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                                <menu key="menu" id="KPT-K7-gpo">
+                                                    <items>
+                                                        <menuItem title="Off" id="gIr-As-KF3">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                        <menuItem isSeparatorItem="YES" tag="-1" id="FXo-lu-59x"/>
+                                                        <menuItem title="1" tag="1" id="6n9-Sg-Zdq">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                        <menuItem title="5" tag="5" id="lRx-dn-E0Y">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                        <menuItem title="10" tag="10" id="SR2-Vn-2pS">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                        <menuItem title="20" tag="20" id="ljx-kD-gif">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                        <menuItem title="50" tag="50" id="sxU-0w-Txy">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                        <menuItem title="9999" tag="9999" id="3mq-IC-dFs">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                    </items>
+                                                </menu>
+                                            </popUpButtonCell>
+                                            <connections>
+                                                <binding destination="f0r-av-vRL" name="selectedTag" keyPath="values.Stand_ClosedTabQuantities" id="cbn-Ml-IBG"/>
+                                            </connections>
+                                        </popUpButton>
                                     </subviews>
                                 </view>
                             </tabViewItem>
