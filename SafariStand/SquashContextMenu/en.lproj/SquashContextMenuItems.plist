@@ -12,6 +12,12 @@
 	</dict>
 	<dict>
 		<key>tag</key>
+		<integer>10025</integer>
+		<key>title</key>
+		<string>Reload Page</string>
+	</dict>
+	<dict>
+		<key>tag</key>
 		<real>10026</real>
 		<key>title</key>
 		<string>Show Page Source</string>
