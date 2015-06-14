@@ -79,6 +79,12 @@
     
     NSTabView* tabView=STTabSwitcherForWinCtl(winCtl);
     NSInteger cnt=[tabView numberOfTabViewItems];
+    
+    //cmd+9 selects the right end tab
+    if (idx>=8) {
+        idx=cnt-1;
+    }
+    
     if (cnt>idx) {
         id tab=[tabView tabViewItemAtIndex:idx];
         if ([tab tabState]!=NSSelectedTab && [winCtl respondsToSelector:@selector(_selectTab:)]) {
