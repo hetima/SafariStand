@@ -141,6 +141,30 @@ NSImage* HTImageWithBackgroundColor(NSImage* image, NSColor* color)
 }
 
 
+NSImage* HTThumbnailImage(NSImage* image, CGFloat maxPixelSize)
+{
+    NSImage* result=nil;
+    CGImageSourceRef isrc=CGImageSourceCreateWithData((CFDataRef)[image TIFFRepresentation], NULL);
+    if (!isrc) {
+        return nil;
+    }
+    
+    NSDictionary* thumbnailOptions=@{(NSString*)kCGImageSourceCreateThumbnailWithTransform: @(YES),
+                                     (NSString*)kCGImageSourceThumbnailMaxPixelSize: @(maxPixelSize),
+                                     (NSString*)kCGImageSourceCreateThumbnailFromImageIfAbsent: @(YES),
+                                     };
+    CGImageRef thumbnailRef=CGImageSourceCreateThumbnailAtIndex(isrc, 0, (CFDictionaryRef)thumbnailOptions);
+    if (thumbnailRef) {
+        result=[[NSImage alloc]initWithCGImage:thumbnailRef size:NSZeroSize];
+        CFRelease(thumbnailRef);
+    }
+    
+    if(isrc)CFRelease(isrc);
+
+    return result;
+}
+
+
 NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance)
 {
     NSURL* result=nil;

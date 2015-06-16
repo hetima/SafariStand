@@ -17,6 +17,7 @@ NSColor* HTColorFromHTMLString(NSString *inStr);
 
 NSData* HTPNGDataRepresentation(NSImage* image);
 NSImage* HTImageWithBackgroundColor(NSImage* image, NSColor* color);
+NSImage* HTThumbnailImage(NSImage* image, CGFloat maxPixelSize);
 
 NSURL* HTBestURLFromPasteboard(NSPasteboard* pb, BOOL needsInstance);
 
