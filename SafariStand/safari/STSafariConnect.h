@@ -124,6 +124,8 @@ const char* STSafariBookmarksControllerClass();
 int STSafariWebBookmarkType(id webBookmark);
 NSString* STSafariWebBookmarkURLString(id webBookmark);
 NSString* STSafariWebBookmarkTitle(id webBookmark);
+NSImage* STSafariWebBookmarkIcon(id webBookmark);
+NSString* STSafariWebBookmarkUUID(id webBookmark);
 
 id STSafariQuickWebsiteSearchController();
 NSArray* STSafariQuickWebsiteSearchItems();

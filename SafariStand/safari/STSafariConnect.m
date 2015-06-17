@@ -618,6 +618,22 @@ NSString* STSafariWebBookmarkTitle(id webBookmark)
     return nil;
 }
 
+NSImage* STSafariWebBookmarkIcon(id webBookmark)
+{
+    if([webBookmark respondsToSelector:@selector(icon)]){
+        return objc_msgSend(webBookmark, @selector(icon));
+    }
+    return nil;
+}
+
+NSString* STSafariWebBookmarkUUID(id webBookmark)
+{
+    if([webBookmark respondsToSelector:@selector(UUID)]){
+        return objc_msgSend(webBookmark, @selector(UUID));
+    }
+    return nil;
+}
+
 
 id STSafariQuickWebsiteSearchController()
 {
