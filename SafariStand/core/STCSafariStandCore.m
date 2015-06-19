@@ -108,6 +108,7 @@ static STCSafariStandCore *sharedInstance;
     registerAndAddOrder(@"STKeyHandlerModule");
     registerAndAddOrder(@"STTabPickerModule");
     registerAndAddOrder(@"STTabStockerModule");
+    registerAndAddOrder(@"STFavoriteButtonModule");
 
     registerAndAddOrder(@"STSelfUpdaterModule");
 

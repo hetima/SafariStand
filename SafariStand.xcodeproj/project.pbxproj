@@ -90,6 +90,7 @@
 		AAAE340A1B14175600B45210 /* STTabStockerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAE34091B14175600B45210 /* STTabStockerModule.m */; };
 		AACAD26D13E126D700170193 /* HTWebKit2Adapter.m in Sources */ = {isa = PBXBuildFile; fileRef = AACAD26C13E126D700170193 /* HTWebKit2Adapter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AACAD26F13E15BF100170193 /* STPrefSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = AACAD26E13E15BF000170193 /* STPrefSearch.png */; };
+		AAD724391B30228800103583 /* STFavoriteButtonModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD724381B30228800103583 /* STFavoriteButtonModule.m */; };
 		AAD79B4E13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B4D13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAD79B5B13E2D2ED004CE895 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */; };
 		AAD974891817618F004D955A /* STPrefSidebar.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AAD974881817618F004D955A /* STPrefSidebar.tiff */; };
@@ -265,6 +266,8 @@
 		AACAD26B13E126D700170193 /* HTWebKit2Adapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTWebKit2Adapter.h; sourceTree = "<group>"; };
 		AACAD26C13E126D700170193 /* HTWebKit2Adapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTWebKit2Adapter.m; sourceTree = "<group>"; };
 		AACAD26E13E15BF000170193 /* STPrefSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = STPrefSearch.png; sourceTree = "<group>"; };
+		AAD724371B30228800103583 /* STFavoriteButtonModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFavoriteButtonModule.h; sourceTree = "<group>"; };
+		AAD724381B30228800103583 /* STFavoriteButtonModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFavoriteButtonModule.m; sourceTree = "<group>"; };
 		AAD79B4D13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "STQuickSearchModule+SearchItLater.m"; sourceTree = "<group>"; };
 		AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		AAD974881817618F004D955A /* STPrefSidebar.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = STPrefSidebar.tiff; sourceTree = "<group>"; };
@@ -536,6 +539,8 @@
 				AA5DD7C21B01F6C600EB2CF3 /* STSelfUpdaterModule.m */,
 				AAAE34081B14175600B45210 /* STTabStockerModule.h */,
 				AAAE34091B14175600B45210 /* STTabStockerModule.m */,
+				AAD724371B30228800103583 /* STFavoriteButtonModule.h */,
+				AAD724381B30228800103583 /* STFavoriteButtonModule.m */,
 			);
 			path = modules;
 			sourceTree = "<group>";
@@ -815,6 +820,7 @@
 				AA21447E17EEEB0500EDE661 /* HTFilePresetPopUpButton.m in Sources */,
 				AA0B390515C503EC00A025FF /* STActionMenuModule.m in Sources */,
 				AA6FCF3E15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m in Sources */,
+				AAD724391B30228800103583 /* STFavoriteButtonModule.m in Sources */,
 				AA171B74168E05C1007A4661 /* STQuickSearchModule+QSToolbar.m in Sources */,
 				AA01F4E919FE21F50062F272 /* STCTabListGroupItem.m in Sources */,
 				AA171B791690A4A7007A4661 /* STQSToolbarBaseView.m in Sources */,
