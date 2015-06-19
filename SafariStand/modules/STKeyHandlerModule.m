@@ -20,7 +20,7 @@
     if (!self) return nil;
     
     //Intercept cmd+num
-    KZRMETHOD_SWIZZLING_("BookmarksController", "goToNthFavoriteLeaf:", void, call, sel)
+    KZRMETHOD_SWIZZLING_(STSafariBookmarksControllerClass(), "goToNthFavoriteLeaf:", void, call, sel)
     ^(id slf, int arg1)
     {
         if ([[STCSafariStandCore ud]boolForKey:kpInterceptGoToNthFavorite]) {
