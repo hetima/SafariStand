@@ -250,10 +250,16 @@
     itm=[menu addItemWithTitle:@"Set Icon From Favicon" action:@selector(actUseIconFromBookmark:) keyEquivalent:@""];
     [itm setTarget:self];
     [itm setRepresentedObject:button];
-    NSImage* image=STSafariWebBookmarkIcon(bookmark);
+    NSImage* image=STSafariWebBookmarkIcon(bookmark); //maybe not loaded
     if (image) {
         [itm setImage:image];
     }
+    
+    //retry
+    __weak NSMenuItem* witm=itm;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [witm setImage:STSafariWebBookmarkIcon(bookmark)];
+    });
     
     itm=[menu addItemWithTitle:@"Set Icon From Clipboard" action:@selector(actUseIconFromClipboard:) keyEquivalent:@""];
     if ([[NSPasteboard generalPasteboard]canReadItemWithDataConformingToTypes:@[@"public.image"]]) {
