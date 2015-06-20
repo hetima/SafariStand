@@ -28,10 +28,8 @@
     ^id (id slf, id bookmark, void* tabLocation, id menu)
     {
         id returnValue=nil;
-        static STBookmarkSeparator* bookmarkSeparator;
-        if(!bookmarkSeparator)bookmarkSeparator=[STCSafariStandCore mi:@"STBookmarkSeparator"];
-        
-        returnValue=[bookmarkSeparator menuItemForBookmarkLeaf:bookmark];
+
+        returnValue=[self menuItemForBookmarkLeaf:bookmark];
         if(returnValue){
             [menu addItem:returnValue];
             return returnValue;
@@ -61,8 +59,7 @@
     
     //SidebarBookmarkIcon
     KZRMETHOD_ADDING_
-    ("BookmarksSidebarTableCellView", "NSTableCellView", "setObjectValue:",
-                      void, call_super, sel)
+    ("BookmarksSidebarTableCellView", "NSTableCellView", "setObjectValue:", void, call_super, sel)
     ^void (NSTableCellView* slf, id value){
         call_super(slf, sel, value);
         if ([[STCSafariStandCore ud]boolForKey:kpShowIconOnSidebarBookmarkEnabled]) {
@@ -106,7 +103,7 @@
     
     int bookmarkType=STSafariWebBookmarkType(bookmarkLeaf);
     
-	if(bookmarkType==wbFolder){
+	if(bookmarkType!=wbInvalid){
 		//this is WebBookmarkLeaf
 		NSString *menuTitle=nil;
 		BOOL	isSeparator=NO;
@@ -140,7 +137,6 @@
 
 - (void)_recursiveUpdateSidebarBookmarkIcon:(NSView*)v
 {
-
     if([v isKindOfClass:NSClassFromString(@"BookmarksOutlineView")]) {
         NSOutlineView* outlineView=(NSOutlineView*)v;
         [outlineView reloadData];
