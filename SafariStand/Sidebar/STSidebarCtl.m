@@ -125,6 +125,11 @@
 {
     //以前はその都度調整しないとレイアウト崩れる気がしてたんだけど、大丈夫みたいなんで何もしないテスト
     //[self layout:[self rightSide]];
+    //何もしないとリサイズで支障が出た
+    NSView* counterpartView=STSafariTabContentViewForTabView(self.targetView);
+    if (counterpartView) {
+        self.counterpartView=counterpartView;
+    }
 }
 
 
