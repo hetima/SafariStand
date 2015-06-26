@@ -197,7 +197,7 @@
     BOOL rightSide=[[STCSafariStandCore ud]boolForKey:kpSidebarIsRightSide];
     CGFloat width=[[STCSafariStandCore ud]floatForKey:kpSidebarWidth];
     if (width<kSidebarFrameMinWidth) {
-        width=kSidebarFrameMinWidth;
+        width=kSidebarFrameDefaultWidth;
     }
     CGFloat influence=(win.frame.size.width)/2;
     if (width>influence) {
