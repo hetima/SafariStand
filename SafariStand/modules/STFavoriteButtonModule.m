@@ -16,6 +16,7 @@
 
 #define kFavoriteButtonLeftMargin 16
 #define kFavoriteButtonImageLeftMargin 4
+#define kSeparatorStr	@"-:-"
 
 @implementation STFavoriteButtonModule {
     NSMutableDictionary* _iconPool;
@@ -63,12 +64,8 @@
         
         call(slf, sel, arg1);
         
-        if ([self favoriteButtonShouldHideTitle:slf]) {
-            [slf setTitle:@" "];
-        }else{
-            NSAttributedString *attrString = [self attributedTitle:[slf title]];
-            [slf setAttributedTitle:attrString];
-        }
+        [self favoriteButton:slf didSetBookmark:arg1];
+        
 
     }_WITHBLOCK;
 
@@ -106,19 +103,79 @@
     KZRMETHOD_ADDING_("FavoriteButtonCell", "NSCell", "cellSize", NSSize, call_super, sel)
     ^NSSize (NSCell* slf){
         NSSize result=call_super(slf, sel);
-        STFavBtnIconLayer* layer=[STFavBtnIconLayer installedIconLayerInView:[slf controlView]];
-        if ([layer contents]) {
-            id btn=[slf controlView];
-            if ([self favoriteButtonShouldHideTitle:btn]) {
-                result.width=16+kFavoriteButtonImageLeftMargin+kFavoriteButtonImageLeftMargin;
-            }else{
-                result.width+=kFavoriteButtonLeftMargin;
-            }
-        }
+        NSButton* btn=(NSButton*)[slf controlView];
+        result.width=[self adjustCellWith:result.width forButton:btn];
+        
         return result;
         
     }_WITHBLOCK_ADD;
     
+    
+    
+    //Separator: drag can move window
+    KZRMETHOD_ADDING_("FavoriteButton", "NSView", "mouseDownCanMoveWindow", BOOL, call_super, sel)
+    ^BOOL (NSButton* slf){
+        BOOL result=NO; //call_super(slf, sel);
+        
+        //separator
+        if ([self isSeparatorButton:slf label:nil]) {
+            if ([NSEvent modifierFlags] & (NSCommandKeyMask|NSAlternateKeyMask)) {
+                return NO;
+            }
+            return YES;
+        }
+        return result;
+
+    }_WITHBLOCK_ADD;
+    
+    KZRMETHOD_SWIZZLING_("FavoriteButton", "canDragHorizontally:fromMouseDown:", BOOL, call, sel)
+    ^BOOL(id slf, BOOL arg1, id arg2)
+    {
+        if ([self isSeparatorButton:slf label:nil]) {
+            if ([NSEvent modifierFlags] & (NSCommandKeyMask|NSAlternateKeyMask)) {
+                return YES;
+            }
+            return NO;
+        }
+        BOOL result=call(slf, sel, arg1, arg2);
+        return result;
+    }_WITHBLOCK;
+    
+    //Separator: disable rename by long click
+    KZRMETHOD_SWIZZLING_("FavoriteButton", "_didRecognizeLongPressGesture:", void, call, sel)
+    ^(id slf, id arg1)
+    {
+        if ([self isSeparatorButton:slf label:nil]) {
+            return;
+        }
+        
+        call(slf, sel, arg1);
+        
+    }_WITHBLOCK;
+    
+    //Separator: disable drop into folder
+    KZRMETHOD_SWIZZLING_("FavoriteButton", "_canAcceptDroppedBookmarkAtPoint:", BOOL, call, sel)
+    ^BOOL(id slf, struct CGPoint arg1)
+    {
+        if ([self isSeparatorButton:slf label:nil]) {
+            return NO;
+        }
+        BOOL result=call(slf, sel, arg1);
+        return result;
+    }_WITHBLOCK;
+
+    //Separator: dont show contents menu
+    KZRMETHOD_SWIZZLING_("FavoriteButton", "hasContentsMenu", BOOL, call, sel)
+    ^BOOL(id slf)
+    {
+        if ([self isSeparatorButton:slf label:nil]) {
+            return NO;
+        }
+        BOOL result=call(slf, sel);
+        return result;
+    }_WITHBLOCK;
+
+
     //デフォルトの NSCenterTextAlignment に変わってしまうのを防止
     //setAttributedTitle で paragraphStyle も変えているのでこれは不要
 /*
@@ -187,6 +244,103 @@
 }
 
 
+- (BOOL)isSeparatorButton:(id)button label:(NSString**)outLabel
+{
+    if (outLabel) {
+        *outLabel=nil;
+    }
+    if (![button respondsToSelector:@selector(bookmark)]) {
+        return NO;
+    }
+    id bookmark=((id(*)(id, SEL, ...))objc_msgSend)(button, @selector(bookmark));
+    int bookmarkType=STSafariWebBookmarkType(bookmark);
+    if(bookmarkType==wbFolder){
+        NSString* title=STSafariWebBookmarkTitle(bookmark);
+        if([title hasPrefix:kSeparatorStr]){
+            if (outLabel) {
+                if([title length]>[kSeparatorStr length]){
+                    *outLabel=[title substringFromIndex:[kSeparatorStr length]];
+                }
+            }
+            return YES;
+        }
+    }
+    return NO;
+}
+
+
+- (void)favoriteButton:(NSButton*)button didSetBookmark:(id)bookmark
+{
+    //separator
+    NSString* label;
+    if ([self isSeparatorButton:button label:&label]) {
+        [button setToolTip:nil];
+        [button setEnabled:NO];
+        [self removeIconFromButton:button]; //保険
+        
+        if ([[button cell] respondsToSelector:@selector(setIndicator:)]) {
+            ((void(*)(id, SEL, ...))objc_msgSend)([button cell], @selector(setIndicator:), 0);
+        }
+        /*
+        if ([label length] && [label doubleValue]==0.0f) {
+            NSAttributedString *attrString = [self attributedTitle:label];
+            [button setAttributedTitle:attrString];
+        }else{
+            [button setTitle:@" "];
+        }
+        */
+        [button setTitle:@" "];
+
+    } else if ([self favoriteButtonShouldHideTitle:button]) {
+        if (STSafariWebBookmarkType(bookmark)==wbFolder) {
+            [button setToolTip:[button title]];
+        }else{
+            [button setToolTip:[NSString stringWithFormat:@"%@\n%@", [button title], [button toolTip]]];
+        }
+        [button setTitle:@" "];
+    } else {
+        NSAttributedString *attrString = [self attributedTitle:[button title]];
+        [button setAttributedTitle:attrString];
+    }
+}
+
+- (CGFloat)adjustCellWith:(CGFloat)width forButton:(NSButton*)btn
+{
+    CGFloat result=width;
+    
+    if (![btn respondsToSelector:@selector(bookmark)]) {
+        return width;
+    }
+    
+    //separator
+    NSString* label;
+    if ([self isSeparatorButton:btn label:&label]) {
+        result=[label doubleValue];
+        if (result<=0.0f) { //0 or text
+            result=16;
+        } else if (result<8.0f) {
+            result=8.0f;
+        }else if (result>9999.0f) {
+            result=9999.0f;
+        }
+        return result;
+    }
+
+    
+    //icon
+    STFavBtnIconLayer* layer=[STFavBtnIconLayer installedIconLayerInView:btn];
+    if ([layer contents]) {
+        if ([self favoriteButtonShouldHideTitle:btn]) {
+            result=16+kFavoriteButtonImageLeftMargin+kFavoriteButtonImageLeftMargin;
+        }else{
+            result=width+kFavoriteButtonLeftMargin;
+        }
+    }
+    
+    return result;
+}
+
+
 - (void)setIcon:(NSImage*)img toButton:(NSButton*)btn
 {
     STFavBtnIconLayer* layer=[STFavBtnIconLayer installedIconLayerInView:btn];
@@ -214,12 +368,23 @@
 
 - (BOOL)favoriteButtonShouldHideTitle:(id)favBtn
 {
+    NSString* label;
+    if([self isSeparatorButton:favBtn label:&label]) {
+        /*
+         if ([label length] && [label doubleValue]==0.0f) {
+            return NO;
+        }
+        */
+        return YES;
+    }
+    
     if (![favBtn respondsToSelector:@selector(bookmark)]) {
         return NO;
     }
     id bookmark=((id(*)(id, SEL, ...))objc_msgSend)(favBtn, @selector(bookmark));
-    NSString* uuid=STSafariWebBookmarkUUID(bookmark);
     
+    
+    NSString* uuid=STSafariWebBookmarkUUID(bookmark);
     if ([_hideTitleUUIDs containsObject:uuid] && [self imageForUUID:uuid]) {
         return YES;
     }
@@ -236,11 +401,16 @@
     }
     id bookmark=((id(*)(id, SEL, ...))objc_msgSend)(button, @selector(bookmark));
     NSString* uuid=STSafariWebBookmarkUUID(bookmark);
+    
     BOOL hasIcon;
     if ([self imageForUUID:uuid]) {
         hasIcon=YES;
     }else{
         hasIcon=NO;
+    }
+    
+    if([self isSeparatorButton:button label:nil]){
+        return;
     }
     
     NSMenuItem* itm;
