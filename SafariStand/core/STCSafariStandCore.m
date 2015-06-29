@@ -152,6 +152,7 @@ static STCSafariStandCore *sharedInstance;
                        [NSNumber numberWithBool:YES], kpQuickSearchMenuEnabled,
                        [NSNumber numberWithDouble:250.0], kpSuppressTabBarWidthValue,
                        [NSNumber numberWithBool:YES], kpEnhanceVisualTabPicker,
+                       [NSNumber numberWithBool:YES], kpSidebarIsRightSide,
                        //@"-", kpCheckedLatestVariosn,
                        nil];
     [self.userDefaults registerDefaults:dic];
