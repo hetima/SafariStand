@@ -38,7 +38,6 @@
 		AA396F0613F638C100EF5806 /* STStandSearchWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA396F0513F638C100EF5806 /* STStandSearchWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA396F0813F639A100EF5806 /* STStandSearchWinCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA396F0713F639A100EF5806 /* STStandSearchWinCtl.xib */; };
 		AA3B13481806822B00DDF075 /* STTabProxyController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B13471806822B00DDF075 /* STTabProxyController.m */; };
-		AA3B13531808461900DDF075 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA3B13521808461900DDF075 /* JavaScriptCore.framework */; };
 		AA3B1356180932F400DDF075 /* STFakeJSCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B1355180932F400DDF075 /* STFakeJSCommand.m */; };
 		AA43BC8C19FF8F69004265AE /* STTLWindowIcon.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AA43BC8B19FF8F69004265AE /* STTLWindowIcon.pdf */; };
 		AA47D5DB13B9AC3100C9A19E /* STCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DA13B9AC3100C9A19E /* STCModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -46,7 +45,6 @@
 		AA47D5EC13B9B42800C9A19E /* NSObject+HTAssociatedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5EA13B9B42800C9A19E /* NSObject+HTAssociatedObject.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA53193D19FCF7C90052A1B8 /* STCTabListViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA53193B19FCF7C90052A1B8 /* STCTabListViewCtl.m */; };
 		AA53193E19FCF7C90052A1B8 /* STCTabListViewCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA53193C19FCF7C90052A1B8 /* STCTabListViewCtl.xib */; };
-		AA5B3AA913BC5782001453C0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5B3AA813BC5782001453C0 /* WebKit.framework */; };
 		AA5B3AAC13BC7667001453C0 /* STSContextMenuModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5B3AAB13BC7667001453C0 /* STSContextMenuModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA5DD7C31B01F6C600EB2CF3 /* STSelfUpdaterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5DD7C21B01F6C600EB2CF3 /* STSelfUpdaterModule.m */; };
 		AA5DD7C51B024B8B00EB2CF3 /* STSelfUpdaterWinCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA5DD7C41B024B8B00EB2CF3 /* STSelfUpdaterWinCtl.xib */; };
@@ -81,7 +79,6 @@
 		AA92216E13C04DE6006E898F /* STCPrefWin.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA92216F13C04DE6006E898F /* STCPrefWin.xib */; };
 		AA934E8B13BF18650019D191 /* NSApplication+SafariStand.m in Sources */ = {isa = PBXBuildFile; fileRef = AA934E8A13BF18650019D191 /* NSApplication+SafariStand.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA9620491AF7ACEA002FEA56 /* STCUserDefaultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9620481AF7ACEA002FEA56 /* STCUserDefaultsController.m */; };
-		AA9F781A13F91D8C0016874A /* WebKit2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9F781913F91D8C0016874A /* WebKit2.framework */; };
 		AAA1E4841813EF2B00970FAD /* STTBToggleSidebar.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AAA1E4831813EF2B00970FAD /* STTBToggleSidebar.pdf */; };
 		AAAC1AA813BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AA513BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAAC1AAC13BE163700FB13A2 /* STQuickSearchModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AAB13BE163700FB13A2 /* STQuickSearchModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -309,9 +306,6 @@
 				AA0357CE13F41F0E003D50F3 /* Quartz.framework in Frameworks */,
 				AA0357C413F3CCCC003D50F3 /* libcrypto.dylib in Frameworks */,
 				AAD79B5B13E2D2ED004CE895 /* CoreFoundation.framework in Frameworks */,
-				AA5B3AA913BC5782001453C0 /* WebKit.framework in Frameworks */,
-				AA3B13531808461900DDF075 /* JavaScriptCore.framework in Frameworks */,
-				AA9F781A13F91D8C0016874A /* WebKit2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
