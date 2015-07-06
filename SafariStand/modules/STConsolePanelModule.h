@@ -16,6 +16,7 @@
 - (void)addPanelWithIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight loadHandler:(id(^)())loadHandler;
 
 - (void)showConsolePanelAndSelectTab:(NSString*)identifier;
+- (NSString*)selectedTabIdentifier;
 
 @end
 

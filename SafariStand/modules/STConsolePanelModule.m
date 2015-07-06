@@ -79,6 +79,14 @@
 }
 
 
+- (NSString*)selectedTabIdentifier
+{
+    if(!_winCtl)return nil;
+    
+    return [[_winCtl.oTabView selectedTabViewItem]identifier];
+}
+
+
 - (void)addPanelWithIdentifier:(NSString*)identifier title:(NSString*)title icon:(NSImage*)icon weight:(NSInteger)weight loadHandler:(id(^)())loadHandler
 {
     NSDictionary* panel=@{@"identifier":identifier, @"title":title, @"icon":icon,  @"weight":@(weight), @"loadHandler":loadHandler};
