@@ -384,12 +384,22 @@ NSTabView* STSafariTabViewForBrowserWindowCtl(id winCtl)
 
 NSView* /* TabContentView */ STSafariTabContentViewForTabView(NSView* tabView)
 {
+    //Safari 8
     NSArray* subviews=[tabView subviews];
     for (NSView* subview in subviews) {
         if ([[subview className]isEqualToString:@"TabContentView"]) {
             return subview;
         }
     }
+    //Safari 9
+    subviews=[[[tabView subviews]firstObject]subviews];
+    for (NSView* subview in subviews) {
+        if ([[subview className]isEqualToString:@"TabContentView"]) {
+            return [subview superview];
+        }
+    }
+    
+    
     return nil;
 }
 

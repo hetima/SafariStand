@@ -22,10 +22,10 @@
     //check exists window
     STSafariEnumerateBrowserWindow(^(NSWindow* win, NSWindowController* winCtl, BOOL* stop){
         if([win isVisible] && [winCtl respondsToSelector:@selector(isTabBarVisible)]
-           && [winCtl respondsToSelector:@selector(scrollableTabBarView)]
+           && [winCtl respondsToSelector:@selector(tabBarView)]
            ){
             if (objc_msgSend(winCtl, @selector(isTabBarVisible))) {
-                id tabBarView = objc_msgSend(winCtl, @selector(scrollableTabBarView));
+                id tabBarView = objc_msgSend(winCtl, @selector(tabBarView));
                 if([tabBarView respondsToSelector:@selector(_updateButtonsAndLayOutAnimated:)]){
                     objc_msgSend(tabBarView, @selector(_updateButtonsAndLayOutAnimated:), YES);
                 }
@@ -45,7 +45,7 @@
     _duration = ((1000000000 * timebaseInfo.denom) / 3) / timebaseInfo.numer; //1/3sec
     _nextTime=mach_absolute_time();
     
-    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "scrollWheel:", void, call, sel)
+    KZRMETHOD_SWIZZLING_("TabBarView", "scrollWheel:", void, call, sel)
     ^void (id slf, NSEvent* event)
     {
         if([[STCSafariStandCore ud]boolForKey:kpSwitchTabWithWheelEnabled]){
@@ -74,7 +74,7 @@
     
     
     //タブバー幅変更
-    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "_buttonWidthForNumberOfButtons:inWidth:remainderWidth:",
+    KZRMETHOD_SWIZZLING_("TabBarView", "_buttonWidthForNumberOfButtons:inWidth:remainderWidth:",
                          double, call, sel)
     ^double (id slf, unsigned long long buttonNum, double inWidth, double* remainderWidth)
     {
@@ -90,7 +90,7 @@
         return result;
     }_WITHBLOCK;
     
-    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "_shouldLayOutButtonsToAlignWithWindowCenter",
+    KZRMETHOD_SWIZZLING_("TabBarView", "_shouldLayOutButtonsToAlignWithWindowCenter",
                          BOOL, call, sel)
     ^BOOL (id slf)
     {
@@ -103,7 +103,7 @@
     }_WITHBLOCK;
     
     //follow empty space
-    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "_tabIndexAtPoint:", unsigned long long, call, sel)
+    KZRMETHOD_SWIZZLING_("TabBarView", "_tabIndexAtPoint:", unsigned long long, call, sel)
     ^NSUInteger(id slf, struct CGPoint arg1)
     {
         NSUInteger result=call(slf, sel, arg1);
@@ -114,8 +114,8 @@
                     result=NSNotFound;
                 }
             }else if (result!=NSNotFound) {
-                if ([slf respondsToSelector:@selector(numberOfTabs)]) {
-                    NSUInteger num=((NSUInteger(*)(id, SEL, ...))objc_msgSend)(slf, @selector(numberOfTabs));
+                if ([slf respondsToSelector:@selector(_numberOfTabsForLayout)]) {
+                    NSUInteger num=((NSUInteger(*)(id, SEL, ...))objc_msgSend)(slf, @selector(_numberOfTabsForLayout));
                     if (num <= result) {
                         result=NSNotFound;
                     }

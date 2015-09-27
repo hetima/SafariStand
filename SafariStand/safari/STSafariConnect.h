@@ -20,15 +20,27 @@
 //5==tab前
 //6==tabうしろ
 
+//9.0
+//0==普通 1==普通うしろ？
+//2==新規ウィンドウ
+//3==新規ウィンドウ?
+//4==プライベートウィンドウ新規ウィンドウ
+//5==新規ウィンドウうしろ
+//6==tab
+//7==tabうしろ
+//8==tab or existing blank tab
+
+//check command
+//po STSafariGoToURLWithPolicy((id)[NSURL URLWithString:@"http://127.0.0.1/"], 1);
 
 enum safariWindowPolicy {
     poNormal=0, //000
     poNormal_back=1, //001
     poNewWindow=2, //010
-    poNewWindow_back=4, //011
-    poNewTab=5, //100
-    poNewTab_back=6, //101
-    poNewPrivateWindow=3
+    poNewWindow_back=5, //011
+    poNewTab=6, //100
+    poNewTab_back=7, //101
+    poNewPrivateWindow=4
 };
 
 enum webbookmarktype {
