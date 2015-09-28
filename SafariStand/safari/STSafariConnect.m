@@ -173,9 +173,19 @@ NSTabViewItem* STSafariCreateWKViewOrWebViewAtIndexAndShow(id winCtl, NSInteger 
     }
 
     if (webView) {
-        if([winCtl respondsToSelector:@selector(_createTabWithView:atIndex:andSelect:)]){
-            result=objc_msgSend(winCtl, @selector(_createTabWithView:atIndex:andSelect:), webView, idx, show);
+        //Safari 9
+        if ([winCtl respondsToSelector:@selector(_createTabWithView:atIndex:options:)]) {
+            unsigned long long option;
+            if (show) {
+                option=1;
+            }else{
+                option=0;
+            }
+            result=objc_msgSend(winCtl, @selector(_createTabWithView:atIndex:options:), webView, idx, show);
         }
+        /*if([winCtl respondsToSelector:@selector(_createTabWithView:atIndex:andSelect:)]){
+            result=objc_msgSend(winCtl, @selector(_createTabWithView:atIndex:andSelect:), webView, idx, show);
+        }*/
     }
     return result;
 }
