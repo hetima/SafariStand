@@ -15,8 +15,6 @@
 @implementation STActionMessageModule
 
 
-static STActionMessageModule* actionMessageModule;
-
 
 - (id)initWithStand:(id)core
 {
@@ -24,11 +22,9 @@ static STActionMessageModule* actionMessageModule;
     if (!self) return nil;
 
     
-    actionMessageModule=self;
-    
-    KZRMETHOD_SWIZZLING_(STSafariBookmarksControllerClass(),
-                         "addMenuItemForBookmark:withTabPlacementHint:toMenu:",
-                         id, call, sel)
+    /*
+    //Safari 8
+    KZRMETHOD_SWIZZLING_(STSafariBookmarksControllerClass(), "addMenuItemForBookmark:withTabPlacementHint:toMenu:", id, call, sel)
     ^id(id slf, id bookmark, void* tabLocation, id menu)
     {
         id returnValue=nil;
@@ -42,6 +38,22 @@ static STActionMessageModule* actionMessageModule;
         return returnValue;
         
     }_WITHBLOCK;
+    */
+    
+    KZRMETHOD_SWIZZLING_("NSMenu", "safari_addMenuItemForBookmark:withTabPlacementHint:", id, call, sel)
+    ^id(id slf, id bookmark, void* tabLocation)
+    {
+        id returnValue=nil;
+        
+        returnValue=[self menuItemForBookmarkLeaf:bookmark];
+        if(returnValue){
+            [slf addItem:returnValue];
+            return returnValue;
+        }
+        id result=call(slf, sel, bookmark, tabLocation);
+        return result;
+    }_WITHBLOCK;
+
     
     //BookmarkBarをクリックしたとき
     KZRMETHOD_SWIZZLING_("FavoriteButton", "_goToBookmark", void, call, sel)
@@ -51,7 +63,7 @@ static STActionMessageModule* actionMessageModule;
             id	bookmark=objc_msgSend(slf, @selector(bookmark));
             if(bookmark){
                 NSString	*url=STSafariWebBookmarkURLString(bookmark);
-                hackHandled=[actionMessageModule handleBookmakBarAction:url];
+                hackHandled=[self handleBookmakBarAction:url];
             }
         }
         //横取りしてなかったら元を呼ぶ
