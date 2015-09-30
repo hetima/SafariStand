@@ -21,7 +21,7 @@
     
     
     //hide tabbar
-    KZRMETHOD_SWIZZLING_("BrowserWindowControllerMac", "_shouldShowTabBar", BOOL, call, sel)
+    KZRMETHOD_SWIZZLING_("BrowserWindowControllerMac", "_shouldShowTabBarIgnoringVisualTabPicker", BOOL, call, sel)
     ^BOOL(id slf)
     {
         STSidebarCtl* ctl=[self sidebarCtlForWindow:[slf window]];
@@ -257,14 +257,7 @@
 - (void)hideTabBar:(NSWindow*)win
 {
     id winCtl=[win windowController];
-    id tabBar=nil;
-    
-    if ([winCtl respondsToSelector:@selector(tabBarEnclosureView)]) {
-        tabBar=((id(*)(id, SEL, ...))objc_msgSend)(winCtl, @selector(tabBarEnclosureView));
-    }
-    if (!tabBar) {
-        return;
-    }
+
     if ([winCtl respondsToSelector:@selector(isTabBarVisible)]) {
         BOOL isTabBarVisible=((BOOL(*)(id, SEL, ...))objc_msgSend)(winCtl, @selector(isTabBarVisible));
         if (!isTabBarVisible) {
