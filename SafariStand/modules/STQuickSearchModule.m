@@ -65,7 +65,7 @@ STQuickSearchModule* quickSearchModule;
     
 
     // ttp
-    KZRMETHOD_SWIZZLING_("NSString", "bestURLForUserTypedString", id, call, sel)
+    KZRMETHOD_SWIZZLING_("NSString", "safari_bestURLForUserTypedString", id, call, sel)
     ^id (id slf)
     {
         if([slf hasPrefix:@"ttp://"]){
