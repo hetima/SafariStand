@@ -74,8 +74,7 @@
     
     
     //タブバー幅変更
-    KZRMETHOD_SWIZZLING_("TabBarView", "_buttonWidthForNumberOfButtons:inWidth:remainderWidth:",
-                         double, call, sel)
+    KZRMETHOD_SWIZZLING_("TabBarView", "_buttonWidthForNumberOfButtons:inWidth:remainderWidth:", double, call, sel)
     ^double (id slf, unsigned long long buttonNum, double inWidth, double* remainderWidth)
     {
         double result=call(slf, sel, buttonNum, inWidth, remainderWidth);
@@ -90,8 +89,7 @@
         return result;
     }_WITHBLOCK;
     
-    KZRMETHOD_SWIZZLING_("TabBarView", "_shouldLayOutButtonsToAlignWithWindowCenter",
-                         BOOL, call, sel)
+    KZRMETHOD_SWIZZLING_("TabBarView", "_shouldLayOutButtonsToAlignWithWindowCenter", BOOL, call, sel)
     ^BOOL (id slf)
     {
         if ([[STCSafariStandCore ud]boolForKey:kpSuppressTabBarWidthEnabled]) {
@@ -136,7 +134,8 @@
     
     
     //ShowIconOnTabBar
-    KZRMETHOD_SWIZZLING_("ScrollableTabButton", "initWithFrame:tabViewItem:", id, call, sel)
+    /*
+    KZRMETHOD_SWIZZLING_("TabButton", "initWithFrame:tabViewItem:", id, call, sel)
     ^id (id slf, NSRect frame, id obj)
     {
         NSButton* result=call(slf, sel, frame, obj);
@@ -146,11 +145,12 @@
         
         return result;
     }_WITHBLOCK;
+    */
 
-    
+    /*
     if ([[STCSafariStandCore ud]boolForKey:kpShowIconOnTabBarEnabled]) {
         [self installIconToExistingWindows];
-    }
+    }*/
     [self observePrefValue:kpShowIconOnTabBarEnabled];
     
 
@@ -168,13 +168,13 @@
 {
     if([key isEqualToString:kpSuppressTabBarWidthEnabled]||[key isEqualToString:kpSuppressTabBarWidthValue]){
         [self layoutTabBarForExistingWindow];
-    }else if([key isEqualToString:kpShowIconOnTabBarEnabled]){
+    }/*else if([key isEqualToString:kpShowIconOnTabBarEnabled]){
         if ([value boolValue]) {
             [self installIconToExistingWindows];
         }else{
             [self removeIconFromExistingWindows];
         }
-    }
+    }*/
 }
 
 
