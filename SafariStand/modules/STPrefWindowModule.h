@@ -25,7 +25,6 @@
 @property(nonatomic, assign) IBOutlet NSProgressIndicator* oUpdateChekingPie;
 @property(nonatomic, assign) IBOutlet NSButton* oGoBackForwardByDeleteKeyCB;
 @property(nonatomic, strong) NSString* currentVersionString;
-@property(nonatomic, strong) NSString* latestVersionString;
 
 - (IBAction)actShowDownloadFolderAdvanedSetting:(id)sender;
 - (IBAction)actShowSquashCMAdvanedSetting:(id)sender;

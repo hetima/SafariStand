@@ -12,6 +12,8 @@
 @property(nonatomic, strong, readonly) NSString* installedTag;
 @property(nonatomic, strong, readonly) NSString* installedRevision;
 @property(nonatomic, strong, readonly) NSString* safariRevision;
+@property(nonatomic, strong, readonly) NSString* systemCodeName;
+@property(nonatomic, strong, readonly) NSString* standCodeName;
 
 @property(nonatomic) BOOL isChecking; //bind with progressIndicator
 @property(nonatomic, strong, readonly) NSString* availableTag;
