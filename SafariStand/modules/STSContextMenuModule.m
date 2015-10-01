@@ -124,6 +124,8 @@
         }
     }
 
+//[webUserDataWrapper userData] returns invalid data
+#if 0
     
     if(copyLinkItem){
         id webUserDataWrapper=[copyLinkItem representedObject];
@@ -206,6 +208,8 @@
             [menu insertItem:itm atIndex:++idx];
         }
     }
+    
+#endif
     
     //solo image
     if (wkview && [htMIMETypeForWKView(wkview) hasPrefix:@"image/"]) {
