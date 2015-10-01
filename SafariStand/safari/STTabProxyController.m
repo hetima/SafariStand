@@ -151,6 +151,13 @@ static STTabProxyController *sharedInstance;
        新規作成した直後に「すべてをタブで開く」を実行するとうまく取れない。#wontfix
        tabViewDidChangeNumberOfTabViewItems: は取れるので以前は問題なかった
      */
+    /*
+     Safari 9 では -[BrowserWindowContentView setTabSwitcher:] が廃止
+     -[BrowserWindowControllerMac setTabSwitcher:] に切り替えれば良さそうだが
+     とりあえず放置。
+     */
+#if 0
+    //Safari 8
     KZRMETHOD_SWIZZLING_("BrowserWindowContentView", "setTabSwitcher:", void, call, sel)
     ^(id slf, id/*NSTabView*/ tabView)
     {
@@ -179,6 +186,7 @@ static STTabProxyController *sharedInstance;
         //[self didChangeValueForKey:@"allTabProxy"];
         [[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView];
     }_WITHBLOCK;
+#endif
     
     
     //STTabProxy の title を更新するため
