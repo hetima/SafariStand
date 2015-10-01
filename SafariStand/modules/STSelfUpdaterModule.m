@@ -6,6 +6,9 @@
 #import "SafariStand.h"
 #import "STSelfUpdaterModule.h"
 
+#ifdef DEBUG
+//#define DEBUG_TESTLOCAL 0
+#endif
 
 enum{
     kSelfUpdaterNoError = 0,
@@ -36,6 +39,8 @@ enum{
     _installedTag=[core currentVersionString];
     _installedRevision=[_installedTag stand_revisionFromVersionString];
     _safariRevision=[core safariRevision];
+    _systemCodeName=[core systemCodeName];
+    _standCodeName=[core standCodeName];
     _downloadUrl=nil;
     _availableTag=nil;
     _releaseNote=nil;
@@ -392,13 +397,18 @@ enum{
 }
 
 
+//アップデート情報を取得
 - (NSDictionary*)releaseForUpdateSync
 {
     NSArray* tags=[self releasedTagsSync];
     NSString* revisionPrefix=[_module.installedRevision stringByAppendingString:@"."];
     
     //check current revision
-    NSString* latestTag=[self _latestTagWithTags:tags prefix:revisionPrefix greaterThan:_module.installedTag];
+    NSString* latestTag=[self _latestTagWithTags:tags prefix:revisionPrefix suffix:_module.standCodeName greaterThan:_module.installedTag];
+#ifdef DEBUG_TESTLOCAL
+    NSString* latestTag2=latestTag;
+    NSString* latestTag3=nil;
+#endif
     if ([latestTag isEqualToString:_module.installedTag]) {
         latestTag=nil;
     }
@@ -406,11 +416,19 @@ enum{
     //check Safari revision
     if (!latestTag && [_module.installedRevision compare:_module.safariRevision options:NSNumericSearch]==NSOrderedAscending) {
         revisionPrefix=[_module.safariRevision stringByAppendingString:@"."];
-        latestTag=[self _latestTagWithTags:tags prefix:revisionPrefix greaterThan:@"0"];
+        latestTag=[self _latestTagWithTags:tags prefix:revisionPrefix suffix:_module.systemCodeName greaterThan:@"0"];
+#ifdef DEBUG_TESTLOCAL
+        latestTag3=latestTag;
+#endif
         if ([latestTag isEqualToString:@"0"]) {
             latestTag=nil;
         }
     }
+#ifdef DEBUG_TESTLOCAL
+    _state=kSelfUpdaterInstalledLatest;
+    LOG(@"latestTag is %@, Stand:%@, Safari:%@", latestTag, latestTag2, latestTag3);
+    return nil;
+#else
     
     if (!latestTag) {
         _state=kSelfUpdaterInstalledLatest;
@@ -443,33 +461,42 @@ enum{
     }
     
     return releaseInfo;
+#endif
 }
 
-- (NSString*)_latestTagWithTags:(NSArray*)tags prefix:(NSString*)prefix greaterThan:(NSString*)base
+
+//tag一覧の中から最新のtagを取得
+- (NSString*)_latestTagWithTags:(NSArray*)tags prefix:(NSString*)prefix suffix:(NSString*)suffix greaterThan:(NSString*)base
 {
     NSString* latestTag=base;
     for (NSString* tag in tags) {
-        if ([tag hasPrefix:prefix]
-            && [latestTag compare:tag options:NSNumericSearch]==NSOrderedAscending){
-            latestTag=tag;
+        if ([tag hasPrefix:prefix] && [latestTag compare:tag options:NSNumericSearch]==NSOrderedAscending){
+            if (!suffix || [tag hasSuffix:suffix]) {
+                latestTag=tag;
+            }
         }
     }
     return latestTag;
 }
 
 
+//tag一覧を取ってくる
 - (NSArray*)releasedTagsSync
 {
+    NSError* err;
+#ifdef DEBUG_TESTLOCAL
+    NSString* path=[NSHomeDirectory() stringByAppendingPathComponent:@"/Desktop/safaristand_releases_tags_test.txt"];
+    NSData* data=[NSData dataWithContentsOfFile:path];
+#else
     NSString* urlStr=[NSString stringWithFormat:@"https://api.github.com/repos/%@/tags", kSafariStandGitHubRepoName];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
-    NSError* err;
     NSURLResponse* resp;
     NSData* data=[NSURLConnection sendSynchronousRequest:request returningResponse:&resp error:&err];
     if (!data || err) {
         _state=kSelfUpdaterNetworkError;
         return nil;
     }
-    
+#endif
     NSArray* jTags=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&err];
     if (!jTags || err) {
         _state=kSelfUpdaterNetworkError;

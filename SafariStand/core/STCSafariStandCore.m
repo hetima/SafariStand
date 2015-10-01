@@ -129,7 +129,6 @@ static STCSafariStandCore *sharedInstance;
     
     NSString* vstr=[[NSBundle bundleWithIdentifier:kSafariStandBundleID]objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
     self.currentVersionString=vstr;
-    self.latestVersionString=@"-";
     
     NSString* shortVersionString=[[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     NSString* revision=[shortVersionString stand_revisionFromVersionString];
@@ -138,12 +137,26 @@ static STCSafariStandCore *sharedInstance;
     }
     _safariRevision=revision;
     
-    /*
-    NSString* systemVersion=@"10.10";
-    if(floor(NSAppKitVersionNumber)==NSAppKitVersionNumber10_9){
-        systemVersion=@"10.9";
+    NSDictionary* systemVersion=[NSDictionary dictionaryWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
+    NSString* productVersion=systemVersion[@"ProductVersion"];
+    if ([productVersion hasPrefix:@"10.10."]) {
+        _systemCodeName=@"Yosemite";
+    }else if ([productVersion hasPrefix:@"10.11."]) {
+        _systemCodeName=@"ElCapitan";
+    }else{
+        _systemCodeName=nil;
+        [self showMissMatchAlert];
     }
-    */
+    if ([_currentVersionString hasSuffix:@"Yosemite"]) {
+        _standCodeName=@"Yosemite";
+    }else if ([productVersion hasSuffix:@"ElCapitan"]) {
+        _standCodeName=@"ElCapitan";
+    }else{
+        _standCodeName=nil;
+    }
+    
+
+    
     LOG(@"Startup.... %@", revision);
     
     [self migrateSetting];
@@ -308,7 +321,8 @@ static STCSafariStandCore *sharedInstance;
 
 - (void)openWebSite
 {
-
+    NSURL* url=[NSURL URLWithString:@"http://hetima.com/safaristand/"];
+    STSafariGoToURLWithPolicy(url, poNewTab);
 }
 
 

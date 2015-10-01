@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="STPrefWindowCtl">
@@ -132,7 +132,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" id="209">
-                                            <rect key="frame" x="124" y="10" width="70" height="14"/>
+                                            <rect key="frame" x="124" y="10" width="196" height="14"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="0.0.00000" id="210">
                                                 <font key="font" metaFont="smallSystem"/>
@@ -362,18 +362,10 @@
                                         <button id="30F-hP-sUz">
                                             <rect key="frame" x="327" y="194" width="176" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Show Icon on Tab Bar" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="lXM-d3-eAG">
+                                            <buttonCell key="cell" type="check" title="Show Icon on Tab Bar" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" state="on" inset="2" id="lXM-d3-eAG">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <connections>
-                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowIconOnTabBarEnabled" id="rMq-AS-QKB">
-                                                    <dictionary key="options">
-                                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
-                                                        <integer key="NSNullPlaceholder" value="0"/>
-                                                    </dictionary>
-                                                </binding>
-                                            </connections>
                                         </button>
                                         <button id="x5c-62-paD">
                                             <rect key="frame" x="327" y="174" width="252" height="18"/>
@@ -414,7 +406,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="ONv-R9-A8v">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="menu"/>
                                                 <menu key="menu" id="KPT-K7-gpo">
                                                     <items>
                                                         <menuItem title="Off" id="gIr-As-KF3">
@@ -536,35 +528,26 @@
                                         <button toolTip="pressing Alt Key to switch _blank or not." id="103">
                                             <rect key="frame" x="165" y="166" width="150" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Copy Link Tag" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="104">
+                                            <buttonCell key="cell" type="check" title="Copy Link Tag" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" state="on" inset="2" id="104">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <connections>
-                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowCopyLinkTagContextMenu" id="lo2-uj-iWw"/>
-                                            </connections>
                                         </button>
                                         <button id="105">
                                             <rect key="frame" x="165" y="126" width="181" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Copy Link Title" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="106">
+                                            <buttonCell key="cell" type="check" title="Copy Link Title" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" state="on" inset="2" id="106">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <connections>
-                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowCopyLinkTitleContextMenu" id="skX-p8-e9Y"/>
-                                            </connections>
                                         </button>
                                         <button id="110">
                                             <rect key="frame" x="165" y="106" width="181" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Copy Link and Title" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="111">
+                                            <buttonCell key="cell" type="check" title="Copy Link and Title" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" state="on" inset="2" id="111">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <connections>
-                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowCopyLinkAndTitleContextMenu" id="K0p-d7-ENi"/>
-                                            </connections>
                                         </button>
                                         <textField verticalHuggingPriority="750" id="115">
                                             <rect key="frame" x="17" y="168" width="145" height="17"/>
@@ -578,13 +561,10 @@
                                         <button id="130">
                                             <rect key="frame" x="179" y="148" width="161" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="add target=&quot;_blank&quot;" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="131">
+                                            <buttonCell key="cell" type="check" title="add target=&quot;_blank&quot;" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" enabled="NO" state="on" inset="2" id="131">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="smallSystem"/>
                                             </buttonCell>
-                                            <connections>
-                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_CopyLinkTagAddTargetBlank" id="LMY-Ya-J88"/>
-                                            </connections>
                                         </button>
                                         <button id="175">
                                             <rect key="frame" x="165" y="81" width="230" height="18"/>
@@ -620,13 +600,10 @@
                                         <button id="200">
                                             <rect key="frame" x="165" y="61" width="181" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Google Image Search" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="201">
+                                            <buttonCell key="cell" type="check" title="Google Image Search" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" state="on" inset="2" id="201">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
-                                            <connections>
-                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowGoogleImageSearchContextMenu" id="cKg-07-esN"/>
-                                            </connections>
                                         </button>
                                         <textField verticalHuggingPriority="750" id="204">
                                             <rect key="frame" x="18" y="63" width="145" height="17"/>
@@ -769,6 +746,7 @@
             <point key="canvasLocation" x="398" y="358"/>
         </window>
         <userDefaultsController id="f0r-av-vRL" userLabel="STCUserDefaultsController" customClass="STCUserDefaultsController"/>
+        <userDefaultsController representsSharedInstance="YES" id="6b0-1B-NeX"/>
     </objects>
     <resources>
         <image name="NSAdvanced" width="32" height="32"/>

@@ -15,8 +15,10 @@ typedef BOOL (^BrowserWindowKeyDownHandler)(NSEvent* event, NSWindow* window);
 @property(nonatomic,readonly)NSMenu *standMenu;
 
 @property(nonatomic, strong, readonly) NSString* safariRevision;
+@property(nonatomic, strong, readonly) NSString* systemCodeName;
 @property(nonatomic,retain) NSString* currentVersionString;
-@property(nonatomic,retain) NSString* latestVersionString;
+@property(nonatomic, strong, readonly) NSString* standCodeName;
+
 @property(nonatomic,assign) BOOL missMatchAlertShown;
 @property(nonatomic, strong, readonly) NSUserDefaults* userDefaults;
 

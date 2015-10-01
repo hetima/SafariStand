@@ -39,6 +39,7 @@
 		AA396F0813F639A100EF5806 /* STStandSearchWinCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA396F0713F639A100EF5806 /* STStandSearchWinCtl.xib */; };
 		AA3B13481806822B00DDF075 /* STTabProxyController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B13471806822B00DDF075 /* STTabProxyController.m */; };
 		AA3B1356180932F400DDF075 /* STFakeJSCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B1355180932F400DDF075 /* STFakeJSCommand.m */; };
+		AA3C89EF1BBAB47D003C27E3 /* STCheckCompatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3C89EE1BBAB47D003C27E3 /* STCheckCompatibility.m */; settings = {ASSET_TAGS = (); }; };
 		AA43BC8C19FF8F69004265AE /* STTLWindowIcon.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AA43BC8B19FF8F69004265AE /* STTLWindowIcon.pdf */; };
 		AA47D5DB13B9AC3100C9A19E /* STCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DA13B9AC3100C9A19E /* STCModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA47D5DF13B9AE3A00C9A19E /* STBookmarkSeparator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA47D5DE13B9AE3A00C9A19E /* STBookmarkSeparator.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -171,6 +172,8 @@
 		AA3B13521808461900DDF075 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		AA3B1354180932F400DDF075 /* STFakeJSCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFakeJSCommand.h; sourceTree = "<group>"; };
 		AA3B1355180932F400DDF075 /* STFakeJSCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFakeJSCommand.m; sourceTree = "<group>"; };
+		AA3C89ED1BBAB47D003C27E3 /* STCheckCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCheckCompatibility.h; sourceTree = "<group>"; };
+		AA3C89EE1BBAB47D003C27E3 /* STCheckCompatibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCheckCompatibility.m; sourceTree = "<group>"; };
 		AA43BC8B19FF8F69004265AE /* STTLWindowIcon.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = STTLWindowIcon.pdf; sourceTree = "<group>"; };
 		AA47D5D413B9797B00C9A19E /* SafariStand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafariStand.h; sourceTree = "<group>"; };
 		AA47D5D613B97CC800C9A19E /* STCSafariStandCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCSafariStandCore.h; sourceTree = "<group>"; };
@@ -325,6 +328,8 @@
 				AA671B2F17F71D96000A470C /* STWKClientHook.m */,
 				AA3B1354180932F400DDF075 /* STFakeJSCommand.h */,
 				AA3B1355180932F400DDF075 /* STFakeJSCommand.m */,
+				AA3C89ED1BBAB47D003C27E3 /* STCheckCompatibility.h */,
+				AA3C89EE1BBAB47D003C27E3 /* STCheckCompatibility.m */,
 			);
 			path = safari;
 			sourceTree = "<group>";
@@ -795,6 +800,7 @@
 				AA775EF713DA9603001B0461 /* NSString+HTUtil.m in Sources */,
 				AA775EFA13DB9182001B0461 /* STQuickSearchModule+Completion.m in Sources */,
 				AA09B1F213DE866100389D8B /* STKeyHandlerModule.m in Sources */,
+				AA3C89EF1BBAB47D003C27E3 /* STCheckCompatibility.m in Sources */,
 				AACAD26D13E126D700170193 /* HTWebKit2Adapter.m in Sources */,
 				AAD79B4E13E29DF2004CE895 /* STQuickSearchModule+SearchItLater.m in Sources */,
 				AAAE340A1B14175600B45210 /* STTabStockerModule.m in Sources */,

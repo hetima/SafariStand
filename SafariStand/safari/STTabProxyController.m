@@ -62,12 +62,22 @@ static STTabProxyController *sharedInstance;
             return result;
             
         }_WITHBLOCK;
+    //Safari 9
+    }else if ([cls instancesRespondToSelector:@selector(initWithBrowserWindowControllerMac:)]) {
+        KZRMETHOD_SWIZZLING_("BrowserTabViewItem", "initWithBrowserWindowControllerMac:", id, call, sel)
+        ^id (id slf, id winCtl)
+        {
+            id result=call(slf, sel, winCtl);
+            id proxy __unused=[[STTabProxy alloc]initWithTabViewItem:result];
+            return result;
+            
+        }_WITHBLOCK;
     }
 
     
     //tabの数変更を監視するため
     //順番入れ替えのときは2回呼ばれる(remove->insert)
-    //Safari が飛ばす BrowserWindowControllerMacTabsInWindowDidChangeNotification に依存するように変更
+    //Safari が飛ばす BrowserWindowControllerMacTabsInWindowDidChangeNotification に依存するように変更 ← Safari 9 で廃止っぽい
     //こちらは順番入れ替えでも1回しか発生しない。notification object は BrowserWindowControllerMac
     /*
      KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "tabViewDidChangeNumberOfTabViewItems:", void, call, sel)
@@ -78,13 +88,45 @@ static STTabProxyController *sharedInstance;
     }_WITHBLOCK;
     */
     
+    //Safari 9
+    KZRMETHOD_SWIZZLING_("TabBarView", "insertTabBarViewItem:atIndex:", void, call, sel)
+    ^(id slf, id arg1, unsigned long long arg2)
+    {
+        call(slf, sel, arg1, arg2);
+        NSTabView* tabView=[arg1 tabView];
+        [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidChangeNote object:tabView];
+        
+    }_WITHBLOCK;
+    
+    KZRMETHOD_SWIZZLING_("TabBarView", "removeTabBarViewItem:", void, call, sel)
+    ^(id slf, id arg1)
+    {
+        call(slf, sel, arg1);
+        NSTabView* tabView=[arg1 tabView];
+        [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidChangeNote object:tabView];
+        
+    }_WITHBLOCK;
+
+    KZRMETHOD_SWIZZLING_(kSafariBrowserWindowControllerCstr, "_moveTabViewItem:toIndex:", void, call, sel)
+    ^(id slf, id arg1, unsigned long long arg2)
+    {
+        call(slf, sel, arg1, arg2);
+        NSTabView* tabView=[arg1 tabView];
+        [[NSNotificationCenter defaultCenter]postNotificationName:STTabViewDidChangeNote object:tabView];
+        
+    }_WITHBLOCK;
+
+
+
+
+    
     
     //tabの選択を監視するため
-    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "tabView:didSelectTabViewItem:", void, call, sel)
-    ^(id slf, id tabView, id item)
+    KZRMETHOD_SWIZZLING_("TabBarView", "selectTabBarViewItem:", void, call, sel)
+    ^(id slf, id item)
     {
-        call(slf, sel, tabView, item);
-        
+        call(slf, sel, item);
+        NSTabView* tabView=[item tabView];
         NSArray* tabViewItems=[tabView tabViewItems];
         for (NSTabViewItem* eachItem in tabViewItems) {
             STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:eachItem];
@@ -109,6 +151,13 @@ static STTabProxyController *sharedInstance;
        新規作成した直後に「すべてをタブで開く」を実行するとうまく取れない。#wontfix
        tabViewDidChangeNumberOfTabViewItems: は取れるので以前は問題なかった
      */
+    /*
+     Safari 9 では -[BrowserWindowContentView setTabSwitcher:] が廃止
+     -[BrowserWindowControllerMac setTabSwitcher:] に切り替えれば良さそうだが
+     とりあえず放置。
+     */
+#if 0
+    //Safari 8
     KZRMETHOD_SWIZZLING_("BrowserWindowContentView", "setTabSwitcher:", void, call, sel)
     ^(id slf, id/*NSTabView*/ tabView)
     {
@@ -137,6 +186,7 @@ static STTabProxyController *sharedInstance;
         //[self didChangeValueForKey:@"allTabProxy"];
         [[NSNotificationCenter defaultCenter] postNotificationName:STTabViewDidReplaceNote object:tabView];
     }_WITHBLOCK;
+#endif
     
     
     //STTabProxy の title を更新するため

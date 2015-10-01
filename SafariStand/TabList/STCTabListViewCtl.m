@@ -85,7 +85,7 @@
     }
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewUpdatedNoteFromCtl:) name:
-                                              BrowserWindowControllerMacTabsInWindowDidChangeNotification object:nil];
+                                              STTabViewDidChangeNote object:nil];
 //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewItemSelected:) name:STTabViewDidSelectItemNote object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(tabViewItemUpdated:) name:STTabProxyDidFinishProgressNote object:nil];
     

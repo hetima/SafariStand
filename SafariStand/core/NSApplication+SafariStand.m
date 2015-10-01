@@ -15,6 +15,7 @@
 #import "STQuickSearchModule.h"
 #import "STSidebarModule.h"
 #import "STPrefWindowModule.h"
+#import "STCheckCompatibility.h"
 
 @implementation NSApplication (NSApplication_SafariStand)
 #ifdef DEBUG
@@ -36,14 +37,19 @@
 }
 
 
--(void)STTest:(id)sender
+-(void)STTestDumpView:(id)sender
 {
     NSView* v= STSafariCurrentWKView();
-    
-    //[v window].titleVisibility=NSWindowTitleVisible;
-
     [self STTestDumpView:[[[v window]contentView]superview] indent:@""];
 }
+
+
+-(void)STTest:(id)sender
+{
+    [STCheckCompatibility check];
+}
+
+
 #endif
 
 -(void)showSearchItLaterWindow:(id)sender

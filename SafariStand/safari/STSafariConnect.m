@@ -173,9 +173,19 @@ NSTabViewItem* STSafariCreateWKViewOrWebViewAtIndexAndShow(id winCtl, NSInteger 
     }
 
     if (webView) {
-        if([winCtl respondsToSelector:@selector(_createTabWithView:atIndex:andSelect:)]){
-            result=objc_msgSend(winCtl, @selector(_createTabWithView:atIndex:andSelect:), webView, idx, show);
+        //Safari 9
+        if ([winCtl respondsToSelector:@selector(_createTabWithView:atIndex:options:)]) {
+            unsigned long long option;
+            if (show) {
+                option=1;
+            }else{
+                option=0;
+            }
+            result=objc_msgSend(winCtl, @selector(_createTabWithView:atIndex:options:), webView, idx, show);
         }
+        /*if([winCtl respondsToSelector:@selector(_createTabWithView:atIndex:andSelect:)]){
+            result=objc_msgSend(winCtl, @selector(_createTabWithView:atIndex:andSelect:), webView, idx, show);
+        }*/
     }
     return result;
 }
@@ -384,12 +394,22 @@ NSTabView* STSafariTabViewForBrowserWindowCtl(id winCtl)
 
 NSView* /* TabContentView */ STSafariTabContentViewForTabView(NSView* tabView)
 {
+    //Safari 8
     NSArray* subviews=[tabView subviews];
     for (NSView* subview in subviews) {
         if ([[subview className]isEqualToString:@"TabContentView"]) {
             return subview;
         }
     }
+    //Safari 9
+    subviews=[[[tabView subviews]firstObject]subviews];
+    for (NSView* subview in subviews) {
+        if ([[subview className]isEqualToString:@"TabContentView"]) {
+            return [subview superview];
+        }
+    }
+    
+    
     return nil;
 }
 

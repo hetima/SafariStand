@@ -17,13 +17,13 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>8.0.214</string>
+	<string>9.0.215Yosemite</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>8.0.214</string>
+	<string>9.0.215Yosemite</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>for Safari 8.0 Copyright © 2015 hetima. All rights reserved.</string>
+	<string>for Safari 9.0 Yosemite Copyright © 2015 hetima. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
 	<string>STCSimblLorder</string>
 	<key>SIMBLTargetApplications</key>

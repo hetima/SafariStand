@@ -81,8 +81,7 @@
     
     
     self.currentVersionString=[[STCSafariStandCore si]currentVersionString];
-    self.latestVersionString=[[STCSafariStandCore si]latestVersionString];
-    
+
     return self;
 }
 
