@@ -59,14 +59,15 @@
 
 #endif
     
+    
+#if 0 //userData issue
     //STSDownloadModule  replace Save Image to “Downloads”
 	if([[NSUserDefaults standardUserDefaults]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
         NSInteger tag;
-        if ([STCSafariStandCore si].isSafari61) {
-            tag=10010;
-        }else{
-            tag=10009;
-        }
+        
+        //Safari 6.1
+        tag=10010;
+
         NSMenuItem* itm=[menu itemWithTag:tag];
         id dlModule=[STCSafariStandCore mi:@"STSDownloadModule"];
         if (itm && dlModule) {
@@ -77,6 +78,8 @@
 #endif
         }
     }
+#endif
+    
     
     // 選択文字列を調べる
     // WKView を取得。menuProxy の 24バイト目
@@ -107,7 +110,8 @@
         [menu addItem:itm];
     }
 
-#if 0
+
+#if 0 //userData issue
     NSMenuItem* copyLinkItem=[menu itemWithTag:3]; //3 == copy link
     if(copyLinkItem){
         id webUserDataWrapper=[copyLinkItem representedObject];
