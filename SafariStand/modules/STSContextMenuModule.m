@@ -105,10 +105,9 @@
         [itm setTarget:self];
         [itm setRepresentedObject:wkview];
         [menu addItem:itm];
-//        [itm release];
     }
 
-    
+#if 0
     NSMenuItem* copyLinkItem=[menu itemWithTag:3]; //3 == copy link
     if(copyLinkItem){
         id webUserDataWrapper=[copyLinkItem representedObject];
@@ -132,7 +131,6 @@
                 [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
-//                [itm release];
 
                 if([[NSUserDefaults standardUserDefaults]boolForKey:kpCopyLinkTagAddTargetBlank]){
                     itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag") 
@@ -146,7 +144,6 @@
                 [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
                 [itm setAlternate:YES];
                 [menu insertItem:itm atIndex:++idx];
-//                [itm release];
             
             }
             
@@ -155,7 +152,6 @@
                 [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
-//                [itm release];
                 
             }
             if([[NSUserDefaults standardUserDefaults]boolForKey:kpShowCopyLinkAndTitleContextMenu]){
@@ -163,7 +159,6 @@
                 [itm setTarget:self];
                 [itm setRepresentedObject:webUserDataWrapper];
                 [menu insertItem:itm atIndex:++idx];
-//                [itm release];
                 
                 itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link (space) Title") action:@selector(actCopyLinkAndTitleSpaceMenu:) keyEquivalent:@""];
                 [itm setTarget:self];
@@ -171,7 +166,6 @@
                 [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
                 [itm setAlternate:YES];
                 [menu insertItem:itm atIndex:++idx];
-//                [itm release];
                 
             }
         }
@@ -188,10 +182,9 @@
             [itm setTarget:self];
             [itm setRepresentedObject:[copyImageItem representedObject]];
             [menu insertItem:itm atIndex:++idx];
-//            [itm release];
         }
     }
-    
+#endif
     
     //SquashContextMenuItem
     if ([[NSUserDefaults standardUserDefaults]boolForKey:kpSquashContextMenuItemEnabled]) {
@@ -344,7 +337,6 @@
     NSData* dat=[pb dataForType:WebArchivePboardType];
     WebArchive *archive=nil;
     if (dat) {
-        //archive=[[[WebArchive alloc]initWithData:dat]autorelease];
         archive=[[WebArchive alloc]initWithData:dat];
     }
     [pb clearContents];
@@ -400,7 +392,6 @@
         STSquashContextMenuSheetCtl* winCtl=[[STSquashContextMenuSheetCtl alloc]initWithWindowNibName:@"STSquashContextMenuSheetCtl"];
         [winCtl window];
         self.squashSheetCtl=winCtl;
-//        [winCtl release];
     }
     return [self.squashSheetCtl window];
 }
