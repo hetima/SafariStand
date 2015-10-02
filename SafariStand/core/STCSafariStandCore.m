@@ -109,21 +109,18 @@ static STCSafariStandCore *sharedInstance;
     self.latestVersionString=@"-";
     
     NSString* shortVersionString=[[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    NSString* revision;
-    if ([@"6.1" compare:shortVersionString options:NSNumericSearch]==NSOrderedDescending) {
-        _isSafari61=NO;
-        revision=@"6.0";
-    }else{
-        _isSafari61=YES;
-        revision=@"6.1";
+    NSString* revision=[shortVersionString stand_revisionFromVersionString];
+    if (!revision) {
+        revision=@"-";
     }
     
-    NSString* systemVersion=@"10.9";
-    if(floor(NSAppKitVersionNumber)==NSAppKitVersionNumber10_8){
-        systemVersion=@"10.8";
-    }if(floor(NSAppKitVersionNumber)==NSAppKitVersionNumber10_7){
-        systemVersion=@"10.7";
+    NSDictionary* systemVersion=[NSDictionary dictionaryWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
+    NSString* productVersion=systemVersion[@"ProductVersion"];
+    if (![productVersion hasPrefix:@"10.9"]) {
+        [self showMissMatchAlert];
     }
+
+
     _revision=revision;
     LOG(@"Startup.... %@ - %@", revision, systemVersion);
     
@@ -223,7 +220,8 @@ static STCSafariStandCore *sharedInstance;
 
 -(void)openWebSite
 {
-
+    NSURL* url=[NSURL URLWithString:@"http://hetima.com/safaristand/"];
+    STSafariGoToURLWithPolicy(url, poNewTab);
 }
 
 -(void)showMissMatchAlert
