@@ -141,7 +141,7 @@ static STCSafariStandCore *sharedInstance;
     NSString* productVersion=systemVersion[@"ProductVersion"];
     if ([productVersion hasPrefix:@"10.10."]) {
         _systemCodeName=@"Yosemite";
-    }else if ([productVersion hasPrefix:@"10.11."]) {
+    }else if ([productVersion hasPrefix:@"10.11"]) {
         _systemCodeName=@"ElCapitan";
     }else{
         _systemCodeName=nil;
