@@ -80,7 +80,6 @@
 		AA92216C13C04DB1006E898F /* HTQuerySeedEditViewCtl.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA92216D13C04DB1006E898F /* HTQuerySeedEditViewCtl.xib */; };
 		AA92216E13C04DE6006E898F /* STCPrefWin.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA92216F13C04DE6006E898F /* STCPrefWin.xib */; };
 		AA934E8B13BF18650019D191 /* NSApplication+SafariStand.m in Sources */ = {isa = PBXBuildFile; fileRef = AA934E8A13BF18650019D191 /* NSApplication+SafariStand.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		AA9F781A13F91D8C0016874A /* WebKit2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9F781913F91D8C0016874A /* WebKit2.framework */; };
 		AAA1E4841813EF2B00970FAD /* STTBToggleSidebar.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AAA1E4831813EF2B00970FAD /* STTBToggleSidebar.pdf */; };
 		AAAC1AA813BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AA513BE14AF00FB13A2 /* HTQuerySeedEditViewCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAAC1AAC13BE163700FB13A2 /* STQuickSearchModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC1AAB13BE163700FB13A2 /* STQuickSearchModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -93,7 +92,6 @@
 		AAD79B5513E2BC2E004CE895 /* STSearchItLaterWinCtl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AAD79B5B13E2D2ED004CE895 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */; };
 		AAD974891817618F004D955A /* STPrefSidebar.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AAD974881817618F004D955A /* STPrefSidebar.tiff */; };
-		AAD9748C1817EA3D004D955A /* SquashContextMenuItems61.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAD9748A1817EA3D004D955A /* SquashContextMenuItems61.plist */; };
 		AAD974901817FCCB004D955A /* NSFileManager+SafariStand.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD9748F1817FCCB004D955A /* NSFileManager+SafariStand.m */; };
 		AADBCB5015C119070069E262 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AADBCB4F15C119070069E262 /* ApplicationServices.framework */; };
 		AAEC852018026D38007A5DD4 /* HTWebClipWin.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */; };
@@ -257,8 +255,6 @@
 		AAD79B5413E2BC2E004CE895 /* STSearchItLaterWinCtl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSearchItLaterWinCtl.m; sourceTree = "<group>"; };
 		AAD79B5A13E2D2ED004CE895 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		AAD974881817618F004D955A /* STPrefSidebar.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = STPrefSidebar.tiff; sourceTree = "<group>"; };
-		AAD9748B1817EA3D004D955A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/SquashContextMenuItems61.plist; sourceTree = "<group>"; };
-		AAD9748D1817EA46004D955A /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ja; path = ja.lproj/SquashContextMenuItems61.plist; sourceTree = "<group>"; };
 		AAD9748E1817FCCB004D955A /* NSFileManager+SafariStand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+SafariStand.h"; sourceTree = "<group>"; };
 		AAD9748F1817FCCB004D955A /* NSFileManager+SafariStand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+SafariStand.m"; sourceTree = "<group>"; };
 		AADBCB4F15C119070069E262 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
@@ -291,7 +287,6 @@
 				AA12DA7E13B73EFA0082EBB3 /* Cocoa.framework in Frameworks */,
 				AA5B3AA913BC5782001453C0 /* WebKit.framework in Frameworks */,
 				AA3B13531808461900DDF075 /* JavaScriptCore.framework in Frameworks */,
-				AA9F781A13F91D8C0016874A /* WebKit2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,7 +581,6 @@
 				AA6FCF3B15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.h */,
 				AA6FCF3C15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.m */,
 				AA6FCF3D15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib */,
-				AAD9748A1817EA3D004D955A /* SquashContextMenuItems61.plist */,
 				AA6FCF4415D3F271008AE5AB /* SquashContextMenuItems.plist */,
 			);
 			path = SquashContextMenu;
@@ -702,7 +696,6 @@
 				AAD974891817618F004D955A /* STPrefSidebar.tiff in Resources */,
 				AA92216C13C04DB1006E898F /* HTQuerySeedEditViewCtl.xib in Resources */,
 				AACAD26F13E15BF100170193 /* STPrefSearch.png in Resources */,
-				AAD9748C1817EA3D004D955A /* SquashContextMenuItems61.plist in Resources */,
 				AAD79B5213E2BC09004CE895 /* STSearchItLaterWinCtl.xib in Resources */,
 				AA0881AA13E4284B003B70DF /* Localizable.strings in Resources */,
 				AA780DA613F1C0F40042A253 /* STClassifyDownloadAdvSheet.xib in Resources */,
@@ -827,15 +820,6 @@
 				AA6FCF4515D3F287008AE5AB /* ja */,
 			);
 			name = SquashContextMenuItems.plist;
-			sourceTree = "<group>";
-		};
-		AAD9748A1817EA3D004D955A /* SquashContextMenuItems61.plist */ = {
-			isa = PBXVariantGroup;
-			children = (
-				AAD9748B1817EA3D004D955A /* en */,
-				AAD9748D1817EA46004D955A /* ja */,
-			);
-			name = SquashContextMenuItems61.plist;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
