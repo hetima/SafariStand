@@ -72,6 +72,8 @@
 #endif
 
     
+    //[webUserDataWrapper userData] returns invalid data
+#if 0
     //STSDownloadModule  replace Save Image to “Downloads”
 	if([[STCSafariStandCore ud]boolForKey:kpClassifyDownloadFolderBasicEnabled]){
         NSInteger tag;
@@ -89,6 +91,7 @@
 #endif
         }
     }
+#endif
     
     
     // 選択文字列を調べる
