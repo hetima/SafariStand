@@ -149,7 +149,7 @@ static STCSafariStandCore *sharedInstance;
     }
     if ([_currentVersionString hasSuffix:@"Yosemite"]) {
         _standCodeName=@"Yosemite";
-    }else if ([productVersion hasSuffix:@"ElCapitan"]) {
+    }else if ([_currentVersionString hasSuffix:@"ElCapitan"]) {
         _standCodeName=@"ElCapitan";
     }else{
         _standCodeName=nil;
