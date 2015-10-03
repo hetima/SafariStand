@@ -42,10 +42,26 @@
     NSMenu *menu = [cell menu];
     NSMenuItem* itm;
     
+    BOOL hasSelectedLink=NO;
+    BOOL hasSelectedText=NO;
+    
     // 既存のメニュー項目をいくつか取得
     NSMenuItem* copyTextItem=[menu itemWithTag:8]; //8 == copy text
     NSMenuItem* copyLinkItem=[menu itemWithTag:3]; //3 == copy link
     NSMenuItem* copyImageItem=[menu itemWithTag:6]; //6 == copy link
+    NSMenuItem* sharingMenuItem=[menu itemWithTag:2053];
+    NSArray* sharingItems=[[[sharingMenuItem representedObject]valueForKey:@"_reserved"]valueForKey:@"items"]; //NSSharingServicePickerReserved
+    NSMutableDictionary* selectionInfo=[[NSMutableDictionary alloc]initWithCapacity:2];
+
+    for (id sharingItem in sharingItems) {
+        if ([sharingItem isKindOfClass:[NSURL class]]) {
+            selectionInfo[@"link"]=sharingItem;
+            hasSelectedLink=YES;
+        }else if ([sharingItem isKindOfClass:[NSString class]]){
+            selectionInfo[@"label"]=sharingItem;
+            hasSelectedText=YES;
+        }
+    }
     
 
 #ifdef DEBUG_MENUDUMP
@@ -71,7 +87,6 @@
     }
 #endif
 
-    
     //[webUserDataWrapper userData] returns invalid data
 #if 0
     //STSDownloadModule  replace Save Image to “Downloads”
@@ -95,24 +110,26 @@
     
     
     // 選択文字列を調べる
-    BOOL hasSelectedText=NO;
     if (copyTextItem || copyLinkItem) {
         hasSelectedText=YES;
     }
     
     if (wkview && hasSelectedText) {
-        // 適当な名前で NSPasteboard 作成
+        NSString* selectedText=selectionInfo[@"label"];
+        
         NSPasteboard* pb=[NSPasteboard pasteboardWithName:kSafariStandPBKey];
         [pb clearContents];
         
-        // 書き込ませる
-        //NSStringPboardType is deprecated but WKView doesn't handle NSPasteboardTypeString.
-        [wkview writeSelectionToPasteboard:pb types:[NSArray arrayWithObject:NSStringPboardType]];
-        NSString* selectedText=[[pb stringForType:NSStringPboardType]stand_moderatedStringWithin:0];
+        if (!selectedText) {
+            //NSStringPboardType is deprecated but WKView doesn't handle NSPasteboardTypeString.
+            [wkview writeSelectionToPasteboard:pb types:[NSArray arrayWithObject:NSStringPboardType]];
+            selectedText=[pb stringForType:NSStringPboardType];
+        }else{
+            [pb setString:selectedText forType:NSStringPboardType];
+        }
 
         NSUInteger len=[selectedText length];
         if(len>0 && len<1024){//あんまり長いのは除外
-            //LOG(@"%@",[pb stringForType:NSPasteboardTypeString]);
             [[STQuickSearchModule si]setupContextMenu:menu forceBottom:(copyLinkItem ? YES:NO)];
         }
         
@@ -127,81 +144,71 @@
         }
     }
 
-//[webUserDataWrapper userData] returns invalid data
-#if 0
     
-    if(copyLinkItem){
-        id webUserDataWrapper=[copyLinkItem representedObject];
-        void* apiObject=[webUserDataWrapper userData]; //struct APIObject
-        uint32_t type=0;
+    if(hasSelectedLink){
         
-        if (apiObject) {
-            type=WKGetTypeID(apiObject);
-        }
-
-        if(type==WKDictionaryGetTypeID()){
-            NSInteger idx=[menu indexOfItem:copyLinkItem];
-            if([[STCSafariStandCore ud]boolForKey:kpShowCopyLinkTagContextMenu]){
-                if([[STCSafariStandCore ud]boolForKey:kpCopyLinkTagAddTargetBlank]){
-                    itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag (_blank)") 
-                                                  action:@selector(actCopyLinkTagBlankMenu:) keyEquivalent:@""];
-                }else{
-                    itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag") 
-                                                  action:@selector(actCopyLinkTagMenu:) keyEquivalent:@""];
-                }
-                [itm setTarget:self];
-                [itm setRepresentedObject:webUserDataWrapper];
-                [menu insertItem:itm atIndex:++idx];
-
-                if([[STCSafariStandCore ud]boolForKey:kpCopyLinkTagAddTargetBlank]){
-                    itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag") 
-                                                  action:@selector(actCopyLinkTagMenu:) keyEquivalent:@""];
-                }else{
-                    itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag (_blank)") 
-                                                  action:@selector(actCopyLinkTagBlankMenu:) keyEquivalent:@""];
-                }
-                [itm setTarget:self];
-                [itm setRepresentedObject:webUserDataWrapper];
-                [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
-                [itm setAlternate:YES];
-                [menu insertItem:itm atIndex:++idx];
+        NSInteger idx=[menu indexOfItem:copyLinkItem];
+        if([[STCSafariStandCore ud]boolForKey:kpShowCopyLinkTagContextMenu]){
+            if([[STCSafariStandCore ud]boolForKey:kpCopyLinkTagAddTargetBlank]){
+                itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag (_blank)")
+                                              action:@selector(actCopyLinkTagBlankMenu:) keyEquivalent:@""];
+            }else{
+                itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag")
+                                              action:@selector(actCopyLinkTagMenu:) keyEquivalent:@""];
             }
-            
-            if([[STCSafariStandCore ud]boolForKey:kpShowCopyLinkTitleContextMenu]){
-                itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Title") action:@selector(actCopyLinkTitleMenu:) keyEquivalent:@""];
-                [itm setTarget:self];
-                [itm setRepresentedObject:webUserDataWrapper];
-                [menu insertItem:itm atIndex:++idx];
-                
-            }
-            
-            if([[STCSafariStandCore ud]boolForKey:kpShowCopyLinkAndTitleContextMenu]){
-                itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link and Title") action:@selector(actCopyLinkAndTitleMenu:) keyEquivalent:@""];
-                [itm setTarget:self];
-                [itm setRepresentedObject:webUserDataWrapper];
-                [menu insertItem:itm atIndex:++idx];
-                
-                itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link (space) Title") action:@selector(actCopyLinkAndTitleSpaceMenu:) keyEquivalent:@""];
-                [itm setTarget:self];
-                [itm setRepresentedObject:webUserDataWrapper];
-                [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
-                [itm setAlternate:YES];
-                [menu insertItem:itm atIndex:++idx];
-            }
-
-#ifdef DEBUG_MENUDUMP
-            // WindowPolicy checker
-            NSMenu* windowPolicyTestMenu=[self safariWindowPolicyTestMenuWithUserDataWrapper:webUserDataWrapper];
-            itm=[[NSMenuItem alloc]initWithTitle:@"WindowPolicyTest" action:nil keyEquivalent:@""];
-            [itm setSubmenu:windowPolicyTestMenu];
+            [itm setTarget:self];
+            [itm setRepresentedObject:selectionInfo];
             [menu insertItem:itm atIndex:++idx];
-#endif
+            
+            if([[STCSafariStandCore ud]boolForKey:kpCopyLinkTagAddTargetBlank]){
+                itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag")
+                                              action:@selector(actCopyLinkTagMenu:) keyEquivalent:@""];
+            }else{
+                itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Tag (_blank)")
+                                              action:@selector(actCopyLinkTagBlankMenu:) keyEquivalent:@""];
+            }
+            [itm setTarget:self];
+            [itm setRepresentedObject:selectionInfo];
+            [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
+            [itm setAlternate:YES];
+            [menu insertItem:itm atIndex:++idx];
         }
+        
+        if([[STCSafariStandCore ud]boolForKey:kpShowCopyLinkTitleContextMenu]){
+            itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link Title") action:@selector(actCopyLinkTitleMenu:) keyEquivalent:@""];
+            [itm setTarget:self];
+            [itm setRepresentedObject:selectionInfo];
+            [menu insertItem:itm atIndex:++idx];
+            
+        }
+        
+        if([[STCSafariStandCore ud]boolForKey:kpShowCopyLinkAndTitleContextMenu]){
+            itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link and Title") action:@selector(actCopyLinkAndTitleMenu:) keyEquivalent:@""];
+            [itm setTarget:self];
+            [itm setRepresentedObject:selectionInfo];
+            [menu insertItem:itm atIndex:++idx];
+            
+            itm=[[NSMenuItem alloc]initWithTitle:LOCALIZE(@"Copy Link (space) Title") action:@selector(actCopyLinkAndTitleSpaceMenu:) keyEquivalent:@""];
+            [itm setTarget:self];
+            [itm setRepresentedObject:selectionInfo];
+            [itm setKeyEquivalentModifierMask:NSAlternateKeyMask];
+            [itm setAlternate:YES];
+            [menu insertItem:itm atIndex:++idx];
+        }
+        
+#ifdef DEBUG_MENUDUMP
+        // WindowPolicy checker
+        NSMenu* windowPolicyTestMenu=[self safariWindowPolicyTestMenuWithUserDataWrapper:selectionInfo];
+        itm=[[NSMenuItem alloc]initWithTitle:@"WindowPolicyTest" action:nil keyEquivalent:@""];
+        [itm setSubmenu:windowPolicyTestMenu];
+        [menu insertItem:itm atIndex:++idx];
+#endif
+
         
         //LOG(@"%ud, %ud, %@,%@",type,WKDataGetTypeID(),[copyLinkItem title], NSStringFromSelector([copyLinkItem action]));
     } //if(copyLinkItem)
     
-    
+#if 0
     if(copyImageItem){
         if([[STCSafariStandCore ud]boolForKey:kpShowGoogleImageSearchContextMenu]){
             NSInteger idx=[menu indexOfItem:copyImageItem];
@@ -264,79 +271,72 @@
 
 -(void)actCopyLinkTagMenu:(id)sender
 {
-    id webUserDataWrapper=[sender representedObject];
-    void* apiObject=[webUserDataWrapper userData]; //struct APIObject
-    uint32_t type=WKGetTypeID(apiObject);
-    if(type==WKDictionaryGetTypeID()){ //8==TypeDictionary
-        NSString* linkStr=htWKDictionaryStringForKey(apiObject, @"LinkURL");
-        NSString* titleStr=htWKDictionaryStringForKey(apiObject, @"LinkLabel");//or @"LinkTitle"
-        if(!linkStr)linkStr=@"";
-        if(!titleStr)titleStr=@"";
-        
-        NSString* format=LOCALIZE(@"LINKTAG");
-        NSString* result=[NSString stringWithFormat:format, linkStr, titleStr];
-        
-        NSPasteboard*pb=[NSPasteboard generalPasteboard];
-        [pb clearContents];
-        [pb setString:result forType:NSPasteboardTypeString];
-    }
+    NSDictionary* selectionInfo=[sender representedObject];
+    NSURL* linkURL=selectionInfo[@"link"];
+    NSString* linkStr=[linkURL absoluteString];
+    NSString* titleStr=selectionInfo[@"label"];
+    if(!linkStr)linkStr=@"";
+    if(!titleStr)titleStr=@"";
+    
+    NSString* format=LOCALIZE(@"LINKTAG");
+    NSString* result=[NSString stringWithFormat:format, linkStr, titleStr];
+    
+    NSPasteboard*pb=[NSPasteboard generalPasteboard];
+    [pb clearContents];
+    [pb setString:result forType:NSPasteboardTypeString];
+
 }
 
 
 -(void)actCopyLinkTagBlankMenu:(id)sender
 {
-    id webUserDataWrapper=[sender representedObject];
-    void* apiObject=[webUserDataWrapper userData]; //struct APIObject
-    uint32_t type=WKGetTypeID(apiObject);
-    if(type==WKDictionaryGetTypeID()){ //8==TypeDictionary
-        NSString* linkStr=htWKDictionaryStringForKey(apiObject, @"LinkURL");
-        NSString* titleStr=htWKDictionaryStringForKey(apiObject, @"LinkLabel");//or @"LinkTitle"
-        if(!linkStr)linkStr=@"";
-        if(!titleStr)titleStr=@"";
-        
-        NSString* format=LOCALIZE(@"LINKTAGBLANK");
-        NSString* result=[NSString stringWithFormat:format, linkStr, titleStr];
-        
-        NSPasteboard*pb=[NSPasteboard generalPasteboard];
-        [pb clearContents];
-        [pb setString:result forType:NSPasteboardTypeString];
-    }
+    NSDictionary* selectionInfo=[sender representedObject];
+    NSURL* linkURL=selectionInfo[@"link"];
+    NSString* linkStr=[linkURL absoluteString];
+    NSString* titleStr=selectionInfo[@"label"];
+    if(!linkStr)linkStr=@"";
+    if(!titleStr)titleStr=@"";
+    
+    NSString* format=LOCALIZE(@"LINKTAGBLANK");
+    NSString* result=[NSString stringWithFormat:format, linkStr, titleStr];
+    
+    NSPasteboard*pb=[NSPasteboard generalPasteboard];
+    [pb clearContents];
+    [pb setString:result forType:NSPasteboardTypeString];
+
 }
 
 
 -(void)actCopyLinkTitleMenu:(id)sender
 {
-    id webUserDataWrapper=[sender representedObject];
-    void* apiObject=[webUserDataWrapper userData]; //struct APIObject
-    uint32_t type=WKGetTypeID(apiObject);
-    if(type==WKDictionaryGetTypeID()){ //8==TypeDictionary
+    NSDictionary* selectionInfo=[sender representedObject];
+    NSURL* linkURL=selectionInfo[@"link"];
+    NSString* linkStr=[linkURL absoluteString];
+    NSString* titleStr=selectionInfo[@"label"];
+    if(!linkStr)linkStr=@"";
+    if(!titleStr)titleStr=@"";
 
-        NSString* titleStr=htWKDictionaryStringForKey(apiObject, @"LinkLabel");//or @"LinkTitle"
-        if(!titleStr)titleStr=@"";
-        
-        NSPasteboard*pb=[NSPasteboard generalPasteboard];
-        [pb clearContents];
-        [pb setString:titleStr forType:NSPasteboardTypeString];
-    }
+    NSPasteboard*pb=[NSPasteboard generalPasteboard];
+    [pb clearContents];
+    [pb setString:titleStr forType:NSPasteboardTypeString];
 }
 
 
 -(void)actCopyLinkAndTitleMenu:(id)sender separator:(NSString*)sep
 {
-    id webUserDataWrapper=[sender representedObject];
-    void* apiObject=[webUserDataWrapper userData]; //struct APIObject
-    uint32_t type=WKGetTypeID(apiObject);
-    if(type==WKDictionaryGetTypeID()){ //8==TypeDictionary
-        NSString* linkStr=htWKDictionaryStringForKey(apiObject, @"LinkURL");
-        NSString* titleStr=htWKDictionaryStringForKey(apiObject, @"LinkLabel");//or @"LinkTitle"
-        if(!linkStr)linkStr=@"";
-        if(!titleStr)titleStr=@"";
-        NSString* result=[NSString stringWithFormat:@"%@%@%@", titleStr, sep, linkStr];
-        
-        NSPasteboard*pb=[NSPasteboard generalPasteboard];
-        [pb clearContents];
-        [pb setString:result forType:NSPasteboardTypeString];
-    }
+    NSDictionary* selectionInfo=[sender representedObject];
+    NSURL* linkURL=selectionInfo[@"link"];
+    NSString* linkStr=[linkURL absoluteString];
+    NSString* titleStr=selectionInfo[@"label"];
+    if(!linkStr)linkStr=@"";
+    if(!titleStr)titleStr=@"";
+
+
+    NSString* result=[NSString stringWithFormat:@"%@%@%@", titleStr, sep, linkStr];
+
+    NSPasteboard*pb=[NSPasteboard generalPasteboard];
+    [pb clearContents];
+    [pb setString:result forType:NSPasteboardTypeString];
 }
 
 
@@ -530,14 +530,10 @@
 
 - (void)actWindowPolicyTest:(id)sender
 {
-    id webUserDataWrapper=[sender representedObject];
-    void* apiObject=[webUserDataWrapper userData]; //struct APIObject
-    uint32_t type=WKGetTypeID(apiObject);
-    if(type==WKDictionaryGetTypeID()){ //8==TypeDictionary
-        NSString* linkStr=htWKDictionaryStringForKey(apiObject, @"LinkURL");
-        NSURL* url=[NSURL URLWithString:linkStr];
-        if(url) STSafariGoToURLWithPolicy(url, (int)[sender tag]);
-    }
+    NSDictionary* selectionInfo=[sender representedObject];
+    NSURL* linkURL=selectionInfo[@"link"];
+
+    if(linkURL) STSafariGoToURLWithPolicy(linkURL, (int)[sender tag]);
 }
 
 #endif
