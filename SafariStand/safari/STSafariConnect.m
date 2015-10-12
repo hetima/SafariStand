@@ -677,11 +677,17 @@ NSArray* STSafariQuickWebsiteSearchItems()
     
     __block NSMutableArray* ary=[[NSMutableArray alloc]initWithCapacity:[dic count]];
     [dic enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if (![obj respondsToSelector:@selector(searchURLTemplateString)]) {
+        if (![obj respondsToSelector:@selector(searchURLTemplate)]) {
             return;
         }
         
-        NSString* baseUrl=((NSString *(*)(id, SEL, ...))objc_msgSend)(obj, @selector(searchURLTemplateString));
+        id searchURLTemplate=((id(*)(id, SEL, ...))objc_msgSend)(obj, @selector(searchURLTemplate));
+        if (![searchURLTemplate respondsToSelector:@selector(templateString)]) {
+            return;
+        }
+        
+        
+        NSString* baseUrl=((NSString *(*)(id, SEL, ...))objc_msgSend)(searchURLTemplate, @selector(templateString));
         if ([baseUrl containsString:@"{searchTerms}"]) {
             baseUrl=[baseUrl stringByReplacingOccurrencesOfString:@"{searchTerms}" withString:@"%s"];
             NSDictionary* site=@{@"title":key, @"baseUrl":baseUrl, @"encoding":@(NSUTF8StringEncoding)};
