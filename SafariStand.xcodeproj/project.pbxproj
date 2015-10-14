@@ -17,7 +17,6 @@
 		AA09B1F213DE866100389D8B /* STKeyHandlerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA09B1F113DE866100389D8B /* STKeyHandlerModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA0B390215C28CEA00A025FF /* quicksearch_defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA0B390115C28CEA00A025FF /* quicksearch_defaults.plist */; };
 		AA0B390515C503EC00A025FF /* STActionMenuModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0B390415C503EB00A025FF /* STActionMenuModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		AA0B390715C5044F00A025FF /* STTBActionMenu.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AA0B390615C5044F00A025FF /* STTBActionMenu.tiff */; };
 		AA12DA8813B73EFA0082EBB3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA12DA8613B73EFA0082EBB3 /* InfoPlist.strings */; };
 		AA171B74168E05C1007A4661 /* STQuickSearchModule+QSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B73168E05C0007A4661 /* STQuickSearchModule+QSToolbar.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA171B791690A4A7007A4661 /* STQSToolbarBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA171B781690A4A7007A4661 /* STQSToolbarBaseView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -93,6 +92,7 @@
 		AAD974891817618F004D955A /* STPrefSidebar.tiff in Resources */ = {isa = PBXBuildFile; fileRef = AAD974881817618F004D955A /* STPrefSidebar.tiff */; };
 		AAD974901817FCCB004D955A /* NSFileManager+SafariStand.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD9748F1817FCCB004D955A /* NSFileManager+SafariStand.m */; };
 		AADBCB5015C119070069E262 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AADBCB4F15C119070069E262 /* ApplicationServices.framework */; };
+		AAE31F7A1BCE2F440098001D /* STTBActionMenu.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AAE31F791BCE2F440098001D /* STTBActionMenu.pdf */; settings = {ASSET_TAGS = (); }; };
 		AAEC852018026D38007A5DD4 /* HTWebClipWin.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */; };
 		AAF4985119F74EF50064BD35 /* STConsolePanelModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF4985019F74EF50064BD35 /* STConsolePanelModule.m */; };
 		AAF4985319F7508C0064BD35 /* STConsolePanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAF4985219F7508C0064BD35 /* STConsolePanel.xib */; };
@@ -130,7 +130,6 @@
 		AA0B390115C28CEA00A025FF /* quicksearch_defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = quicksearch_defaults.plist; sourceTree = "<group>"; };
 		AA0B390315C503EB00A025FF /* STActionMenuModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STActionMenuModule.h; sourceTree = "<group>"; };
 		AA0B390415C503EB00A025FF /* STActionMenuModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STActionMenuModule.m; sourceTree = "<group>"; };
-		AA0B390615C5044F00A025FF /* STTBActionMenu.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = STTBActionMenu.tiff; sourceTree = "<group>"; };
 		AA12DA7A13B73EFA0082EBB3 /* SafariStand.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafariStand.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA12DA7D13B73EFA0082EBB3 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		AA12DA8013B73EFA0082EBB3 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -271,6 +270,7 @@
 		AAD9748E1817FCCB004D955A /* NSFileManager+SafariStand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+SafariStand.h"; sourceTree = "<group>"; };
 		AAD9748F1817FCCB004D955A /* NSFileManager+SafariStand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+SafariStand.m"; sourceTree = "<group>"; };
 		AADBCB4F15C119070069E262 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		AAE31F791BCE2F440098001D /* STTBActionMenu.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = STTBActionMenu.pdf; sourceTree = "<group>"; };
 		AAEC851F18026D38007A5DD4 /* HTWebClipWin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HTWebClipWin.xib; sourceTree = "<group>"; };
 		AAF4984F19F74EF50064BD35 /* STConsolePanelModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConsolePanelModule.h; sourceTree = "<group>"; };
 		AAF4985019F74EF50064BD35 /* STConsolePanelModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConsolePanelModule.m; sourceTree = "<group>"; };
@@ -433,7 +433,7 @@
 				AACAD26E13E15BF000170193 /* STPrefSearch.png */,
 				AA718AA713BAD39D00327606 /* STPrefGeneral.tiff */,
 				AAD974881817618F004D955A /* STPrefSidebar.tiff */,
-				AA0B390615C5044F00A025FF /* STTBActionMenu.tiff */,
+				AAE31F791BCE2F440098001D /* STTBActionMenu.pdf */,
 				AAA1E4831813EF2B00970FAD /* STTBToggleSidebar.pdf */,
 				AAF4985F19F7FE7C0064BD35 /* STTBDownload.pdf */,
 				AA43BC8B19FF8F69004265AE /* STTLWindowIcon.pdf */,
@@ -742,6 +742,7 @@
 				AA6D308E19FBA6670049E798 /* STDummyDownloadPanel.xib in Resources */,
 				AAF4985319F7508C0064BD35 /* STConsolePanel.xib in Resources */,
 				AA0881AA13E4284B003B70DF /* Localizable.strings in Resources */,
+				AAE31F7A1BCE2F440098001D /* STTBActionMenu.pdf in Resources */,
 				AA780DA613F1C0F40042A253 /* STClassifyDownloadAdvSheet.xib in Resources */,
 				AAEC852018026D38007A5DD4 /* HTWebClipWin.xib in Resources */,
 				AA396F0013F61B1E00EF5806 /* STStandSearchViewCtl.xib in Resources */,
@@ -753,7 +754,6 @@
 				AAF9D2A2147E23310018C949 /* clip_memo.tiff in Resources */,
 				AAF9D2A3147E23310018C949 /* clip_savec.tiff in Resources */,
 				AA0B390215C28CEA00A025FF /* quicksearch_defaults.plist in Resources */,
-				AA0B390715C5044F00A025FF /* STTBActionMenu.tiff in Resources */,
 				AA5DD7C51B024B8B00EB2CF3 /* STSelfUpdaterWinCtl.xib in Resources */,
 				AAF4986019F7FE7C0064BD35 /* STTBDownload.pdf in Resources */,
 				AA6FCF3F15D3EA3A008AE5AB /* STSquashContextMenuSheetCtl.xib in Resources */,
