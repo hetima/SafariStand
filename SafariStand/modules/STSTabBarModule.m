@@ -125,6 +125,23 @@
         return result;
     }_WITHBLOCK;
     
+    //タブバー狭くして空きスペースができているときドロップの対処
+    KZRMETHOD_SWIZZLING_("ScrollableTabBarView", "_moveButton:toIndex:", void, call, sel)
+    ^(id slf, id button, unsigned long long index)
+    {
+        if (index==NSNotFound) {
+            index=0;
+            if ([slf respondsToSelector:@selector(numberOfTabs)]) {
+                NSUInteger num=((NSUInteger(*)(id, SEL, ...))objc_msgSend)(slf, @selector(numberOfTabs));
+                if (num>0) {
+                    index=num-1;
+                }
+            }
+        }
+        
+        call(slf, sel, button, index);
+    }_WITHBLOCK;
+    
     
     double minX=[[STCSafariStandCore ud]doubleForKey:kpSuppressTabBarWidthValue];
     if (minX<140.0 || minX>480.0) minX=240.0;
