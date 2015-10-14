@@ -362,10 +362,13 @@
                                         <button id="30F-hP-sUz">
                                             <rect key="frame" x="327" y="194" width="176" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Show Icon on Tab Bar" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" state="on" inset="2" id="lXM-d3-eAG">
+                                            <buttonCell key="cell" type="check" title="Show Icon on Tab Bar" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="lXM-d3-eAG">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
+                                            <connections>
+                                                <binding destination="f0r-av-vRL" name="value" keyPath="values.Stand_ShowIconOnTabBarEnabled" id="LbV-RR-aBG"/>
+                                            </connections>
                                         </button>
                                         <button id="x5c-62-paD">
                                             <rect key="frame" x="327" y="174" width="252" height="18"/>

@@ -53,6 +53,27 @@ void STSafariEnumerateBrowserTabViewItem( void(^blk)(NSTabViewItem* tabViewItem,
 }
 
 
+void STSafariEnumerateTabButton( void(^blk)(NSButton* tabBtn, BOOL* stop) )
+{
+    STSafariEnumerateBrowserWindow(^(NSWindow* win, NSWindowController* winCtl, BOOL* stopSuper){
+        if([winCtl respondsToSelector:@selector(tabBarView)]){
+            id tabBarView=objc_msgSend(winCtl, @selector(tabBarView));
+            if ([tabBarView respondsToSelector:@selector(tabButtons)]) {
+                NSArray* tabButtons=objc_msgSend(tabBarView, @selector(tabButtons));
+                for (id tabButton in tabButtons) {
+                    BOOL stop=NO;
+                    blk(tabButton, &stop);
+                    if (stop) {
+                        *stopSuper=YES;
+                        break;
+                    }
+                }
+            }
+        }
+    });
+}
+
+
 #pragma mark - navigation
 
 

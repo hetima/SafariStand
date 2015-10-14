@@ -171,8 +171,8 @@
     errorCount=[self checkClass:@"TabBarView" method:@"_shouldLayOutButtonsToAlignWithWindowCenter"];
     errorCount=[self checkClass:@"TabBarView" method:@"_tabIndexAtPoint:"];
     errorCount=[self checkClass:@"TabButton" method:@"initWithFrame:tabBarViewItem:"];
-    errorCount=[self checkClass:@"TabButton" method:@"closeButton"];//x
-    errorCount=[self checkClass:@"BrowserTabViewItem" method:@"scrollableTabButton"];//x
+    errorCount=[self checkClass:@"TabButton" method:@"tabBarViewItem"];
+    errorCount=[self checkClass:@"TabButton" method:@"setHasMouseOverHighlight:shouldAnimateCloseButton:"];
     //STKeyHandlerModule
     errorCount=[self checkClass:@"BookmarksController" method:@"goToNthFavoriteLeaf:"];
     //STSDownloadModule

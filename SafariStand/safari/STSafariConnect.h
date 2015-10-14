@@ -72,6 +72,7 @@ STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem* tabViewItem, BOOL* stop){
  
  */
 void STSafariEnumerateBrowserTabViewItem( void(^blk)(NSTabViewItem* tabViewItem, BOOL* stop) );
+void STSafariEnumerateTabButton( void(^blk)(NSButton* tabBtn, BOOL* stop) );
 
 
 

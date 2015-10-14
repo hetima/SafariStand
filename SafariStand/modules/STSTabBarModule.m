@@ -152,8 +152,7 @@
     
     
     //ShowIconOnTabBar
-    /*
-    KZRMETHOD_SWIZZLING_("TabButton", "initWithFrame:tabViewItem:", id, call, sel)
+    KZRMETHOD_SWIZZLING_("TabButton", "initWithFrame:tabBarViewItem:", id, call, sel)
     ^id (id slf, NSRect frame, id obj)
     {
         NSButton* result=call(slf, sel, frame, obj);
@@ -163,12 +162,21 @@
         
         return result;
     }_WITHBLOCK;
-    */
+    KZRMETHOD_SWIZZLING_("TabButton", "setHasMouseOverHighlight:shouldAnimateCloseButton:", void, call, sel)
+    ^(id slf, BOOL arg1, BOOL arg2)
+    {
+        call(slf, sel, arg1, arg2);
+        STTabIconLayer* layer=[STTabIconLayer installedIconLayerInView:slf];
+        if (layer) {
+            layer.hidden=arg1;
+        }
+    }_WITHBLOCK;
 
-    /*
+
+    
     if ([[STCSafariStandCore ud]boolForKey:kpShowIconOnTabBarEnabled]) {
         [self installIconToExistingWindows];
-    }*/
+    }
     [self observePrefValue:kpShowIconOnTabBarEnabled];
     
 
@@ -186,13 +194,13 @@
 {
     if([key isEqualToString:kpSuppressTabBarWidthEnabled]||[key isEqualToString:kpSuppressTabBarWidthValue]){
         [self layoutTabBarForExistingWindow];
-    }/*else if([key isEqualToString:kpShowIconOnTabBarEnabled]){
+    }else if([key isEqualToString:kpShowIconOnTabBarEnabled]){
         if ([value boolValue]) {
             [self installIconToExistingWindows];
         }else{
             [self removeIconFromExistingWindows];
         }
-    }*/
+    }
 }
 
 
@@ -214,36 +222,34 @@
     if([STTabIconLayer installedIconLayerInView:tabButton] != nil) {
         return;
     }
-    
-    if (![tabButton respondsToSelector:@selector(closeButton)]) {
+
+    NSView* closeButton=[tabButton valueForKey:@"_closeButton"];
+    if (!closeButton) {
         return;
     }
-    NSView* closeButton=objc_msgSend(tabButton, @selector(closeButton));
     
     CALayer* layer=[STTabIconLayer layer];
-    layer.frame=NSMakeRect(4, 4, 16, 16);
+    layer.frame=NSMakeRect(4, 3, 16, 16);
     layer.contents=nil;
     [tabButton.layer addSublayer:layer];
 
-    [layer bind:NSHiddenBinding toObject:closeButton withKeyPath:NSHiddenBinding options:@{ NSValueTransformerNameBindingOption : NSNegateBooleanTransformerName }];
+//    [layer bind:NSHiddenBinding toObject:closeButton withKeyPath:NSHiddenBinding options:@{ NSValueTransformerNameBindingOption : NSNegateBooleanTransformerName }];
     STTabProxy* tp=[STTabProxy tabProxyForTabViewItem:tabViewItem];
     if (tp) {
         [layer bind:@"contents" toObject:tp withKeyPath:@"image" options:nil];
     }
-
+    
 }
 
 
 - (void)installIconToExistingWindows
 {
-    STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem* tabViewItem, BOOL* stop){
-        if (![tabViewItem respondsToSelector:@selector(scrollableTabButton)]) {
+    STSafariEnumerateTabButton(^(NSButton* tabBtn, BOOL* stop){
+        if (![tabBtn respondsToSelector:@selector(tabBarViewItem)]) {
             return;
         }
-        NSButton* tabBtn=objc_msgSend(tabViewItem, @selector(scrollableTabButton));
-        if (!tabBtn) {
-            return;
-        }
+        NSTabViewItem* tabViewItem=((id(*)(id, SEL, ...))objc_msgSend)(tabBtn, @selector(tabBarViewItem));
+        
         [self _installIconToTabButton:tabBtn ofTabViewItem:tabViewItem];
 
     });
@@ -259,14 +265,12 @@
 
 - (void)removeIconFromExistingWindows
 {
-    STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem* tabViewItem, BOOL* stop){
-        if (![tabViewItem respondsToSelector:@selector(scrollableTabButton)]) {
+    STSafariEnumerateTabButton(^(NSButton* tabBtn, BOOL* stop){
+        if (![tabBtn respondsToSelector:@selector(tabBarViewItem)]) {
             return;
         }
-        NSButton* tabBtn=objc_msgSend(tabViewItem, @selector(scrollableTabButton));
-        if (!tabBtn) {
-            return;
-        }
+        NSTabViewItem* tabViewItem=((id(*)(id, SEL, ...))objc_msgSend)(tabBtn, @selector(tabBarViewItem));
+        
         [self _removeIconFromTabButton:tabBtn ofTabViewItem:tabViewItem];
 
     });
@@ -292,7 +296,7 @@
 
 - (void)dealloc
 {
-    [self unbind:NSHiddenBinding];
+//    [self unbind:NSHiddenBinding];
     [self unbind:@"contents"];
     LOG(@"layer d");
 }
