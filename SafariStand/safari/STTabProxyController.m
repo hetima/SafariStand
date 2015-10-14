@@ -226,7 +226,11 @@ static STTabProxyController *sharedInstance;
         if ([[wkView className]isEqualToString:@"BrowserWKView"]) {
             NSView* tabContentView=[slf superview];
             STSafariEnumerateBrowserTabViewItem(^(NSTabViewItem *tabViewItem, BOOL *stop) {
-                if ([tabViewItem view]==tabContentView) {
+                if (![tabViewItem respondsToSelector:@selector(tabContentView)]) {
+                    return;
+                }
+                id view=((id(*)(id, SEL, ...))objc_msgSend)(tabViewItem, @selector(tabContentView));
+                if (view==tabContentView) {
                     STTabProxy* proxy=[STTabProxy tabProxyForTabViewItem:tabViewItem];
                     [proxy wkViewDidReplaced:wkView];
                     *stop=YES;

@@ -124,6 +124,9 @@
     errorCount=[self checkClass:@"TabBarView" method:@"removeTabBarViewItem:"];
     errorCount=[self checkClass:@"BrowserWindowControllerMac" method:@"_moveTabViewItem:toIndex:"];
     errorCount=[self checkClass:@"TabBarView" method:@"selectTabBarViewItem:"];
+    errorCount=[self checkClass:@"BrowserTabViewItem" method:@"tabContentView"];
+    
+    
     //errorCount=[self checkClass:@"BrowserWindowContentView" method:@"setTabSwitcher:"];
     errorCount=[self checkClass:@"BrowserTabViewItem" method:@"setLabel:"];
     errorCount=[self checkClass:@"ResizableContentContainer" method:@"didAddSubview:"];
