@@ -223,6 +223,10 @@
         return;
     }
 
+    if([[tabViewItem valueForKey:@"pinned"] boolValue]) {
+        return;
+    }
+
     NSView* closeButton=[tabButton valueForKey:@"_closeButton"];
     if (!closeButton) {
         return;
